@@ -1,2 +1,4 @@
 _env/
 raw_data/*
+*/__pycache__/*
+.vscode/*
