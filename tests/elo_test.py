@@ -1,7 +1,7 @@
 """ Test functionality of Elo Calculations """
 
 from agent.base_agent import Base_Agent
-from battle_engine.elo import elo
+from ladder.elo import elo
 
 # Using wikipedia's example from https://en.wikipedia.org/wiki/Elo_rating_system
 
