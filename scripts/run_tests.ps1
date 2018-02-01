@@ -9,3 +9,8 @@ echo "Completed!"
 echo "Running elo_test.py"
 python -m tests.elo_test
 echo "Completed!"
+
+# Run tests on Basic Coin Flip Engine
+echo "Running coinflip_test.py"
+python -m tests.coinflip_test
+echo "Completed!"
