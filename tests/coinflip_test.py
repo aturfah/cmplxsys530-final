@@ -22,14 +22,14 @@ def test_init():
         pass
 
 def test_run():
+    """ Run single iteration of game, make sure ratings update """
     player1 = Base_Agent()
     player2 = Base_Agent()
 
     cfe = CoinFlipEngine(player1, player2)
     cfe.run()
 
-    print(player1.elo)
-    print(player2.elo)
+    assert(player1.elo != 1000 or player2.elo != 1000)
 
 test_init()
 test_run()
