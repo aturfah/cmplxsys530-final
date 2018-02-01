@@ -6,6 +6,7 @@ from ladder.elo import elo
 # Using wikipedia's example from https://en.wikipedia.org/wiki/Elo_rating_system
 
 def test_drop():
+    """ Test that ratings drop when appropriate """
     playerA = Base_Agent()
     playerB = Base_Agent()
     playerA.elo = 1619
@@ -15,6 +16,7 @@ def test_drop():
     assert(playerA.elo == 1602)
 
 def test_floor():
+    """ Tests that ratings do not go below 1000 """
     playerA = Base_Agent()
     playerB = Base_Agent()
 
@@ -22,6 +24,7 @@ def test_floor():
     assert(playerA.elo == 1000)
 
 def test_increase():
+    """ Tests that ratings increase when appropriate """
     playerA = Base_Agent()
     playerB = Base_Agent()
     playerA.elo = 1619
