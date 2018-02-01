@@ -30,16 +30,15 @@ def test_run():
     cfe = CoinFlipEngine(player1, player2)
     cfe.run()
 
-    # Someone's values change
-    assert(player1.elo != 1000 or player2.elo != 1000)
-    assert(player1.num_wins != 0 or player2.num_wins != 0)
-    assert(player1.num_losses != 0 or player2.num_losses != 0)
+    # Only one elo value changes
+    assert((player1.elo > 1000 and player2.elo == 1000) or
+         (player1.elo == 1000 and player2.elo > 1000))
 
-    # Only one of the values change
-    assert((player1.elo != 1000 and player2.elo == 1000) or
-         (player1.elo == 1000 and player2.elo != 1000))
+    # Someone won the game
     assert((player1.num_wins == 0 and player2.num_wins == 1) or
          (player1.num_wins == 1 and player2.num_wins == 0))
+
+    # Someone lost the game
     assert((player1.num_losses == 0 and player2.num_losses == 1) or
          (player1.num_losses == 1 and player2.num_losses == 0))
 
