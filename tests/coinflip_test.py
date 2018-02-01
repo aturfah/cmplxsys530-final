@@ -30,6 +30,8 @@ def test_run():
     cfe.run()
 
     assert(player1.elo != 1000 or player2.elo != 1000)
+    assert(player1.num_wins != 0 or player2.num_wins != 0)
+    assert(player1.num_losses != 0 or player2.num_losses != 0)
 
 test_init()
 test_run()
