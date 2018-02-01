@@ -21,4 +21,15 @@ def test_init():
     except AttributeError:
         pass
 
+def test_run():
+    player1 = Base_Agent()
+    player2 = Base_Agent()
+
+    cfe = CoinFlipEngine(player1, player2)
+    cfe.run()
+
+    print(player1.elo)
+    print(player2.elo)
+
 test_init()
+test_run()
