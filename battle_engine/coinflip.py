@@ -18,7 +18,7 @@ class CoinFlipEngine:
         self.p2 = player2
         self.prob_win = prob_win
 
-    def results(winner, loser):
+    def update_players(self, winner, loser):
         """ Update values for winner and loser """
         new_winner_elo = elo(winner, loser, 1)
         new_loser_elo = elo(winner, loser, 0)
@@ -33,7 +33,7 @@ class CoinFlipEngine:
 
         if draw < self.prob_win:
             # Player1 wins
-            results(self.p1, self.p2)
+            self.update_players(self.p1, self.p2)
         else:
             # Player2 wins
-            results(self.p2, self.p1)
+            self.update_players(self.p2, self.p1)
