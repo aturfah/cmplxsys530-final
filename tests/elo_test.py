@@ -5,30 +5,32 @@ from ladder.elo import elo
 
 # Using wikipedia's example from https://en.wikipedia.org/wiki/Elo_rating_system
 
-playerA = Base_Agent()
-playerA.elo = 1613
+def test_drop():
+    playerA = Base_Agent()
+    playerB = Base_Agent()
+    playerA.elo = 1619
+    playerB.elo = 1609
 
-# Set up adverseries 
-playerB = Base_Agent()
-playerB.elo = 1609
-playerC = Base_Agent()
-playerC.elo = 1477
-playerD = Base_Agent()
-playerD.elo = 1388
-playerE = Base_Agent()
-playerE.elo = 1586
-playerF = Base_Agent()
-playerF.elo = 1720
+    playerA.elo = elo(playerA, playerB, 0) 
+    assert(playerA.elo == 1602)
 
-#TODO calculate the results by hand
-playerA.elo = elo(playerA, playerB, 0) 
-print(playerA.elo)
-playerA.elo = elo(playerA, playerC, 0.5)
-print(playerA.elo)
-playerA.elo = elo(playerA, playerD, 1)
-print(playerA.elo)
-playerA.elo = elo(playerA, playerE, 1)
-print(playerA.elo)
-playerA.elo = elo(playerA, playerF, 0)
-print(playerA.elo)
+def test_floor():
+    playerA = Base_Agent()
+    playerB = Base_Agent()
 
+    playerA.elo = elo(playerA, playerB, 0)
+    assert(playerA.elo == 1000)
+
+def test_increase():
+    playerA = Base_Agent()
+    playerB = Base_Agent()
+    playerA.elo = 1619
+    playerB.elo = 1609
+
+    playerB.elo = elo(playerB, playerA, 1) 
+    print(playerB.elo)
+    assert(playerB.elo == 1625)
+
+test_increase()
+test_drop()
+test_floor()
