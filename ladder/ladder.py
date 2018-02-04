@@ -23,7 +23,7 @@ class Ladder:
             self.num_turns
         ))
 
-    def get_players(self, sort = False):
+    def get_players(self, sort=False):
         """ Return the players currently in the pool """
         output = []
         for player, _ in self.player_pool:
