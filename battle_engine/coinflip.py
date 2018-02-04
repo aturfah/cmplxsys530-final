@@ -25,5 +25,4 @@ class CoinFlipEngine:
             return 1
         else:
             # Player2 wins
-            #self.update_players(self.p2, self.p1)
             return 0
