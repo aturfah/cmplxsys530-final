@@ -41,7 +41,7 @@ def test_match():
     lad.add_player(ba1)
     lad.add_player(ba2)
 
-    player, opponent = lad.match()
+    player, opponent = lad.match_players()
 
     # Assert that players get removed from ladder
     assert(len(lad.player_pool) == 0)

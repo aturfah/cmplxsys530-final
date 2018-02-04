@@ -22,7 +22,7 @@ class Ladder:
             self.num_turns
         ))
 
-    def match(self):
+    def match_players(self):
         """ Return a pair of players to play """
         # Select a random player
         player_ind = randint(low=0, high=len(self.player_pool))
