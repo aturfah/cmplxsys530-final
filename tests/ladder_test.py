@@ -27,10 +27,26 @@ def test_no_duplicates():
         lad.add_player(ba1)
     except ValueError:
         # Ladder throws a ValueError if a duplicate player exists
+        # We want to be here
         return
 
     assert(False)
 
 
+def test_match():
+    lad = Ladder()
+    ba1 = Base_Agent()
+    ba2 = Base_Agent()
+
+    lad.add_player(ba1)
+    lad.add_player(ba2)
+
+    player, opponent = lad.match()
+
+    # Assert that players get removed from ladder
+    assert(len(lad.player_pool) == 0)
+    assert(lad.num_turns == 1)
+
 test_add()
 test_no_duplicates()
+test_match()
