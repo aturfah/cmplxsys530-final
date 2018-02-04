@@ -1,9 +1,9 @@
 """ Coin Flip Engine, random chance of winning """
-from ladder.elo import elo
 from numpy.random import uniform
 
+
 class CoinFlipEngine:
-    def __init__(self, prob_win = 0.5):
+    def __init__(self, prob_win=0.5):
         """
         Initialize a random Coin Flip Engine, winner decided by a coin flip
 

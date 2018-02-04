@@ -3,6 +3,7 @@
 from numpy.random import randint
 from ladder.elo import elo
 
+
 class Ladder:
     def __init__(self):
         """ Initialize a ladder """
@@ -56,7 +57,6 @@ class Ladder:
             self.update_players(player, opp)
         else:
             self.update_players(opp, player)
-        
+
         add_player(player)
         add_player(opp)
-        
