@@ -22,7 +22,10 @@ class Ladder:
         player = player_pool[player_ind]["player"]
         del player_pool[player_ind]
 
-        # Select that player's opponent
-        opponent = 
+        # Select that player's opponent (for now its random)
+        opponent_ind = randint(low = 0, high = length(self.player_pool))
+        opponent = player_pool[opponent_ind]["player"]
+        del player_pool[opponent_ind]
 
         self.num_turns += 1
+        return (player, opponent)
