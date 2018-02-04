@@ -58,5 +58,5 @@ class Ladder:
         else:
             self.update_players(opp, player)
 
-        add_player(player)
-        add_player(opp)
+        self.add_player(player)
+        self.add_player(opp)
