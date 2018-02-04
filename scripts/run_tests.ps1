@@ -14,3 +14,7 @@ echo "Completed!"
 echo "Running coinflip_test.py"
 python -m tests.coinflip_test
 echo "Completed!"
+
+echo "Running ladder_test.py"
+python -m tests.ladder_test
+echo "Completed!"
