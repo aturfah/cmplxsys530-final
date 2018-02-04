@@ -28,6 +28,9 @@ class Ladder:
         output = []
         for player, _ in self.player_pool:
             output.append(player)
+
+        if sort:
+            sorted(output, key=lambda player: player.elo)        
         return output
 
     def match_players(self):
