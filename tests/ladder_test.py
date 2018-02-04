@@ -85,6 +85,7 @@ def test_run_game():
     assert((player1.num_losses == 0 and player2.num_losses == 1) or
            (player1.num_losses == 1 and player2.num_losses == 0))
 
+
 def test_get_players_sorted():
     # Set up variables
     lad = Ladder()
@@ -105,10 +106,10 @@ def test_get_players_sorted():
     player1 = players[0]
     player2 = players[1]
 
-    
     assert(player1.elo > player2.elo)
     assert(player1.num_wins == 1 and player2.num_wins == 0)
     assert(player1.num_losses == 0 and player2.num_losses == 1)
+
 
 test_add()
 test_no_duplicates()
