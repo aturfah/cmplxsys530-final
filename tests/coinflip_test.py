@@ -23,24 +23,17 @@ def test_init():
 
 
 def test_run():
-    """ Run single iteration of game, make sure ratings update """
+    """ Run single iteration of game """
     player1 = Base_Agent()
     player2 = Base_Agent()
 
-    cfe = CoinFlipEngine(player1, player2)
-    cfe.run()
+    cfe = CoinFlipEngine(prob_win = 1)
+    outcome = cfe.run(player1, player2)
+    assert(outcome == 1)
 
-    # Only one elo value changes
-    assert((player1.elo > 1000 and player2.elo == 1000) or
-         (player1.elo == 1000 and player2.elo > 1000))
-
-    # Someone won the game
-    assert((player1.num_wins == 0 and player2.num_wins == 1) or
-         (player1.num_wins == 1 and player2.num_wins == 0))
-
-    # Someone lost the game
-    assert((player1.num_losses == 0 and player2.num_losses == 1) or
-         (player1.num_losses == 1 and player2.num_losses == 0))
+    cfe2 = CoinFlipEngine(prob_win= 0)
+    outcome = cfe.run(player1, player2)
+    assert(outcome == 0)
 
 test_init()
 test_run()
