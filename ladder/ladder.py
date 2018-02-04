@@ -11,6 +11,12 @@ class Ladder:
 
     def add_player(self, player):
         """ Add a player to the waiting pool """
+        # Check that player is not already in the pool
+        for player_, _ in self.player_pool:
+            if player_.id == player.id:
+                raise ValueError("Player already in pool")
+
+        # Add the player to the pool
         self.player_pool.add((
             player,
             self.num_turns
