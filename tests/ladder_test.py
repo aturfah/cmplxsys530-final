@@ -16,6 +16,7 @@ def test_add():
 
     assert(len(lad.player_pool) == 2)
 
+
 def test_no_duplicates():
     """ Test that same player cannot exist twice on ladder """
     lad = Ladder()
@@ -27,8 +28,9 @@ def test_no_duplicates():
     except ValueError:
         # Ladder throws a ValueError if a duplicate player exists
         return
-    
+
     assert(False)
+
 
 test_add()
 test_no_duplicates()
