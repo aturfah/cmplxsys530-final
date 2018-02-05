@@ -16,11 +16,12 @@ def run(num_runs, num_players, proportions, suppress_print, suppress_graph):
     prop_rock = float(proportions[0])
     prop_paper = float(proportions[1])
     prop_scissors = float(proportions[2])
+    prop_mixed = float(proportions[3])
 
     num_rock = ceil(prop_rock*num_players)
     num_paper = ceil(prop_paper*num_players)
     num_scissors = ceil(prop_scissors*num_players)
-
+    num_mixed = float(prop_mixed*num_players)
 
     for rock_ind in range(num_rock):
         agent_id = 'rock_{}'.format(rock_ind)
