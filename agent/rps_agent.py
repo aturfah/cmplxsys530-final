@@ -1,5 +1,6 @@
 """ Agent class for Rock/Paper/Scissors """
 from agent.base_agent import Base_Agent
+from numpy.random import uniform
 
 class RPS_Agent(Base_Agent):
     def __init__(self, strategy = [1/3, 1/3, 1/3]):
@@ -20,4 +21,9 @@ class RPS_Agent(Base_Agent):
         super().__init__(self)
 
     def make_move(self):
-        print("Making Move")
+        num = uniform()
+        for i in range(3):
+            if num < sum(self.strategy[:i+1]):
+                return i
+        
+        raise RuntimeError('Something went wrong with strategy selection')
