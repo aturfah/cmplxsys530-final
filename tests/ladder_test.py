@@ -1,6 +1,6 @@
 """ Script to test functioning of ladder """
 
-from agent.BaseAgent import BaseAgent
+from agent.base_agent import BaseAgent
 from ladder.ladder import Ladder
 from battle_engine.coinflip import CoinFlipEngine
 

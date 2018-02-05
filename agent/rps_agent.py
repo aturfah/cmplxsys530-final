@@ -1,5 +1,5 @@
 """Agent class for Rock/Paper/Scissors."""
-from agent.BaseAgent import BaseAgent
+from agent.base_agent import BaseAgent
 from numpy.random import uniform
 
 strategies = {

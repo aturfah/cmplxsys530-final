@@ -1,6 +1,6 @@
 """ Test functionality of Elo Calculations """
 
-from agent.BaseAgent import BaseAgent
+from agent.base_agent import BaseAgent
 from ladder.elo import elo
 
 # Using wikipedia's example

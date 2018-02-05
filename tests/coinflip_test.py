@@ -1,5 +1,5 @@
 """ Test functionality of Coinflip Engine """
-from agent.BaseAgent import BaseAgent
+from agent.base_agent import BaseAgent
 from battle_engine.coinflip import CoinFlipEngine
 
 

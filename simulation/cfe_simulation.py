@@ -2,7 +2,7 @@
 
 
 from battle_engine.coinflip import CoinFlipEngine
-from agent.BaseAgent import BaseAgent
+from agent.base_agent import BaseAgent
 from ladder.ladder import Ladder
 
 

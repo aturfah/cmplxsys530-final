@@ -1,5 +1,5 @@
 """ Test functionality of base agent """
-from agent.BaseAgent import BaseAgent
+from agent.base_agent import BaseAgent
 
 
 def testWinLoss():
