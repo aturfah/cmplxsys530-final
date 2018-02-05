@@ -18,3 +18,6 @@ class RPS_Agent(Base_Agent):
 
         self.strategy = strategy
         super().__init__(self)
+
+    def make_move(self):
+        print("Making Move")
