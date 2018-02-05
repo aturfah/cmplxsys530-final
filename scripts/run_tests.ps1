@@ -18,3 +18,7 @@ echo "Completed!"
 echo "Running ladder_test.py"
 python -m tests.ladder_test
 echo "Completed!"
+
+echo "Running rps_agemt_test.py"
+python -m tests.rps_agent_test
+echo "Completed!"
