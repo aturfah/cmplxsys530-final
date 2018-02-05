@@ -2,7 +2,7 @@
 import click
 
 from simulation import cfe_simulation
-from simulation import skewed_rps_simulation
+from simulation import rps_simulation
 
 @click.command()
 @click.option('-nr', '--num_runs', default=5000, help='Number of games to simulate')
@@ -15,9 +15,9 @@ def run(num_runs, num_players, game_choice, proportions, suppress_print, suppres
     if game_choice == 0:
         cfe_simulation.run(num_runs, num_players, suppress_print)
     elif game_choice == 1:
-        skewed_rps_simulation.run(num_runs, num_players, (0.25, 0.25, 0.25, 0.25), suppress_print, suppress_graph)
+        rps_simulation.run(num_runs, num_players, (0.25, 0.25, 0.25, 0.25), suppress_print, suppress_graph)
     elif game_choice == 2:
-        skewed_rps_simulation.run(num_runs, num_players, proportions, suppress_print, suppress_graph)
+        rps_simulation.run(num_runs, num_players, proportions, suppress_print, suppress_graph)
 
 if __name__ == "__main__":
     run()
