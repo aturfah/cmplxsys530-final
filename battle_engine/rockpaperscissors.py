@@ -10,7 +10,7 @@ class RPSEngine:
 
         if p1_move == p2_move:
             return uniform() > 0.5
-        elif p1_move - p2_move == 1:
+        elif (p1_move - p2_move) == 1 or (p1_move - p2_move) == -2:
             return 1
         else:
             return 0
