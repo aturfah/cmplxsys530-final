@@ -3,20 +3,22 @@ from agent.base_agent import Base_Agent
 from numpy.random import uniform
 
 strategies = {
-    'rock': [1,0,0],
-    'paper': [0,1,0],
-    'scissors': [0,0,1],
-    'uniform': [1/3, 1/3, 1/3]
+    'rock': [1, 0, 0],
+    'paper': [0, 1, 0],
+    'scissors': [0, 0, 1],
+    'uniform': [1 / 3, 1 / 3, 1 / 3]
 }
 
+
 class RPS_Agent(Base_Agent):
-    def __init__(self, id_in = None, strategy_in = 'uniform'):
-        """ 
+    def __init__(self, id_in=None, strategy_in='uniform'):
+        """
         Create a Rock/Paper/Scissors player who plays Rock, Paper, or Scissors
         according to probabilities in strategy.
 
-        :param strategy: Either a string corresponding to one of the strategies,
-             or a vector of probabilities to play Rock, Paper, Scissors respectively
+        :param strategy: Either a string corresponding to a strategy,
+             or a vector of probabilities to play Rock, Paper,
+             or Scissors respectively
         """
         if isinstance(strategy_in, list):
             strategy = strategy_in
@@ -40,13 +42,14 @@ class RPS_Agent(Base_Agent):
     def make_move(self):
         num = uniform()
         for i in range(3):
-            if num < sum(self.strategy[:i+1]):
+            if num < sum(self.strategy[:i + 1]):
                 return i
-        
+
         raise RuntimeError('Something went wrong with strategy selection')
-    
+
     def print_info(self):
         print("Player: {}".format(self.id))
         print("\tElo: {}".format(self.elo))
         print("\tStrategy: {}".format(self.strategy))
-        print("\tW/L Ratio: {} ({})".format(self.win_loss_ratio(), self.total_games()))
+        print("\tW/L Ratio: {} ({})".format(
+            self.win_loss_ratio(), self.total_games()))
