@@ -15,7 +15,9 @@ def test_make_move():
     rps_rock = RPS_Agent(strategy = [1, 0, 0])
     rps_paper = RPS_Agent(strategy = [0, 1, 0])
     rps_scissors = RPS_Agent(strategy = [0, 0, 1])
+    rps_random = RPS_Agent()
 
+    assert(rps_random.make_move() in [0,1,2])
     assert(rps_rock.make_move() == 0)
     assert(rps_paper.make_move() == 1)
     assert(rps_scissors.make_move() == 2)
