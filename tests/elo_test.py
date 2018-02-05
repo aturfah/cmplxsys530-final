@@ -3,7 +3,8 @@
 from agent.base_agent import Base_Agent
 from ladder.elo import elo
 
-# Using wikipedia's example from https://en.wikipedia.org/wiki/Elo_rating_system
+# Using wikipedia's example
+# from https://en.wikipedia.org/wiki/Elo_rating_system
 
 
 def test_drop():
