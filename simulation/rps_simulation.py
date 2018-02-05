@@ -8,7 +8,7 @@ from ladder.ladder import Ladder
 from stats.calc import calculate_avg_elo
 from stats.plot import plot_group_ratings
 
-def run(num_runs, num_players, proportions, suppress_print, suppress_graph):
+def run(num_runs, num_players, proportions, suppress_print, suppress_graph, data_delay):
     game = RPSEngine()
     lad = Ladder()
     ratings = {}
@@ -45,7 +45,7 @@ def run(num_runs, num_players, proportions, suppress_print, suppress_graph):
 
     for game_ind in range(num_runs):
         lad.run_game(game)
-        if game_ind % 10 == 0:
+        if game_ind % data_delay == 0:
             # Calculate the statistics every 10 values
             current_stats = calculate_avg_elo(lad)
             for group in current_stats:

@@ -11,13 +11,14 @@ from simulation import rps_simulation
 @click.option('-p', '--proportions', nargs=4, help="Proportions for skewed RPS tournament")
 @click.option('-sp', '--suppress_print', default=False, is_flag = True, help="Suppress print output")
 @click.option('-sg', '--suppress_graph', default=False, is_flag = True, help="Suppress graphical output")
-def run(num_runs, num_players, game_choice, proportions, suppress_print, suppress_graph):   
+@click.option('-dd', '--data_delay', default=10, help='Number of iterations between gathering data')
+def run(num_runs, num_players, game_choice, proportions, suppress_print, suppress_graph, data_delay):   
     if game_choice == 0:
         cfe_simulation.run(num_runs, num_players, suppress_print)
     elif game_choice == 1:
-        rps_simulation.run(num_runs, num_players, (0.25, 0.25, 0.25, 0.25), suppress_print, suppress_graph)
+        rps_simulation.run(num_runs, num_players, (0.25, 0.25, 0.25, 0.25), suppress_print, suppress_graph, data_delay)
     elif game_choice == 2:
-        rps_simulation.run(num_runs, num_players, proportions, suppress_print, suppress_graph)
+        rps_simulation.run(num_runs, num_players, proportions, suppress_print, suppress_graph, data_delay)
 
 if __name__ == "__main__":
     run()
