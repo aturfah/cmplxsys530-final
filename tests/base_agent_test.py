@@ -13,4 +13,20 @@ def testWinLoss():
     ba1.num_losses = 10
     assert(ba1.win_loss_ratio() == 5) 
 
+    # num_wins + num_losses = total_games
+    assert(ba1.total_games() == 60)
+
+
+def testMakeMove():
+    """ Tests that MakeMove throws an error """
+    ba1 = Base_Agent()
+
+    try:
+        ba1.make_move()
+    except NotImplementedError:
+        return
+    
+    assert(False)
+
 testWinLoss()
+testMakeMove()
