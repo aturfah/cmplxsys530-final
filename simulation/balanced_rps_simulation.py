@@ -19,7 +19,4 @@ def run(num_runs, num_players):
     players = lad.get_players(sort=True)
 
     for player in players:
-        print("Player: {}:".format(player.id))
-        print("\tElo: {}".format(player.elo))
-        print("\tStrategy: {}".format(player.strategy))
-        print("\tW/L Ratio: {} ({})".format(player.win_loss_ratio(), player.num_wins + player.num_losses))
+        player.print_info()

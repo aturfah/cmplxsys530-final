@@ -19,16 +19,19 @@ def run(num_runs, num_players, proportions):
     num_scissors = ceil(prop_scissors*num_players)
 
 
-    for _ in range(num_rock):
-        player = RPS_Agent('rock')
+    for rock_ind in range(num_rock):
+        agent_id = 'rock_{}'.format(rock_ind)
+        player = RPS_Agent(id_in = agent_id, strategy_in = 'rock')
         lad.add_player(player)
 
-    for _ in range(num_paper):
-        player = RPS_Agent('paper')
+    for paper_ind in range(num_paper):
+        agent_id = 'paper_{}'.format(paper_ind)
+        player = RPS_Agent(id_in = agent_id, strategy_in = 'paper')
         lad.add_player(player)
 
-    for _ in range(num_scissors):
-        player = RPS_Agent('scissors')
+    for sciss_ind in range(num_scissors):
+        agent_id = 'paper_{}'.format(sciss_ind)
+        player = RPS_Agent(id_in = agent_id, strategy_in = 'scissors')
         lad.add_player(player)
 
     for _ in range(num_runs):
@@ -37,7 +40,4 @@ def run(num_runs, num_players, proportions):
     players = lad.get_players(sort=True)
 
     for player in players:
-        print("Player: {}:".format(player.id))
-        print("\tElo: {}".format(player.elo))
-        print("\tStrategy: {}".format(player.strategy))
-        print("\tW/L Ratio: {} ({})".format(player.win_loss_ratio(), player.num_wins + player.num_losses))
+        player.print_info()
