@@ -1,4 +1,4 @@
-""" Agent class for Rock/Paper/Scissors """
+"""Agent class for Rock/Paper/Scissors."""
 from agent.base_agent import Base_Agent
 from numpy.random import uniform
 
@@ -11,10 +11,14 @@ strategies = {
 
 
 class RPS_Agent(Base_Agent):
+    """The agent class for Rock/Paper/Scissors."""
+
     def __init__(self, id_in=None, strategy_in='uniform'):
         """
-        Create a Rock/Paper/Scissors player who plays Rock, Paper, or Scissors
-        according to probabilities in strategy.
+        Create a Rock/Paper/Scissors player.
+
+        The player plays Rock, Paper, or Scissors
+        according to probabilities defined in strategy.
 
         :param strategy: Either a string corresponding to a strategy,
              or a vector of probabilities to play Rock, Paper,
@@ -40,6 +44,7 @@ class RPS_Agent(Base_Agent):
         super().__init__(id_in=id_in)
 
     def make_move(self):
+        """Play one of rock, paper, scissors defined by strategy."""
         num = uniform()
         for i in range(3):
             if num < sum(self.strategy[:i + 1]):
@@ -48,6 +53,7 @@ class RPS_Agent(Base_Agent):
         raise RuntimeError('Something went wrong with strategy selection')
 
     def print_info(self):
+        """Print the info on this player."""
         print("Player: {}".format(self.id))
         print("\tElo: {}".format(self.elo))
         print("\tStrategy: {}".format(self.strategy))
