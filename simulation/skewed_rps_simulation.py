@@ -19,19 +19,19 @@ def run(num_runs, num_players, proportions):
     num_scissors = ceil(prop_scissors*num_players)
 
 
-    for i in range(num_rock):
+    for _ in range(num_rock):
         player = RPS_Agent('rock')
         lad.add_player(player)
 
-    for i in range(num_paper):
+    for _ in range(num_paper):
         player = RPS_Agent('paper')
         lad.add_player(player)
 
-    for i in range(num_scissors):
+    for _ in range(num_scissors):
         player = RPS_Agent('scissors')
         lad.add_player(player)
 
-    for i in range(num_runs):
+    for _ in range(num_runs):
         lad.run_game(game)
     
     players = lad.get_players(sort=True)

@@ -8,11 +8,11 @@ def run(num_runs, num_players):
     game = CoinFlipEngine()    
     lad = Ladder()
 
-    for i in range(num_players):
+    for _ in range(num_players):
         player = Base_Agent()
         lad.add_player(player)
 
-    for i in range(num_runs):
+    for _ in range(num_runs):
         lad.run_game(game)
     
     players = lad.get_players(sort=True)
