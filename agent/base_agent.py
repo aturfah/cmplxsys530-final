@@ -23,3 +23,5 @@ class Base_Agent():
             return None
         return self.num_wins / self.num_losses
     
+    def make_move(self):
+        raise NotImplementedError
