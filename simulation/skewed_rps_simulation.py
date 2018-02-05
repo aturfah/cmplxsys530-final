@@ -21,7 +21,7 @@ def run(num_runs, num_players, proportions, suppress_print, suppress_graph):
     num_rock = ceil(prop_rock*num_players)
     num_paper = ceil(prop_paper*num_players)
     num_scissors = ceil(prop_scissors*num_players)
-    num_mixed = float(prop_mixed*num_players)
+    num_mixed = ceil(prop_mixed*num_players)
 
     for rock_ind in range(num_rock):
         agent_id = 'rock_{}'.format(rock_ind)
@@ -36,6 +36,11 @@ def run(num_runs, num_players, proportions, suppress_print, suppress_graph):
     for sciss_ind in range(num_scissors):
         agent_id = 'scissors_{}'.format(sciss_ind)
         player = RPS_Agent(id_in = agent_id, strategy_in = 'scissors')
+        lad.add_player(player)
+
+    for mixed_ind in range(num_mixed):
+        agent_id = 'mixed_{}'.format(mixed_ind)
+        player = RPS_Agent(id_in = agent_id)
         lad.add_player(player)
 
     for game_ind in range(num_runs):
