@@ -21,4 +21,5 @@ def run(num_runs, num_players, game_choice, proportions, suppress_print, suppres
         rps_simulation.run(num_runs, num_players, proportions, suppress_print, suppress_graph, data_delay)
 
 if __name__ == "__main__":
+    # pylint: disable=no-value-for-parameter
     run()
