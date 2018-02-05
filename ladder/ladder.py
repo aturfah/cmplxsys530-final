@@ -51,7 +51,7 @@ class Ladder:
     def update_players(self, winner, loser):
         """ Update values for winner and loser """
         new_winner_elo = elo(winner, loser, 1)
-        new_loser_elo = elo(winner, loser, 0)
+        new_loser_elo = elo(loser, winner, 0)
         winner.elo = new_winner_elo
         winner.num_wins += 1
         loser.elo = new_loser_elo
