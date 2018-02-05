@@ -32,7 +32,8 @@ class Base_Agent():
         """ Print information about this agent """
         print("Player: {}".format(self.id))
         print("\tElo: {}".format(self.elo))
-        print("\tW/L Ratio: {} ({})".format(self.win_loss_ratio(), self.total_games()))
+        print("\tW/L Ratio: {} ({})".format(
+            self.win_loss_ratio(), self.total_games()))
 
     def make_move(self):
         raise NotImplementedError
