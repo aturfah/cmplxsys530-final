@@ -1,10 +1,12 @@
-""" Base agent class """
+"""Base agent class."""
 from uuid import uuid4
 
 
 class Base_Agent():
+    """The Base Agent Class."""
+
     def __init__(self, id_in=None):
-        """ Initialize a new agent """
+        """Initialize a new agent."""
         if id_in is None:
             self.id = uuid4()
         else:
@@ -15,25 +17,26 @@ class Base_Agent():
         self.num_losses = 0
 
     def hello(self):
-        """ Test Method """
+        """Test Method."""
         print("Hello from base_agent {}".format(self.id))
 
     def win_loss_ratio(self):
-        """ Get W/L Ratio for Agent """
+        """Get W/L Ratio for Agent."""
         if self.num_losses == 0:
             return None
         return self.num_wins / self.num_losses
 
     def total_games(self):
-        """ Total games agent has played """
+        """Total games agent has played."""
         return self.num_wins + self.num_losses
 
     def print_info(self):
-        """ Print information about this agent """
+        """Print information about this agent."""
         print("Player: {}".format(self.id))
         print("\tElo: {}".format(self.elo))
         print("\tW/L Ratio: {} ({})".format(
             self.win_loss_ratio(), self.total_games()))
 
     def make_move(self):
+        """Make a move, must be overwritten by child class."""
         raise NotImplementedError
