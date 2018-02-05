@@ -2,7 +2,7 @@
 from numpy.random import uniform
 
 
-class RPS_Engine:
+class RPSEngine:
     def run(self, player1, player2):
         """ Run a game of Rock, Paper, Scissors """
         p1_move = player1.make_move()
