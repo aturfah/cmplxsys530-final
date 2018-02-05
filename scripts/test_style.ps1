@@ -1,15 +1,13 @@
 # Script to run code style tests
 
-pycodestyle agent
-pycodestyle battle_engine
-pycodestyle ladder
-pycodestyle simulation
-pycodestyle stats
-pycodestyle tests
+$modules = "agent", "battle_engine", "ladder", "simulation", "stats", "tests"
 
-pydocstyle agent
-pydocstyle battle_engine
-pydocstyle ladder
-pydocstyle simulation
-pydocstyle stats
-pydocstyle tests
+foreach ($module in $modules) {
+    echo "Module: $module"
+    echo "##### pycodestyle #####"
+    pycodestyle $module
+    echo "##### pydocstyle #####"
+    pydocstyle $module
+    echo "##### pylint #####"
+    pylint $module
+}
