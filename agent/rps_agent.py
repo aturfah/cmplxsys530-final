@@ -35,7 +35,7 @@ class RPS_Agent(Base_Agent):
             raise ValueError('Strategy probabilities must sum to 1')
 
         self.strategy = strategy
-        super().__init__(self)
+        super().__init__()
 
     def make_move(self):
         num = uniform()

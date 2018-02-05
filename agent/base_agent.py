@@ -9,6 +9,7 @@ class Base_Agent():
             self.id = uuid4()
         else:
             self.id = id_in
+
         self.elo = 1000
         self.num_wins = 0
         self.num_losses = 0
