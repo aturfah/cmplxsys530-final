@@ -14,7 +14,7 @@ class RPS_Agent(Base_Agent):
             raise ValueError('Strategy vector must be of length 3')
         if not(abs(sum(strategy) - 1) < 0.0000000000000000000001):
             # Not arbitrarily close to 1
-            # TODO: Fix this
+            # TODO: Fix this its nasty
             raise ValueError('Strategy probabilities must sum to 1')
 
         self.strategy = strategy
