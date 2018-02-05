@@ -1,11 +1,13 @@
 """ Package to calculate interesting ladder metrics """
 
-def calculate_avg_elo(ladder, group_strategy = True):
-    """ 
+
+def calculate_avg_elo(ladder, group_strategy=True):
+    """
     Calculate the elo rankings on a ladder at a specific point in time
 
     :param ladder: The ladder for which to calculate the rankings
-    :param group_strategy: Whether to group results by strategy or by individuals
+    :param group_strategy: Whether to group results by
+        strategy or by individuals
     """
     player_pool = ladder.get_players()
     output = {}
@@ -24,5 +26,5 @@ def calculate_avg_elo(ladder, group_strategy = True):
 
     for group in output:
         output[group] = sum(output[group])/len(output[group])
-    
+
     return output
