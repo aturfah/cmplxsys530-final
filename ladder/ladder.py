@@ -30,7 +30,7 @@ class Ladder:
             output.append(player)
 
         if sort:
-            output = sorted(output, key=lambda player: player.elo)
+            output = sorted(output, key=lambda player: player.elo, reverse=True)
         return output
 
     def match_players(self):
