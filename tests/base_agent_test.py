@@ -18,7 +18,7 @@ def testWinLoss():
 
 
 def testMakeMove():
-    """ Tests that MakeMove throws an error """
+    """ Tests that make_move throws an error """
     ba1 = Base_Agent()
 
     try:
