@@ -1,10 +1,10 @@
 """ Test functionality of base agent """
-from agent.base_agent import Base_Agent
+from agent.BaseAgent import BaseAgent
 
 
 def testWinLoss():
     """ Test calculation of win/loss ratio"""
-    ba1 = Base_Agent()
+    ba1 = BaseAgent()
 
     # Wins with no losses has undefined w/l ratio
     ba1.num_wins = 50
@@ -20,7 +20,7 @@ def testWinLoss():
 
 def testMakeMove():
     """ Tests that make_move throws an error """
-    ba1 = Base_Agent()
+    ba1 = BaseAgent()
 
     try:
         ba1.make_move()

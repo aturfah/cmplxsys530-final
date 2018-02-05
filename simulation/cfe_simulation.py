@@ -2,7 +2,7 @@
 
 
 from battle_engine.coinflip import CoinFlipEngine
-from agent.base_agent import Base_Agent
+from agent.BaseAgent import BaseAgent
 from ladder.ladder import Ladder
 
 
@@ -11,7 +11,7 @@ def run(num_runs, num_players, suppress_print):
     lad = Ladder()
 
     for _ in range(num_players):
-        player = Base_Agent()
+        player = BaseAgent()
         lad.add_player(player)
 
     for _ in range(num_runs):

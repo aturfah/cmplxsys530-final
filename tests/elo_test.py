@@ -1,6 +1,6 @@
 """ Test functionality of Elo Calculations """
 
-from agent.base_agent import Base_Agent
+from agent.BaseAgent import BaseAgent
 from ladder.elo import elo
 
 # Using wikipedia's example
@@ -9,8 +9,8 @@ from ladder.elo import elo
 
 def test_drop():
     """ Test that ratings drop when appropriate """
-    playerA = Base_Agent()
-    playerB = Base_Agent()
+    playerA = BaseAgent()
+    playerB = BaseAgent()
     playerA.elo = 1619
     playerB.elo = 1609
 
@@ -20,8 +20,8 @@ def test_drop():
 
 def test_floor():
     """ Tests that ratings do not go below 1000 """
-    playerA = Base_Agent()
-    playerB = Base_Agent()
+    playerA = BaseAgent()
+    playerB = BaseAgent()
 
     playerA.elo = elo(playerA, playerB, 0)
     assert(playerA.elo == 1000)
@@ -29,8 +29,8 @@ def test_floor():
 
 def test_increase():
     """ Tests that ratings increase when appropriate """
-    playerA = Base_Agent()
-    playerB = Base_Agent()
+    playerA = BaseAgent()
+    playerB = BaseAgent()
     playerA.elo = 1619
     playerB.elo = 1609
 

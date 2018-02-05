@@ -2,7 +2,7 @@
 from uuid import uuid4
 
 
-class Base_Agent():
+class BaseAgent():
     """The Base Agent Class."""
 
     def __init__(self, id_in=None):
@@ -18,7 +18,7 @@ class Base_Agent():
 
     def hello(self):
         """Test Method."""
-        print("Hello from base_agent {}".format(self.id))
+        print("Hello from BaseAgent {}".format(self.id))
 
     def win_loss_ratio(self):
         """Get W/L Ratio for Agent."""

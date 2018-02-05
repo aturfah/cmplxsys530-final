@@ -1,5 +1,5 @@
 """Agent class for Rock/Paper/Scissors."""
-from agent.base_agent import Base_Agent
+from agent.BaseAgent import BaseAgent
 from numpy.random import uniform
 
 strategies = {
@@ -10,7 +10,7 @@ strategies = {
 }
 
 
-class RPS_Agent(Base_Agent):
+class RPS_Agent(BaseAgent):
     """The agent class for Rock/Paper/Scissors."""
 
     def __init__(self, id_in=None, strategy_in='uniform'):
