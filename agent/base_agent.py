@@ -23,6 +23,16 @@ class Base_Agent():
         if self.num_losses == 0:
             return None
         return self.num_wins / self.num_losses
-    
+
+    def total_games(self):
+        """ Total games agent has played """
+        return self.num_wins + self.num_losses
+
+    def print_info(self):
+        """ Print information about this agent """
+        print("Player: {}:".format(self.id))
+        print("\tElo: {}".format(self.elo))
+        print("\tW/L Ratio: {} ({})".format(self.win_loss_ratio(), self.total_games()))
+
     def make_move(self):
         raise NotImplementedError
