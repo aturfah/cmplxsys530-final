@@ -10,7 +10,7 @@ strategies = {
 }
 
 class RPS_Agent(Base_Agent):
-    def __init__(self, strategy_in = 'uniform'):
+    def __init__(self, id_in = None, strategy_in = 'uniform'):
         """ 
         Create a Rock/Paper/Scissors player who plays Rock, Paper, or Scissors
         according to probabilities in strategy.
@@ -35,7 +35,7 @@ class RPS_Agent(Base_Agent):
             raise ValueError('Strategy probabilities must sum to 1')
 
         self.strategy = strategy
-        super().__init__()
+        super().__init__(id_in=id_in)
 
     def make_move(self):
         num = uniform()
@@ -44,3 +44,9 @@ class RPS_Agent(Base_Agent):
                 return i
         
         raise RuntimeError('Something went wrong with strategy selection')
+    
+    def print_info(self):
+        print("Player: {}".format(self.id))
+        print("\tElo: {}".format(self.elo))
+        print("\tStrategy: {}".format(self.strategy))
+        print("\tW/L Ratio: {} ({})".format(self.win_loss_ratio(), self.total_games()))
