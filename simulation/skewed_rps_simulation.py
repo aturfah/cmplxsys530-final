@@ -33,7 +33,7 @@ def run(num_runs, num_players, proportions):
         lad.add_player(player)
 
     for sciss_ind in range(num_scissors):
-        agent_id = 'paper_{}'.format(sciss_ind)
+        agent_id = 'scissors_{}'.format(sciss_ind)
         player = RPS_Agent(id_in = agent_id, strategy_in = 'scissors')
         lad.add_player(player)
 
