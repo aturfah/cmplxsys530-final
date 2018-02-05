@@ -10,13 +10,14 @@ from simulation import skewed_rps_simulation
 @click.option('--num_players', default=10, help='Number of agents')
 @click.option('--game_choice', default=0, help="""Which game to play. Options are:\n\t [0] Coin Flip\n\t [1] Balanced Rock Paper Scissors\n\t [2] Skewed RPS""")
 @click.option('--proportions', nargs=3, help="Proportions for skewed RPS tournament")
-def run(num_runs, num_players, game_choice, proportions):   
+@click.option('--suppress_print', default=False, is_flag = True, help="Suppress print output")
+def run(num_runs, num_players, game_choice, proportions, suppress_print):   
     if game_choice == 0:
-        cfe_simulation.run(num_runs, num_players)
+        cfe_simulation.run(num_runs, num_players, suppress_print)
     elif game_choice == 1:
-        balanced_rps_simulation.run(num_runs, num_players)
+        balanced_rps_simulation.run(num_runs, num_players, suppress_print)
     elif game_choice == 2:
-        skewed_rps_simulation.run(num_runs, num_players, proportions)
+        skewed_rps_simulation.run(num_runs, num_players, proportions, suppress_print)
 
 if __name__ == "__main__":
     run()

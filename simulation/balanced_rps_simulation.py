@@ -4,7 +4,7 @@ from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPS_Agent
 from ladder.ladder import Ladder
 
-def run(num_runs, num_players):
+def run(num_runs, num_players, suppress_print):
     game = RPSEngine()
     
     lad = Ladder()
@@ -18,5 +18,6 @@ def run(num_runs, num_players):
     
     players = lad.get_players(sort=True)
 
-    for player in players:
-        player.print_info()
+    if not suppress_print:
+        for player in players:
+            player.print_info()
