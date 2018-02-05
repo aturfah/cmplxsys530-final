@@ -9,10 +9,12 @@ class RPS_Agent(Base_Agent):
 
         :param strategy: Vector of probabilities to play any of Rock, Paper, Scissors respectively
         """
-        if length(strategy) is not 3:
+        if len(strategy) is not 3:
             raise ValueError('Strategy vector must be of length 3')
-        if sum(strategy) is not 1:
+        if not(abs(sum(strategy) - 1) < 0.0000000000000000000001):
+            # Not arbitrarily close to 1
+            # TODO: Fix this
             raise ValueError('Strategy probabilities must sum to 1')
 
         self.strategy = strategy
-        super()__init__(self)
+        super().__init__(self)
