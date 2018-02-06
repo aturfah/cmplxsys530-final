@@ -3,7 +3,7 @@
 from math import ceil
 
 from battle_engine.rockpaperscissors import RPSEngine
-from agent.rps_agent import RPS_Agent
+from agent.rps_agent import RPSAgent
 from ladder.ladder import Ladder
 from stats.calc import calculate_avg_elo
 from stats.plot import plot_group_ratings
@@ -27,22 +27,22 @@ def run(num_runs, num_players, proportions,
 
     for rock_ind in range(num_rock):
         agent_id = 'rock_{}'.format(rock_ind)
-        player = RPS_Agent(id_in=agent_id, strategy_in='rock')
+        player = RPSAgent(id_in=agent_id, strategy_in='rock')
         lad.add_player(player)
 
     for paper_ind in range(num_paper):
         agent_id = 'paper_{}'.format(paper_ind)
-        player = RPS_Agent(id_in=agent_id, strategy_in='paper')
+        player = RPSAgent(id_in=agent_id, strategy_in='paper')
         lad.add_player(player)
 
     for sciss_ind in range(num_scissors):
         agent_id = 'scissors_{}'.format(sciss_ind)
-        player = RPS_Agent(id_in=agent_id, strategy_in='scissors')
+        player = RPSAgent(id_in=agent_id, strategy_in='scissors')
         lad.add_player(player)
 
     for mixed_ind in range(num_mixed):
         agent_id = 'mixed_{}'.format(mixed_ind)
-        player = RPS_Agent(id_in=agent_id)
+        player = RPSAgent(id_in=agent_id)
         lad.add_player(player)
 
     for game_ind in range(num_runs):

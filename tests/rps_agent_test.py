@@ -1,20 +1,20 @@
 """ Unit tests for Rock/Paper/Scissors agent """
 
-from agent.rps_agent import RPS_Agent
+from agent.rps_agent import RPSAgent
 
 
 def basic_test():
     """ Test basic functionality """
     # Test constructor
-    rps1 = RPS_Agent()
-    rps_rock = RPS_Agent('rock')
-    rps_rock2 = RPS_Agent([1, 0, 0])
+    rps1 = RPSAgent()
+    rps_rock = RPSAgent('rock')
+    rps_rock2 = RPSAgent([1, 0, 0])
 
     assert(rps_rock.strategy == rps_rock2.strategy)
 
     error = False
     try:
-        RPS_Agent(strategy_in='VOMIT')
+        RPSAgent(strategy_in='VOMIT')
     except ValueError:
         # We should be here
         error = True
@@ -22,14 +22,14 @@ def basic_test():
 
     error = False
     try:
-        RPS_Agent(strategy_in=[1, 1, 1])
+        RPSAgent(strategy_in=[1, 1, 1])
     except ValueError:
         error = True
     assert(error)  # Strategies cannot sum to 1
 
     error = False
     try:
-        RPS_Agent(strategy_in=[-1, 1, 1])
+        RPSAgent(strategy_in=[-1, 1, 1])
     except ValueError:
         error = True
     assert(error)  # No negative strategies
@@ -40,10 +40,10 @@ def basic_test():
 
 def test_make_move():
     """ Test make_move method """
-    rps_rock = RPS_Agent(strategy_in=[1, 0, 0])
-    rps_paper = RPS_Agent(strategy_in=[0, 1, 0])
-    rps_scissors = RPS_Agent(strategy_in=[0, 0, 1])
-    rps_random = RPS_Agent()
+    rps_rock = RPSAgent(strategy_in=[1, 0, 0])
+    rps_paper = RPSAgent(strategy_in=[0, 1, 0])
+    rps_scissors = RPSAgent(strategy_in=[0, 0, 1])
+    rps_random = RPSAgent()
 
     assert(rps_random.make_move() in [0, 1, 2])
     assert(rps_rock.make_move() == 0)
