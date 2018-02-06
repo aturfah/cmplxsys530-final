@@ -7,7 +7,7 @@ def test_init():
     """Test CFE engine init method."""
     # Try to initialize CoinFlipEngine with negative probability
     try:
-        cfe = CoinFlipEngine(prob_win=-1)
+        CoinFlipEngine(prob_win=-1)
         assert False
     except AttributeError:
         pass
