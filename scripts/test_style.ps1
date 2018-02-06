@@ -9,5 +9,5 @@ foreach ($module in $modules) {
     echo "##### pydocstyle #####"
     pydocstyle $module
     echo "##### pylint #####"
-    pylint $module
+    pylint $module -d R0903 -s n
 }
