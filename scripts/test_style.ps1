@@ -10,4 +10,5 @@ foreach ($module in $modules) {
     pydocstyle $module
     echo "##### pylint #####"
     pylint $module -d R0903 -s n
+    echo ""
 }
