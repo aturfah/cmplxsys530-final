@@ -9,9 +9,15 @@ from stats.calc import calculate_avg_elo
 from stats.plot import plot_group_ratings
 
 
-def run(num_runs, num_players, proportions,
-        suppress_print, suppress_graph, data_delay):
+def run(**kwargs):
     """Run a Rock/Paper/Scissors simulation."""
+    num_runs = kwargs["num_runs"]
+    num_players = kwargs["num_players"]
+    proportions = kwargs["proportions"]
+    data_delay = kwargs["data_delay"]
+    suppress_print = kwargs["suppress_print"]
+    suppress_graph = kwargs["suppress_graph"]
+
     game = RPSEngine()
     lad = Ladder()
     ratings = {}
