@@ -65,6 +65,7 @@ class Ladder:
         self.add_player(player)
         self.add_player(opp)
 
+
 def update_players(winner, loser):
     """Update values for winner and loser."""
     new_winner_elo = elo(winner, loser, 1)
