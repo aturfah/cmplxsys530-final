@@ -1,4 +1,4 @@
-""" Script to test functioning of ladder """
+"""Script to test functioning of ladder."""
 
 from agent.base_agent import BaseAgent
 from ladder.ladder import Ladder
@@ -6,7 +6,7 @@ from battle_engine.coinflip import CoinFlipEngine
 
 
 def test_add():
-    """ Basic test for ladder add_player method """
+    """Basic test for ladder add_player method."""
     lad = Ladder()
     ba1 = BaseAgent()
     ba2 = BaseAgent()
@@ -18,7 +18,7 @@ def test_add():
 
 
 def test_no_duplicates():
-    """ Test that same player cannot exist twice on ladder """
+    """Test that same player cannot exist twice on ladder."""
     lad = Ladder()
     ba1 = BaseAgent()
     lad.add_player(ba1)
@@ -34,7 +34,7 @@ def test_no_duplicates():
 
 
 def test_match():
-    """ Test that match functions properly """
+    """Test that match functions properly."""
     # Set up variables
     lad = Ladder()
     ba1 = BaseAgent()
@@ -48,12 +48,12 @@ def test_match():
     player, opponent = lad.match_players()
 
     # Assert that players get removed from ladder
-    assert(len(lad.player_pool) == 0)
+    assert(not lad.player_pool)
     assert(lad.num_turns == 1)
 
 
 def test_run_game():
-    """ Test run_game functions properly """
+    """Test run_game functions properly."""
     # Set up variables
     lad = Ladder()
     ba1 = BaseAgent()
@@ -87,6 +87,7 @@ def test_run_game():
 
 
 def test_get_players_sorted():
+    """Run get_players with sorted flag to true."""
     # Set up variables
     lad = Ladder()
     ba1 = BaseAgent()
