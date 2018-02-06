@@ -8,9 +8,9 @@ class BaseAgent():
     def __init__(self, id_in=None):
         """Initialize a new agent."""
         if id_in is None:
-            self.id = uuid4() # pylint: disable=C0103
+            self.id = uuid4()  # pylint: disable=C0103
         else:
-            self.id = id_in # pylint: disable=C0103
+            self.id = id_in  # pylint: disable=C0103
 
         self.elo = 1000
         self.num_wins = 0
