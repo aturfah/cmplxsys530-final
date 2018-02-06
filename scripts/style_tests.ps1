@@ -1,6 +1,6 @@
 # Script to run code style tests
 
-$modules = "agent", "battle_engine", "ladder", "simulation", "stats", "tests"
+$modules =  "agent", "battle_engine", "ladder", "simulation", "stats", "tests"
 
 foreach ($module in $modules) {
     Write-Output "Module: $module"
@@ -9,6 +9,6 @@ foreach ($module in $modules) {
     Write-Output "## pydocstyle"
     pydocstyle $module
     Write-Output "## pylint"
-    pylint $module -d R0903 -s n
+    pylint $module --rcfile pylintrc
     Write-Output ""
 }
