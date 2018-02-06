@@ -1,24 +1,24 @@
-echo "Running tests..."
+Write-Output "Running tests..."
 
 # Run Agent Tests
-echo "Running agent_test.py"
+Write-Output "Running agent_test.py"
 python -m tests.base_agent_test
-echo "Completed!"
+Write-Output "Completed!"
 
 # Run tests on Elo calculations
-echo "Running elo_test.py"
+Write-Output "Running elo_test.py"
 python -m tests.elo_test
-echo "Completed!"
+Write-Output "Completed!"
 
 # Run tests on Basic Coin Flip Engine
-echo "Running coinflip_test.py"
+Write-Output "Running coinflip_test.py"
 python -m tests.coinflip_test
-echo "Completed!"
+Write-Output "Completed!"
 
-echo "Running ladder_test.py"
+Write-Output "Running ladder_test.py"
 python -m tests.ladder_test
-echo "Completed!"
+Write-Output "Completed!"
 
-echo "Running rps_agemt_test.py"
+Write-Output "Running rps_agemt_test.py"
 python -m tests.rps_agent_test
-echo "Completed!"
+Write-Output "Completed!"

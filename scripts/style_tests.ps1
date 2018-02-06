@@ -3,12 +3,12 @@
 $modules = "agent", "battle_engine", "ladder", "simulation", "stats", "tests"
 
 foreach ($module in $modules) {
-    echo "Module: $module"
-    echo "## pycodestyle"
+    Write-Output "Module: $module"
+    Write-Output "## pycodestyle"
     pycodestyle $module
-    echo "## pydocstyle"
+    Write-Output "## pydocstyle"
     pydocstyle $module
-    echo "## pylint"
+    Write-Output "## pylint"
     pylint $module -d R0903 -s n
-    echo ""
+    Write-Output ""
 }
