@@ -1,17 +1,19 @@
-""" Methods for matching players together by elo ranking """
+"""Methods for matching players together by elo ranking."""
 
 from numpy.random import randint
 from ladder.elo import elo
 
 
 class Ladder:
+    """The class for the ladder."""
+
     def __init__(self):
-        """ Initialize a ladder """
+        """Initialize a ladder."""
         self.player_pool = []
         self.num_turns = 0
 
     def add_player(self, player):
-        """ Add a player to the waiting pool """
+        """Add a player to the waiting pool."""
         # Check that player is not already in the pool
         for player_, _ in self.player_pool:
             if player_.id == player.id:
@@ -24,7 +26,7 @@ class Ladder:
         ))
 
     def get_players(self, sort=False):
-        """ Return the players currently in the pool """
+        """Return the players currently in the pool."""
         output = []
         for player, _ in self.player_pool:
             output.append(player)
@@ -35,7 +37,7 @@ class Ladder:
         return output
 
     def match_players(self):
-        """ Return a pair of players to play """
+        """Return a pair of players to play."""
         # Select a random player
         player_ind = randint(low=0, high=len(self.player_pool))
         player = self.player_pool[player_ind][0]
@@ -50,7 +52,7 @@ class Ladder:
         return (player, opponent)
 
     def update_players(self, winner, loser):
-        """ Update values for winner and loser """
+        """Update values for winner and loser."""
         new_winner_elo = elo(winner, loser, 1)
         new_loser_elo = elo(loser, winner, 0)
         winner.elo = new_winner_elo
@@ -59,7 +61,7 @@ class Ladder:
         loser.num_losses += 1
 
     def run_game(self, game_engine):
-        """ Match players and run a game """
+        """Match players and run a game."""
         player, opp = self.match_players()
 
         outcome = game_engine.run(player, opp)
