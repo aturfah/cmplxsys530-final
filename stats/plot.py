@@ -1,9 +1,10 @@
-""" Plotting some neat statistics from a ladder """
+"""Plotting some neat statistics from a ladder."""
 
 import matplotlib.pyplot as plt
 
 
 def plot_group_ratings(data):
+    """Plot the data broken down by groups."""
     print("plotting data...")
     legend_info = []
 
