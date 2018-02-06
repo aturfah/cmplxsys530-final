@@ -14,7 +14,7 @@ def test_add():
     lad.add_player(ba1)
     lad.add_player(ba2)
 
-    assert(len(lad.player_pool) == 2)
+    assert len(lad.player_pool) == 2
 
 
 def test_no_duplicates():
@@ -30,7 +30,7 @@ def test_no_duplicates():
         # We want to be here
         return
 
-    assert(False)
+    assert False
 
 
 def test_match():
@@ -48,8 +48,8 @@ def test_match():
     _ = lad.match_players()
 
     # Assert that players get removed from ladder
-    assert(not lad.player_pool)
-    assert(lad.num_turns == 1)
+    assert not lad.player_pool
+    assert lad.num_turns == 1
 
 
 def test_run_game():
@@ -107,9 +107,9 @@ def test_get_players_sorted():
     player1 = players[0]
     player2 = players[1]
 
-    assert(player1.elo > player2.elo)
-    assert(player1.num_wins == 1 and player2.num_wins == 0)
-    assert(player1.num_losses == 0 and player2.num_losses == 1)
+    assert player1.elo > player2.elo
+    assert (player1.num_wins == 1 and player2.num_wins == 0)
+    assert (player1.num_losses == 0 and player2.num_losses == 1)
 
 
 test_add()
