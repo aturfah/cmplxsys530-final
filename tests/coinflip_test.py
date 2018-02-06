@@ -14,7 +14,7 @@ def test_init():
 
     # Try to initialize CoinFlipEngine with probability > 1
     try:
-        cfe = CoinFlipEngine(prob_win=50)
+        CoinFlipEngine(prob_win=50)
         assert False
     except AttributeError:
         pass
