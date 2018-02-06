@@ -1,4 +1,4 @@
-""" Test functionality of Elo Calculations """
+"""Test functionality of Elo Calculations."""
 
 from agent.base_agent import BaseAgent
 from ladder.elo import elo
@@ -8,34 +8,34 @@ from ladder.elo import elo
 
 
 def test_drop():
-    """ Test that ratings drop when appropriate """
-    playerA = BaseAgent()
-    playerB = BaseAgent()
-    playerA.elo = 1619
-    playerB.elo = 1609
+    """Test that ratings drop when appropriate."""
+    player1 = BaseAgent()
+    player2 = BaseAgent()
+    player1.elo = 1619
+    player2.elo = 1609
 
-    playerA.elo = elo(playerA, playerB, 0)
-    assert(playerA.elo == 1602)
+    player1.elo = elo(player1, player2, 0)
+    assert player1.elo == 1602
 
 
 def test_floor():
-    """ Tests that ratings do not go below 1000 """
-    playerA = BaseAgent()
-    playerB = BaseAgent()
+    """Tests that ratings do not go below 1000."""
+    player1 = BaseAgent()
+    player2 = BaseAgent()
 
-    playerA.elo = elo(playerA, playerB, 0)
-    assert(playerA.elo == 1000)
+    player1.elo = elo(player1, player2, 0)
+    assert player1.elo == 1000
 
 
 def test_increase():
-    """ Tests that ratings increase when appropriate """
-    playerA = BaseAgent()
-    playerB = BaseAgent()
-    playerA.elo = 1619
-    playerB.elo = 1609
+    """Tests that ratings increase when appropriate."""
+    player1 = BaseAgent()
+    player2 = BaseAgent()
+    player1.elo = 1619
+    player2.elo = 1609
 
-    playerB.elo = elo(playerB, playerA, 1)
-    assert(playerB.elo == 1625)
+    player2.elo = elo(player2, player1, 1)
+    assert player2.elo == 1625
 
 
 test_increase()
