@@ -51,15 +51,6 @@ class Ladder:
         self.num_turns += 1
         return (player, opponent)
 
-    def update_players(self, winner, loser):
-        """Update values for winner and loser."""
-        new_winner_elo = elo(winner, loser, 1)
-        new_loser_elo = elo(loser, winner, 0)
-        winner.elo = new_winner_elo
-        winner.num_wins += 1
-        loser.elo = new_loser_elo
-        loser.num_losses += 1
-
     def run_game(self, game_engine):
         """Match players and run a game."""
         player, opp = self.match_players()
@@ -67,9 +58,18 @@ class Ladder:
         outcome = game_engine.run(player, opp)
 
         if outcome == 1:
-            self.update_players(player, opp)
+            update_players(player, opp)
         else:
-            self.update_players(opp, player)
+            update_players(opp, player)
 
         self.add_player(player)
         self.add_player(opp)
+
+def update_players(winner, loser):
+    """Update values for winner and loser."""
+    new_winner_elo = elo(winner, loser, 1)
+    new_loser_elo = elo(loser, winner, 0)
+    winner.elo = new_winner_elo
+    winner.num_wins += 1
+    loser.elo = new_loser_elo
+    loser.num_losses += 1
