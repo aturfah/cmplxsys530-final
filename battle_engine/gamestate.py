@@ -1,7 +1,7 @@
 """Class defining an Engine's Game State."""
 
 
-class Game_State():
+class GameState():
     """Implement this later."""
 
     pass
