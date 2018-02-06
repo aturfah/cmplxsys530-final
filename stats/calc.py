@@ -1,9 +1,9 @@
-""" Package to calculate interesting ladder metrics """
+"""Package to calculate interesting ladder metrics."""
 
 
 def calculate_avg_elo(ladder, group_strategy=True):
     """
-    Calculate the elo rankings on a ladder at a specific point in time
+    Calculate the elo rankings on a ladder at a specific point in time.
 
     :param ladder: The ladder for which to calculate the rankings
     :param group_strategy: Whether to group results by
