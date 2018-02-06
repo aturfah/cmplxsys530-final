@@ -1,4 +1,4 @@
-""" Script to run a ladder simulation for CoinFlipEngine """
+"""Script to run a ladder simulation for CoinFlipEngine."""
 
 
 from battle_engine.coinflip import CoinFlipEngine
@@ -7,6 +7,7 @@ from ladder.ladder import Ladder
 
 
 def run(num_runs, num_players, suppress_print):
+    """Run Coinflip Simulation."""
     game = CoinFlipEngine()
     lad = Ladder()
 
