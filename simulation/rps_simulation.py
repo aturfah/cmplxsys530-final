@@ -1,4 +1,4 @@
-""" Script to run a ladder simulation for Rock Paper Scissors """
+"""Script to run a ladder simulation for Rock Paper Scissors."""
 
 from math import ceil
 
@@ -11,19 +11,39 @@ from stats.plot import plot_group_ratings
 
 def run(num_runs, num_players, proportions,
         suppress_print, suppress_graph, data_delay):
+    """Run a Rock/Paper/Scissors simulation."""
     game = RPSEngine()
     lad = Ladder()
     ratings = {}
 
-    prop_rock = float(proportions[0])
-    prop_paper = float(proportions[1])
-    prop_scissors = float(proportions[2])
-    prop_mixed = float(proportions[3])
+    add_agents(lad, num_players, proportions)
 
-    num_rock = ceil(prop_rock*num_players)
-    num_paper = ceil(prop_paper*num_players)
-    num_scissors = ceil(prop_scissors*num_players)
-    num_mixed = ceil(prop_mixed*num_players)
+    for game_ind in range(num_runs):
+        lad.run_game(game)
+        if game_ind % data_delay == 0:
+            # Calculate the statistics every 10 values
+            current_stats = calculate_avg_elo(lad)
+            for group in current_stats:
+                if group not in ratings:
+                    ratings[group] = []
+                ratings[group].append(current_stats[group])
+
+    players = lad.get_players(sort=True)
+
+    if not suppress_print:
+        for player in players:
+            player.print_info()
+
+    if not suppress_graph:
+        plot_group_ratings(ratings)
+
+
+def add_agents(lad, num_players, proportions):
+    """Add agents in specified proportions to ladder."""
+    num_rock = ceil(float(proportions[0])*num_players)
+    num_paper = ceil(float(proportions[1])*num_players)
+    num_scissors = ceil(float(proportions[2])*num_players)
+    num_mixed = ceil(float(proportions[3])*num_players)
 
     for rock_ind in range(num_rock):
         agent_id = 'rock_{}'.format(rock_ind)
@@ -44,22 +64,3 @@ def run(num_runs, num_players, proportions,
         agent_id = 'mixed_{}'.format(mixed_ind)
         player = RPSAgent(id_in=agent_id)
         lad.add_player(player)
-
-    for game_ind in range(num_runs):
-        lad.run_game(game)
-        if game_ind % data_delay == 0:
-            # Calculate the statistics every 10 values
-            current_stats = calculate_avg_elo(lad)
-            for group in current_stats:
-                if group not in ratings:
-                    ratings[group] = []
-                ratings[group].append(current_stats[group])
-
-    players = lad.get_players(sort=True)
-
-    if not suppress_print:
-        for player in players:
-            player.print_info()
-
-    if not suppress_graph:
-        plot_group_ratings(ratings)
