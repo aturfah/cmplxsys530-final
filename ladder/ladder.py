@@ -7,10 +7,11 @@ from ladder.elo import elo
 class Ladder:
     """The class for the ladder."""
 
-    def __init__(self):
+    def __init__(self, K_in=32):
         """Initialize a ladder."""
         self.player_pool = []
         self.num_turns = 0
+        self.k_value = K_in
 
     def add_player(self, player):
         """Add a player to the waiting pool."""
@@ -51,6 +52,24 @@ class Ladder:
         self.num_turns += 1
         return (player, opponent)
 
+    def match_func(self, player1, player2):
+        """
+        Calculate the match score for two players.
+
+        Players with similar elo rankings should be matched together.
+        In addition, players who have been waiting for a long time should
+        get to play sooner.
+
+        Functional form is <Turns_waiting>/abs(<Difference in Elo scores>)
+
+        :param player1: The player who is being matched
+        :param player2: The candidate player
+        """
+        elo_factor = 1/abs(player1[0].elo - player2[0].elo)
+        turn_factor = self.num_turns - player2[1]
+
+        return elo_factor*turn_factor
+
     def run_game(self, game_engine):
         """Match players and run a game."""
         player, opp = self.match_players()
@@ -58,19 +77,18 @@ class Ladder:
         outcome = game_engine.run(player, opp)
 
         if outcome == 1:
-            update_players(player, opp)
+            self.update_players(player, opp)
         else:
-            update_players(opp, player)
+            self.update_players(opp, player)
 
         self.add_player(player)
         self.add_player(opp)
 
-
-def update_players(winner, loser):
-    """Update values for winner and loser."""
-    new_winner_elo = elo(winner, loser, 1)
-    new_loser_elo = elo(loser, winner, 0)
-    winner.elo = new_winner_elo
-    winner.num_wins += 1
-    loser.elo = new_loser_elo
-    loser.num_losses += 1
+    def update_players(self, winner, loser):
+        """Update values for winner and loser."""
+        new_winner_elo = elo(winner, loser, 1, self.k_value)
+        new_loser_elo = elo(loser, winner, 0, self.k_value)
+        winner.elo = new_winner_elo
+        winner.num_wins += 1
+        loser.elo = new_loser_elo
+        loser.num_losses += 1
