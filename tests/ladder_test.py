@@ -51,6 +51,7 @@ def test_match_basic():
     assert not lad.player_pool
     assert lad.num_turns == 1
 
+
 def test_match_func():
     """Test the match_func to make sure it works."""
     # Set up variables
@@ -72,6 +73,7 @@ def test_match_func():
     # Higher elo players got matched together
     assert (match1.id == ba1.id or match1.id == ba2.id)
     assert (match2.id == ba1.id or match2.id == ba2.id)
+
 
 def test_run_game():
     """Test run_game functions properly."""
