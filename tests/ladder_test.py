@@ -51,6 +51,27 @@ def test_match_basic():
     assert not lad.player_pool
     assert lad.num_turns == 1
 
+def test_match_func():
+    """Test the match_func to make sure it works."""
+    # Set up variables
+    lad = Ladder()
+    ba1 = BaseAgent()
+    ba2 = BaseAgent()
+    ba3 = BaseAgent()
+
+    # Make the elo score higher
+    ba1.elo = 1500
+    ba2.elo = 1400
+
+    lad.add_player(ba1)
+    lad.add_player(ba2)
+    lad.add_player(ba3)
+
+    match1, match2 = lad.match_players()
+
+    # Higher elo players got matched together
+    assert (match1.id == ba1.id or match1.id == ba2.id)
+    assert (match2.id == ba1.id or match2.id == ba2.id)
 
 def test_run_game():
     """Test run_game functions properly."""
@@ -115,5 +136,6 @@ def test_get_players_sorted():
 test_add()
 test_no_duplicates()
 test_match_basic()
+test_match_func()
 test_run_game()
 test_get_players_sorted()
