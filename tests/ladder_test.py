@@ -33,7 +33,7 @@ def test_no_duplicates():
     assert False
 
 
-def test_match():
+def test_match_basic():
     """Test that match functions properly."""
     # Set up variables
     lad = Ladder()
@@ -114,6 +114,6 @@ def test_get_players_sorted():
 
 test_add()
 test_no_duplicates()
-test_match()
+test_match_basic()
 test_run_game()
 test_get_players_sorted()
