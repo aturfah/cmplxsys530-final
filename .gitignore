@@ -1,4 +1,4 @@
 _env/
-raw_data/*
+usage_data/*
 */__pycache__/*
 .vscode/*
