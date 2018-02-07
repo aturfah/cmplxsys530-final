@@ -44,15 +44,16 @@ class Ladder:
         player = self.player_pool[player_ind][0]
         del self.player_pool[player_ind]
 
-        # Select that player's opponent (for now its random)
-        opponent_ind = randint(low=0, high=len(self.player_pool))
-        opponent = self.player_pool[opponent_ind][0]
+        # Select that player's opponent (based on waiting function)
+        opponent_pair = sorted(self.player_pool, key=lambda val: self.match_func(player, val), reverse=True)[0]
+        opponent = opponent_pair[0]
+        opponent_ind = self.player_pool.index(opponent_pair)
         del self.player_pool[opponent_ind]
 
         self.num_turns += 1
         return (player, opponent)
 
-    def match_func(self, player1, player2):
+    def match_func(self, player1, player2_pair):
         """
         Calculate the match score for two players.
 
@@ -63,10 +64,10 @@ class Ladder:
         Functional form is <Turns_waiting>/abs(<Difference in Elo scores>)
 
         :param player1: The player who is being matched
-        :param player2: The candidate player
+        :param player2: The candidate player/turns waiting pair
         """
-        elo_factor = 1/abs(player1[0].elo - player2[0].elo)
-        turn_factor = self.num_turns - player2[1]
+        elo_factor = 1/max(abs(player1.elo - player2_pair[0].elo), 1)
+        turn_factor = self.num_turns - player2_pair[1]
 
         return elo_factor*turn_factor
 
