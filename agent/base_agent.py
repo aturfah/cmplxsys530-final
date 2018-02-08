@@ -5,12 +5,17 @@ from uuid import uuid4
 class BaseAgent():
     """The Base Agent Class."""
 
-    def __init__(self, id_in=None):
+    def __init__(self, **kwargs):
         """Initialize a new agent."""
-        if id_in is None:
+        if "id_in" not in kwargs:
             self.id = uuid4()  # pylint: disable=C0103
         else:
-            self.id = id_in  # pylint: disable=C0103
+            self.id = kwargs["id_in"]  # pylint: disable=C0103
+
+        if "type" not in kwargs:
+            self.type = None
+        else:
+            self.type = kwargs["type"]
 
         self.elo = 1000
         self.num_wins = 0
