@@ -63,15 +63,16 @@ def test_match_func():
     ba1.elo = 1500
     ba2.elo = 1400
 
+    # Add the higher ranked players
     lad.add_player(ba1)
     lad.add_player(ba2)
 
-    # Add the rest of the agents
+    # Add the rest of the agents (ranked lower)
     for i in range(3, 11):
         lad.add_player(BaseAgent(id_in="Ba{}".format(i)))
 
-    match1, match2 = lad.match_players()
     # Try matching the higher ranked players together
+    match1, match2 = lad.match_players()
     while (match1.id is not ba1.id) and (match1.id is not ba2.id):
         match1, match2 = lad.match_players()
 
