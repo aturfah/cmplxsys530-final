@@ -39,6 +39,7 @@ class BaseAgent():
         """Print information about this agent."""
         print("Player: {}".format(self.id))
         print("\tElo: {}".format(self.elo))
+        print("\tType: {}".format(self.type))
         print("\tW/L Ratio: {} ({})".format(
             self.win_loss_ratio(), self.total_games()))
 
