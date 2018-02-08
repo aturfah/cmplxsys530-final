@@ -27,8 +27,10 @@ class RPSAgent(BaseAgent):
         """
         if isinstance(strategy_in, list):
             strategy = strategy_in
+            type_ = "mixed"
         elif strategy_in in STRATEGIES:
             strategy = STRATEGIES[strategy_in]
+            type_ = strategy_in
         else:
             raise ValueError('Invalid strategy')
 
@@ -41,7 +43,7 @@ class RPSAgent(BaseAgent):
             raise ValueError('Strategy probabilities must sum to 1')
 
         self.strategy = strategy
-        super().__init__(id_in=id_in)
+        super().__init__(id_in=id_in, type=type_)
 
     def make_move(self):
         """Play one of rock, paper, scissors defined by strategy."""
@@ -56,6 +58,7 @@ class RPSAgent(BaseAgent):
         """Print the info on this player."""
         print("Player: {}".format(self.id))
         print("\tElo: {}".format(self.elo))
+        print("\tType: {}".format(self.type))
         print("\tStrategy: {}".format(self.strategy))
         print("\tW/L Ratio: {} ({})".format(
             self.win_loss_ratio(), self.total_games()))
