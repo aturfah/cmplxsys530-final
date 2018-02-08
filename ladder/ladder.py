@@ -69,7 +69,7 @@ class Ladder:
         :param player2: The candidate player/turns waiting pair
         """
         elo_factor = 1/max(abs(player1.elo - player2_pair[0].elo), 1)
-        turn_factor = self.num_turns - player2_pair[1]
+        turn_factor = max((self.num_turns - player2_pair[1]), 1)
 
         return elo_factor*turn_factor
 
