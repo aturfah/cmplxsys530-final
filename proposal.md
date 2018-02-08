@@ -13,12 +13,13 @@ _Ali Turfah_
 ### Goal 
 *****
  
-_Provide a short, 1-3 sentence description of the goal of your model_
+The goal of this project is to create a model of the Pokemon Showdown metagame. The primary results of interest are the emergent strategies that correspond to "high-ladder" play. 
 
 &nbsp;  
 ### Justification
 ****
 _Short explanation on why you are using ABM_
+ABMs were chosen to model this system because it allows for control at the level of the player, and analysis of the results at the metagame level.
 
 &nbsp; 
 ### Main Micro-level Processes and Macro-level Dynamics of Interest
