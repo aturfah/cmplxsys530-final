@@ -56,9 +56,9 @@ def test_match_func():
     """Test the match_func to make sure it works."""
     # Set up variables
     lad = Ladder()
-    ba1 = BaseAgent(id_in = "Ba1")
-    ba2 = BaseAgent(id_in = "Ba2")
-    ba3 = BaseAgent(id_in = "Ba3")
+    ba1 = BaseAgent(id_in="Ba1")
+    ba2 = BaseAgent(id_in="Ba2")
+    ba3 = BaseAgent(id_in="Ba3")
 
     # Make the elo score higher
     ba1.elo = 1500
