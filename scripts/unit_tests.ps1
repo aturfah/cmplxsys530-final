@@ -19,6 +19,6 @@ Write-Output "Running ladder_test.py"
 python -m tests.ladder_test
 Write-Output "Completed!"
 
-Write-Output "Running rps_agemt_test.py"
+Write-Output "Running rps_agent_test.py"
 python -m tests.rps_agent_test
 Write-Output "Completed!"
