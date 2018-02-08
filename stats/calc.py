@@ -1,7 +1,7 @@
 """Package to calculate interesting ladder metrics."""
 
 
-def calculate_avg_elo(ladder, group_strategy=True):
+def calculate_avg_elo(ladder, group_by="type"):
     """
     Calculate the elo rankings on a ladder at a specific point in time.
 
@@ -13,8 +13,8 @@ def calculate_avg_elo(ladder, group_strategy=True):
     output = {}
 
     for player in player_pool:
-        if group_strategy and hasattr(player, 'strategy'):
-            player_strat = str(player.strategy)
+        if hasattr(player, group_by):
+            player_strat = str(getattr(player, group_by))
             if player_strat not in output:
                 output[player_strat] = []
             output[player_strat].append(player.elo)
