@@ -67,7 +67,7 @@ def test_match_func():
     lad.add_player(ba2)
 
     # Add the rest of the agents
-    for i in range(3, 10):
+    for i in range(3, 11):
         lad.add_player(BaseAgent(id_in="Ba{}".format(i)))
 
     match1, match2 = lad.match_players()
