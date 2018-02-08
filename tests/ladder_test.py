@@ -58,24 +58,24 @@ def test_match_func():
     lad = Ladder()
     ba1 = BaseAgent(id_in="Ba1")
     ba2 = BaseAgent(id_in="Ba2")
-    ba3 = BaseAgent(id_in="Ba3")
-
+    
     # Make the elo score higher
     ba1.elo = 1500
     ba2.elo = 1400
 
-    ba1.print_info()
-    ba2.print_info()
-    ba3.print_info()
-
     lad.add_player(ba1)
     lad.add_player(ba2)
-    lad.add_player(ba3)
+
+    # Add the rest of the agents
+    for i in range(3, 10):
+        lad.add_player(BaseAgent(id_in="Ba{}".format(i)))
 
     match1, match2 = lad.match_players()
+    # Try matching the higher ranked players together
+    while (match1.id is not ba1.id) and (match1.id is not ba2.id):
+        match1, match2 = lad.match_players()
 
     # Higher elo players got matched together
-    assert (match1.id == ba1.id or match1.id == ba2.id)
     assert (match2.id == ba1.id or match2.id == ba2.id)
 
 
