@@ -15,7 +15,7 @@ class LogWriter():
         """Initialize LogWriter for a simulation.
 
         :param prefix: Prefix to lead filename with
-        :param header: List as header row for file. 
+        :param header: List as header row for file.
         """
         self.filename = generate_filename(prefix)
         self.output_file = generate_file(self.filename)
