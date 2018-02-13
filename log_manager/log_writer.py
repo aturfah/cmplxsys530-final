@@ -15,7 +15,7 @@ class LogWriter():
         """Initialize LogWriter for a simulation.
 
         :param prefix: str, optional
-            Prefix to lead filename with.
+            Optional prefix to lead filename with.
         :param header: List
             List with column names. Also defines first
             row in the output file.
