@@ -1,5 +1,8 @@
 """Log Manager Class."""
 from os.path import join
+
+from csv import writer
+
 from datetime import datetime
 
 import config
@@ -11,15 +14,17 @@ class LogWriter():
         """Initialize LogWriter for a simulation"""
         filename = join(config.LOG_DIR, generate_filename(prefix))
         print(filename)
-        print("Init-ing logwriter")
+        self.output_file = open(filename, mode='w')
+        self.output_csv = writer(self.output_file)
     
     def __del__(self):
         """Delete LogWriter"""
+        self.output_file.close()
         print("Deleting logwriter")
 
     def write_line(self):
         """Write line to this output"""
-        pass
+        self.output_csv.write_row(['pew', 'test', 'pew'])
 
 
 def generate_filename(prefix = None):
