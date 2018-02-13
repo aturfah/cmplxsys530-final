@@ -14,6 +14,7 @@ def test_basic():
 
     lw1.write_line(dict_to_write)
 
+
 def test_prefix_handling():
     """Test prefix validation for LogWriter."""
     # Test for invalid characters (in this case tab)
@@ -24,6 +25,9 @@ def test_prefix_handling():
         catch_err_1 = True
 
     assert catch_err_1
+
+def cleanup():
+    """Clean up logs."""
 
 test_basic()
 test_prefix_handling()
