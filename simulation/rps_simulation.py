@@ -19,13 +19,13 @@ def run(**kwargs):
     suppress_graph = kwargs["suppress_graph"]
 
     game = RPSEngine()
-    lad = Ladder()
+    lad = Ladder(game)
     ratings = {}
 
     add_agents(lad, num_players, proportions)
 
     for game_ind in range(num_runs):
-        lad.run_game(game)
+        lad.run_game()
         if game_ind % data_delay == 0:
             # Calculate the statistics every 10 values
             current_stats = calculate_avg_elo(lad)
