@@ -8,11 +8,11 @@ class LogWriter():
         """Initialize LogWriter for a simulation"""
         filename = generate_filename(prefix)
         print(filename)
-        print("Init logwriter")
+        print("Init-ing logwriter")
     
     def __del__(self):
         """Delete LogWriter"""
-        print("Delete logwriter")
+        print("Deleting logwriter")
 
     def write_line(self):
         """Write line to this output"""
