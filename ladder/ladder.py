@@ -8,14 +8,27 @@ class Ladder:
     """The class for the ladder."""
 
     def __init__(self, game=None, K_in=32):
-        """Initialize a ladder."""
+        """
+        Initialize a ladder for a specific game.
+
+        :param game: GameEngine
+            Game to be played on this ladder
+        :param K_in: int
+            K value to be used for calculating elo changes
+            on this ladder
+        """
         self.player_pool = []
         self.game_engine = game
         self.num_turns = 0
         self.k_value = K_in
 
     def add_player(self, player):
-        """Add a player to the waiting pool."""
+        """
+        Add a player to the waiting pool.
+
+        :param player: BaseAgent
+            Player to be added to the ladder pool
+        """
         # Check that player is not already in the pool
         for player_, _ in self.player_pool:
             if player_.id == player.id:
@@ -28,7 +41,12 @@ class Ladder:
         ))
 
     def get_players(self, sort=False):
-        """Return the players currently in the pool."""
+        """
+        Return the players currently in the pool.
+        
+        :param sort: bool
+            Whether or not to sort the output by elo
+        """
         output = []
         for player, _ in self.player_pool:
             output.append(player)
@@ -66,8 +84,10 @@ class Ladder:
 
         Functional form is <Turns_waiting>/abs(<Difference in Elo scores>)
 
-        :param player1: The player who is being matched
-        :param player2: The candidate player/turns waiting pair
+        :param player1: BaseAgent
+            The player who is being matched
+        :param player2: (BaseAgent, int)
+            The candidate player & turns waiting pair for a  match
         """
         elo_factor = 1/max(abs(player1.elo - player2_pair[0].elo), 1)
         turn_factor = max((self.num_turns - player2_pair[1]), 1)
@@ -89,7 +109,14 @@ class Ladder:
         self.add_player(opp)
 
     def update_players(self, winner, loser):
-        """Update values for winner and loser."""
+        """
+        Update values for winner and loser.
+        
+        :param winner: BaseAgent
+            Player who won
+        :param loser: BaseAgent
+            Player who lost
+        """
         new_winner_elo = elo(winner, loser, 1, self.k_value)
         new_loser_elo = elo(loser, winner, 0, self.k_value)
         winner.elo = new_winner_elo
