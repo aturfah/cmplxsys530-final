@@ -11,7 +11,19 @@ def test_basic():
     dict_to_write["test1"] = "pew"
     dict_to_write["test2"] = "foo"
     dict_to_write["test3"] = "bar"
+
     lw1.write_line(dict_to_write)
 
+def test_prefix_handling():
+    """Test prefix validation for LogWriter."""
+    # Test for invalid characters (in this case tab)
+    catch_err_1 = False
+    try:
+        _ = LogWriter(header=[], prefix="\test")
+    except AttributeError:
+        catch_err_1 = True
+
+    assert catch_err_1
 
 test_basic()
+test_prefix_handling()
