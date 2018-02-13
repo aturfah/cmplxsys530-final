@@ -9,34 +9,33 @@ from simulation import rps_simulation
 @click.option('-nr',
               '--num_runs',
               default=5000,
-              help='Number of games to simulate')
+              help='Number of games to simulate. Default is 5000')
 @click.option('-np',
               '--num_players',
               default=10,
-              help='Number of agents')
+              help='Number of agents. Default is 10')
 @click.option('-g',
               '--game_choice',
-              default=0,
               help="Which game to play. Options are\n[0] Coin Flip\n[1] Balanced Population Rock Paper Scissors\n[2] Skewed Population Rock Paper Scissors")
 @click.option('-p',
               '--proportions',
               nargs=4,
               default=(0.25, 0.25, 0.25, 0.25),
-              help="Proportions for skewed RPS tournament")
+              help="Proportions for skewed RPS tournament. Default is uniform.")
 @click.option('-sp',
               '--suppress_print',
-              default=False,
+              default=True,
               is_flag=True,
-              help="Suppress print output")
+              help="Suppress print output. Default is True")
 @click.option('-sg',
               '--suppress_graph',
               default=False,
               is_flag=True,
-              help="Suppress graphical output")
+              help="Suppress graphical output. Default is False")
 @click.option('-dd',
               '--data_delay',
               default=10,
-              help='Number of iterations between gathering data')
+              help='Number of iterations between gathering data. Default is 10')
 def run(**kwargs):
     """Run the simulation."""
     num_runs = kwargs.get('num_runs', None)
