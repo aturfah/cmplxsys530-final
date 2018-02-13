@@ -108,6 +108,8 @@ class Ladder:
         self.add_player(player)
         self.add_player(opp)
 
+        return (outcome, player, opp)
+
     def update_players(self, winner, loser):
         """
         Update values for winner and loser.
