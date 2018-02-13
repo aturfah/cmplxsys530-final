@@ -17,16 +17,20 @@ class LogWriter():
         :param prefix: Prefix to lead filename with
         :param header: List as header row for file.
         """
+        if prefix is not None and ("/" in prefix or "\\" in prefix):
+            raise AttributeError("Prefix cannot contain slashes")
+
         self.filename = generate_filename(prefix)
         self.output_file = generate_file(self.filename)
         self.output_csv = writer(self.output_file)
 
         self.header = header
-        self.write_line(header)
+        self.output_csv.writerow(header)
 
     def __del__(self):
         """Delete LogWriter."""
-        self.output_file.close()
+        if hasattr(self, "output_file"):
+            self.output_file.close()
 
     def write_line(self, dict_to_write):
         """Write line to this output.
@@ -34,6 +38,10 @@ class LogWriter():
         :param dict_to_write: Column Name/Value dict to write to file.
         """
         line = []
+
+        for col_name in self.header:
+            line.append(dict_to_write[col_name])
+
         self.output_csv.writerow(line)
 
 
@@ -60,4 +68,4 @@ def generate_filename(prefix):
 def generate_file(filename):
     """Generate the file that will be used."""
     file_ = join(config.LOG_DIR, filename)
-    return open(file_, mode='w')
+    return open(file_, mode="w", newline="")
