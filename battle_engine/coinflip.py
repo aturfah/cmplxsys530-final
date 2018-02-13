@@ -9,9 +9,8 @@ class CoinFlipEngine:
         """
         Initialize a random Coin Flip Engine, winner decided by a coin flip.
 
-        :param player1: Agent that will participate in the game
-        :param player2: The other agent that will participate in the game
-        :param prob_win: Probability player1 wins
+        :param prob_win: float, Optional
+            Probability player1 wins (between 0 and 1)
         """
         if prob_win > 1 or prob_win < 0:
             raise AttributeError("prob_win must be between 0 and 1")
@@ -19,7 +18,14 @@ class CoinFlipEngine:
         self.prob_win = prob_win
 
     def run(self, player1, player2):
-        """Run the game, in this case draw from U(0,1)."""
+        """
+        Run the game, in this case draw from U(0,1).
+        
+        :param player1: BaseAgent
+            First agent that will participate in the game
+        :param player2: BaseAgent
+            The other agent that will participate in the game
+        """
         draw = uniform()
 
         if draw < self.prob_win:
