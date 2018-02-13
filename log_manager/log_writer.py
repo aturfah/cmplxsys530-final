@@ -17,12 +17,16 @@ class LogWriter():
         :param prefix: Prefix to lead filename with
         :param header: List as header row for file.
         """
-        # Invalid prefix name, cannot have slashes
+        # Invalid prefix name check
         if prefix is not None:
             invalid_char_seqs = ["/", "\\", "."]
             for char_seq in invalid_char_seqs:
                 if char_seq in repr(prefix):
                     raise AttributeError("Prefix cannot contain slashes")
+
+        # Validate header actually has content
+        if not header:
+            raise AttributeError("Header cannot be empty")
 
         self.filename = generate_filename(prefix)
         self.output_file = generate_file(self.filename)
