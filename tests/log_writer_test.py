@@ -2,3 +2,4 @@
 from log_manager.log_writer import LogWriter
 
 lw1 = LogWriter()
+lw1.write_line()
