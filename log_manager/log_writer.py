@@ -68,9 +68,10 @@ def generate_filename(prefix):
     hour = "%02d" % now.hour
     minute = "%02d" % now.minute
     second = "%02d" % now.second
+    microsecond = "%02d" % now.microsecond
 
-    filename = "{}{}-{}-{}_{}-{}-{}.csv".format(
-        prefix_str, year, month, day, hour, minute, second)
+    filename = "{}{}-{}-{}_{}-{}-{}-{}.csv".format(
+        prefix_str, year, month, day, hour, minute, second, microsecond)
     return filename
 
 
