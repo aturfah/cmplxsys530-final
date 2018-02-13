@@ -22,7 +22,7 @@ def elo(player1, player2, outcome, k=32):
         Agent for whom the score is being calculated
     :param player2: BaseAgent
         Agent against whom player1 played
-    :param outcome: int, one of 0/1
+    :param outcome: int, one of 0 or 1
         Win (1) or loss(0) [there are no draws]
     :param k: int
         The k-factor for the Elo score
