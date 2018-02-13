@@ -17,7 +17,7 @@ class RPSEngine:
     def run(self, player1, player2):
         """
         Run a game of Rock, Paper, Scissors.
-        
+
         Victory determined as follows:
             Rock < Paper < Scissors < Rock
 
