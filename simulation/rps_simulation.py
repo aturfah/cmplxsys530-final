@@ -10,7 +10,23 @@ from stats.plot import plot_group_ratings
 
 
 def run(**kwargs):
-    """Run a Rock/Paper/Scissors simulation."""
+    """
+    Run a Rock/Paper/Scissors simulation.
+    
+    :param num_runs: int
+        Total number of games to simulate
+    :param num_players: int
+        Approximate number of players to have on the ladder
+    :param proportions: list
+        List proportions of Rock, Paper, Scissors, Uniform players
+        to have on the ladder.
+    :param data_delay: int
+        How often to record the elo rankings of the players for graphing
+    :param suppress_print: bool
+        Whether or not to print player ratings at the end of a round
+    :param suppress_graph: bool
+        Whether or not to graph player elo ratings over simulation
+    """
     num_runs = kwargs["num_runs"]
     num_players = kwargs["num_players"]
     proportions = kwargs["proportions"]
@@ -27,7 +43,7 @@ def run(**kwargs):
     for game_ind in range(num_runs):
         lad.run_game()
         if game_ind % data_delay == 0:
-            # Calculate the statistics every 10 values
+            # Calculate the statistics every data_delay values
             current_stats = calculate_avg_elo(lad)
             for group in current_stats:
                 if group not in ratings:
