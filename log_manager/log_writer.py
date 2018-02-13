@@ -7,16 +7,15 @@ from datetime import datetime
 
 import config
 
+
 class LogWriter():
     """Class for class that generates log files."""
 
-    def __init__(self, prefix = None):
+    def __init__(self, prefix=None):
         """Initialize LogWriter for a simulation"""
-        filename = join(config.LOG_DIR, generate_filename(prefix))
-        print(filename)
-        self.output_file = open(filename, mode='w')
+        self.output_file = generate_file(prefix)
         self.output_csv = writer(self.output_file)
-    
+
     def __del__(self):
         """Delete LogWriter"""
         self.output_file.close()
@@ -25,10 +24,10 @@ class LogWriter():
     def write_line(self):
         """Write line to this output"""
         print("Writing line")
-        self.output_csv.write_row(['pew', 'test', 'pew'])
+        self.output_csv.writerow(['pew', 'test', 'pew'])
 
 
-def generate_filename(prefix = None):
+def generate_file(prefix=None):
     if not prefix:
         prefix_str = ""
     else:
@@ -42,6 +41,8 @@ def generate_filename(prefix = None):
     minute = "%02d" % now.minute
     second = "%02d" % now.second
 
-    filename = "{}{}/{}/{}_{}-{}-{}.csv".format(prefix_str, year, month, day, hour, minute, second)
-    
-    return filename
+    filename = "{}{}-{}-{}_{}-{}-{}.csv".format(
+        prefix_str, year, month, day, hour, minute, second)
+
+    filename = join(config.LOG_DIR, filename)
+    return open(filename, mode='w')
