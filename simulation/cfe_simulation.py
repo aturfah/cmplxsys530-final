@@ -7,7 +7,16 @@ from ladder.ladder import Ladder
 
 
 def run(num_runs, num_players, suppress_print):
-    """Run Coinflip Simulation."""
+    """
+    Run Coinflip Simulation.
+
+    :param num_runs: int
+        Number of games to play
+    :param num_players: int
+        Number of players to have in ladder player pool
+    :param suppress_print: bool
+        Whether or not to output the ratings at the end
+    """
     game = CoinFlipEngine()
     lad = Ladder(game)
 
