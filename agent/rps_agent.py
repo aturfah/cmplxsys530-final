@@ -21,9 +21,10 @@ class RPSAgent(BaseAgent):
         The player plays Rock, Paper, or Scissors
         according to probabilities defined in strategy.
 
-        :param strategy: Either a string corresponding to a strategy,
-             or a vector of probabilities to play Rock, Paper,
-             or Scissors respectively
+        :param strategy: str OR list, optional
+            Either a string corresponding to a strategy,
+            or a vector of probabilities to play Rock, Paper,
+            or Scissors respectively
         """
         if isinstance(strategy_in, list):
             strategy = strategy_in
