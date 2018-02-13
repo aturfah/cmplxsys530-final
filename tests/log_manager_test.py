@@ -25,7 +25,7 @@ def test_prefix_handling():
     # Invalid tab character
     catch_err_1 = False
     try:
-        _ = LogWriter(header=[], prefix="\test")
+        _ = LogWriter(header=["test"], prefix="\test")
     except AttributeError:
         catch_err_1 = True
 
@@ -34,7 +34,7 @@ def test_prefix_handling():
     # Invalid backslash
     catch_err_2 = False
     try:
-        _ = LogWriter(header=[], prefix="/test")
+        _ = LogWriter(header=["test"], prefix="/test")
     except AttributeError:
         catch_err_2 = True
     assert catch_err_2
@@ -42,7 +42,7 @@ def test_prefix_handling():
     # Invalid dot character
     catch_err_3 = False
     try:
-        _ = LogWriter(header=[], prefix=".test")
+        _ = LogWriter(header=["test"], prefix=".test")
     except AttributeError:
         catch_err_3 = True
     assert catch_err_3
@@ -50,7 +50,6 @@ def test_prefix_handling():
 
 def cleanup():
     """Clean up logs."""
-    
     pass
 
 
