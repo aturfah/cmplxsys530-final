@@ -1,12 +1,15 @@
 """Log Manager Class."""
+from os.path import join
 from datetime import datetime
+
+import config
 
 class LogWriter():
     """Class for class that generates log files."""
 
     def __init__(self, prefix = None):
         """Initialize LogWriter for a simulation"""
-        filename = generate_filename(prefix)
+        filename = join(config.LOG_DIR, generate_filename(prefix))
         print(filename)
         print("Init-ing logwriter")
     
@@ -33,6 +36,6 @@ def generate_filename(prefix = None):
     minute = "%02d" % now.minute
     second = "%02d" % now.second
 
-    filename = "{}{}/{}/{}_{}-{}-{}".format(prefix_str, year, month, day, hour, minute, second)
+    filename = "{}{}/{}/{}_{}-{}-{}.csv".format(prefix_str, year, month, day, hour, minute, second)
     
     return filename
