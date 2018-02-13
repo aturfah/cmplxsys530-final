@@ -1,8 +1,4 @@
 _env/
 **/__pycache__/*
-<<<<<<< HEAD
 .vscode/*
 /logs
-=======
-.vscode/*
->>>>>>> 703b5b280f4d53a1c269b8ab923b522f28ce52d5
