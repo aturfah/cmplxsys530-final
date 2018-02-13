@@ -21,6 +21,8 @@ class CoinFlipEngine:
         """
         Run the game, in this case draw from U(0,1).
 
+        Victory determined if u > prob_win, where u ~ U(0,1)
+
         :param player1: BaseAgent
             First agent that will participate in the game
         :param player2: BaseAgent
