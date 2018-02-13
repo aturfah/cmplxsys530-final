@@ -1,4 +1,9 @@
 """Unit tests for LogWriter."""
+from time import sleep
+
+from os import listdir, remove
+from os.path import isfile, join
+
 from uuid import uuid4
 from log_manager.log_writer import LogWriter
 
@@ -48,6 +53,7 @@ def test_prefix_handling():
         catch_err_3 = True
     assert catch_err_3
 
+
 def test_header_validation():
     """Test logic for checking header."""
     catch_err = False
@@ -55,15 +61,21 @@ def test_header_validation():
         _ = LogWriter(header=[])
     except AttributeError:
         catch_err = True
-    
+
     assert catch_err
 
+
 def cleanup():
-    """Clean up logs."""
-    pass
+    """Clean up logs for this run."""
+    log_files = [join(config.LOG_DIR, f) for f in listdir(config.LOG_DIR)
+                 if isfile(join(config.LOG_DIR, f))]
+    for file_ in log_files:
+        if TEST_ID in file_:
+            remove(file_)
 
 
 test_basic()
 test_prefix_handling()
 test_header_validation()
+
 cleanup()
