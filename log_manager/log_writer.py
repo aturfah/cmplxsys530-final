@@ -14,8 +14,11 @@ class LogWriter():
     def __init__(self, header, prefix=None):
         """Initialize LogWriter for a simulation.
 
-        :param prefix: Prefix to lead filename with
-        :param header: List as header row for file.
+        :param prefix: str, optional
+            Prefix to lead filename with.
+        :param header: List
+            List with column names. Also defines first
+            row in the output file.
         """
         # Invalid prefix name check
         if prefix is not None:
@@ -44,7 +47,8 @@ class LogWriter():
     def write_line(self, dict_to_write):
         """Write line to this output.
 
-        :param dict_to_write: Column Name/Value dict to write to file.
+        :param dict_to_write: dict
+            Dict to write to file. Keys should be column names
         """
         line = []
 
