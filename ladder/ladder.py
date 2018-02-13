@@ -43,7 +43,7 @@ class Ladder:
     def get_players(self, sort=False):
         """
         Return the players currently in the pool.
-        
+
         :param sort: bool
             Whether or not to sort the output by elo
         """
@@ -111,7 +111,7 @@ class Ladder:
     def update_players(self, winner, loser):
         """
         Update values for winner and loser.
-        
+
         :param winner: BaseAgent
             Player who won
         :param loser: BaseAgent
