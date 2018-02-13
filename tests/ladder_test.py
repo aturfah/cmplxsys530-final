@@ -58,7 +58,7 @@ def test_match_func():
     lad = Ladder()
     ba1 = BaseAgent(id_in="Ba1")
     ba2 = BaseAgent(id_in="Ba2")
-    
+
     # Make the elo score higher
     ba1.elo = 1500
     ba2.elo = 1400
@@ -83,17 +83,17 @@ def test_match_func():
 def test_run_game():
     """Test run_game functions properly."""
     # Set up variables
-    lad = Ladder()
     ba1 = BaseAgent()
     ba2 = BaseAgent()
     cfe = CoinFlipEngine()
+    lad = Ladder(game=cfe)
 
     # Add players to the ladder
     lad.add_player(ba1)
     lad.add_player(ba2)
 
     # Run the game
-    lad.run_game(cfe)
+    lad.run_game()
 
     # Check that the ladder updated properly
     players = lad.get_players()
@@ -117,17 +117,17 @@ def test_run_game():
 def test_get_players_sorted():
     """Run get_players with sorted flag to true."""
     # Set up variables
-    lad = Ladder()
     ba1 = BaseAgent()
     ba2 = BaseAgent()
     cfe = CoinFlipEngine()
+    lad = Ladder(cfe)
 
     # Add players to the ladder
     lad.add_player(ba1)
     lad.add_player(ba2)
 
     # Run the game
-    lad.run_game(cfe)
+    lad.run_game()
 
     # Check that the results are sorted in ascending elo
     players = lad.get_players(sort=True)

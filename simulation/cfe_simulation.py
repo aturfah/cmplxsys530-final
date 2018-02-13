@@ -9,14 +9,14 @@ from ladder.ladder import Ladder
 def run(num_runs, num_players, suppress_print):
     """Run Coinflip Simulation."""
     game = CoinFlipEngine()
-    lad = Ladder()
+    lad = Ladder(game)
 
     for _ in range(num_players):
         player = BaseAgent()
         lad.add_player(player)
 
     for _ in range(num_runs):
-        lad.run_game(game)
+        lad.run_game()
 
     players = lad.get_players(sort=True)
 
