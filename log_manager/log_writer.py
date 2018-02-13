@@ -20,9 +20,9 @@ class LogWriter():
         """Delete LogWriter."""
         self.output_file.close()
 
-    def write_line(self):
+    def write_line(self, line):
         """Write line to this output."""
-        self.output_csv.writerow(['pew', 'test', 'pew'])
+        self.output_csv.writerow(line)
 
 
 def generate_file(prefix=None):
