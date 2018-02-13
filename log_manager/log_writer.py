@@ -29,7 +29,10 @@ class LogWriter():
         self.output_file.close()
 
     def write_line(self, dict_to_write):
-        """Write line to this output."""
+        """Write line to this output.
+
+        :param dict_to_write: Column Name/Value dict to write to file.
+        """
         line = []
         self.output_csv.writerow(line)
 
