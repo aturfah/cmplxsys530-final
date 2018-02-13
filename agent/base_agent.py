@@ -6,7 +6,14 @@ class BaseAgent():
     """The Base Agent Class."""
 
     def __init__(self, **kwargs):
-        """Initialize a new agent."""
+        """Initialize a new agent.
+
+        :param id: str
+            Some identifier for this agent
+        :param type: str
+            "Type" for this agent, has meaning in
+            agent subclasses
+        """
         if "id_in" not in kwargs:
             self.id = uuid4()  # pylint: disable=C0103
         else:

@@ -9,12 +9,23 @@ class RPSEngine:
         """
         Init method for this class.
 
-        :param bias: How biased this class is in tiebreaking.
+        :param bias: float
+            How biased this class is in tiebreaking.
         """
         self.bias = bias
 
     def run(self, player1, player2):
-        """Run a game of Rock, Paper, Scissors."""
+        """
+        Run a game of Rock, Paper, Scissors.
+
+        Victory determined as follows:
+            Rock < Paper < Scissors < Rock
+
+        :param player1: BaseAgent
+            First agent that will participate in the game
+        :param player2: BaseAgent
+            The other agent that will participate in the game
+        """
         p1_move = player1.make_move()
         p2_move = player2.make_move()
 
