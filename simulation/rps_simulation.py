@@ -12,7 +12,7 @@ from stats.plot import plot_group_ratings
 def run(**kwargs):
     """
     Run a Rock/Paper/Scissors simulation.
-    
+
     :param num_runs: int
         Total number of games to simulate
     :param num_players: int
