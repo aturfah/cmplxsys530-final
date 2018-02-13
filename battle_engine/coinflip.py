@@ -20,7 +20,7 @@ class CoinFlipEngine:
     def run(self, player1, player2):
         """
         Run the game, in this case draw from U(0,1).
-        
+
         :param player1: BaseAgent
             First agent that will participate in the game
         :param player2: BaseAgent
