@@ -24,6 +24,7 @@ class LogWriter():
 
     def write_line(self):
         """Write line to this output"""
+        print("Writing line")
         self.output_csv.write_row(['pew', 'test', 'pew'])
 
 
