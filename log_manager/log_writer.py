@@ -4,4 +4,11 @@
 class LogWriter():
     """Class for class that generates log files."""
 
-    pass
+    def __init__(self):
+        print("Init logwriter")
+    
+    def __del__(self):
+        print("Delete logwriter")
+
+    def write_line(self):
+        pass
