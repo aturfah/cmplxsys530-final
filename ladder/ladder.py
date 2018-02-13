@@ -7,7 +7,7 @@ from ladder.elo import elo
 class Ladder:
     """The class for the ladder."""
 
-    def __init__(self, game = None, K_in=32):
+    def __init__(self, game=None, K_in=32):
         """Initialize a ladder."""
         self.player_pool = []
         self.game_engine = game
