@@ -11,24 +11,26 @@ import config
 class LogWriter():
     """Class for class that generates log files."""
 
-    def __init__(self, prefix=None, header=None):
-        """Initialize LogWriter for a simulation."""
+    def __init__(self, header, prefix=None):
+        """Initialize LogWriter for a simulation.
+
+        :param prefix: Prefix to lead filename with
+        :param header: List as header row for file. 
+        """
         self.filename = generate_filename(prefix)
         self.output_file = generate_file(self.filename)
         self.output_csv = writer(self.output_file)
-        
+
         self.header = header
-        if header:
-            self.write_line(header)
+        self.write_line(header)
 
     def __del__(self):
         """Delete LogWriter."""
         self.output_file.close()
 
-    def write_line(self, line):
+    def write_line(self, dict_to_write):
         """Write line to this output."""
-        if self.header:
-            pass
+        line = []
         self.output_csv.writerow(line)
 
 
