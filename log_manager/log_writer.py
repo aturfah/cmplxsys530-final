@@ -38,6 +38,7 @@ class LogWriter():
     def __del__(self):
         """Delete LogWriter."""
         if hasattr(self, "output_file"):
+            self.output_file.flush()
             self.output_file.close()
 
     def write_line(self, dict_to_write):
