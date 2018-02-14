@@ -1,5 +1,4 @@
 """Unit tests for LogWriter."""
-from time import sleep
 
 from os import listdir, remove
 from os.path import isfile, join
