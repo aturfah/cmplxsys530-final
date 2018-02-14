@@ -40,7 +40,9 @@ def run(**kwargs):
     ladder_choice = int(kwargs.get("ladder", None))
 
     if game_choice == 0:
-        cfe_simulation.run(num_runs, num_players)
+        cfe_simulation.run(num_runs=num_runs,
+                           num_players=num_players,
+                           ladder_choice=ladder_choice)
     elif game_choice == 1:
         rps_simulation.run(num_runs=num_runs,
                            num_players=num_players,

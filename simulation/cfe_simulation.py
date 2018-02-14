@@ -7,7 +7,7 @@ from ladder.weighted_ladder import WeightedLadder
 from log_manager.log_writer import LogWriter
 
 
-def run(num_runs, num_players):
+def run(**kwargs):
     """
     Run Coinflip Simulation.
 
@@ -15,9 +15,11 @@ def run(num_runs, num_players):
         Number of games to play
     :param num_players: int
         Number of players to have in ladder player pool
-    :param suppress_print: bool
-        Whether or not to output the ratings at the end
     """
+    num_players = kwargs["num_players"]
+    num_runs = kwargs["num_runs"]
+    ladder_choice = kwargs["ladder_choice"]
+
     game = CoinFlipEngine()
     lad = WeightedLadder(game)
     player_log_writer = init_player_log_writer()
