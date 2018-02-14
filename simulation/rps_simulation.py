@@ -31,9 +31,9 @@ def run(**kwargs):
     num_runs = kwargs["num_runs"]
     num_players = kwargs["num_players"]
     proportions = kwargs["proportions"]
-    data_delay = kwargs["data_delay"]
+    # data_delay = kwargs["data_delay"]
     suppress_print = kwargs["suppress_print"]
-    suppress_graph = kwargs["suppress_graph"]
+    # suppress_graph = kwargs["suppress_graph"]
 
     game = RPSEngine()
     lad = Ladder(game)
@@ -66,7 +66,7 @@ def run(**kwargs):
         for player in players:
             player.print_info()
 
-    #if not suppress_graph:
+    # if not suppress_graph:
     #    plot_group_ratings(ratings)
 
 
@@ -99,7 +99,7 @@ def add_agents(lad, num_players, proportions):
 
 
 def init_player_log_writer():
-    """Initialize player data LogWriter"""
+    """Initialize player data LogWriter."""
     header = []
     header.append("player1.type")
     header.append("player1.elo")
