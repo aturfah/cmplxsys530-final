@@ -108,5 +108,5 @@ def init_type_log_writer(proportions):
     if proportions[3] != 0:
         header.append("uniform")
 
-    log_writer = LogWriter(header, prefix="RPSAvgStrats")
+    log_writer = LogWriter(header, prefix="RPSTypes")
     return log_writer
