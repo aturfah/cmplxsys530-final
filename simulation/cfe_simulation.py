@@ -4,8 +4,14 @@
 from battle_engine.coinflip import CoinFlipEngine
 from agent.base_agent import BaseAgent
 from ladder.weighted_ladder import WeightedLadder
+from ladder.random_ladder import RandomLadder
 from log_manager.log_writer import LogWriter
 
+
+LADDER_CHOICES = [
+    WeightedLadder,
+    RandomLadder
+]
 
 def run(**kwargs):
     """
@@ -21,7 +27,7 @@ def run(**kwargs):
     ladder_choice = kwargs["ladder_choice"]
 
     game = CoinFlipEngine()
-    lad = WeightedLadder(game)
+    lad = LADDER_CHOICES[ladder_choice](game)
     player_log_writer = init_player_log_writer()
 
     for _ in range(num_players):

@@ -5,10 +5,15 @@ from math import ceil
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
 from ladder.weighted_ladder import WeightedLadder
+from ladder.random_ladder import RandomLadder
 from stats.calc import calculate_avg_elo
 # from stats.plot import plot_group_ratings
 from log_manager.log_writer import LogWriter
 
+LADDER_CHOICES = [
+    WeightedLadder,
+    RandomLadder
+]
 
 def run(**kwargs):
     """
@@ -28,9 +33,10 @@ def run(**kwargs):
     num_players = kwargs["num_players"]
     proportions = kwargs["proportions"]
     data_delay = kwargs["data_delay"]
+    ladder_choice = kwargs["ladder_choice"]
 
     game = RPSEngine()
-    lad = WeightedLadder(game)
+    lad = LADDER_CHOICES[ladder_choice](game)
     player_log_writer = init_player_log_writer()
     type_log_writer = init_type_log_writer(proportions)
 
