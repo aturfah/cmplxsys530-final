@@ -3,7 +3,7 @@
 from numpy.random import rand
 from ladder.base_ladder import BaseLadder
 
-class WeightedLadder(BaseLadder):
+class RandomLadder(BaseLadder):
     """Ladder that matches players by Elo ranking."""
 
     def __init__(self, game=None, K_in=32):
