@@ -45,7 +45,7 @@ def run(**kwargs):
     data_delay = kwargs.get('data_delay', None)
     suppress_print = kwargs.get('suppress_print', None)
     suppress_graph = kwargs.get('suppress_graph', None)
-    
+
     if game_choice == 0:
         cfe_simulation.run(num_runs, num_players, suppress_print)
     elif game_choice == 1:
@@ -64,6 +64,7 @@ def run(**kwargs):
                            suppress_graph=suppress_graph)
     else:
         raise RuntimeError("Invalid Game Choice")
+
 
 if __name__ == "__main__":
     # pylint: disable=no-value-for-parameter
