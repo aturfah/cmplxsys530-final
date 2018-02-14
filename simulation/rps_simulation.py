@@ -4,7 +4,7 @@ from math import ceil
 
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
-from ladder.ladder import WeightedLadder
+from ladder.weighted_ladder import WeightedLadder
 from stats.calc import calculate_avg_elo
 # from stats.plot import plot_group_ratings
 from log_manager.log_writer import LogWriter

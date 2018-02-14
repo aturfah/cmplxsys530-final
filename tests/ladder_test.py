@@ -1,7 +1,7 @@
 """Script to test functioning of ladder."""
 
 from agent.base_agent import BaseAgent
-from ladder.ladder import WeightedLadder
+from ladder.weighted_ladder import WeightedLadder
 from battle_engine.coinflip import CoinFlipEngine
 
 
