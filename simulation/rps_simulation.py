@@ -4,7 +4,7 @@ from math import ceil
 
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
-from ladder.ladder import Ladder
+from ladder.ladder import WeightedLadder
 from stats.calc import calculate_avg_elo
 # from stats.plot import plot_group_ratings
 from log_manager.log_writer import LogWriter
@@ -30,7 +30,7 @@ def run(**kwargs):
     data_delay = kwargs["data_delay"]
 
     game = RPSEngine()
-    lad = Ladder(game)
+    lad = WeightedLadder(game)
     player_log_writer = init_player_log_writer()
     type_log_writer = init_type_log_writer(proportions)
 

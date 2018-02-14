@@ -3,7 +3,7 @@
 
 from battle_engine.coinflip import CoinFlipEngine
 from agent.base_agent import BaseAgent
-from ladder.ladder import Ladder
+from ladder.ladder import WeightedLadder
 from log_manager.log_writer import LogWriter
 
 
@@ -19,7 +19,7 @@ def run(num_runs, num_players):
         Whether or not to output the ratings at the end
     """
     game = CoinFlipEngine()
-    lad = Ladder(game)
+    lad = WeightedLadder(game)
     player_log_writer = init_player_log_writer()
 
     for _ in range(num_players):
