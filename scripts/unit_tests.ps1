@@ -15,8 +15,8 @@ Write-Output "Running coinflip_test.py"
 python -m tests.coinflip_test
 Write-Output "Completed!"
 
-Write-Output "Running ladder_test.py"
-python -m tests.ladder_test
+Write-Output "Running weighted_ladder_test.py"
+python -m tests.weighted_ladder_test
 Write-Output "Completed!"
 
 Write-Output "Running rps_agent_test.py"
