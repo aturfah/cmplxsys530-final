@@ -5,7 +5,7 @@ from math import ceil
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
 from ladder.ladder import Ladder
-# from stats.calc import calculate_avg_elo
+from stats.calc import calculate_avg_elo
 # from stats.plot import plot_group_ratings
 from log_manager.log_writer import LogWriter
 
@@ -31,26 +31,21 @@ def run(**kwargs):
     num_runs = kwargs["num_runs"]
     num_players = kwargs["num_players"]
     proportions = kwargs["proportions"]
-    # data_delay = kwargs["data_delay"]
+    data_delay = kwargs["data_delay"]
     suppress_print = kwargs["suppress_print"]
     # suppress_graph = kwargs["suppress_graph"]
 
     game = RPSEngine()
     lad = Ladder(game)
-    log_writer = init_player_log_writer()
+    player_log_writer = init_player_log_writer()
+    type_log_writer = init_type_log_writer()
     # ratings = {}
 
     add_agents(lad, num_players, proportions)
 
-    for _ in range(num_runs):
+    for game_ind in range(num_runs):
         outcome, player1, player2 = lad.run_game()
-        # if game_ind % data_delay == 0:
-        #    # Calculate the statistics every data_delay values
-        #    current_stats = calculate_avg_elo(lad)
-        #    for group in current_stats:
-        #        if group not in ratings:
-        #            ratings[group] = []
-        #        ratings[group].append(current_stats[group])
+
         datum = {
             "player1.type": player1.type,
             "player1.elo": player1.elo,
@@ -58,7 +53,13 @@ def run(**kwargs):
             "player2.elo": player2.elo,
             "outcome": outcome
         }
-        log_writer.write_line(datum)
+        player_log_writer.write_line(datum)
+
+        if game_ind % data_delay == 0:
+            # Calculate the average ranking statistics
+            # every <data_delay> iterations
+            current_stats = calculate_avg_elo(lad)
+            type_log_writer.write_line(current_stats)
 
     players = lad.get_players(sort=True)
 
@@ -108,4 +109,16 @@ def init_player_log_writer():
     header.append("outcome")
 
     log_writer = LogWriter(header, prefix="RPSPlayers")
+    return log_writer
+
+
+def init_type_log_writer():
+    """Initialize strategy LogWriter."""
+    header = []
+    header.append("rock")
+    header.append("paper")
+    header.append("scissors")
+    header.append("uniform")
+
+    log_writer = LogWriter(header, prefix="RPSAvgStrats")
     return log_writer
