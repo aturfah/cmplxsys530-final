@@ -5,53 +5,6 @@ from ladder.weighted_ladder import WeightedLadder
 from battle_engine.coinflip import CoinFlipEngine
 
 
-def test_add():
-    """Basic test for ladder add_player method."""
-    lad = WeightedLadder()
-    ba1 = BaseAgent()
-    ba2 = BaseAgent()
-
-    lad.add_player(ba1)
-    lad.add_player(ba2)
-
-    assert len(lad.player_pool) == 2
-
-
-def test_no_duplicates():
-    """Test that same player cannot exist twice on ladder."""
-    lad = WeightedLadder()
-    ba1 = BaseAgent()
-    lad.add_player(ba1)
-
-    try:
-        lad.add_player(ba1)
-    except ValueError:
-        # Ladder throws a ValueError if a duplicate player exists
-        # We want to be here
-        return
-
-    assert False
-
-
-def test_match_basic():
-    """Test that match functions properly."""
-    # Set up variables
-    lad = WeightedLadder()
-    ba1 = BaseAgent()
-    ba2 = BaseAgent()
-
-    # Add the players to the ladder
-    lad.add_player(ba1)
-    lad.add_player(ba2)
-
-    # Generate a match (should be ba1 and ba2)
-    _ = lad.match_players()
-
-    # Assert that players get removed from ladder
-    assert not lad.player_pool
-    assert lad.num_turns == 1
-
-
 def test_match_func():
     """Test the match_func to make sure it works."""
     # Set up variables
@@ -79,6 +32,23 @@ def test_match_func():
     # Higher elo players got matched together
     assert (match2.id == ba1.id or match2.id == ba2.id)
 
+def test_match_basic():
+    """Test that match functions properly."""
+    # Set up variables
+    lad = WeightedLadder()
+    ba1 = BaseAgent()
+    ba2 = BaseAgent()
+
+    # Add the players to the ladder
+    lad.add_player(ba1)
+    lad.add_player(ba2)
+
+    # Generate a match (should be ba1 and ba2)
+    _ = lad.match_players()
+
+    # Assert that players get removed from ladder
+    assert not lad.player_pool
+    assert lad.num_turns == 1
 
 def test_run_game():
     """Test run_game functions properly."""
@@ -113,7 +83,6 @@ def test_run_game():
     assert((player1.num_losses == 0 and player2.num_losses == 1) or
            (player1.num_losses == 1 and player2.num_losses == 0))
 
-
 def test_get_players_sorted():
     """Run get_players with sorted flag to true."""
     # Set up variables
@@ -140,8 +109,6 @@ def test_get_players_sorted():
     assert (player1.num_losses == 0 and player2.num_losses == 1)
 
 
-test_add()
-test_no_duplicates()
 test_match_basic()
 test_match_func()
 test_run_game()

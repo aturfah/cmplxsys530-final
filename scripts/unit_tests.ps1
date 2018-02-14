@@ -15,6 +15,14 @@ Write-Output "Running coinflip_test.py"
 python -m tests.coinflip_test
 Write-Output "Completed!"
 
+Write-Output "Running base_ladder_test.py"
+python -m tests.base_ladder_test
+Write-Output "Completed!"
+
+Write-Output "Running random_ladder_test.py"
+python -m tests.random_ladder_test
+Write-Output "Completed!"
+
 Write-Output "Running weighted_ladder_test.py"
 python -m tests.weighted_ladder_test
 Write-Output "Completed!"
