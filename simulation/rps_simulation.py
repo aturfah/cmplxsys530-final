@@ -97,7 +97,7 @@ def init_player_log_writer():
 
 
 def init_type_log_writer(proportions):
-    """Initialize strategy LogWriter."""
+    """Initialize Type Average Elo LogWriter."""
     header = []
     if proportions[0] != 0:
         header.append("rock")
