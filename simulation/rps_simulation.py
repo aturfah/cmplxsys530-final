@@ -32,7 +32,7 @@ def run(**kwargs):
     game = RPSEngine()
     lad = Ladder(game)
     player_log_writer = init_player_log_writer()
-    type_log_writer = init_type_log_writer()
+    type_log_writer = init_type_log_writer(proportions)
 
     add_agents(lad, num_players, proportions)
 
@@ -96,13 +96,17 @@ def init_player_log_writer():
     return log_writer
 
 
-def init_type_log_writer():
+def init_type_log_writer(proportions):
     """Initialize strategy LogWriter."""
     header = []
-    header.append("rock")
-    header.append("paper")
-    header.append("scissors")
-    header.append("uniform")
+    if proportions[0] != 0:
+        header.append("rock")
+    if proportions[1] != 0:
+        header.append("paper")
+    if proportions[2] != 0:
+        header.append("scissors")
+    if proportions[3] != 0:
+        header.append("uniform")
 
     log_writer = LogWriter(header, prefix="RPSAvgStrats")
     return log_writer
