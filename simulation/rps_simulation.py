@@ -99,6 +99,7 @@ def add_agents(lad, num_players, proportions):
 
 
 def init_player_log_writer():
+    """Initialize player data LogWriter"""
     header = []
     header.append("player1.type")
     header.append("player1.elo")
