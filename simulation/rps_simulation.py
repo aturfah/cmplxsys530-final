@@ -38,7 +38,7 @@ def run(**kwargs):
     game = RPSEngine()
     lad = Ladder(game)
     log_writer = init_player_log_writer()
-    ratings = {}
+    # ratings = {}
 
     add_agents(lad, num_players, proportions)
 
@@ -66,8 +66,8 @@ def run(**kwargs):
         for player in players:
             player.print_info()
 
-    if not suppress_graph:
-        plot_group_ratings(ratings)
+    #if not suppress_graph:
+    #    plot_group_ratings(ratings)
 
 
 def add_agents(lad, num_players, proportions):
