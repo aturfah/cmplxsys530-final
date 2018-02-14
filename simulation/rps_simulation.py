@@ -37,7 +37,7 @@ def run(**kwargs):
 
     game = RPSEngine()
     lad = Ladder(game)
-    log_writer = init_log_writer()
+    log_writer = init_player_log_writer()
     ratings = {}
 
     add_agents(lad, num_players, proportions)
@@ -98,7 +98,7 @@ def add_agents(lad, num_players, proportions):
         lad.add_player(player)
 
 
-def init_log_writer():
+def init_player_log_writer():
     header = []
     header.append("player1.type")
     header.append("player1.elo")
@@ -106,5 +106,5 @@ def init_log_writer():
     header.append("player2.elo")
     header.append("outcome")
 
-    log_writer = LogWriter(header, prefix="RPS")
+    log_writer = LogWriter(header, prefix="RPSPlayers")
     return log_writer
