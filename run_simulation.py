@@ -37,6 +37,7 @@ def run(**kwargs):
     game_choice = int(kwargs.get("game_choice", None))
     proportions = kwargs.get("proportions", None)
     data_delay = kwargs.get("data_delay", None)
+    ladder_choice = int(kwargs.get("ladder", None))
 
     if game_choice == 0:
         cfe_simulation.run(num_runs, num_players)
@@ -44,12 +45,14 @@ def run(**kwargs):
         rps_simulation.run(num_runs=num_runs,
                            num_players=num_players,
                            proportions=(0.25, 0.25, 0.25, 0.25),
-                           data_delay=data_delay)
+                           data_delay=data_delay,
+                           ladder_choice=ladder_choice)
     elif game_choice == 2:
         rps_simulation.run(num_runs=num_runs,
                            num_players=num_players,
                            proportions=proportions,
-                           data_delay=data_delay)
+                           data_delay=data_delay,
+                           ladder_choice=ladder_choice)
     else:
         raise RuntimeError("Invalid Game Choice")
 
