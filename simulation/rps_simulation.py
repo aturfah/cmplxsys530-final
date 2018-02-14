@@ -7,6 +7,7 @@ from agent.rps_agent import RPSAgent
 from ladder.ladder import Ladder
 from stats.calc import calculate_avg_elo
 from stats.plot import plot_group_ratings
+from log_manager.log_writer import LogWriter
 
 
 def run(**kwargs):
@@ -36,19 +37,28 @@ def run(**kwargs):
 
     game = RPSEngine()
     lad = Ladder(game)
+    log_writer = init_log_writer()
     ratings = {}
 
     add_agents(lad, num_players, proportions)
 
-    for game_ind in range(num_runs):
-        lad.run_game()
-        if game_ind % data_delay == 0:
-            # Calculate the statistics every data_delay values
-            current_stats = calculate_avg_elo(lad)
-            for group in current_stats:
-                if group not in ratings:
-                    ratings[group] = []
-                ratings[group].append(current_stats[group])
+    for _ in range(num_runs):
+        outcome, player1, player2 = lad.run_game()
+        # if game_ind % data_delay == 0:
+        #    # Calculate the statistics every data_delay values
+        #    current_stats = calculate_avg_elo(lad)
+        #    for group in current_stats:
+        #        if group not in ratings:
+        #            ratings[group] = []
+        #        ratings[group].append(current_stats[group])
+        datum = {
+            "player1.type": player1.type,
+            "player1.elo": player1.elo,
+            "player2.type": player2.type,
+            "player2.elo": player2.elo,
+            "outcome": outcome
+        }
+        log_writer.write_line(datum)
 
     players = lad.get_players(sort=True)
 
@@ -86,3 +96,15 @@ def add_agents(lad, num_players, proportions):
         agent_id = 'mixed_{}'.format(mixed_ind)
         player = RPSAgent(id_in=agent_id)
         lad.add_player(player)
+
+
+def init_log_writer():
+    header = []
+    header.append("player1.type")
+    header.append("player1.elo")
+    header.append("player2.type")
+    header.append("player2.elo")
+    header.append("outcome")
+
+    log_writer = LogWriter(header, prefix="RPS")
+    return log_writer
