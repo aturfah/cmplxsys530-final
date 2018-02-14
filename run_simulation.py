@@ -24,9 +24,9 @@ from simulation import rps_simulation
               help="Proportions for skewed RPS tournament. Default is uniform.")
 @click.option('-sp',
               '--suppress_print',
-              default=True,
+              default=False,
               is_flag=True,
-              help="Suppress print output. Default is True")
+              help="Suppress print output. Default is False")
 @click.option('-sg',
               '--suppress_graph',
               default=False,
@@ -40,12 +40,12 @@ def run(**kwargs):
     """Run the simulation."""
     num_runs = kwargs.get('num_runs', None)
     num_players = kwargs.get('num_players', None)
-    game_choice = kwargs.get('game_choice', None)
+    game_choice = int(kwargs.get('game_choice', None))
     proportions = kwargs.get('proportions', None)
     data_delay = kwargs.get('data_delay', None)
     suppress_print = kwargs.get('suppress_print', None)
     suppress_graph = kwargs.get('suppress_graph', None)
-
+    
     if game_choice == 0:
         cfe_simulation.run(num_runs, num_players, suppress_print)
     elif game_choice == 1:
@@ -62,7 +62,8 @@ def run(**kwargs):
                            data_delay=data_delay,
                            suppress_print=suppress_print,
                            suppress_graph=suppress_graph)
-
+    else:
+        raise RuntimeError("Invalid Game Choice")
 
 if __name__ == "__main__":
     # pylint: disable=no-value-for-parameter
