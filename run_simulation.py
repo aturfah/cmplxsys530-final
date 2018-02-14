@@ -22,16 +22,6 @@ from simulation import rps_simulation
               nargs=4,
               default=(0.25, 0.25, 0.25, 0.25),
               help="Proportions for skewed RPS tournament. Default is uniform.")
-@click.option('-sp',
-              '--suppress_print',
-              default=True,
-              is_flag=True,
-              help="Suppress print output. Default is True")
-@click.option('-sg',
-              '--suppress_graph',
-              default=False,
-              is_flag=True,
-              help="Suppress graphical output. Default is False")
 @click.option('-dd',
               '--data_delay',
               default=10,
@@ -40,28 +30,24 @@ def run(**kwargs):
     """Run the simulation."""
     num_runs = kwargs.get('num_runs', None)
     num_players = kwargs.get('num_players', None)
-    game_choice = kwargs.get('game_choice', None)
+    game_choice = int(kwargs.get('game_choice', None))
     proportions = kwargs.get('proportions', None)
     data_delay = kwargs.get('data_delay', None)
-    suppress_print = kwargs.get('suppress_print', None)
-    suppress_graph = kwargs.get('suppress_graph', None)
 
     if game_choice == 0:
-        cfe_simulation.run(num_runs, num_players, suppress_print)
+        cfe_simulation.run(num_runs, num_players)
     elif game_choice == 1:
         rps_simulation.run(num_runs=num_runs,
                            num_players=num_players,
                            proportions=(0.25, 0.25, 0.25, 0.25),
-                           data_delay=data_delay,
-                           suppress_print=suppress_print,
-                           suppress_graph=suppress_graph)
+                           data_delay=data_delay)
     elif game_choice == 2:
         rps_simulation.run(num_runs=num_runs,
                            num_players=num_players,
                            proportions=proportions,
-                           data_delay=data_delay,
-                           suppress_print=suppress_print,
-                           suppress_graph=suppress_graph)
+                           data_delay=data_delay)
+    else:
+        raise RuntimeError("Invalid Game Choice")
 
 
 if __name__ == "__main__":

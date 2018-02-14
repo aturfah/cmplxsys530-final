@@ -1,4 +1,5 @@
 """Methods for matching players together by elo ranking."""
+from copy import deepcopy
 
 from numpy.random import randint
 from ladder.elo import elo
@@ -97,6 +98,8 @@ class Ladder:
     def run_game(self):
         """Match players and run a game."""
         player, opp = self.match_players()
+        player_copy = deepcopy(player)
+        opp_copy = deepcopy(opp)
 
         outcome = self.game_engine.run(player, opp)
 
@@ -107,6 +110,8 @@ class Ladder:
 
         self.add_player(player)
         self.add_player(opp)
+
+        return (outcome, player_copy, opp_copy)
 
     def update_players(self, winner, loser):
         """

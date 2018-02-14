@@ -1,6 +1,6 @@
 # Script to run code style tests
 
-$modules =  "agent", "battle_engine", "ladder", "simulation", "stats", "tests"
+$modules =  "agent", "battle_engine", "ladder", "simulation", "stats", "tests", "log_manager"
 
 foreach ($module in $modules) {
     Write-Output "Module: $module"

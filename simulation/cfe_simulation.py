@@ -4,9 +4,10 @@
 from battle_engine.coinflip import CoinFlipEngine
 from agent.base_agent import BaseAgent
 from ladder.ladder import Ladder
+from log_manager.log_writer import LogWriter
 
 
-def run(num_runs, num_players, suppress_print):
+def run(num_runs, num_players):
     """
     Run Coinflip Simulation.
 
@@ -19,16 +20,29 @@ def run(num_runs, num_players, suppress_print):
     """
     game = CoinFlipEngine()
     lad = Ladder(game)
+    player_log_writer = init_player_log_writer()
 
     for _ in range(num_players):
         player = BaseAgent()
         lad.add_player(player)
 
     for _ in range(num_runs):
-        lad.run_game()
+        outcome, player1, player2 = lad.run_game()
 
-    players = lad.get_players(sort=True)
+        datum = {
+            "outcome": outcome,
+            "player1.elo": player1.elo,
+            "player2.elo": player2.elo
+        }
+        player_log_writer.write_line(datum)
 
-    if not suppress_print:
-        for player in players:
-            player.print_info()
+
+def init_player_log_writer():
+    """Initialize player data LogWriter."""
+    header = []
+    header.append("player1.elo")
+    header.append("player2.elo")
+    header.append("outcome")
+
+    log_writer = LogWriter(header, prefix="CFEPlayers")
+    return log_writer
