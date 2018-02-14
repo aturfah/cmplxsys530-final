@@ -23,23 +23,16 @@ def run(**kwargs):
         to have on the ladder.
     :param data_delay: int
         How often to record the elo rankings of the players for graphing
-    :param suppress_print: bool
-        Whether or not to print player ratings at the end of a round
-    :param suppress_graph: bool
-        Whether or not to graph player elo ratings over simulation
     """
     num_runs = kwargs["num_runs"]
     num_players = kwargs["num_players"]
     proportions = kwargs["proportions"]
     data_delay = kwargs["data_delay"]
-    suppress_print = kwargs["suppress_print"]
-    # suppress_graph = kwargs["suppress_graph"]
 
     game = RPSEngine()
     lad = Ladder(game)
     player_log_writer = init_player_log_writer()
     type_log_writer = init_type_log_writer()
-    # ratings = {}
 
     add_agents(lad, num_players, proportions)
 
@@ -60,15 +53,6 @@ def run(**kwargs):
             # every <data_delay> iterations
             current_stats = calculate_avg_elo(lad)
             type_log_writer.write_line(current_stats)
-
-    players = lad.get_players(sort=True)
-
-    if not suppress_print:
-        for player in players:
-            player.print_info()
-
-    # if not suppress_graph:
-    #    plot_group_ratings(ratings)
 
 
 def add_agents(lad, num_players, proportions):
