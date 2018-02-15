@@ -16,7 +16,7 @@ class RPSSimulation(BaseSimulation):
     def __init__(self, **kwargs):
         """
         Initialize an RPS Simulation.
-        
+
         :param proportions: list
             List of proportions for Rock, Paper,
             Scissors, and Uniform players respectively
