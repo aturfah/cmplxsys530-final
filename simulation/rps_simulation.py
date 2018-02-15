@@ -57,8 +57,7 @@ def run(**kwargs):
         if game_ind % data_delay == 0:
             # Calculate the average ranking statistics
             # every <data_delay> iterations
-            current_stats = calculate_avg_elo(lad)
-            type_log_writer.write_line(current_stats)
+            type_log_writer.write_line(calculate_avg_elo(lad))
 
 
 def add_agents(lad, num_players, proportions):
