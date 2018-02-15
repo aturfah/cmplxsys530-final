@@ -18,10 +18,6 @@ Write-Output "Running base_ladder_test.py"
 python -m tests.ladder_tests.base_ladder_test
 Write-Output "Completed!"
 
-Write-Output "Running random_ladder_test.py"
-python -m tests.ladder_tests.random_ladder_test
-Write-Output "Completed!"
-
 Write-Output "Running weighted_ladder_test.py"
 python -m tests.ladder_tests.weighted_ladder_test
 Write-Output "Completed!"
