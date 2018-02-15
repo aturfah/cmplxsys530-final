@@ -23,9 +23,51 @@ class RPSSimulation(BaseSimulation):
 
         self.add_agents()
 
+    def add_agents(self):
+        """Add agents in specified proportions to ladder."""
+        num_rock = ceil(float(self.proportions[0])*self.num_players)
+        num_paper = ceil(float(self.proportions[1])*self.num_players)
+        num_scissors = ceil(float(self.proportions[2])*self.num_players)
+        num_mixed = ceil(float(self.proportions[3])*self.num_players)
+
+        for rock_ind in range(num_rock):
+            agent_id = 'rock_{}'.format(rock_ind)
+            player = RPSAgent(id_in=agent_id, strategy_in='rock')
+            self.ladder.add_player(player)
+
+        for paper_ind in range(num_paper):
+            agent_id = 'paper_{}'.format(paper_ind)
+            player = RPSAgent(id_in=agent_id, strategy_in='paper')
+            self.ladder.add_player(player)
+
+        for sciss_ind in range(num_scissors):
+            agent_id = 'scissors_{}'.format(sciss_ind)
+            player = RPSAgent(id_in=agent_id, strategy_in='scissors')
+            self.ladder.add_player(player)
+
+        for mixed_ind in range(num_mixed):
+            agent_id = 'mixed_{}'.format(mixed_ind)
+            player = RPSAgent(id_in=agent_id)
+            self.ladder.add_player(player)
+
+    def init_type_log_writer(self):
+        """Initialize Type Average Elo LogWriter."""
+        header = []
+        if self.proportions[0] != 0:
+            header.append("rock")
+        if self.proportions[1] != 0:
+            header.append("paper")
+        if self.proportions[2] != 0:
+            header.append("scissors")
+        if self.proportions[3] != 0:
+            header.append("uniform")
+
+        self.type_log_writer = LogWriter(header, prefix="RPSTypes")
+
     def run(self):
         """Run Rock/Paper/Scissors simulation"""
         pass
+
 
 LADDER_CHOICES = [
     WeightedLadder,
