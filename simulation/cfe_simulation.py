@@ -24,7 +24,10 @@ class CFESimulation(BaseSimulation):
             self.ladder.add_player(player)
 
     def run(self):
-        pass
+        """Run the CF Simulation."""
+        for _ in range(self.num_runs):
+            outcome, player1, player2 = self.ladder.run_game()
+            self.write_player_log(outcome, player1, player2)
 
 def run(**kwargs):
     """
