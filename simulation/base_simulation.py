@@ -10,6 +10,7 @@ LADDER_CHOICES = [
     RandomLadder
 ]
 
+
 class BaseSimulation():
     """Base Simulation class."""
 
@@ -26,8 +27,8 @@ class BaseSimulation():
         :param ladder_choice: int
             Whether to use WeightedLadder (0) or RandomLadder (1)
             for ladder matching.
-        :param ladder: BaseLadder
-            Ladder to run this simulation with.
+        :param prefix: str
+            Prefix to use for these filenames.
         """
         self.num_players = kwargs["num_players"]
         self.num_runs = kwargs["num_runs"]
@@ -36,6 +37,7 @@ class BaseSimulation():
         self.ladder = LADDER_CHOICES[self.ladder_choice](self.game)
 
         self.prefix = kwargs.get("prefix", "")
+        self.init_player_log_writer()
 
     def init_player_log_writer(self):
         """Initialize player data LogWriter."""
