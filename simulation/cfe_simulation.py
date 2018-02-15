@@ -5,7 +5,7 @@ from battle_engine.coinflip import CoinFlipEngine
 from agent.base_agent import BaseAgent
 
 
-class CFESimulation(BaseSimulation):
+class CFSimulation(BaseSimulation):
     """Class to run Coin Flip Simulation."""
 
     def __init__(self, **kwargs):
