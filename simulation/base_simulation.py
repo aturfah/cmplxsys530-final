@@ -39,8 +39,24 @@ class BaseSimulation():
         self.prefix = kwargs.get("prefix", "")
         self.init_player_log_writer()
 
+    def write_player_log(self, player1, player2, outcome):
+        """Write the log of an individual game to a file."""
+        datum = {
+            "player1.type": player1.type,
+            "player1.elo": player1.elo,
+            "player2.type": player2.type,
+            "player2.elo": player2.elo,
+            "outcome": outcome
+        }
+        self.player_log_writer.write_line(datum)
+
     def init_player_log_writer(self):
-        """Initialize player data LogWriter."""
+        """
+        Initialize player data LogWriter.
+        
+        This LogWriter generates a record of the two players
+        who play a game (player-type and elo) and the outcome.
+        """
         header = []
         header.append("player1.type")
         header.append("player1.elo")
@@ -50,7 +66,7 @@ class BaseSimulation():
 
         log_prefix = "{}Players".format(self.prefix)
 
-        self.log_writer = LogWriter(header, prefix=log_prefix)
+        self.player_log_writer = LogWriter(header, prefix=log_prefix)
 
     def run(self, **kwargs):
         """Run this simulation."""
