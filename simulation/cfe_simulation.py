@@ -17,7 +17,9 @@ class CFESimulation(BaseSimulation):
 
     def add_agents(self):
         """Add agents to the ladder."""
-        pass
+        for _ in range(self.num_players):
+            player = BaseAgent()
+            self.ladder.add_player(player)
 
     def run(self):
         pass
