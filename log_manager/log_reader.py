@@ -21,3 +21,8 @@ class LogReader():
         if filename is not None and prefix is not None:
             raise AttributeError(
                 "Only one of filename or prefix can be specified")
+
+        if prefix is not None:
+            pass
+        else:
+            self.files = [filename]
