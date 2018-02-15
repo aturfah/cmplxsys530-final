@@ -1,8 +1,9 @@
-"""Test for functions of BaseLadder"""
+"""Test for functions of BaseLadder."""
 
 from agent.base_agent import BaseAgent
 from ladder.base_ladder import BaseLadder
 from battle_engine.coinflip import CoinFlipEngine
+
 
 def test_add():
     """Basic test for ladder add_player method."""
@@ -34,4 +35,3 @@ def test_no_duplicates():
 
 test_add()
 test_no_duplicates()
-
