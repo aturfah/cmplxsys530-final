@@ -1,11 +1,15 @@
 """Script to run a ladder simulation for CoinFlipEngine."""
 
-
+from simulation.base_simulation import BaseSimulation
 from battle_engine.coinflip import CoinFlipEngine
 from agent.base_agent import BaseAgent
-from ladder.weighted_ladder import WeightedLadder
-from ladder.random_ladder import RandomLadder
-from log_manager.log_writer import LogWriter
+
+
+class CFESimulation(BaseSimulation):
+    """Class to run Coin Flip Simulation."""
+
+    def __init__(self, **kwargs):
+        pass
 
 
 LADDER_CHOICES = [
