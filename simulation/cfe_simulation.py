@@ -9,14 +9,18 @@ class CFESimulation(BaseSimulation):
     """Class to run Coin Flip Simulation."""
 
     def __init__(self, **kwargs):
+        """Initialize CF Simulation."""
+        cfe_kwargs = kwargs
+        cfe_kwargs["game"] = CoinFlipEngine()
+        cfe_kwargs["prefix"] = "CF"
+        super().__init__(kwargs)
+
+    def add_agents(self):
+        """Add agents to the ladder."""
         pass
 
-
-LADDER_CHOICES = [
-    WeightedLadder,
-    RandomLadder
-]
-
+    def run(self):
+        pass
 
 def run(**kwargs):
     """
