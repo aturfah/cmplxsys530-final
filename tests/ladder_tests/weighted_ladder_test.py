@@ -32,6 +32,7 @@ def test_match_func():
     # Higher elo players got matched together
     assert (match2.id == ba1.id or match2.id == ba2.id)
 
+
 def test_match_basic():
     """Test that match functions properly."""
     # Set up variables
@@ -49,6 +50,7 @@ def test_match_basic():
     # Assert that players get removed from ladder
     assert not lad.player_pool
     assert lad.num_turns == 1
+
 
 def test_run_game():
     """Test run_game functions properly."""
@@ -82,6 +84,7 @@ def test_run_game():
     # Someone lost the game
     assert((player1.num_losses == 0 and player2.num_losses == 1) or
            (player1.num_losses == 1 and player2.num_losses == 0))
+
 
 def test_get_players_sorted():
     """Run get_players with sorted flag to true."""
