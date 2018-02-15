@@ -10,6 +10,14 @@ from stats.calc import calculate_avg_elo
 # from stats.plot import plot_group_ratings
 from log_manager.log_writer import LogWriter
 
+from simulation.base_simulation import BaseSimulation
+
+
+class RPSSimulation(BaseSimulation):
+    """Class for running an RPS Simulation."""
+
+    pass
+
 LADDER_CHOICES = [
     WeightedLadder,
     RandomLadder
