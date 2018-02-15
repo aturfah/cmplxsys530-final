@@ -47,8 +47,8 @@ def run(**kwargs):
 
     if game_choice == 0:
         cfe_sim = CFSimulation(num_runs=num_runs,
-                                num_players=num_players,
-                                ladder_choice=ladder_choice)
+                               num_players=num_players,
+                               ladder_choice=ladder_choice)
         cfe_sim.run()
     elif game_choice == 1:
         rps_sim = RPSSimulation(num_runs=num_runs,
