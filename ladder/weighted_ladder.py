@@ -1,6 +1,7 @@
 """Methods for matching players together by elo ranking."""
 from ladder.base_ladder import BaseLadder
 
+
 class WeightedLadder(BaseLadder):
     """Ladder that matches players by Elo ranking."""
 
