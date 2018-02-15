@@ -16,7 +16,10 @@ from simulation.rps_simulation import RPSSimulation
               help="Number of agents. Default is 10")
 @click.option("-g",
               "--game_choice",
-              help="Which game to play. Options are\n[0] Coin Flip\n[1] Balanced Population Rock Paper Scissors\n[2] Skewed Population Rock Paper Scissors")
+              help="Which game to play. Options are\n \
+              [0] Coin Flip\n \
+              [1] Balanced Population Rock Paper Scissors\n \
+              [2] Skewed Population Rock Paper Scissors")
 @click.option("-p",
               "--proportions",
               nargs=4,
