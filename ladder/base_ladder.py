@@ -1,8 +1,9 @@
-"""Base Class for ladders to inherit from"""
+"""Base Class for ladders to inherit from."""
 from copy import deepcopy
 
 from numpy.random import randint
 from ladder.elo import elo
+
 
 class BaseLadder:
     """The class for the ladder."""
@@ -75,7 +76,7 @@ class BaseLadder:
         return (player, opponent)
 
     def match_func(self, player1, player2_pair):
-        """IMPLEMENTED BY CHILD CLASS"""
+        """IMPLEMENT IN CHILD CLASS."""
         raise NotImplementedError("Implement in child class")
 
     def run_game(self):

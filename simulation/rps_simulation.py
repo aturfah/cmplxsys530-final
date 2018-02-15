@@ -15,6 +15,7 @@ LADDER_CHOICES = [
     RandomLadder
 ]
 
+
 def run(**kwargs):
     """
     Run a Rock/Paper/Scissors simulation.

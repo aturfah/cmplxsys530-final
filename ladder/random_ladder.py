@@ -1,7 +1,8 @@
-"""Ladder that randomly pairs two agents"""
+"""Ladder that randomly pairs two agents."""
 
 from numpy.random import rand
 from ladder.base_ladder import BaseLadder
+
 
 class RandomLadder(BaseLadder):
     """Ladder that matches players by Elo ranking."""
@@ -20,7 +21,7 @@ class RandomLadder(BaseLadder):
 
     def match_func(self, player1, player2_pair):
         """
-        Return random value as a match
+        Return random value as a match weighting.
 
         Since players will be sorted this random value, it is
         equivalent to randomly choosing an opponent
