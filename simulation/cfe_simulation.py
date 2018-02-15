@@ -15,6 +15,8 @@ class CFESimulation(BaseSimulation):
         cfe_kwargs["prefix"] = "CF"
         super().__init__(kwargs)
 
+        self.add_agents()
+
     def add_agents(self):
         """Add agents to the ladder."""
         for _ in range(self.num_players):
