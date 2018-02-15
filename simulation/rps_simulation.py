@@ -16,7 +16,16 @@ from simulation.base_simulation import BaseSimulation
 class RPSSimulation(BaseSimulation):
     """Class for running an RPS Simulation."""
 
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(kwargs, game=RPSEngine(), prefix="RPS")
+        self.proportions = kwargs["proportions"]
+        self.data_delay = kwargs["data_delay"]
+
+        self.add_agents()
+
+    def run(self):
+        """Run Rock/Paper/Scissors simulation"""
+        pass
 
 LADDER_CHOICES = [
     WeightedLadder,
