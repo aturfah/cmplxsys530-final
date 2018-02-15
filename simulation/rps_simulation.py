@@ -67,7 +67,15 @@ class RPSSimulation(BaseSimulation):
 
     def run(self):
         """Run Rock/Paper/Scissors simulation"""
-        pass
+        for game_ind in range(self.num_runs):
+            outcome, player1, player2 = self.ladder.run_game()
+
+            self.write_player_log(outcome, player1, player2)
+
+            if game_ind % self.data_delay == 0:
+                # Calculate the average ranking statistics
+                # every <data_delay> iterations
+                self.type_log_writer.write_line(calculate_avg_elo(self.ladder))
 
 
 LADDER_CHOICES = [
