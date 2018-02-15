@@ -37,7 +37,10 @@ def run(**kwargs):
     """Run the simulation."""
     num_runs = kwargs.get("num_runs", None)
     num_players = kwargs.get("num_players", None)
-    game_choice = int(kwargs.get("game_choice", None))
+    game_choice = kwargs.get("game_choice", None)
+    if game_choice is None:
+        raise RuntimeError("No Game Selected")
+    game_choice = int(game_choice)
     proportions = kwargs.get("proportions", None)
     data_delay = kwargs.get("data_delay", None)
     ladder_choice = int(kwargs.get("ladder", None))
