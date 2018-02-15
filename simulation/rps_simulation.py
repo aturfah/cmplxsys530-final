@@ -17,7 +17,11 @@ class RPSSimulation(BaseSimulation):
     """Class for running an RPS Simulation."""
 
     def __init__(self, **kwargs):
-        super().__init__(kwargs, game=RPSEngine(), prefix="RPS")
+        rps_kwargs = kwargs
+        rps_kwargs["game"] = RPSEngine()
+        rps_kwargs["prefix"] = "RPS"
+        super().__init__(rps_kwargs)
+
         self.proportions = kwargs["proportions"]
         self.data_delay = kwargs["data_delay"]
 
