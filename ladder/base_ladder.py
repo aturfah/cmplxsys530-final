@@ -1,11 +1,11 @@
-"""Methods for matching players together by elo ranking."""
+"""Base Class for ladders to inherit from."""
 from copy import deepcopy
 
 from numpy.random import randint
 from ladder.elo import elo
 
 
-class Ladder:
+class BaseLadder:
     """The class for the ladder."""
 
     def __init__(self, game=None, K_in=32):
@@ -76,24 +76,8 @@ class Ladder:
         return (player, opponent)
 
     def match_func(self, player1, player2_pair):
-        """
-        Calculate the match score for two players.
-
-        Players with similar elo rankings should be matched together.
-        In addition, players who have been waiting for a long time should
-        get to play sooner.
-
-        Functional form is <Turns_waiting>/abs(<Difference in Elo scores>)
-
-        :param player1: BaseAgent
-            The player who is being matched
-        :param player2: (BaseAgent, int)
-            The candidate player & turns waiting pair for a  match
-        """
-        elo_factor = 1/max(abs(player1.elo - player2_pair[0].elo), 1)
-        turn_factor = max((self.num_turns - player2_pair[1]), 1)
-
-        return elo_factor*turn_factor
+        """IMPLEMENT IN CHILD CLASS."""
+        raise NotImplementedError("Implement in child class")
 
     def run_game(self):
         """Match players and run a game."""

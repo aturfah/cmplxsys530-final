@@ -4,10 +4,16 @@ from math import ceil
 
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
-from ladder.ladder import Ladder
+from ladder.weighted_ladder import WeightedLadder
+from ladder.random_ladder import RandomLadder
 from stats.calc import calculate_avg_elo
 # from stats.plot import plot_group_ratings
 from log_manager.log_writer import LogWriter
+
+LADDER_CHOICES = [
+    WeightedLadder,
+    RandomLadder
+]
 
 
 def run(**kwargs):
@@ -28,9 +34,10 @@ def run(**kwargs):
     num_players = kwargs["num_players"]
     proportions = kwargs["proportions"]
     data_delay = kwargs["data_delay"]
+    ladder_choice = kwargs["ladder_choice"]
 
     game = RPSEngine()
-    lad = Ladder(game)
+    lad = LADDER_CHOICES[ladder_choice](game)
     player_log_writer = init_player_log_writer()
     type_log_writer = init_type_log_writer(proportions)
 
@@ -51,8 +58,7 @@ def run(**kwargs):
         if game_ind % data_delay == 0:
             # Calculate the average ranking statistics
             # every <data_delay> iterations
-            current_stats = calculate_avg_elo(lad)
-            type_log_writer.write_line(current_stats)
+            type_log_writer.write_line(calculate_avg_elo(lad))
 
 
 def add_agents(lad, num_players, proportions):

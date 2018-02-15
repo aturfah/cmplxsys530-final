@@ -3,11 +3,18 @@
 
 from battle_engine.coinflip import CoinFlipEngine
 from agent.base_agent import BaseAgent
-from ladder.ladder import Ladder
+from ladder.weighted_ladder import WeightedLadder
+from ladder.random_ladder import RandomLadder
 from log_manager.log_writer import LogWriter
 
 
-def run(num_runs, num_players):
+LADDER_CHOICES = [
+    WeightedLadder,
+    RandomLadder
+]
+
+
+def run(**kwargs):
     """
     Run Coinflip Simulation.
 
@@ -15,11 +22,13 @@ def run(num_runs, num_players):
         Number of games to play
     :param num_players: int
         Number of players to have in ladder player pool
-    :param suppress_print: bool
-        Whether or not to output the ratings at the end
     """
+    num_players = kwargs["num_players"]
+    num_runs = kwargs["num_runs"]
+    ladder_choice = kwargs["ladder_choice"]
+
     game = CoinFlipEngine()
-    lad = Ladder(game)
+    lad = LADDER_CHOICES[ladder_choice](game)
     player_log_writer = init_player_log_writer()
 
     for _ in range(num_players):
