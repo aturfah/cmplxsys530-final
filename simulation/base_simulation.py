@@ -53,7 +53,7 @@ class BaseSimulation():
     def init_player_log_writer(self):
         """
         Initialize player data LogWriter.
-        
+
         This LogWriter generates a record of the two players
         who play a game (player-type and elo) and the outcome.
         """
@@ -68,6 +68,6 @@ class BaseSimulation():
 
         self.player_log_writer = LogWriter(header, prefix=log_prefix)
 
-    def run(self, **kwargs):
+    def run(self):
         """Run this simulation."""
         raise NotImplementedError("Implement in inherited class")
