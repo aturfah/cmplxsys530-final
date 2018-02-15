@@ -14,7 +14,7 @@ LADDER_CHOICES = [
 class BaseSimulation():
     """Base Simulation class."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, kwargs):
         """
         Init method.
 
