@@ -26,3 +26,8 @@ Write-Output "Completed!"
 Write-Output "Running elo_test.py"
 python -m tests.misc_tests.elo_test
 Write-Output "Completed!"
+
+# Run Log Manager tests
+Write-Output "Running log_manager_test.py"
+python -m tests.misc_tests.log_manager_test
+Write-Output "Completed!"
