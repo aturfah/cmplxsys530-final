@@ -20,7 +20,7 @@ class BaseAgent():
             self.id = kwargs["id_in"]  # pylint: disable=C0103
 
         if "type" not in kwargs:
-            self.type = None
+            self.type = "Default"
         else:
             self.type = kwargs["type"]
 
