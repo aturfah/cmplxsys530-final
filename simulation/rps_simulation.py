@@ -2,15 +2,12 @@
 
 from math import ceil
 
+from simulation.base_simulation import BaseSimulation
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
-from ladder.weighted_ladder import WeightedLadder
-from ladder.random_ladder import RandomLadder
 from stats.calc import calculate_avg_elo
 # from stats.plot import plot_group_ratings
 from log_manager.log_writer import LogWriter
-
-from simulation.base_simulation import BaseSimulation
 
 
 class RPSSimulation(BaseSimulation):
