@@ -39,7 +39,7 @@ class BaseSimulation():
         self.prefix = kwargs.get("prefix", "")
         self.init_player_log_writer()
 
-    def write_player_log(self, player1, player2, outcome):
+    def write_player_log(self, outcome, player1, player2):
         """Write the log of an individual game to a file."""
         datum = {
             "player1.type": player1.type,
