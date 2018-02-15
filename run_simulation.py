@@ -1,7 +1,7 @@
 """Script to run a ladder simulation."""
 import click
 
-from simulation.cfe_simulation import CFESimulation
+from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
 
 
@@ -46,7 +46,7 @@ def run(**kwargs):
     ladder_choice = int(kwargs.get("ladder", None))
 
     if game_choice == 0:
-        cfe_sim = CFESimulation(num_runs=num_runs,
+        cfe_sim = CFSimulation(num_runs=num_runs,
                                 num_players=num_players,
                                 ladder_choice=ladder_choice)
         cfe_sim.run()
