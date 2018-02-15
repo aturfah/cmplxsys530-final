@@ -2,7 +2,7 @@
 import click
 
 from simulation import cfe_simulation
-from simulation import rps_simulation
+from simulation.rps_simulation import RPSSimulation
 
 
 @click.command()
@@ -44,17 +44,19 @@ def run(**kwargs):
                            num_players=num_players,
                            ladder_choice=ladder_choice)
     elif game_choice == 1:
-        rps_simulation.run(num_runs=num_runs,
-                           num_players=num_players,
-                           proportions=(0.25, 0.25, 0.25, 0.25),
-                           data_delay=data_delay,
-                           ladder_choice=ladder_choice)
+        rps_sim = RPSSimulation(num_runs=num_runs,
+                                num_players=num_players,
+                                proportions=(0.25, 0.25, 0.25, 0.25),
+                                data_delay=data_delay,
+                                ladder_choice=ladder_choice)
+        rps_sim.run()
     elif game_choice == 2:
-        rps_simulation.run(num_runs=num_runs,
-                           num_players=num_players,
-                           proportions=proportions,
-                           data_delay=data_delay,
-                           ladder_choice=ladder_choice)
+        rps_sim = RPSSimulation(num_runs=num_runs,
+                                num_players=num_players,
+                                proportions=proportions,
+                                data_delay=data_delay,
+                                ladder_choice=ladder_choice)
+        rps_sim.run()
     else:
         raise RuntimeError("Invalid Game Choice")
 
