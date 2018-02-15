@@ -34,10 +34,9 @@ def run(**kwargs):
     num_players = kwargs["num_players"]
     proportions = kwargs["proportions"]
     data_delay = kwargs["data_delay"]
-    ladder_choice = kwargs["ladder_choice"]
 
     game = RPSEngine()
-    lad = LADDER_CHOICES[ladder_choice](game)
+    lad = LADDER_CHOICES[kwargs["ladder_choice"]](game)
     player_log_writer = init_player_log_writer()
     type_log_writer = init_type_log_writer(proportions)
 
