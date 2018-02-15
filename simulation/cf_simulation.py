@@ -10,9 +10,9 @@ class CFSimulation(BaseSimulation):
 
     def __init__(self, **kwargs):
         """Initialize CF Simulation."""
-        cfe_kwargs = kwargs
-        cfe_kwargs["game"] = CoinFlipEngine()
-        cfe_kwargs["prefix"] = "CF"
+        cf_kwargs = kwargs
+        cf_kwargs["game"] = CoinFlipEngine()
+        cf_kwargs["prefix"] = "CF"
         super().__init__(kwargs)
 
         self.add_agents()
