@@ -14,6 +14,16 @@ class RPSSimulation(BaseSimulation):
     """Class for running an RPS Simulation."""
 
     def __init__(self, **kwargs):
+        """
+        Initialize an RPS Simulation.
+        
+        :param proportions: list
+            List of proportions for Rock, Paper,
+            Scissors, and Uniform players respectively
+        :param data_delay: int
+            Iteration gap to calculate average
+            elo ranking for each strategy (R/P/S/U)
+        """
         rps_kwargs = kwargs
         rps_kwargs["game"] = RPSEngine()
         rps_kwargs["prefix"] = "RPS"
@@ -67,7 +77,7 @@ class RPSSimulation(BaseSimulation):
         self.type_log_writer = LogWriter(header, prefix="RPSTypes")
 
     def run(self):
-        """Run Rock/Paper/Scissors simulation"""
+        """Run Rock/Paper/Scissors simulation."""
         for game_ind in range(self.num_runs):
             outcome, player1, player2 = self.ladder.run_game()
 
