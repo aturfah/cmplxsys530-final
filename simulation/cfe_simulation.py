@@ -13,6 +13,7 @@ LADDER_CHOICES = [
     RandomLadder
 ]
 
+
 def run(**kwargs):
     """
     Run Coinflip Simulation.
