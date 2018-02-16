@@ -63,6 +63,10 @@ def test_header_validation():
 
     assert catch_err
 
+def test_reader_basic():
+    log_reader = LogReader(prefix=TEST_ID)
+    assert len(log_reader.files)
+
 
 def cleanup():
     """Clean up logs for this run."""
@@ -72,9 +76,12 @@ def cleanup():
         if TEST_ID in file_:
             remove(file_)
 
-
+# Run writer test cases
 test_writer_basic()
 test_prefix_handling()
 test_header_validation()
+
+# Run reader test cases
+test_reader_basic()
 
 cleanup()
