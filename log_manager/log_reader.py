@@ -1,5 +1,7 @@
 """Class for a log reader."""
 
+from sys import stderr
+
 from os import listdir
 from os.path import isfile, join
 
@@ -53,10 +55,19 @@ class LogReader():
         """Initialize an empty list for each column."""
         self.data = {}
         for colname in self.header:
-            self.data[colname] = {}
+            self.data[colname] = []
 
     def read_data(self):
         """Populate the data."""
         for filename in self.files:
-            with open(filename) as file_:
-                pass
+            file_ = open(filename)
+            csv_reader = reader(file_)
+            file_header = next(csv_reader)
+            if file_header != self.header:
+                # Invalid file
+                print("Warning: Invalid Header\n\tSkipping file \"{}\"".format(filename), file=stderr)
+                continue
+            for row in csv_reader:
+                for col_index in range(len(self.header)):
+                    self.data[self.header[col_index]].append(row[col_index])
+
