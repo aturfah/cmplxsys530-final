@@ -12,13 +12,14 @@ import config
 TEST_ID = str(uuid4())
 HEADER = ["X", "Y", "pew"]
 
+
 def test_writer_basic():
     """Basic test for LogWriter class."""
     lw1 = LogWriter(header=HEADER, prefix=TEST_ID)
 
     dict_to_write = {}
     dict_to_write["X"] = 10
-    dict_to_write["pew"] = "pew" 
+    dict_to_write["pew"] = "pew"
     dict_to_write["Y"] = 20
 
     lw1.write_line(dict_to_write)
@@ -63,6 +64,7 @@ def test_header_validation():
 
     assert catch_err
 
+
 def test_reader_basic():
     log_reader = LogReader(prefix=TEST_ID)
 
@@ -73,9 +75,23 @@ def test_reader_basic():
     # The data has the same number of columns
     assert len(log_reader.data) == len(HEADER)
 
+
 def test_reader_data():
+    lw_invalid = LogWriter(header=HEADER + ["pew2"], prefix=TEST_ID)
+    dict_to_write = {}
+    dict_to_write["X"] = 10
+    dict_to_write["pew"] = "pew"
+    dict_to_write["pew2"] = "pew2"
+    dict_to_write["Y"] = 20
+    lw_invalid.write_line(dict_to_write)
+    lw_invalid.write_line(dict_to_write)
+
     log_reader = LogReader(prefix=TEST_ID)
     log_reader.read_data()
+
+    assert len(log_reader.data["X"]) == 2
+    assert len(log_reader.data["Y"]) == 2
+    assert len(log_reader.data["pew"]) == 2
 
 
 def cleanup():
@@ -85,6 +101,7 @@ def cleanup():
     for file_ in log_files:
         if TEST_ID in file_:
             remove(file_)
+
 
 # Run writer test cases
 test_writer_basic()
