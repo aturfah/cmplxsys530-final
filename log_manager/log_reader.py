@@ -40,6 +40,9 @@ class LogReader():
         else:
             self.files = [filename]
 
+        if not self.files:
+            raise AttributeError("No files match the prefix provided.")
+
         self.set_header()
         self.init_data()
 
