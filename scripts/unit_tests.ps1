@@ -18,10 +18,6 @@ Write-Output "Running base_ladder_test.py"
 python -m tests.ladder_tests.base_ladder_test
 Write-Output "Completed!"
 
-Write-Output "Running random_ladder_test.py"
-python -m tests.ladder_tests.random_ladder_test
-Write-Output "Completed!"
-
 Write-Output "Running weighted_ladder_test.py"
 python -m tests.ladder_tests.weighted_ladder_test
 Write-Output "Completed!"
@@ -29,4 +25,9 @@ Write-Output "Completed!"
 # Run tests on Elo calculations
 Write-Output "Running elo_test.py"
 python -m tests.misc_tests.elo_test
+Write-Output "Completed!"
+
+# Run Log Manager tests
+Write-Output "Running log_manager_test.py"
+python -m tests.misc_tests.log_manager_test
 Write-Output "Completed!"
