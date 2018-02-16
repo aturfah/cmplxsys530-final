@@ -26,11 +26,11 @@ class LogReader():
             raise AttributeError(
                 "Only one of filename or prefix can be specified")
 
+        self.files = []
         if prefix is not None:
             for fname in listdir(config.LOG_DIR):
                 full_fname = join(config.LOG_DIR, fname)
                 if fname.startswith(prefix) and isfile(full_fname):
-                    filename.append(fname)
-
+                    self.files.append(fname)
         else:
             self.files = [filename]
