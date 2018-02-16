@@ -14,14 +14,15 @@ TEST_ID = str(uuid4())
 
 def test_writer_basic():
     """Basic test for LogWriter class."""
-    header = ["test1", "test2", "test3"]
+    header = ["X", "Y", "pew"]
     lw1 = LogWriter(header=header, prefix=TEST_ID)
 
     dict_to_write = {}
-    dict_to_write["test1"] = "pew"
-    dict_to_write["test2"] = "foo"
-    dict_to_write["test3"] = "bar"
+    dict_to_write["X"] = 10
+    dict_to_write["pew"] = "pew" 
+    dict_to_write["Y"] = 20
 
+    lw1.write_line(dict_to_write)
     lw1.write_line(dict_to_write)
 
 
