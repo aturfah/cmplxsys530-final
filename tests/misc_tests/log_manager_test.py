@@ -75,6 +75,13 @@ def test_reader_basic():
     # The data has the same number of columns
     assert len(log_reader.data) == len(HEADER)
 
+def test_reader_no_files():
+    try:
+        LogReader(prefix=str(uuid4()))
+    except AttributeError:
+        return
+
+    assert False
 
 def test_reader_data():
     log_reader = LogReader(prefix=TEST_ID)
@@ -134,6 +141,7 @@ test_header_validation()
 
 # Run reader test cases
 test_reader_basic()
+test_reader_no_files()
 test_reader_data()
 test_reader_data_err()
 
