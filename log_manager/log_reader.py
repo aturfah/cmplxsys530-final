@@ -63,11 +63,13 @@ class LogReader():
             file_ = open(filename)
             csv_reader = reader(file_)
             file_header = next(csv_reader)
+
             if file_header != self.header:
-                # Invalid file
-                print("Warning: Invalid Header\n\tSkipping file \"{}\"".format(filename), file=stderr)
-                continue
+                # Invalid file, reset data
+                self.init_data()
+                raise RuntimeError("File {} has an invalid header".format(filename))
             for row in csv_reader:
                 for col_index in range(len(self.header)):
                     self.data[self.header[col_index]].append(row[col_index])
 
+            file_.close()
