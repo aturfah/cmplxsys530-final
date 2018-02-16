@@ -1,7 +1,5 @@
 """Class for a log reader."""
 
-from sys import stderr
-
 from os import listdir
 from os.path import isfile, join
 
@@ -47,7 +45,7 @@ class LogReader():
         self.init_data()
 
     def set_header(self):
-        """Extracts the header information from a file."""
+        """Extract the header information from a file."""
         sample_filename = self.files[0]
         with open(sample_filename) as sample_file:
             csv_reader = reader(sample_file)
