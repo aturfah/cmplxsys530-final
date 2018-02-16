@@ -65,8 +65,13 @@ def test_header_validation():
 
 def test_reader_basic():
     log_reader = LogReader(prefix=TEST_ID)
-    assert len(log_reader.files)
 
+    # We have found a file
+    assert len(log_reader.files)
+    # It matches the header we use
+    assert log_reader.header == HEADER
+    # The data has the same number of columns
+    assert len(log_reader.data) == len(HEADER)
 
 
 
