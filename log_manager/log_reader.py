@@ -28,8 +28,8 @@ class LogReader():
         if filename is None and prefix is None:
             raise AttributeError("One of filename or prefix must be specified")
         if filename is not None and prefix is not None:
-            raise AttributeError(
-                "Only one of filename or prefix can be specified")
+            raise AttributeError("Only one of filename or\
+                                 prefix can be specified")
 
         self.files = []
         if prefix is not None:
@@ -70,7 +70,8 @@ class LogReader():
             if file_header != self.header:
                 # Invalid file, reset data
                 self.init_data()
-                raise RuntimeError("File {} has an invalid header".format(filename))
+                raise RuntimeError(
+                    "File {} has an invalid header".format(filename))
             for row in csv_reader:
                 for col_index in range(len(self.header)):
                     self.data[self.header[col_index]].append(row[col_index])
