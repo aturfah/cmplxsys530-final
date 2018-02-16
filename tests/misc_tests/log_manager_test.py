@@ -128,13 +128,11 @@ def test_reader_data_err():
 
 def cleanup():
     """Clean up logs for this run."""
-    log_files = [join(config.LOG_DIR, f) for f in listdir(config.LOG_DIR)
+    log_files = [f for f in listdir(config.LOG_DIR)
                  if isfile(join(config.LOG_DIR, f))]
     for filename in log_files:
-        if filename.startswith(TEST_ID):
-            remove(filename)
-        if filename.startswith(INVALID_ID):
-            remove(filename)
+        if filename.startswith(TEST_ID) or filename.startswith(INVALID_ID):
+            remove(join(config.LOG_DIR, filename))
 
 
 # Run writer test cases
