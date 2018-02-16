@@ -73,6 +73,9 @@ def test_reader_basic():
     # The data has the same number of columns
     assert len(log_reader.data) == len(HEADER)
 
+def test_reader_data():
+    log_reader = LogReader(prefix=TEST_ID)
+    log_reader.read_data()
 
 
 def cleanup():
@@ -90,5 +93,6 @@ test_header_validation()
 
 # Run reader test cases
 test_reader_basic()
+test_reader_data()
 
 cleanup()
