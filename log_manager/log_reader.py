@@ -1,5 +1,9 @@
 """Class for a log reader."""
 
+import config
+
+from os import listdir
+from os.path import isfile, join
 
 class LogReader():
     """Log reader class."""
@@ -23,6 +27,10 @@ class LogReader():
                 "Only one of filename or prefix can be specified")
 
         if prefix is not None:
-            pass
+            for fname in listdir(config.LOG_DIR):
+                full_fname = join(config.LOG_DIR, fname)
+                if fname.startswith(prefix) and isfile(full_fname):
+                    filename.append(fname)
+
         else:
             self.files = [filename]
