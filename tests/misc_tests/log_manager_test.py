@@ -130,11 +130,11 @@ def cleanup():
     """Clean up logs for this run."""
     log_files = [join(config.LOG_DIR, f) for f in listdir(config.LOG_DIR)
                  if isfile(join(config.LOG_DIR, f))]
-    for file_ in log_files:
-        if TEST_ID in file_:
-            remove(file_)
-        if INVALID_ID in file_:
-            remove(file_)
+    for filename in log_files:
+        if filename.startswith(TEST_ID):
+            remove(filename)
+        if filename.startswith(INVALID_ID):
+            remove(filename)
 
 
 # Run writer test cases
