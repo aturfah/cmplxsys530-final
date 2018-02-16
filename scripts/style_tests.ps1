@@ -1,6 +1,11 @@
 # Script to run code style tests
 
-$modules =  "agent", "battle_engine", "ladder", "simulation", "stats", "tests", "log_manager"
+if (!$args) {
+    $modules =  "agent", "battle_engine", "ladder", "simulation", "stats", "tests", "log_manager"
+} else {
+    $modules = $args
+}
+    
 
 foreach ($module in $modules) {
     Write-Output "Module: $module"
