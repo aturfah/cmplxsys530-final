@@ -12,6 +12,10 @@ def basic_test():
 
     assert rps_rock.strategy == rps_rock2.strategy
 
+    assert rps1.elo == 1000
+    assert rps1.win_loss_ratio() is None
+
+def test_validate_strategy():
     error = False
     try:
         RPSAgent(strategy_in='VOMIT')
@@ -34,10 +38,6 @@ def basic_test():
         error = True
     assert error  # No negative strategies
 
-    assert rps1.elo == 1000
-    assert rps1.win_loss_ratio() is None
-
-
 def test_make_move():
     """Test make_move method."""
     rps_rock = RPSAgent(strategy_in=[1, 0, 0])
@@ -52,4 +52,5 @@ def test_make_move():
 
 
 basic_test()
+test_validate_strategy()
 test_make_move()
