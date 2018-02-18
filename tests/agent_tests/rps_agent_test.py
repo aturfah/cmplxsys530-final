@@ -15,6 +15,7 @@ def basic_test():
     assert rps1.elo == 1000
     assert rps1.win_loss_ratio() is None
 
+
 def test_validate_strategy():
     error = False
     try:
@@ -37,6 +38,7 @@ def test_validate_strategy():
     except ValueError:
         error = True
     assert error  # No negative strategies
+
 
 def test_make_move():
     """Test make_move method."""
