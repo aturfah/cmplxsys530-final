@@ -36,9 +36,17 @@ The Macro-level process of interest is which strategies tend to dominate and the
 ****
 &nbsp; 
 ### 1) Environment
-_The environment will be the "ladder", or the matchmaking service that pairs players for a battle. There will be two types of ladders, one that pairs players based on Elo Ranking and another that pairs them randomly._
+_The environment will be the "ladder", or the matchmaking service that pairs players for a battle. There will be two types of ladders, one that pairs players based on Elo Ranking and another that pairs them randomly. The ladder is also responsible for updating player scores after a game is completed._
 
-Function to match players (from base_ladder.py)
+#### Properties
+<ul>
+<li><i>player_pool</i>: List of players availible to play.</li>
+<li><i>game</i>: GameEngine specifying game to be played.</li>
+<li><i>k_value</i>: K value to use in updating Elo scores.</li>
+<li><i>num_turns</i>: Number of games that have been played.</li>
+</ul>
+
+#### Function to match players (base_ladder.py)
 ```python
 def match_players(self):
     """Return a pair of players to play."""
@@ -59,7 +67,7 @@ def match_players(self):
     return (player, opponent)
 ```
 
-Random Ladder Weighting function (random_ladder.py)
+#### Random Ladder Weighting function (random_ladder.py)
 ```python
 def match_func(self, player1, player2_pair):
     """
@@ -76,7 +84,7 @@ def match_func(self, player1, player2_pair):
     return rand()
 ```
 
-Weighted Ladder Weighting function (weighted_ladder.py)
+#### Weighted Ladder Weighting function (weighted_ladder.py)
 ```python
 def match_func(self, player1, player2_pair):
     """
@@ -97,6 +105,46 @@ def match_func(self, player1, player2_pair):
     turn_factor = max((self.num_turns - player2_pair[1]), 1)
 
     return elo_factor*turn_factor
+```
+
+#### Update player rankings (base_ladder.py)
+```python
+def update_players(self, winner, loser):
+    """
+    Update values for winner and loser.
+
+    :param winner: BaseAgent
+        Player who won
+    :param loser: BaseAgent
+        Player who lost
+    """
+    new_winner_elo = elo(winner, loser, 1, self.k_value)
+    new_loser_elo = elo(loser, winner, 0, self.k_value)
+    winner.elo = new_winner_elo
+    winner.num_wins += 1
+    loser.elo = new_loser_elo
+    loser.num_losses += 1
+```
+
+#### Run a game (base_ladder.py)
+```python
+def run_game(self):
+    """Match players and run a game."""
+    player, opp = self.match_players()
+    player_copy = deepcopy(player)
+    opp_copy = deepcopy(opp)
+
+    outcome = self.game_engine.run(player, opp)
+
+    if outcome == 1:
+        self.update_players(player, opp)
+    else:
+        self.update_players(opp, player)
+
+    self.add_player(player)
+    self.add_player(opp)
+
+    return (outcome, player_copy, opp_copy)
 ```
 
 &nbsp; 
