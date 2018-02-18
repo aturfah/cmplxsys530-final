@@ -34,10 +34,9 @@ def test_make_move():
 
     try:
         ba1.make_move()
+        assert False
     except NotImplementedError:
         return
-
-    assert False
 
 
 test_init()
