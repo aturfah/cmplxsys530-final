@@ -11,6 +11,7 @@ def test_init():
     assert ba1.num_losses == 0
     assert ba1.type == "Pew"
 
+
 def test_win_loss():
     """Test calculation of win/loss ratio."""
     ba1 = BaseAgent()
@@ -37,6 +38,7 @@ def test_make_move():
         return
 
     assert False
+
 
 test_init()
 test_win_loss()
