@@ -13,13 +13,14 @@ _Ali Turfah_
 ### Goal 
 *****
  
-The goal of this project is to create a model of the Pokemon Showdown metagame. The primary results of interest are the emergent strategies that correspond to "high-ladder" play. 
+The goal of this project is to create a model of the Pokemon Showdown (PS) metagame. The primary results of interest are the emergent strategies that correspond to "high-ladder" play. <br/>
+Ideally this will be done by building up from the rules simpler turn-based games (Rock/Paper/Scissors) with varying strategies.
 
 &nbsp;  
 ### Justification
 ****
 _Short explanation on why you are using ABM_
-ABMs were chosen to model this system because it allows for control at the level of the player, and analysis of the results at the metagame level.
+ABMs were chosen to model this system because it allows for control at the level of the player, in individual games, and analysis of the results at the metagame level.
 
 &nbsp; 
 ### Main Micro-level Processes and Macro-level Dynamics of Interest
@@ -27,26 +28,75 @@ ABMs were chosen to model this system because it allows for control at the level
 
 _Short overview of the key processes and/or relationships you are interested in using your model to explore. Will likely be something regarding emergent behavior that arises from individual interactions_
 
+The Micro-level process is how the game plays out. In the case of Rock/Paper/Scissors, it is which move the players cast. In the case of pokemon, it is the decisions made at each turn by the players. 
 &nbsp; 
-
+The Macro-level process of interest is which strategies tend to dominate and the trends in dominant strategies. Since PS matches players based on Elo ranking (as opposed to randomly), another feature of interest is how that affects metagame development/which strategies dominate.
 
 ## Model Outline
 ****
 &nbsp; 
 ### 1) Environment
-_Description of the environment in your model. Things to specify *if they apply*:_
+_The environment will be the "ladder", or the matchmaking service that pairs players for a battle. There will be two types of ladders, one that pairs players based on Elo Ranking and another that pairs them randomly._
 
-* _Boundary conditions (e.g. wrapping, infinite, etc.)_
-* _Dimensionality (e.g. 1D, 2D, etc.)_
-* _List of environment-owned variables (e.g. resources, states, roughness)_
-* _List of environment-owned methods/procedures (e.g. resource production, state change, etc.)_
-
-
+Function to match players (from base_ladder.py)
 ```python
-# Include first pass of the code you are thinking of using to construct your environment
-# This may be a set of "patches-own" variables and a command in the "setup" procedure, a list, an array, or Class constructor
-# Feel free to include any patch methods/procedures you have. Filling in with pseudocode is ok! 
-# NOTE: If using Netlogo, remove "python" from the markdown at the top of this section to get a generic code block
+def match_players(self):
+    """Return a pair of players to play."""
+    # Select a random player
+    player_ind = randint(low=0, high=len(self.player_pool))
+    player = self.player_pool[player_ind][0]
+    del self.player_pool[player_ind]
+
+    # Select that player's opponent (based on waiting function)
+    opponent_pair = sorted(self.player_pool,
+                            key=lambda val: self.match_func(player, val),
+                            reverse=True)[0]
+    opponent = opponent_pair[0]
+    opponent_ind = self.player_pool.index(opponent_pair)
+    del self.player_pool[opponent_ind]
+
+    self.num_turns += 1
+    return (player, opponent)
+```
+
+Random Ladder Weighting function (random_ladder.py)
+```python
+def match_func(self, player1, player2_pair):
+    """
+    Return random value as a match weighting.
+
+    Since players will be sorted this random value, it is
+    equivalent to randomly choosing an opponent.
+
+    :param player1: BaseAgent
+        The player who is being matched
+    :param player2: (BaseAgent, int)
+        The candidate player & turns waiting pair for a  match
+    """
+    return rand()
+```
+
+Weighted Ladder Weighting function (weighted_ladder.py)
+```python
+def match_func(self, player1, player2_pair):
+    """
+    Calculate the match score for two players.
+
+    Players with similar elo rankings should be matched together.
+    In addition, players who have been waiting for a long time should
+    get to play sooner.
+
+    Functional form is <Turns_waiting>/abs(<Difference in Elo scores>)
+
+    :param player1: BaseAgent
+        The player who is being matched
+    :param player2: (BaseAgent, int)
+        The candidate player & turns waiting pair for a  match
+    """
+    elo_factor = 1/max(abs(player1.elo - player2_pair[0].elo), 1)
+    turn_factor = max((self.num_turns - player2_pair[1]), 1)
+
+    return elo_factor*turn_factor
 ```
 
 &nbsp; 
