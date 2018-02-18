@@ -170,7 +170,7 @@ In addition to the attributes above, all agents have the following methods. Plea
 </ul>
 
 #### RPSAgent 
-_Players for RPS are defined by the class ```RPSAgent```. For a game of RPS, the agents are given strategies, which are lists of the probability that they play a specific move. For example, a player who only plays rock would have a strategy of $[1, 0, 0]$, and a player who plays randomly would have a strategy of $[\frac{1}{3}$,$\frac{1}{3}$$\frac{1}{3}]$. This is reflected in the updated make_move() call._
+Players for RPS are defined by the class ```RPSAgent```. For a game of RPS, the agents are given strategies, which are lists of the probability that they play a specific move. For example, a player who only plays rock would have a strategy of [1, 0, 0], and a player who plays randomly would have a strategy of [1/3/, 1/3, 1/3]. This is reflected in the updated make_move() call.
 
 **RPSAgent's make_move() function**
 ```python 
