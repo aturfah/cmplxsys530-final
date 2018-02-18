@@ -12,30 +12,40 @@ def basic_test():
 
     assert rps_rock.strategy == rps_rock2.strategy
 
-    error = False
-    try:
-        RPSAgent(strategy_in='VOMIT')
-    except ValueError:
-        # We should be here
-        error = True
-    assert error  # Invalid strategy input
-
-    error = False
-    try:
-        RPSAgent(strategy_in=[1, 1, 1])
-    except ValueError:
-        error = True
-    assert error  # Strategies cannot sum to 1
-
-    error = False
-    try:
-        RPSAgent(strategy_in=[-1, 1, 1])
-    except ValueError:
-        error = True
-    assert error  # No negative strategies
-
     assert rps1.elo == 1000
     assert rps1.win_loss_ratio() is None
+
+
+def test_validate_strategy():
+    """Test invalid strategy validation."""
+    try:
+        RPSAgent(strategy_in='VOMIT')
+        assert False
+    except ValueError:
+        # We should be here
+        pass
+
+    try:
+        RPSAgent(strategy_in=[1, 1, 1])
+        assert False
+    except ValueError:
+        pass
+
+    try:
+        RPSAgent(strategy_in=[-1, 1, 1])
+        assert False
+    except ValueError:
+        pass
+
+
+def test_agent_type():
+    """Test that agent types are properly set."""
+    rps_rock = RPSAgent(strategy_in="rock")
+    rps_mixed = RPSAgent(strategy_in=[1, 0, 0])
+
+    assert rps_rock.strategy == rps_mixed.strategy
+    assert rps_rock.type == "rock"
+    assert rps_mixed.type == "mixed"
 
 
 def test_make_move():
@@ -52,4 +62,6 @@ def test_make_move():
 
 
 basic_test()
+test_validate_strategy()
+test_agent_type()
 test_make_move()

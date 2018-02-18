@@ -2,6 +2,16 @@
 from agent.base_agent import BaseAgent
 
 
+def test_init():
+    """Test the variables are set properly."""
+    ba1 = BaseAgent(id_in="doot", type="Pew")
+    assert ba1.elo == 1000
+    assert ba1.id == "doot"
+    assert ba1.num_wins == 0
+    assert ba1.num_losses == 0
+    assert ba1.type == "Pew"
+
+
 def test_win_loss():
     """Test calculation of win/loss ratio."""
     ba1 = BaseAgent()
@@ -24,11 +34,11 @@ def test_make_move():
 
     try:
         ba1.make_move()
+        assert False
     except NotImplementedError:
         return
 
-    assert False
 
-
+test_init()
 test_win_loss()
 test_make_move()

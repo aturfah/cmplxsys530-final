@@ -4,17 +4,17 @@ from numpy.random import uniform
 from agent.base_agent import BaseAgent
 
 STRATEGIES = {
-    'rock': [1, 0, 0],
-    'paper': [0, 1, 0],
-    'scissors': [0, 0, 1],
-    'uniform': [1 / 3, 1 / 3, 1 / 3]
+    "rock": [1, 0, 0],
+    "paper": [0, 1, 0],
+    "scissors": [0, 0, 1],
+    "uniform": [1 / 3, 1 / 3, 1 / 3]
 }
 
 
 class RPSAgent(BaseAgent):
     """The agent class for Rock/Paper/Scissors."""
 
-    def __init__(self, id_in=None, strategy_in='uniform'):
+    def __init__(self, id_in=None, strategy_in="uniform"):
         """
         Create a Rock/Paper/Scissors player.
 
@@ -33,15 +33,15 @@ class RPSAgent(BaseAgent):
             strategy = STRATEGIES[strategy_in]
             type_ = strategy_in
         else:
-            raise ValueError('Invalid strategy')
+            raise ValueError("Invalid strategy")
 
         if len(strategy) != 3:
-            raise ValueError('Strategy vector must be of length 3')
+            raise ValueError("Strategy vector must be of length 3")
         if any(strategy_prob < 0 for strategy_prob in strategy):
-            raise ValueError('Strategy probabilities cannot be less than 0')
+            raise ValueError("Strategy probabilities cannot be less than 0")
         if not abs(sum(strategy) - 1) < 0.0000000000000000000001:
             # Not arbitrarily close to 1
-            raise ValueError('Strategy probabilities must sum to 1')
+            raise ValueError("Strategy probabilities must sum to 1")
 
         self.strategy = strategy
         super().__init__(id_in=id_in, type=type_)
@@ -53,7 +53,7 @@ class RPSAgent(BaseAgent):
             if num < sum(self.strategy[:i + 1]):
                 return i
 
-        raise RuntimeError('Something went wrong with strategy selection')
+        raise RuntimeError("Something went wrong with strategy selection")
 
     def print_info(self):
         """Print the info on this player."""

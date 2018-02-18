@@ -31,7 +31,7 @@ class RPSEngine:
 
         if p1_move == p2_move:
             # Same move, call it with a coinflip
-            return int(uniform() > self.bias)
+            return int(uniform() < self.bias)
         elif (p1_move - p2_move) == 1 or (p1_move - p2_move) == -2:
             # Player1 wins (Paper vs Rock or
             #   Scissors vs Paper or Rock vs Scissors)
