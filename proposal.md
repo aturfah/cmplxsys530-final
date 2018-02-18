@@ -46,7 +46,7 @@ _The environment will be the "ladder", or the matchmaking service that pairs pla
 <li><i>num_turns</i>: Number of games that have been played.</li>
 </ul>
 
-#### Function to match players (base_ladder.py)
+#### Function to match players (ladder/base_ladder.py)
 ```python
 def match_players(self):
     """Return a pair of players to play."""
@@ -67,7 +67,7 @@ def match_players(self):
     return (player, opponent)
 ```
 
-#### Random Ladder Weighting function (random_ladder.py)
+#### Random Ladder Weighting function (ladder/random_ladder.py)
 ```python
 def match_func(self, player1, player2_pair):
     """
@@ -84,7 +84,7 @@ def match_func(self, player1, player2_pair):
     return rand()
 ```
 
-#### Weighted Ladder Weighting function (weighted_ladder.py)
+#### Weighted Ladder Weighting function (ladder/weighted_ladder.py)
 ```python
 def match_func(self, player1, player2_pair):
     """
@@ -107,7 +107,7 @@ def match_func(self, player1, player2_pair):
     return elo_factor*turn_factor
 ```
 
-#### Update player rankings (base_ladder.py)
+#### Update player rankings (ladder/base_ladder.py)
 ```python
 def update_players(self, winner, loser):
     """
@@ -126,7 +126,7 @@ def update_players(self, winner, loser):
     loser.num_losses += 1
 ```
 
-#### Run a game (base_ladder.py)
+#### Run a game (ladder/base_ladder.py)
 ```python
 def run_game(self):
     """Match players and run a game."""
@@ -150,8 +150,22 @@ def run_game(self):
 &nbsp; 
 
 ### 2) Agents
- 
- _Description of the "agents" in the system. Things to specify *if they apply*:_
+
+_The agents in the system will be the players. All agents will be subclasses of BaseAgent, which has the following attributes:_
+<ul>
+<li><i>id</i>: Unique identifier of an agent. Defaults to random uuid4.</li>
+<li><i>type</i>: Category/Classification of an agent. This has meaning in the subclasses. Defaults to "Default".</li>
+<li><i>elo</i>: This player's Elo ranking.</li>
+<li><i>num_wins</i> and <i>num_losses</i>: This player's number of wins/losses respectively.</li>
+</ul> 
+
+_In addition to the attributes above, all agents have the following methods. Please see agent/base_agent.py for more detailed documentation._
+<ul>
+<li><i>hello()</i>: Test command to print some generic information.</li>
+<li><i></i>:</li>
+</ul>
+
+_Description of the "agents" in the system. Things to specify *if they apply*:_
  
 * _List of agent-owned variables (e.g. age, heading, ID, etc.)_
 * _List of agent-owned methods/procedures (e.g. move, consume, reproduce, die, etc.)_
