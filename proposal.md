@@ -193,7 +193,23 @@ def make_move(self):
 The choice of ladder determines who gets to interact with whom. Should a ```WeightedLadder``` be chosen, matching will be made based on Elo ranking. Alternatively, a ```RandomLadder``` will match players randomly.
  
 **_Action Sequence_**
-There are three levels of "action sequences" in this simulation, the ladder, game, and player. These are defined in the ```run_game()```, ```run()```, and ```make_move()``` functions respectively. 
+
+Each agent calls their make_move() function at each turn. An example can be found in the RPSAgent section above.
+
+&nbsp; 
+### 4) Model Parameters and Initialization
+
+Simulations can be carried out using ```run_simulation.py```, with the specific simulation files contained in the ```simulation``` directory. Each simulation will, by default, generate a csv file at the end of each game that is played. In addition, the simulation is run with a specified ladder, and has the following parameters:
+<ul>
+<li><i>num_players</i>: Number of players to have in this simulation.</li>
+<li><i>num_runs</i>: Number of games to simulate.</li>
+<li><i>game</i>: The game to be played in this simulation</li>
+<li><i>ladder</i>: Which ladder (weighted or random) to use for the simulation.</li>
+</ul>
+
+RPS simulations take the additional _proportion_ argument which specifies the proportion of Rock, Paper, Scissors, and Uniform players to add to the simulation.
+
+There are three levels of control for the ticks in this simulation--the ladder, game, and player. These are defined in the ```run_game()```, ```run()```, and ```make_move()``` functions respectively. 
 
 For a single interaction, the process is below.
 <ol>
@@ -208,16 +224,6 @@ For a single interaction, the process is below.
 <li>Update the rankings for the players.</li>
 <li>The players are returned to the player pool.</li>
 </ol>
-
-
-&nbsp; 
-### 4) Model Parameters and Initialization
-
-_Describe and list any global parameters you will be applying in your model._
-
-_Describe how your model will be initialized_
-
-_Provide a high level, step-by-step description of your schedule during each "tick" of the model_
 
 &nbsp; 
 
