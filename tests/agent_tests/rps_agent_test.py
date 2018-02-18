@@ -18,27 +18,26 @@ def basic_test():
 
 def test_validate_strategy():
     """Test invalid strategy validation."""
-    error = False
     try:
         RPSAgent(strategy_in='VOMIT')
+        assert False
     except ValueError:
         # We should be here
-        error = True
-    assert error  # Invalid strategy input
+        pass
 
     error = False
     try:
         RPSAgent(strategy_in=[1, 1, 1])
+        assert False
     except ValueError:
-        error = True
-    assert error  # Strategies cannot sum to 1
+        pass
 
     error = False
     try:
         RPSAgent(strategy_in=[-1, 1, 1])
+        assert False
     except ValueError:
-        error = True
-    assert error  # No negative strategies
+        pass
 
 
 def test_agent_type():
