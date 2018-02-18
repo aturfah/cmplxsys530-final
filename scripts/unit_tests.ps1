@@ -1,4 +1,4 @@
-Write-Output "Running tests..."
+# Script to run unit test files
 
 if (!$args) {
     $tests = "agent_tests", "engine_tests", "ladder_tests", "misc_tests"
@@ -13,4 +13,5 @@ foreach ($test_batch in $tests) {
         Write-Output "Running $($test_batch)/$($_.Name)"
         python -m "tests.$($test_batch).$($_.BaseName)"
     }
+    Write-Output ""
 }
