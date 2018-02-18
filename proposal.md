@@ -46,7 +46,7 @@ _The environment will be the "ladder", or the matchmaking service that pairs pla
 <li><i>num_turns</i>: Number of games that have been played.</li>
 </ul>
 
-#### Function to match players (ladder/base_ladder.py)
+**Function to match players (ladder/base_ladder.py)**
 ```python
 def match_players(self):
     """Return a pair of players to play."""
@@ -67,7 +67,7 @@ def match_players(self):
     return (player, opponent)
 ```
 
-#### Random Ladder Weighting function (ladder/random_ladder.py)
+**RandomLadder weighting function (ladder/random_ladder.py)**
 ```python
 def match_func(self, player1, player2_pair):
     """
@@ -84,7 +84,7 @@ def match_func(self, player1, player2_pair):
     return rand()
 ```
 
-#### Weighted Ladder Weighting function (ladder/weighted_ladder.py)
+**WeightedLadder weighting function (ladder/weighted_ladder.py)**
 ```python
 def match_func(self, player1, player2_pair):
     """
@@ -107,7 +107,7 @@ def match_func(self, player1, player2_pair):
     return elo_factor*turn_factor
 ```
 
-#### Update player rankings (ladder/base_ladder.py)
+**Function to update player rankings (ladder/base_ladder.py)**
 ```python
 def update_players(self, winner, loser):
     """
@@ -126,7 +126,7 @@ def update_players(self, winner, loser):
     loser.num_losses += 1
 ```
 
-#### Run a game (ladder/base_ladder.py)
+**Function to run a game (ladder/base_ladder.py)**
 ```python
 def run_game(self):
     """Match players and run a game."""
@@ -170,15 +170,27 @@ _In addition to the attributes above, all agents have the following methods. Ple
 </ul>
 
 #### RPSAgent (agent/rps_agent.py)
-_For a game of RPS, the agents are given strategies, which are lists of the probability that they play a specific move. For example, a player who only plays rock would have a strategy of $[1, 0, 0]$, and a player who plays randomly would have a strategy of $[\frac{1}{3}$,$\frac{1}{3}$$\frac{1}{3}]$_
+_For a game of RPS, the agents are given strategies, which are lists of the probability that they play a specific move. For example, a player who only plays rock would have a strategy of $[1, 0, 0]$, and a player who plays randomly would have a strategy of $[\frac{1}{3}$,$\frac{1}{3}$$\frac{1}{3}]$. This is reflected in the updated make_move() call._
 
+**RPSAgent make_move()**
+```python 
+def make_move(self):
+    """Play one of rock, paper, scissors defined by strategy."""
+    num = uniform()
+    for i in range(3):
+        if num < sum(self.strategy[:i + 1]):
+            return i
+
+    raise RuntimeError("Something went wrong with strategy selection")
+
+```
 &nbsp; 
 
 ### 3) Action and Interaction 
  
 **_Interaction Topology_**
 
-_Description of the topology of who interacts with whom in the system. Perfectly mixed? Spatial proximity? Along a network? CA neighborhood?_
+_The choice of ladder determines who gets to interact with whom._
  
 **_Action Sequence_**
 
