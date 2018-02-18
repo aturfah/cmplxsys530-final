@@ -36,7 +36,7 @@ The Macro-level process of interest is which strategies tend to dominate and the
 ****
 &nbsp; 
 ### 1) Environment
-_The environment will be the "ladder", or the matchmaking service that pairs players for a battle. There will be two types of ladders, one that pairs players based on Elo Ranking and another that pairs them randomly. The ladder is also responsible for updating player scores after a game is completed._
+The environment will be the "ladder", or the matchmaking service that pairs players for a battle. There will be two types of ladders, one that pairs players based on Elo Ranking (```WeightedLadder```) and another that pairs them randomly (```RandomLadder```). The ladder is also responsible for updating player scores after a game is completed.
 
 #### Properties
 <ul>
@@ -151,8 +151,8 @@ def run_game(self):
 
 ### 2) Agents
 
-#### BaseAgent (agent/base_agent.py)
-_The agents in the system will be the players. All agents will be subclasses of BaseAgent, which has the following attributes:_
+#### BaseAgent
+The agents in the system will be the players. All agents will be subclasses of ```BaseAgent```, which has the following attributes:
 <ul>
 <li><i>id</i>: Unique identifier of an agent. Defaults to random uuid4.</li>
 <li><i>type</i>: Category/Classification of an agent. This has meaning in the subclasses. Defaults to "Default".</li>
@@ -160,7 +160,7 @@ _The agents in the system will be the players. All agents will be subclasses of 
 <li><i>num_wins</i> and <i>num_losses</i>: This player's number of wins/losses respectively.</li>
 </ul> 
 
-_In addition to the attributes above, all agents have the following methods. Please see agent/base_agent.py for more detailed documentation._
+In addition to the attributes above, all agents have the following methods. Please see ```agent/base_agent.py``` for more detailed documentation.
 <ul>
 <li><i>hello()</i>: Test command to print some generic information.</li>
 <li><i>win_loss_ratio()</i>: Return the player's win/loss ratio.</li>
@@ -169,10 +169,10 @@ _In addition to the attributes above, all agents have the following methods. Ple
 <li><i>make_move()</i>: Function call to make a move. Raises <i>NotImplementedError</i>.</li>
 </ul>
 
-#### RPSAgent (agent/rps_agent.py)
-_For a game of RPS, the agents are given strategies, which are lists of the probability that they play a specific move. For example, a player who only plays rock would have a strategy of $[1, 0, 0]$, and a player who plays randomly would have a strategy of $[\frac{1}{3}$,$\frac{1}{3}$$\frac{1}{3}]$. This is reflected in the updated make_move() call._
+#### RPSAgent 
+_Players for RPS are defined by the class ```RPSAgent```. For a game of RPS, the agents are given strategies, which are lists of the probability that they play a specific move. For example, a player who only plays rock would have a strategy of $[1, 0, 0]$, and a player who plays randomly would have a strategy of $[\frac{1}{3}$,$\frac{1}{3}$$\frac{1}{3}]$. This is reflected in the updated make_move() call._
 
-**RPSAgent make_move()**
+**RPSAgent's make_move() function**
 ```python 
 def make_move(self):
     """Play one of rock, paper, scissors defined by strategy."""
@@ -190,15 +190,12 @@ def make_move(self):
  
 **_Interaction Topology_**
 
-_The choice of ladder determines who gets to interact with whom._
+The choice of ladder determines who gets to interact with whom. Should a ```WeightedLadder``` be chosen, matching will be made based on Elo ranking. Alternatively, a ```RandomLadder``` will match players randomly.
  
 **_Action Sequence_**
+There are three levels of "action sequences" in this simulation, the ladder, game, and player. These are defined in the ```run_game()```, ```run()```, and ```make_move()``` functions respectively. 
 
-_What does an agent, cell, etc. do on a given turn? Provide a step-by-step description of what happens on a given turn for each part of your model_
 
-1. Step 1
-2. Step 2
-3. Etc...
 
 &nbsp; 
 ### 4) Model Parameters and Initialization
