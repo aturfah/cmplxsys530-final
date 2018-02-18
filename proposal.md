@@ -194,7 +194,7 @@ The choice of ladder determines who gets to interact with whom. Should a ```Weig
  
 **_Action Sequence_**
 
-Each agent calls their make_move() function at each turn. An example can be found in the RPSAgent section above.
+Each agent calls their ```make_move()``` function at each turn. An example can be found in the RPSAgent section above.
 
 &nbsp; 
 ### 4) Model Parameters and Initialization
@@ -206,6 +206,8 @@ Simulations can be carried out using ```run_simulation.py```, with the specific 
 <li><i>game</i>: The game to be played in this simulation</li>
 <li><i>ladder</i>: Which ladder (weighted or random) to use for the simulation.</li>
 </ul>
+
+All players in a simulation will be initialized with an Elo score of 1000. This way, there is no initial preference to matching.
 
 RPS simulations take the additional _proportion_ argument which specifies the proportion of Rock, Paper, Scissors, and Uniform players to add to the simulation.
 
