@@ -14,7 +14,7 @@ _Ali Turfah_
 *****
  
 The goal of this project is to create a model of the Pokemon Showdown (PS) metagame. The primary results of interest are the emergent strategies that correspond to "high-ladder" play. <br/>
-Ideally this will be done by building up from the rules simpler turn-based games (Rock/Paper/Scissors) with varying strategies.
+Ideally this will be done by building up from the rules simpler turn-based games, like Rock, Paper, Scissors (RPS) with varying strategies.
 
 &nbsp;  
 ### Justification
@@ -151,6 +151,7 @@ def run_game(self):
 
 ### 2) Agents
 
+#### BaseAgent (agent/base_agent.py)
 _The agents in the system will be the players. All agents will be subclasses of BaseAgent, which has the following attributes:_
 <ul>
 <li><i>id</i>: Unique identifier of an agent. Defaults to random uuid4.</li>
@@ -162,21 +163,14 @@ _The agents in the system will be the players. All agents will be subclasses of 
 _In addition to the attributes above, all agents have the following methods. Please see agent/base_agent.py for more detailed documentation._
 <ul>
 <li><i>hello()</i>: Test command to print some generic information.</li>
-<li><i></i>:</li>
+<li><i>win_loss_ratio()</i>: Return the player's win/loss ratio.</li>
+<li><i>total_games()</i>: Return the total number of games a player has played.</li>
+<li><i>print_info()</i>: Print more detailed information about this player.</li>
+<li><i>make_move()</i>: Function call to make a move. Raises <i>NotImplementedError</i>.</li>
 </ul>
 
-_Description of the "agents" in the system. Things to specify *if they apply*:_
- 
-* _List of agent-owned variables (e.g. age, heading, ID, etc.)_
-* _List of agent-owned methods/procedures (e.g. move, consume, reproduce, die, etc.)_
-
-
-```python
-# Include first pass of the code you are thinking of using to construct your agents
-# This may be a set of "turtle-own" variables and a command in the "setup" procedure, a list, an array, or Class constructor
-# Feel free to include any agent methods/procedures you have so far. Filling in with pseudocode is ok! 
-# NOTE: If using Netlogo, remove "python" from the markdown at the top of this section to get a generic code block
-```
+#### RPSAgent (agent/rps_agent.py)
+_For a game of RPS, the agents are given strategies, which are lists of the probability that they play a specific move. For example, a player who only plays rock would have a strategy of $[1, 0, 0]$, and a player who plays randomly would have a strategy of $[\frac{1}{3}$,$\frac{1}{3}$$\frac{1}{3}]$_
 
 &nbsp; 
 
