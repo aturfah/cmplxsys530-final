@@ -40,6 +40,16 @@ def test_validate_strategy():
     assert error  # No negative strategies
 
 
+def test_agent_type():
+    """Pew."""
+    rps_rock = RPSAgent(strategy_in="rock")
+    rps_mixed = RPSAgent(strategy_in=[1, 0, 0])
+
+    assert rps_rock.strategy == rps_mixed.strategy
+    assert rps_rock.type == "rock"
+    assert rps_mixed.type == "mixed"
+
+
 def test_make_move():
     """Test make_move method."""
     rps_rock = RPSAgent(strategy_in=[1, 0, 0])
@@ -55,4 +65,5 @@ def test_make_move():
 
 basic_test()
 test_validate_strategy()
+test_agent_type()
 test_make_move()
