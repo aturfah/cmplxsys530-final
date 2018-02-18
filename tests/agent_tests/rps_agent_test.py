@@ -17,6 +17,7 @@ def basic_test():
 
 
 def test_validate_strategy():
+    """Test invalid strategy validation."""
     error = False
     try:
         RPSAgent(strategy_in='VOMIT')
@@ -41,7 +42,7 @@ def test_validate_strategy():
 
 
 def test_agent_type():
-    """Pew."""
+    """Test that agent types are properly set."""
     rps_rock = RPSAgent(strategy_in="rock")
     rps_mixed = RPSAgent(strategy_in=[1, 0, 0])
 
