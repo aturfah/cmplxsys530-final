@@ -195,6 +195,19 @@ The choice of ladder determines who gets to interact with whom. Should a ```Weig
 **_Action Sequence_**
 There are three levels of "action sequences" in this simulation, the ladder, game, and player. These are defined in the ```run_game()```, ```run()```, and ```make_move()``` functions respectively. 
 
+For a single interaction, the process is below.
+<ol>
+<li>The ladder selects to players to play each other, removing them from the player pool.</li>
+<li>The game engine runs a game with the players involved.</li>
+    <ol>Repeat until condition for ending the game is met
+        <li>The players make their moves simultaneously.</li>
+        <li><i>If applicable: </i>The game engine updates its internal state to reflect the moves made.</li>
+        <li><i>If applicable: </i>The players update their internal game states to reflect the moves made.</li>
+        <li>If the condition for ending the game is met, decide a winner.</li>
+    </ol>
+<li>Update the rankings for the players.</li>
+<li>The players are returned to the player pool.</li>
+</ol>
 
 
 &nbsp; 
