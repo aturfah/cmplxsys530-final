@@ -45,6 +45,7 @@ class LogReader():
 
         self.set_header()
         self.init_data()
+        self.data_range = None
 
     def set_header(self):
         """Extract the header information from a file."""
