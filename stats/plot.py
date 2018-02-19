@@ -9,19 +9,6 @@ from stats.calc import calculate_data_range
 COLORS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
 
 
-def plot_group_ratings(data):
-    """Plot the data broken down by groups."""
-    print("plotting data...")
-    legend_info = []
-
-    for group in data:
-        plt.plot(data[group])
-        legend_info.append(group)
-
-    plt.legend(legend_info, loc='upper left')
-    plt.show()
-
-
 def plot_log_reader_data(log_reader):
     """Plot data from log_reader."""
     data_range = calculate_data_range(log_reader)
