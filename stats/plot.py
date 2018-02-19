@@ -9,7 +9,6 @@ COLORS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
 
 def plot_log_reader_data(log_reader):
     """Plot data from log_reader."""
-
     plt.subplots_adjust(right=0.8)
     plt.rc('axes', prop_cycle=(
         cycler("color", COLORS[:len(log_reader.header)])))
