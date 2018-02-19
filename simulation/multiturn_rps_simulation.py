@@ -21,6 +21,7 @@ class MTRPSSimulation(BaseSimulation):
         super().__init__(mtrps_kwargs)
 
         self.proportions = [0.3, 0.3, 0.3, 0, 0.1]
+        self.data_delay = kwargs["data_delay"]
 
         self.add_agents()
         self.init_type_log_writer()
