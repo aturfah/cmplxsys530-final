@@ -19,7 +19,8 @@ from simulation.rps_simulation import RPSSimulation
               help="Which game to play. Options are\n \
               [0] Coin Flip\n \
               [1] Balanced Population Rock Paper Scissors\n \
-              [2] Skewed Population Rock Paper Scissors")
+              [2] Skewed Population Rock Paper Scissors\n \
+              [3] Multi-Turn Rock Paper Scissors")
 @click.option("-p",
               "--proportions",
               nargs=4,
@@ -64,6 +65,8 @@ def run(**kwargs):
                                 data_delay=data_delay,
                                 ladder_choice=ladder_choice)
         rps_sim.run()
+    elif game_choice == 3:
+        pass
     else:
         raise RuntimeError("Invalid Game Choice")
 
