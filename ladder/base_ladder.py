@@ -66,13 +66,15 @@ class BaseLadder:
         del self.player_pool[player_ind]
 
         # Select that player's opponent (based on weighting function)
-        candidate_opponents = sorted(self.player_pool,
-                               key=lambda val: self.match_func(player, val),
-                               reverse=True)[:min(5, len(self.player_pool))]
-        
-        opponent_index = randint(len(candidate_opponents))
+        # candidate_opponents = sorted(self.player_pool,
+        #                        key=lambda val: self.match_func(player, val),
+        #                        reverse=True)[:min(5, len(self.player_pool))]
 
-        opponent_pair = candidate_opponents[opponent_index]
+        # opponent_index = randint(len(candidate_opponents))
+        # opponent_pair = candidate_opponents[opponent_index]
+        opponent_pair = sorted(self.player_pool,
+                               key=lambda val: self.match_func(player, val),
+                               reverse=True)[0]
         opponent = opponent_pair[0]
         opponent_ind = self.player_pool.index(opponent_pair)
         del self.player_pool[opponent_ind]
