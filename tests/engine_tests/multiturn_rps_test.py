@@ -5,10 +5,12 @@ from battle_engine.multiturn_rps import MTRPSEngine
 
 
 def test_init():
+    """Test that the initializaiton works."""
     MTRPSEngine()
 
 
 def test_param_validation():
+    """Test that invalid parameters are caught."""
     try:
         MTRPSEngine(num_games=2)
         assert False
