@@ -40,5 +40,14 @@ class MTRPSEngine:
             else:
                 # player2 wins
                 self.game_state[index] = 2
-
+            self.win_condition_met()
         print(self.game_state)
+
+    def win_condition_met(self):
+        """
+        Assess whehter or not condition for winning met and return winner.
+        
+        If number of games necessary for victory met, return the winner.
+        """
+        unique, counts = np.unique(self.game_state, return_counts=True)
+        print(unique, counts)
