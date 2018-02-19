@@ -1,9 +1,9 @@
 """Engine for Best N/M RPS."""
 
 import numpy as np
+from battle_engine.rockpaperscissors import RPSEngine
 
-
-class MTRPSEngine:
+class MTRPSEngine(RPSEngine):
     """Multiturn RPS Engine class."""
 
     def __init__(self, num_games=3):
@@ -20,6 +20,7 @@ class MTRPSEngine:
 
         self.num_games = num_games
         self.reset_game_state()
+        super().__init__()
 
     def reset_game_state(self):
         """Reset game state to all zeros."""
@@ -46,16 +47,8 @@ class MTRPSEngine:
             p1_move = player1.make_move()
             p2_move = player2.make_move()
 
-            if p1_move == p2_move:
-                # Draw
-                self.game_state[0] += 1
-            elif (p1_move - p2_move) == 1 or (p1_move - p2_move) == -2:
-                # player1 wins (Paper vs Rock or
-                #   Scissors vs Paper or Rock vs Scissors)
-                self.game_state[1] += 1
-            else:
-                # player2 wins
-                self.game_state[2] += 1
+            results = self.rps_logic(p1_move, p2_move)
+            self.game_state[results] += 1
 
             outcome = self.win_condition_met()
             if not outcome["draw"]:
