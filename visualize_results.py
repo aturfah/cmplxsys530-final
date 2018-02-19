@@ -22,6 +22,7 @@ def run(prefix):
 
     log_reader = LogReader(prefix=prefix)
     log_reader.read_data()
+    log_reader.to_numeric(log_reader.header)
     data_range = calc.calculate_data_range(log_reader, log_reader.header)
     #print(data_range)
 
@@ -35,6 +36,7 @@ def run(prefix):
         graph_dict[group] = line_i
 
     plt.legend(legend_info, loc='upper left')
+    plt.axes().set_ylabel("Average Elo Ranking")
 
     def new_data(event):
         """PEW."""
