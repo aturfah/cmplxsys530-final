@@ -21,11 +21,16 @@ def plot_log_reader_data(log_reader):
     data_range = calculate_data_range(log_reader)
 
     plt.subplots_adjust(right=0.8)
-    legend_info = []
+    legend_info = log_reader.header
     graph_dict = {}
     for group in log_reader.data:
-        legend_info.append(group)
-        line_i, = plt.plot(log_reader.data[group], label=group)
+        data_label = None
+        for header_group in legend_info:
+            if group.startswith(header_group):
+                data_label = header_group
+                break
+
+        line_i, = plt.plot(log_reader.data[group], label=data_label)
         graph_dict[group] = line_i
 
     plt.legend(legend_info, loc='upper left')
@@ -34,6 +39,7 @@ def plot_log_reader_data(log_reader):
 
     def new_data(event):
         """PEW."""
+        print(graph_dict)
         line = graph_dict[event]
         line.set_visible(not line.get_visible())
         plt.draw()
