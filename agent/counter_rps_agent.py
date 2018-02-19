@@ -16,7 +16,7 @@ class CounterRPSAgent(RPSAgent):
         """Init method."""
         super().__init__(id_in=id_in)
         self.reset_state()
-        self.type = "Counter"
+        self.type = "counter"
 
     def reset_state(self):
         """Reset state once game is finished."""
