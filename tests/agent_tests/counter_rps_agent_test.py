@@ -4,10 +4,12 @@ from agent.counter_rps_agent import CounterRPSAgent
 
 
 def test_init():
+    """Test that class initializes properly."""
     CounterRPSAgent()
 
 
 def test_make_move():
+    """Test logic for making moves."""
     c_player = CounterRPSAgent()
 
     # Makes random move
@@ -26,6 +28,17 @@ def test_make_move():
     c_player.last_move = opp_move_scissors
     assert c_player.make_move() == 0
 
+def test_reset_state():
+    """Assert that last_move is reset with call to reset_state"""
+    c_player = CounterRPSAgent()
+    assert c_player.last_move is None
+
+    c_player.last_move = 0
+    assert c_player.last_move is not None
+
+    c_player.reset_state()
+    assert c_player.last_move is None
 
 test_init()
 test_make_move()
+test_reset_state()
