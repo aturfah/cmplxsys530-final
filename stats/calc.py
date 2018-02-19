@@ -45,4 +45,4 @@ def calculate_data_range(log_reader, columns):
             if datum > max_val:
                 max_val = datum
 
-    return (min_val, max_val)
+    return (min_val, max_val+1)
