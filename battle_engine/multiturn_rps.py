@@ -31,7 +31,7 @@ class MTRPSEngine:
     def run(self, player1, player2):
         """
         Run a set of games.
-        
+
         Returns 1 if player1 wins, 0 if player2 wins.
         In the case of a draw, flip a coin.
 
