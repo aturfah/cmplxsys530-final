@@ -11,7 +11,6 @@ COLORS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
 
 def plot_log_reader_data(log_reader):
     """Plot data from log_reader."""
-    data_range = calculate_data_range(log_reader)
 
     plt.subplots_adjust(right=0.8)
     plt.rc('axes', prop_cycle=(
@@ -31,7 +30,6 @@ def plot_log_reader_data(log_reader):
 
     plt.legend(legend_info, loc='upper left')
     plt.ylabel("Average Elo Ranking")
-    plt.ylim(data_range[0], data_range[1])
 
     def new_data(event):
         """Handle checkbox button click."""

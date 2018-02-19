@@ -30,23 +30,3 @@ def calculate_avg_elo(ladder, group_by="type"):
         output[group] = sum(output[group])/len(output[group])
 
     return output
-
-
-def calculate_data_range(log_reader, columns=None):
-    """Calculate the max/min values for the data."""
-    if columns is None:
-        columns = log_reader.data_keys
-
-    max_val = -inf
-    min_val = inf
-    for column in columns:
-        if column not in log_reader.data:
-            raise AttributeError("Invalid columns provided")
-
-        for datum in log_reader.data[column]:
-            if datum < min_val:
-                min_val = datum
-            if datum > max_val:
-                max_val = datum
-
-    return (min_val, max_val+1)
