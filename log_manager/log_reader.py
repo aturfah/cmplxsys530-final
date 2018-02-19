@@ -42,6 +42,7 @@ class LogReader():
             raise AttributeError("No files match the prefix provided.")
 
         self.set_header()
+        self.generate_data_keys()
         self.init_data()
 
     def set_header(self):
@@ -55,11 +56,19 @@ class LogReader():
     def init_data(self):
         """Initialize an empty list for each column."""
         self.data = {}
-        for colname in self.header:
+        for colname in self.data_keys:
             self.data[colname] = []
+
+    def generate_data_keys(self):
+        keys = []
+        for index in range(len(self.files)):
+            file_columns = ["{}{}".format(colname,index) for colname in self.header]
+            keys.extend(file_columns)
+        self.data_keys = keys
 
     def read_data(self):
         """Populate the data."""
+        index = 0
         for filename in self.files:
             file_ = open(filename)
             csv_reader = reader(file_)
@@ -70,15 +79,18 @@ class LogReader():
                 self.init_data()
                 raise RuntimeError(
                     "File {} has an invalid header".format(filename))
+            
             for row in csv_reader:
                 for col_index in range(len(self.header)):
-                    self.data[self.header[col_index]].append(row[col_index])
+                    key_name = "{}{}".format(self.header[col_index], index)
+                    self.data[key_name].append(row[col_index])
 
+            index += 1
             file_.close()
 
     def to_numeric(self, colnames):
         """Make the columns in colnames numeric data."""
         for colname in colnames:
-            if colname not in self.header:
+            if colname not in self.data_keys:
                 raise AttributeError("Invalid column name: {}".format(colname))
             self.data[colname] = [float(datum) for datum in self.data[colname]]
