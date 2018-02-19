@@ -75,3 +75,11 @@ class LogReader():
                     self.data[self.header[col_index]].append(row[col_index])
 
             file_.close()
+
+    def to_numeric(self, colnames):
+        """Make the columns in colnames numeric data."""
+        for colname in colnames:
+            if colname not in self.header:
+                raise AttributeError("Invalid column name: {}".format(colname))
+            for datum in self.data[colname]:
+                datum = float(datum)
