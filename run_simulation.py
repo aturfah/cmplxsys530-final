@@ -3,7 +3,7 @@ import click
 
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
-
+from simulation.multiturn_rps_simulation import MTRPSSimulation
 
 @click.command()
 @click.option("-nr",
@@ -66,7 +66,11 @@ def run(**kwargs):
                                 ladder_choice=ladder_choice)
         rps_sim.run()
     elif game_choice == 3:
-        pass
+        mtrps_sim = MTRPSSimulation(num_runs=num_runs,
+                                    num_players=num_players,
+                                    ladder_choice=ladder_choice,
+                                    data_delay=data_delay)
+        mtrps_sim.run()
     else:
         raise RuntimeError("Invalid Game Choice")
 
