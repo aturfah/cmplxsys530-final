@@ -6,6 +6,7 @@ from agent.rps_agent import RPSAgent
 from agent.counter_rps_agent import CounterRPSAgent
 
 from battle_engine.multiturn_rps import MTRPSEngine
+from log_manager.log_writer import LogWriter
 from simulation.rps_simulation import RPSSimulation
 
 class MTRPSSimulation(RPSSimulation):
@@ -56,6 +57,21 @@ class MTRPSSimulation(RPSSimulation):
             player = CounterRPSAgent(id_in=agent_id)
             self.ladder.add_player(player)
 
+    def init_type_log_writer(self):
+        """Initialize Type Average Elo LogWriter."""
+        header = []
+        if self.proportions[0] != 0:
+            header.append("rock")
+        if self.proportions[1] != 0:
+            header.append("paper")
+        if self.proportions[2] != 0:
+            header.append("scissors")
+        if self.proportions[3] != 0:
+            header.append("uniform")
+        if self.proportions[4] != 0:
+            header.append("counter")
+
+        self.type_log_writer = LogWriter(header, prefix="MTRPSTypes")
 
     def run(self):
         """Run this simulation"""
