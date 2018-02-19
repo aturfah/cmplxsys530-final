@@ -15,6 +15,8 @@ class MTRPSEngine:
         """
         if num_games % 2 == 0:
             raise AttributeError("num_games must be odd.")
+        if num_games <= 0:
+            raise AttributeError("num_games must be positive.")
 
         self.num_games = num_games
         self.reset_game_state()
@@ -27,10 +29,20 @@ class MTRPSEngine:
         self.game_state[2] = 0
 
     def run(self, player1, player2):
-        """Run a set of games."""
+        """
+        Run a set of games.
+        
+        Returns 1 if player1 wins, 0 if player2 wins.
+        In the case of a draw, flip a coin.
+
+        :param player1: BaseAgent
+            A player in this simulation.
+        :param player2: BaseAgent
+            The other player in this simulation.
+        """
         self.reset_game_state()
         outcome = None
-        for index in range(self.num_games):
+        for _ in range(self.num_games):
             p1_move = player1.make_move()
             p2_move = player2.make_move()
 
@@ -47,8 +59,6 @@ class MTRPSEngine:
 
             outcome = self.win_condition_met()
             if not outcome["draw"]:
-                print("Player{} won in {} turns".format(
-                    outcome["winner"], index))
                 break
 
         if outcome["draw"]:
@@ -77,6 +87,6 @@ class MTRPSEngine:
             result["winner"] = 1
         elif p2_wins >= wins_needed:
             result["draw"] = False
-            result["winner"] = 2
+            result["winner"] = 0
 
         return result
