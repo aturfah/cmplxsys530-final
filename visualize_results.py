@@ -1,4 +1,7 @@
 """Methods to visualize the results of simulations."""
+from tkinter import Tk
+from tkinter.filedialog import askopenfilenames
+
 import click
 
 from log_manager.log_reader import LogReader
@@ -11,10 +14,17 @@ from stats import plot
               help="Prefix for files to select.")
 def run(prefix):
     """PEW."""
+    filenames = None
     if prefix is None:
-        raise RuntimeError("You must specify a prefix.")
+        root = Tk()
+        root.withdraw()
+        root.update()
+        filenames = askopenfilenames()
+        root.destroy()
+        if not filenames:
+            raise RuntimeError("You must specify a prefix or select files.")
 
-    log_reader = LogReader(prefix=prefix)
+    log_reader = LogReader(prefix=prefix, filenames=filenames)
     log_reader.read_data()
     log_reader.to_numeric(log_reader.data_keys)
 
