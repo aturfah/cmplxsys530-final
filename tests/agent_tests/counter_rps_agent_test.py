@@ -22,7 +22,7 @@ def test_make_move():
     c_player.last_move = opp_move_paper
     assert c_player.make_move() == 2
 
-    opp_move_scissors = 0
+    opp_move_scissors = 2
     c_player.last_move = opp_move_scissors
     assert c_player.make_move() == 0
 
