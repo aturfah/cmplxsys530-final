@@ -54,7 +54,7 @@ class MTRPSEngine:
         if outcome["draw"]:
             # It was a draw, decide randomly
             return int(np.random.uniform() < 0.5)
-    
+
         return outcome["winner"]
 
     def win_condition_met(self):
