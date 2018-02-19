@@ -3,6 +3,7 @@
 import numpy as np
 from agent.counter_rps_agent import CounterRPSAgent
 from battle_engine.rockpaperscissors import RPSEngine
+from battle_engine.rockpaperscissors import rps_logic
 
 
 class MTRPSEngine(RPSEngine):
@@ -60,7 +61,7 @@ class MTRPSEngine(RPSEngine):
             if isinstance(player2, CounterRPSAgent):
                 player2.last_move = p1_move
 
-            results = self.rps_logic(p1_move, p2_move)
+            results = rps_logic(p1_move, p2_move)
             self.game_state[results] += 1
 
             outcome = self.win_condition_met()
