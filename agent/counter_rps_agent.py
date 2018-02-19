@@ -24,5 +24,6 @@ class CounterRPSAgent(RPSAgent):
     def make_move(self):
         """Counter opponent's last move"""
         if self.last_move is None:
-            super().make_move()
+            return super().make_move()
+
         return (self.last_move + 1) % 3
