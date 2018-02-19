@@ -23,7 +23,7 @@ def plot_group_ratings(data):
 
 
 def plot_log_reader_data(log_reader):
-    """Pew."""
+    """Plot data from log_reader."""
     data_range = calculate_data_range(log_reader)
 
     plt.subplots_adjust(right=0.8)
@@ -47,7 +47,7 @@ def plot_log_reader_data(log_reader):
     plt.ylim(data_range[0], data_range[1])
 
     def new_data(event):
-        """PEW."""
+        """Handle checkbox button click."""
         keys = graph_dict.keys()
         matching_vals = [val for val in keys if val.startswith(event)]
         for val in matching_vals:

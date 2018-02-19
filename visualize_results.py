@@ -13,7 +13,7 @@ from stats import plot
               "--prefix",
               help="Prefix for files to select.")
 def run(prefix):
-    """PEW."""
+    """Visualize the data from a LogReader."""
     filenames = None
     if prefix is None:
         root = Tk()
