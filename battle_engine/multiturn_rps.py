@@ -3,6 +3,7 @@
 import numpy as np
 from battle_engine.rockpaperscissors import RPSEngine
 
+
 class MTRPSEngine(RPSEngine):
     """Multiturn RPS Engine class."""
 
