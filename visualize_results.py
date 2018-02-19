@@ -23,15 +23,15 @@ def run(prefix):
     log_reader = LogReader(prefix=prefix)
     log_reader.read_data()
     data_range = calc.calculate_data_range(log_reader, log_reader.header)
+    #print(data_range)
 
-    _, axis = plt.subplots()
     plt.subplots_adjust(right=0.8)
 
     legend_info = []
     graph_dict = {}
     for group in log_reader.data:
         legend_info.append(group)
-        line_i, = axis.plot(log_reader.data[group], label=group)
+        line_i, = plt.plot(log_reader.data[group], label=group)
         graph_dict[group] = line_i
 
     plt.legend(legend_info, loc='upper left')
