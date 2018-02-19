@@ -1,12 +1,8 @@
 """Methods to visualize the results of simulations."""
 import click
-import numpy as np
-
-import matplotlib.pyplot as plt
 
 from log_manager.log_reader import LogReader
 from stats import plot
-from stats import calc
 
 
 @click.command()
