@@ -1,7 +1,7 @@
 """Base Class for ladders to inherit from."""
 from copy import deepcopy
 
-from numpy.random import randint
+from numpy.random import randint, shuffle
 from ladder.elo import elo
 
 
@@ -40,6 +40,7 @@ class BaseLadder:
             player,
             self.num_turns
         ))
+        shuffle(self.player_pool)
 
     def get_players(self, sort=False):
         """
@@ -64,7 +65,13 @@ class BaseLadder:
         player = self.player_pool[player_ind][0]
         del self.player_pool[player_ind]
 
-        # Select that player's opponent (based on waiting function)
+        # Select that player's opponent (based on weighting function)
+        # candidate_opponents = sorted(self.player_pool,
+        #                        key=lambda val: self.match_func(player, val),
+        #                        reverse=True)[:min(5, len(self.player_pool))]
+
+        # opponent_index = randint(len(candidate_opponents))
+        # opponent_pair = candidate_opponents[opponent_index]
         opponent_pair = sorted(self.player_pool,
                                key=lambda val: self.match_func(player, val),
                                reverse=True)[0]

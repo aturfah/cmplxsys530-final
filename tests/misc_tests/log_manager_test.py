@@ -3,6 +3,8 @@
 from os import listdir, remove
 from os.path import isfile, join
 
+from time import sleep
+
 from uuid import uuid4
 from log_manager.log_writer import LogWriter
 from log_manager.log_reader import LogReader
@@ -93,9 +95,9 @@ def test_reader_data():
     log_reader = LogReader(prefix=TEST_ID)
     log_reader.read_data()
 
-    assert len(log_reader.data["X"]) == 2
-    assert len(log_reader.data["Y"]) == 2
-    assert len(log_reader.data["pew"]) == 2
+    assert len(log_reader.data["X0"]) == 2
+    assert len(log_reader.data["Y0"]) == 2
+    assert len(log_reader.data["pew0"]) == 2
 
 
 def create_invalid_file():
@@ -105,6 +107,7 @@ def create_invalid_file():
     This file will have different headers, so it should
     cause LogReader to generate a warning message.
     """
+    sleep(0.001)
     lw_invalid = LogWriter(header=HEADER + ["pew2"], prefix=TEST_ID)
     dict_to_write = {}
     dict_to_write["X"] = 10
@@ -124,9 +127,9 @@ def test_reader_data_err():
         log_reader.read_data()
     except RuntimeError:
         # Assert data was reset
-        assert not log_reader.data["X"]
-        assert not log_reader.data["Y"]
-        assert not log_reader.data["pew"]
+        assert not log_reader.data["X0"]
+        assert not log_reader.data["Y0"]
+        assert not log_reader.data["pew0"]
         return
 
     assert False

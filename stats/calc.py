@@ -1,5 +1,7 @@
 """Package to calculate interesting ladder metrics."""
 
+from math import inf
+
 
 def calculate_avg_elo(ladder, group_by="type"):
     """
