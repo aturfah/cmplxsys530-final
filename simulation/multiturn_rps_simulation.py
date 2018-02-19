@@ -6,7 +6,10 @@ from agent.rps_agent import RPSAgent
 from agent.counter_rps_agent import CounterRPSAgent
 
 from battle_engine.multiturn_rps import MTRPSEngine
+
 from log_manager.log_writer import LogWriter
+from stats.calc import calculate_avg_elo
+
 from simulation.rps_simulation import BaseSimulation
 
 
