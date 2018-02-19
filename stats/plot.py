@@ -8,6 +8,7 @@ from stats.calc import calculate_data_range
 
 COLORS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
 
+
 def plot_group_ratings(data):
     """Plot the data broken down by groups."""
     print("plotting data...")
@@ -20,12 +21,14 @@ def plot_group_ratings(data):
     plt.legend(legend_info, loc='upper left')
     plt.show()
 
+
 def plot_log_reader_data(log_reader):
     """Pew."""
     data_range = calculate_data_range(log_reader)
 
     plt.subplots_adjust(right=0.8)
-    plt.rc('axes', prop_cycle=(cycler("color", COLORS[:len(log_reader.header)])))
+    plt.rc('axes', prop_cycle=(
+        cycler("color", COLORS[:len(log_reader.header)])))
 
     legend_info = log_reader.header
     graph_dict = {}
