@@ -60,6 +60,7 @@ class LogReader():
             self.data[colname] = []
 
     def generate_data_keys(self):
+        """Generate list of keys for for self.data."""
         keys = []
         for index in range(len(self.files)):
             file_columns = ["{}{}".format(colname, index)
