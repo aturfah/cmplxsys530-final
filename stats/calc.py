@@ -30,8 +30,11 @@ def calculate_avg_elo(ladder, group_by="type"):
 
     return output
 
-def calculate_data_range(log_reader, columns):
+def calculate_data_range(log_reader, columns=None):
     """Calculate the max/min values for the data."""
+    if columns is None:
+        columns = log_reader.header
+
     max_val = -inf
     min_val = inf
     for column in columns:
