@@ -93,9 +93,9 @@ def test_reader_data():
     log_reader = LogReader(prefix=TEST_ID)
     log_reader.read_data()
 
-    assert len(log_reader.data["X"]) == 2
-    assert len(log_reader.data["Y"]) == 2
-    assert len(log_reader.data["pew"]) == 2
+    assert len(log_reader.data["X0"]) == 2
+    assert len(log_reader.data["Y0"]) == 2
+    assert len(log_reader.data["pew0"]) == 2
 
 
 def create_invalid_file():
@@ -124,9 +124,9 @@ def test_reader_data_err():
         log_reader.read_data()
     except RuntimeError:
         # Assert data was reset
-        assert not log_reader.data["X"]
-        assert not log_reader.data["Y"]
-        assert not log_reader.data["pew"]
+        assert not log_reader.data["X0"]
+        assert not log_reader.data["Y0"]
+        assert not log_reader.data["pew0"]
         return
 
     assert False
