@@ -39,6 +39,7 @@ def calculate_data_range(log_reader, columns):
             raise AttributeError("Invalid columns provided")
 
         for datum in log_reader.data[column]:
+            datum = float(datum)
             if datum < min_val:
                 min_val = datum
             if datum > max_val:
