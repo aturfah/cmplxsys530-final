@@ -7,9 +7,9 @@ from agent.counter_rps_agent import CounterRPSAgent
 
 from battle_engine.multiturn_rps import MTRPSEngine
 from log_manager.log_writer import LogWriter
-from simulation.rps_simulation import RPSSimulation
+from simulation.rps_simulation import BaseSimulation
 
-class MTRPSSimulation(RPSSimulation):
+class MTRPSSimulation(BaseSimulation):
     """Simulation for a multi-turn RPS Simulation."""
     
     def __init__(self, **kwargs):
