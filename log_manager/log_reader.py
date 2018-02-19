@@ -62,7 +62,8 @@ class LogReader():
     def generate_data_keys(self):
         keys = []
         for index in range(len(self.files)):
-            file_columns = ["{}{}".format(colname,index) for colname in self.header]
+            file_columns = ["{}{}".format(colname, index)
+                            for colname in self.header]
             keys.extend(file_columns)
         self.data_keys = keys
 
@@ -79,7 +80,7 @@ class LogReader():
                 self.init_data()
                 raise RuntimeError(
                     "File {} has an invalid header".format(filename))
-            
+
             for row in csv_reader:
                 for col_index in range(len(self.header)):
                     key_name = "{}{}".format(self.header[col_index], index)
