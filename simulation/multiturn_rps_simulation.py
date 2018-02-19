@@ -9,9 +9,10 @@ from battle_engine.multiturn_rps import MTRPSEngine
 from log_manager.log_writer import LogWriter
 from simulation.rps_simulation import BaseSimulation
 
+
 class MTRPSSimulation(BaseSimulation):
     """Simulation for a multi-turn RPS Simulation."""
-    
+
     def __init__(self, **kwargs):
         """Init method."""
         mtrps_kwargs = kwargs
@@ -51,7 +52,7 @@ class MTRPSSimulation(BaseSimulation):
             agent_id = 'mixed_{}'.format(mixed_ind)
             player = RPSAgent(id_in=agent_id)
             self.ladder.add_player(player)
-        
+
         for counter_ind in range(num_counter):
             agent_id = 'counter_{}'.format(counter_ind)
             player = CounterRPSAgent(id_in=agent_id)
@@ -74,5 +75,13 @@ class MTRPSSimulation(BaseSimulation):
         self.type_log_writer = LogWriter(header, prefix="MTRPSTypes")
 
     def run(self):
-        """Run this simulation"""
-        print("RUNNING MTRPSSimulation.")
+        """Run Rock/Paper/Scissors simulation."""
+        for game_ind in range(self.num_runs):
+            outcome, player1, player2 = self.ladder.run_game()
+
+            self.write_player_log(outcome, player1, player2)
+
+            if game_ind % self.data_delay == 0:
+                # Calculate the average ranking statistics
+                # every <data_delay> iterations
+                self.type_log_writer.write_line(calculate_avg_elo(self.ladder))
