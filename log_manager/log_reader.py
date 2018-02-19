@@ -23,9 +23,9 @@ class LogReader():
         :param prefix: str
             Prefix for filenames to read.
         """
-        if filename is None and prefix is None:
+        if filenames is None and prefix is None:
             raise AttributeError("One of filename or prefix must be specified")
-        if filename is not None and prefix is not None:
+        if filenames is not None and prefix is not None:
             raise AttributeError("Only one of filename or\
                                  prefix can be specified")
 
