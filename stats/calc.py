@@ -2,6 +2,7 @@
 
 from math import inf
 
+
 def calculate_avg_elo(ladder, group_by="type"):
     """
     Calculate the elo rankings on a ladder at a specific point in time.
@@ -29,6 +30,7 @@ def calculate_avg_elo(ladder, group_by="type"):
         output[group] = sum(output[group])/len(output[group])
 
     return output
+
 
 def calculate_data_range(log_reader, columns=None):
     """Calculate the max/min values for the data."""
