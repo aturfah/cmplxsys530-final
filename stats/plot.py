@@ -17,6 +17,7 @@ def plot_group_ratings(data):
     plt.show()
 
 def plot_log_reader_data(log_reader):
+    """Pew."""
     data_range = calculate_data_range(log_reader)
 
     plt.subplots_adjust(right=0.8)
