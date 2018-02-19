@@ -55,6 +55,11 @@ class MTRPSEngine(RPSEngine):
             p1_move = player1.make_move()
             p2_move = player2.make_move()
 
+            if isinstance(player1, CounterRPSAgent):
+                player1.last_move = p2_move
+            if isinstance(player2, CounterRPSAgent):
+                player2.last_move = p1_move
+
             results = self.rps_logic(p1_move, p2_move)
             self.game_state[results] += 1
 
