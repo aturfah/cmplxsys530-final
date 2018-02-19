@@ -1,6 +1,7 @@
 """Engine for Best N/M RPS."""
 
 import numpy as np
+from agent.counter_rps_agent import CounterRPSAgent
 from battle_engine.rockpaperscissors import RPSEngine
 
 
@@ -43,6 +44,12 @@ class MTRPSEngine(RPSEngine):
             The other player in this simulation.
         """
         self.reset_game_state()
+
+        if isinstance(player1, CounterRPSAgent):
+            player1.reset_state()
+        if isinstance(player2, CounterRPSAgent):
+            player2.reset_state()
+
         outcome = None
         for _ in range(self.num_games):
             p1_move = player1.make_move()
