@@ -31,8 +31,7 @@ def run(prefix):
     graph_dict = {}
     for group in log_reader.data:
         legend_info.append(group)
-        data_to_plot = np.asarray(log_reader.data[group])
-        line_i, = axis.plot(data_to_plot)
+        line_i, = axis.plot(log_reader.data[group], label=group)
         graph_dict[group] = line_i
 
     plt.legend(legend_info, loc='upper left')
