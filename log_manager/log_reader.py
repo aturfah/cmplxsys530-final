@@ -5,8 +5,6 @@ from os.path import isfile, join
 
 from csv import reader
 
-from math import inf
-
 import config
 
 
