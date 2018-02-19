@@ -54,7 +54,7 @@ class MTRPSEngine:
         if not outcome["draw"]:
             return outcome["winner"]
 
-        return int(uniform() < 0.5)
+        return int(np.random.uniform() < 0.5)
 
     def win_condition_met(self):
         """
