@@ -231,10 +231,14 @@ For a single interaction, the process is below.
 
 ### 5) Assessment and Outcome Measures
 
-_What quantitative metrics and/or qualitative features will you use to assess your model outcomes?_
+The behavior of interest is how the players behave in battles. This includes prediction of oppnent's moves, playing towards a 'win condition', and operating under uncertainty. The emergent property of interest is how the metagame develops, which pokemon rise to dominance, and general usage trends.
+
+At the battle level, logs of battles will be have to be manually tracked to make sure proper decisions are being made. At the metagame level, the only real measure of accuracy is current ladder statistics, which would be dependant on whether or not agents can change their teams. If not, preformance of teams will be 'validated' against the actual PS ladder.
+
+In the best case, an interface would be able to be put on the agent so that way a human can actually play against an automated agent. 
 
 &nbsp; 
 
 ### 6) Parameter Sweep
 
-_What parameters are you most interested in sweeping through? What value ranges do you expect to look at for your analysis?_
+The two main parameters of interest are how the random vs weighted ladders affect the dominance of strategies or not.  In addition, I'm interested in how the state of a metagame/the options availible tend to centralize or decentralize based on metagame trends/team preformance. 
