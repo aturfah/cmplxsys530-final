@@ -5,6 +5,8 @@ from os.path import isfile, join
 
 from csv import reader
 
+from math import inf
+
 import config
 
 
@@ -75,6 +77,22 @@ class LogReader():
                     self.data[self.header[col_index]].append(row[col_index])
 
             file_.close()
+
+    def calc_data_range(self, columns):
+        """Calculate the max/min values for the data."""
+        max_val = -inf
+        min_val = inf
+        for column in columns:
+            if column not in self.data:
+                raise AttributeError("Invalid columns provided")
+
+            for datum in self.data[column]:
+                if datum < min_val:
+                    min_val = datum
+                if datum > max_val:
+                    max_val = datum
+
+        self.data_range = (min_val, max_val)
 
     def to_numeric(self, colnames):
         """Make the columns in colnames numeric data."""
