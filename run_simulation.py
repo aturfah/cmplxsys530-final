@@ -57,6 +57,8 @@ def run(**kwargs):
                                 proportions=(0.25, 0.25, 0.25, 0.25),
                                 data_delay=data_delay,
                                 ladder_choice=ladder_choice)
+        rps_sim.add_agents()
+        rps_sim.init_type_log_writer()
         rps_sim.run()
     elif game_choice == 2:
         rps_sim = RPSSimulation(num_runs=num_runs,
