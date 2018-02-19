@@ -155,4 +155,4 @@ test_reader_no_files()
 test_reader_data()
 test_reader_data_err()
 
-#cleanup()
+cleanup()
