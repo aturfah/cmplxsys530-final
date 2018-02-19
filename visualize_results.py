@@ -36,7 +36,8 @@ def run(prefix):
         graph_dict[group] = line_i
 
     plt.legend(legend_info, loc='upper left')
-    plt.axes().set_ylabel("Average Elo Ranking")
+    plt.ylabel("Average Elo Ranking")
+    plt.ylim(data_range[0], data_range[1])
 
     def new_data(event):
         """PEW."""
