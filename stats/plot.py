@@ -39,9 +39,11 @@ def plot_log_reader_data(log_reader):
 
     def new_data(event):
         """PEW."""
-        print(graph_dict)
-        line = graph_dict[event]
-        line.set_visible(not line.get_visible())
+        keys = graph_dict.keys()
+        matching_vals = [val for val in keys if val.startswith(event)]
+        for val in matching_vals:
+            line = graph_dict[val]
+            line.set_visible(not line.get_visible())
         plt.draw()
 
     change_axis = plt.axes([0.85, 0.65, 0.13, 0.2])
