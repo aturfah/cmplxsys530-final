@@ -20,7 +20,7 @@ def run(prefix):
 
     log_reader = LogReader(prefix=prefix)
     log_reader.read_data()
-    log_reader.to_numeric(log_reader.header)
+    log_reader.to_numeric(log_reader.data_keys)
 
     plot.plot_log_reader_data(log_reader)
 
