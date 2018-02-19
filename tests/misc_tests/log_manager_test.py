@@ -3,6 +3,8 @@
 from os import listdir, remove
 from os.path import isfile, join
 
+from time import sleep
+
 from uuid import uuid4
 from log_manager.log_writer import LogWriter
 from log_manager.log_reader import LogReader
@@ -105,6 +107,7 @@ def create_invalid_file():
     This file will have different headers, so it should
     cause LogReader to generate a warning message.
     """
+    sleep(0.001)
     lw_invalid = LogWriter(header=HEADER + ["pew2"], prefix=TEST_ID)
     dict_to_write = {}
     dict_to_write["X"] = 10
@@ -152,4 +155,4 @@ test_reader_no_files()
 test_reader_data()
 test_reader_data_err()
 
-cleanup()
+#cleanup()
