@@ -1,7 +1,8 @@
 """Methods to visualize the results of simulations."""
 import click
-import matplotlib.pyplot as plt
 import numpy as np
+
+import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
 
 
@@ -15,6 +16,7 @@ from stats import calc
               "--prefix",
               help="Prefix for files to select.")
 def run(prefix):
+    """PEW."""
     if prefix is None:
         raise RuntimeError("You must specify a prefix.")
 
@@ -29,7 +31,8 @@ def run(prefix):
     graph_dict = {}
     for group in log_reader.data:
         legend_info.append(group)
-        line_i, = axis.plot(log_reader.data[group])
+        data_to_plot = np.asarray(log_reader.data[group])
+        line_i, = axis.plot(data_to_plot)
         graph_dict[group] = line_i
 
     plt.legend(legend_info, loc='upper left')
