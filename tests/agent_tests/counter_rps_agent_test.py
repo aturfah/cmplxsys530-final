@@ -28,8 +28,9 @@ def test_make_move():
     c_player.last_move = opp_move_scissors
     assert c_player.make_move() == 0
 
+
 def test_reset_state():
-    """Assert that last_move is reset with call to reset_state"""
+    """Assert that last_move is reset with call to reset_state."""
     c_player = CounterRPSAgent()
     assert c_player.last_move is None
 
@@ -38,6 +39,7 @@ def test_reset_state():
 
     c_player.reset_state()
     assert c_player.last_move is None
+
 
 test_init()
 test_make_move()
