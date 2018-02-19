@@ -81,5 +81,4 @@ class LogReader():
         for colname in colnames:
             if colname not in self.header:
                 raise AttributeError("Invalid column name: {}".format(colname))
-            for datum in self.data[colname]:
-                datum = float(datum)
+            self.data[colname] = [float(datum) for datum in self.data[colname]]
