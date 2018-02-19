@@ -46,7 +46,7 @@ def test_basic_results():
 
     # Paper beats Rock
     pr_outcome = mtrps.run(paper_player, rock_player)
-    assert pr_outcome == 1 
+    assert pr_outcome == 1
     # Paper loses to Scissors
     ps_outcome = mtrps.run(paper_player, scissors_player)
     assert ps_outcome == 0
