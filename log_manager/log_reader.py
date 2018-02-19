@@ -11,15 +11,15 @@ import config
 class LogReader():
     """Log reader class."""
 
-    def __init__(self, filename=None, prefix=None):
+    def __init__(self, filenames=None, prefix=None):
         """
         Init method for LogReader.
 
         One of filename or prefix should be specified,
         not both.
 
-        :param filename: str
-            String for filename to read.
+        :param filenames: list
+            List of filenames to read.
         :param prefix: str
             Prefix for filenames to read.
         """
@@ -36,7 +36,7 @@ class LogReader():
                 if fname.startswith(prefix) and isfile(full_fname):
                     self.files.append(full_fname)
         else:
-            self.files = [filename]
+            self.files = filenames
 
         if not self.files:
             raise AttributeError("No files match the prefix provided.")
