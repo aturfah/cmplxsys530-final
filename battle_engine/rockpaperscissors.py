@@ -29,13 +29,29 @@ class RPSEngine:
         p1_move = player1.make_move()
         p2_move = player2.make_move()
 
+        outcome = self.rps_logic(p1_move, p2_move)
+
+        if outcome == 1:
+            return 1
+        elif outcome == 2:
+            return 0
+
+        # It was a draw
+        return int(uniform() < self.bias)
+    
+    def rps_logic(self, p1_move, p2_move):
+        """
+        Execute logic of RPS Game.
+        
+        Rock < Paper < Scissors < Rock
+        """
         if p1_move == p2_move:
-            # Same move, call it with a coinflip
-            return int(uniform() < self.bias)
+            # Same move, its a draw
+            return 0
         elif (p1_move - p2_move) == 1 or (p1_move - p2_move) == -2:
             # Player1 wins (Paper vs Rock or
             #   Scissors vs Paper or Rock vs Scissors)
             return 1
 
         # Player2 wins
-        return 0
+        return 2
