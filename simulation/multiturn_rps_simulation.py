@@ -5,7 +5,7 @@ from math import ceil
 from agent.rps_agent import RPSAgent
 from agent.counter_rps_agent import CounterRPSAgent
 
-from battle_engine.multiturn_rps import MTRPSEngine
+from battle_engine.rockpaperscissors import RPSEngine
 
 from log_manager.log_writer import LogWriter
 from stats.calc import calculate_avg_elo
@@ -19,7 +19,7 @@ class MTRPSSimulation(BaseSimulation):
     def __init__(self, **kwargs):
         """Init method."""
         mtrps_kwargs = kwargs
-        mtrps_kwargs["game"] = MTRPSEngine()
+        mtrps_kwargs["game"] = RPSEngine(num_games=3)
         mtrps_kwargs["prefix"] = "MTRPS"
         super().__init__(mtrps_kwargs)
 
