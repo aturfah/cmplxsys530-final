@@ -206,6 +206,7 @@ Similarly, the player will also need additional methods. They are as follows:
 <li><i>generate_moves()</i>: Given the agent's game_state, generate the list of all possible moves, with their respective payoffs.</li>
 
 </ul>
+
 ### 3) Action and Interaction 
  
 **_Interaction Topology_**
