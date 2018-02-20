@@ -11,6 +11,10 @@ from simulation.multiturn_rps_simulation import MTRPSSimulation
               "--num_games",
               default=5000,
               help="Number of games to simulate. Default is 5000")
+@click.option("-nr",
+              "--num_rounds",
+              default=3,
+              help="Number of rounds for Multi-Turn RPS. Default is 5000")
 @click.option("-np",
               "--num_players",
               default=10,
