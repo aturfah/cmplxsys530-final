@@ -5,6 +5,7 @@ from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
 from simulation.multiturn_rps_simulation import MTRPSSimulation
 
+
 @click.command()
 @click.option("-nr",
               "--num_runs",
@@ -73,11 +74,11 @@ def run(**kwargs):
         rps_sim.init_type_log_writer()
         rps_sim.run()
     elif game_choice == 3:
-        mtrps_sim = MTRPSSimulation(num_runs=num_runs,
-                                    num_rounds=num_rounds,
-                                    num_players=num_players,
-                                    ladder_choice=ladder_choice,
-                                    data_delay=data_delay)
+        mtrps_sim = RPSSimulation(num_runs=num_runs,
+                                  num_rounds=num_rounds,
+                                  num_players=num_players,
+                                  ladder_choice=ladder_choice,
+                                  data_delay=data_delay)
         mtrps_sim.add_agents()
         mtrps_sim.init_type_log_writer()
         mtrps_sim.run()
