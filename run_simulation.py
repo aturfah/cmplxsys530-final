@@ -3,7 +3,7 @@ import click
 
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
-from simulation.multiturn_rps_simulation import MTRPSSimulation
+#from simulation.multiturn_rps_simulation import MTRPSSimulation
 
 
 @click.command()
@@ -38,13 +38,14 @@ def run(**kwargs):
     --data_delay/-dd:   Number of iterations between generating data.\n
                             Default is 10\n
     """
-    num_games = kwargs.get("num_games", None)
-    num_players = kwargs.get("num_players", None)
     game_choice = kwargs.get("game_choice", None)
     if game_choice is None:
         raise RuntimeError("No Game Selected")
     game_choice = int(game_choice)
-    proportions = kwargs.get("proportions", None)
+
+    num_games = kwargs.get("num_games", None)
+    num_players = kwargs.get("num_players", None)
+    proportions = kwargs.get("-p", None)
     data_delay = kwargs.get("data_delay", None)
     ladder_choice = int(kwargs.get("ladder", None))
     num_rounds = kwargs.get("num_rounds", None)
@@ -77,6 +78,7 @@ def run(**kwargs):
     elif game_choice == 3:
         mtrps_sim = RPSSimulation(num_games=num_games,
                                   num_rounds=num_rounds,
+                                  proportions=proportions,
                                   num_players=num_players,
                                   ladder_choice=ladder_choice,
                                   data_delay=data_delay)
