@@ -7,40 +7,35 @@ from simulation.multiturn_rps_simulation import MTRPSSimulation
 
 
 @click.command()
-@click.option("-ng",
-              "--num_games",
-              default=5000,
-              help="Number of games to simulate. Default is 5000")
-@click.option("-nr",
-              "--num_rounds",
-              default=3,
-              help="Number of rounds for Multi-Turn RPS. Default is 5000")
-@click.option("-np",
-              "--num_players",
-              default=10,
-              help="Number of agents. Default is 10")
-@click.option("-g",
-              "--game_choice",
-              help="Which game to play. Options are\n \
-              [0] Coin Flip\n \
-              [1] Balanced Population Rock Paper Scissors\n \
-              [2] Skewed Population Rock Paper Scissors\n \
-              [3] Multi-Turn Rock Paper Scissors")
-@click.option("-p",
-              "--proportions",
-              nargs=4,
-              default=(0.25, 0.25, 0.25, 0.25),
-              help="Proportions for skewed RPS tournament. Default is uniform.")
-@click.option("-dd",
-              "--data_delay",
-              default=10,
-              help="Number of iterations between gathering data. Default is 10.")
-@click.option("-l",
-              "--ladder",
-              default=0,
-              help="Which ladder matching to use. Options are \n[0] Weighted (default)\n[1] Random")
+@click.option("-ng", "--num_games", default=5000)
+@click.option("-nr", "--num_rounds", default=3)
+@click.option("-np", "--num_players", default=10)
+@click.option("-g", "--game_choice")
+@click.option("-dd", "--data_delay", default=10)
+@click.argument("-p", "--proportions", nargs=-1)
+@click.option("-l", "--ladder", default=0)
 def run(**kwargs):
-    """Run the simulation."""
+    """
+    Run the simulation.
+
+    Arguments are as follows:\n
+    --num_games/-ng:    Number of games to simulate.\n
+                            Default is 5000\n
+    --num_rounds/-nr:   Number of rounds ber game in Multi-Turn RPS.\n
+                            Default is 3.\n
+    --num_playeres/-np: Number of agents in the simulation.\n
+                            Default is 10.\n
+    --ladder/-l:        Which ladder matching to use. Options are:\n
+                            [0] Weighted (default)\n
+                            [1] Random\n
+    --game_choice/-gc:  Choice of game to play. Options are:\n
+                            [0] Coin Flip\n
+                            [1] Balanced Population RPS\n
+                            [2] Skewed Population RPS\n
+                            [3] Multi-Turn RPS\n
+    --data_delay/-dd:   Number of iterations between generating data.\n
+                            Default is 10\n
+    """
     num_games = kwargs.get("num_games", None)
     num_players = kwargs.get("num_players", None)
     game_choice = kwargs.get("game_choice", None)
