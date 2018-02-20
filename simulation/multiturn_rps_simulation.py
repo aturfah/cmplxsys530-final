@@ -26,8 +26,6 @@ class MTRPSSimulation(BaseSimulation):
         self.proportions = [0.3, 0.3, 0.3, 0, 0.1]
         self.data_delay = kwargs["data_delay"]
 
-        self.add_agents()
-        self.init_type_log_writer()
 
     def add_agents(self):
         """Add agents in specified proportions to the ladder."""

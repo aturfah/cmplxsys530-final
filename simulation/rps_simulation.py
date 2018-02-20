@@ -30,8 +30,8 @@ class RPSSimulation(BaseSimulation):
         super().__init__(rps_kwargs)
 
         self.proportions = kwargs["proportions"]
+        self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
-
 
     def add_agents(self):
         """Add agents in specified proportions to ladder."""
