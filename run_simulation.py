@@ -45,6 +45,7 @@ def run(**kwargs):
     proportions = kwargs.get("proportions", None)
     data_delay = kwargs.get("data_delay", None)
     ladder_choice = int(kwargs.get("ladder", None))
+    num_rounds = kwargs.get("num_rounds", None)
 
     if game_choice == 0:
         cf_sim = CFSimulation(num_runs=num_runs,
@@ -53,6 +54,7 @@ def run(**kwargs):
         cf_sim.run()
     elif game_choice == 1:
         rps_sim = RPSSimulation(num_runs=num_runs,
+                                num_rounds=1,
                                 num_players=num_players,
                                 proportions=(0.25, 0.25, 0.25, 0.25),
                                 data_delay=data_delay,
@@ -62,6 +64,7 @@ def run(**kwargs):
         rps_sim.run()
     elif game_choice == 2:
         rps_sim = RPSSimulation(num_runs=num_runs,
+                                num_rounds=1,
                                 num_players=num_players,
                                 proportions=proportions,
                                 data_delay=data_delay,
@@ -71,6 +74,7 @@ def run(**kwargs):
         rps_sim.run()
     elif game_choice == 3:
         mtrps_sim = MTRPSSimulation(num_runs=num_runs,
+                                    num_rounds=num_rounds,
                                     num_players=num_players,
                                     ladder_choice=ladder_choice,
                                     data_delay=data_delay)
