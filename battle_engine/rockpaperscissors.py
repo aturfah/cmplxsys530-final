@@ -3,6 +3,7 @@ from numpy.random import uniform
 
 from agent.counter_rps_agent import CounterRPSAgent
 
+
 class RPSEngine:
     """Engine to run a game of rock, paper, scissors."""
 
@@ -93,6 +94,7 @@ class RPSEngine:
             result["winner"] = 0
 
         return result
+
 
 def rps_logic(p1_move, p2_move):
     """
