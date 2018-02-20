@@ -14,6 +14,17 @@ Ali Turfah
 The goal of this project is to create a model of the Pokemon Showdown (PS) metagame. The primary results of interest are the emergent strategies that correspond to "high-ladder" play. <br/>
 Ideally this will be done by building up from the rules simpler turn-based games, like Rock, Paper, Scissors (RPS) with varying strategies.
 
+**_On Pokemon Battes_**
+Under normal conditions, during each turn of a Pokemon battle a player has 9 possible moves that they can make; choosing from one of 4 attacks or switching to one of the 5 teammates. 
+Moves are either attacking or status moves, where the former's viability relies primarily on the power and the latter has secondary effects like halving an opponent's speed or increasing the user's attack. In additon each move can only be used a limited number of times, however this rarely comes into play.
+A pokemon has one or two of 16 types, health, speed, defense and attacking values that are used to calculate how much damage it takes/recieves, as well as how many attacks it can take before 'fainting'. If a pokemon has 'fainted', it is unable to be used and therefore cannot be switched to. A battle is over when all of a player's pokemon have fainted.
+Initially each turn has roughly 81 possible outcomes (the pairs of each player's nine choices), each resulting in a different battle state. So, one can calculate the payoff of a player's move is the weighted sum of the outcome of all the opponent's moves, given the player's move (Figure 1 below). Projecting two turns forward, each of these 81 turns can result in roughly 81 different outcomes, for 81<sup>2</sup> possible outcomes in two turns. To consider the payoff in this situation, one would need to take a weighted sum over the second level of moves that emerge from that player's move (Figure 2 below). Because of the immense space that the possible combinations of turns can result in, it is usually not particularly helpful to proceed in calculating too many turns in advance.
+
+<img src="payoff_one_layer.bmp" width=350 alt="Figure1"><br/>Figure1: Outcomes needed to be considered for payoff of Player1 Move1  (P1M1) at one layer.<br/>
+<img src="payoff_two_layer.bmp" width=450 alt="Figure2"><br/>
+Figure2: Outcomes needed to be considered for payoff of Player1 Move1 (P1M1) at two layers. <br/>
+
+
 &nbsp;  
 ### Justification
 ****
@@ -197,7 +208,7 @@ def make_move(self):
 #### Coming Soon™: PokemonAgent
 While yet to be implemented, a ```PokemonAgent``` has some similarities with the RPS agents above. In addition to the attributes of the ```BaseAgent```, a ```PokemonAgent``` will have the following attributes.
 <ul>
-<li><i>strategy</i>: How a player weights their moves. For example, it may strongly prefer moves that should give high payouts to the user, without considering much of how it affects the opponent.</li>
+<li><i>strategy</i>: How a player weights their moves. For example, it may strongly prefer moves that should give high payouts to the user, without considering much of how it affects the opponent. Alternatively, much like a CounterRPSAgent, its possible to make the play that would beat the opponent's last move.</li>
 <li><i>team</i>: A team of 6 pokemon that are used in battle.</li>
 <li><i>game_state</i>: The state of the game, <b>to the player's knowledge</b>. The player's knowledge part is important because not all information is readily availible from the start, so uncertainty is unavoidable.</li>
 </ul>
@@ -206,6 +217,7 @@ Similarly, the player will also need additional methods. They are as follows:
 <li><i>generate_moves()</i>: Given the agent's game_state, generate the list of all possible moves, with their respective payoffs.</li>
 
 </ul>
+
 
 ### 3) Action and Interaction 
  
