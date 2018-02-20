@@ -13,6 +13,11 @@ class RPSEngine:
         :param num_games: int
             Number of games to play (Default 1).
         """
+        if num_games % 2 == 0:
+            raise AttributeError("num_games must be odd.")
+        if num_games <= 0:
+            raise AttributeError("num_games must be positive.")
+
         self.num_games = num_games
         self.reset_game_state()
 
