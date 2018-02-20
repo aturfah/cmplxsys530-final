@@ -50,6 +50,9 @@ def run(**kwargs):
     ladder_choice = int(kwargs.get("ladder", None))
     num_rounds = kwargs.get("num_rounds", None)
 
+    if not proportions and (game_choice == 2 or game_choice == 3):
+        raise RuntimeError("No proportions specified.")
+
     if game_choice == 0:
         cf_sim = CFSimulation(num_games=num_games,
                               num_players=num_players,
