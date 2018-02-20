@@ -29,7 +29,7 @@ class RPSSimulation(BaseSimulation):
         rps_kwargs["prefix"] = "RPS"
         super().__init__(rps_kwargs)
 
-        self.proportions = kwargs["proportions"]
+        self.proportions = [float(val) for val in kwargs["proportions"]]
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
 
@@ -77,6 +77,8 @@ class RPSSimulation(BaseSimulation):
             header.append("scissors")
         if self.proportions[3] != 0:
             header.append("uniform")
+        if self.proportions[4] != 0:
+            header.append("counter")
 
         self.type_log_writer = LogWriter(header, prefix="RPSTypes")
 
