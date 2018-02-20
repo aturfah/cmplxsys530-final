@@ -25,7 +25,7 @@ class RPSSimulation(BaseSimulation):
             elo ranking for each strategy (R/P/S/U)
         """
         rps_kwargs = kwargs
-        rps_kwargs["game"] = RPSEngine()
+        rps_kwargs["game"] = RPSEngine(kwargs["num_rounds"])
         rps_kwargs["prefix"] = "RPS"
         super().__init__(rps_kwargs)
 
