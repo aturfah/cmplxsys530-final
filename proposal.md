@@ -19,14 +19,11 @@ Ideally this will be done by building up from the rules simpler turn-based games
 &nbsp;  
 ### Justification
 ****
-_Short explanation on why you are using ABM_
 ABMs were chosen to model this system because it allows for control at the level of the player, in individual games, and analysis of the results at the metagame level.
 
 &nbsp; 
 ### Main Micro-level Processes and Macro-level Dynamics of Interest
 ****
-
-_Short overview of the key processes and/or relationships you are interested in using your model to explore. Will likely be something regarding emergent behavior that arises from individual interactions_
 
 The Micro-level process is how the game plays out. In the case of Rock/Paper/Scissors, it is which move the players cast. In the case of pokemon, it is the decisions made at each turn by the players. 
 &nbsp; 
@@ -199,6 +196,18 @@ def make_move(self):
 ````
 &nbsp; 
 
+#### Coming Soon™: PokemonAgent
+While yet to be implemented, a ```PokemonAgent``` has some similarities with the RPS agents above. In addition to the attributes of the ```BaseAgent```, a ```PokemonAgent``` will have the following attributes.
+<ul>
+<li><i>strategy</i>: How a player weights their moves. For example, it may strongly prefer moves that should give high payouts to the user, without considering much of how it affects the opponent.</li>
+<li><i>team</i>: A team of 6 pokemon that are used in battle.</li>
+<li><i>game_state</i>: The state of the game, <b>to the player's knowledge</b>. The player's knowledge part is important because not all information is readily availible from the start, so uncertainty is unavoidable.</li>
+</ul>
+Similarly, the player will also need additional methods. They are as follows:
+<ul>
+<li><i>generate_moves()</i>: Given the agent's game_state, generate the list of all possible moves, with their respective payoffs.</li>
+
+</ul>
 ### 3) Action and Interaction 
  
 **_Interaction Topology_**
@@ -244,7 +253,7 @@ For a single interaction, the process is below.
 
 ### 5) Assessment and Outcome Measures
 
-The behavior of interest is how the players behave in battles. This includes prediction of oppnent's moves, playing towards a 'win condition', and operating under uncertainty. The emergent property of interest is how the metagame develops, which pokemon rise to dominance, and general usage trends.
+The behavior of interest is how the players behave in battles. This includes prediction of oppnent's moves, playing towards a 'win condition', and decision-making under uncertainty. The emergent property of interest is how the metagame develops, which pokemon rise to dominance, and general usage trends.
 
 At the battle level, logs of battles will be have to be manually tracked to make sure proper decisions are being made. At the metagame level, the only real measure of accuracy is current ladder statistics, which would be dependant on whether or not agents can change their teams. If not, preformance of teams will be 'validated' against the actual PS ladder.
 
