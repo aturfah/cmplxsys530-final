@@ -266,5 +266,7 @@ In the best case, an interface would be able to be put on the agent so that way 
 The main parameter of interest is the development of dominant agent strategies; how the agents make their moves, how they operate under uncertainty, how they respond to their opponent's strategies, etc. Therefore, simulations will need to be done across these strategies, including the depth of possibility trees to search, as well as interactions with each other. 
 
 In addition, I'm interested to see how the use of a weighted ladder scheme as opposed to a random matching scheme changes the results. For example, in a Rock/Paper/Scissors simulation one would expect the ratings of the respective agents to fluctuate (because as certain strategies dominate, the reward for countering them increases significantly) as seen below.
-
+![Random Matched Ladder](RPS_Random.png "Logo Title Text 1")
 Conversely, when matching players against those with similar Elo rankings, we see a significant difference in the overall development. The strategies section off, and since the players who would be able to counter the dominant strategy never play against it, the cyclic pattern does not occur.
+![Random Matched Ladder](RPS_Weighted.png "Logo Title Text 1")
+_Simulations were run for 50,000 iterations with 100 of each type of RPSAgent. Measures for average elo rankings were taken every 10 iterations._
