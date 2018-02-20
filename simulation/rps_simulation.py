@@ -76,7 +76,7 @@ class RPSSimulation(BaseSimulation):
 
     def run(self):
         """Run Rock/Paper/Scissors simulation."""
-        for game_ind in range(self.num_runs):
+        for game_ind in range(self.num_games):
             outcome, player1, player2 = self.ladder.run_game()
 
             self.write_player_log(outcome, player1, player2)

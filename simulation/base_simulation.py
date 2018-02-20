@@ -18,7 +18,7 @@ class BaseSimulation():
         """
         Init method.
 
-        :param num_runs: int
+        :param num_games: int
             Total number of games to simulate
         :param num_players: int
             Approximate number of players to have on the ladder
@@ -31,7 +31,7 @@ class BaseSimulation():
             Prefix to use for these filenames.
         """
         self.num_players = kwargs["num_players"]
-        self.num_runs = kwargs["num_runs"]
+        self.num_games = kwargs["num_games"]
         self.game = kwargs["game"]
         self.ladder_choice = kwargs["ladder_choice"]
         self.ladder = LADDER_CHOICES[self.ladder_choice](self.game)

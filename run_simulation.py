@@ -7,8 +7,8 @@ from simulation.multiturn_rps_simulation import MTRPSSimulation
 
 
 @click.command()
-@click.option("-nr",
-              "--num_runs",
+@click.option("-ng",
+              "--num_games",
               default=5000,
               help="Number of games to simulate. Default is 5000")
 @click.option("-np",
@@ -37,7 +37,7 @@ from simulation.multiturn_rps_simulation import MTRPSSimulation
               help="Which ladder matching to use. Options are \n[0] Weighted (default)\n[1] Random")
 def run(**kwargs):
     """Run the simulation."""
-    num_runs = kwargs.get("num_runs", None)
+    num_games = kwargs.get("num_games", None)
     num_players = kwargs.get("num_players", None)
     game_choice = kwargs.get("game_choice", None)
     if game_choice is None:
@@ -49,12 +49,12 @@ def run(**kwargs):
     num_rounds = kwargs.get("num_rounds", None)
 
     if game_choice == 0:
-        cf_sim = CFSimulation(num_runs=num_runs,
+        cf_sim = CFSimulation(num_games=num_games,
                               num_players=num_players,
                               ladder_choice=ladder_choice)
         cf_sim.run()
     elif game_choice == 1:
-        rps_sim = RPSSimulation(num_runs=num_runs,
+        rps_sim = RPSSimulation(num_games=num_games,
                                 num_rounds=1,
                                 num_players=num_players,
                                 proportions=(0.25, 0.25, 0.25, 0.25),
@@ -64,7 +64,7 @@ def run(**kwargs):
         rps_sim.init_type_log_writer()
         rps_sim.run()
     elif game_choice == 2:
-        rps_sim = RPSSimulation(num_runs=num_runs,
+        rps_sim = RPSSimulation(num_games=num_games,
                                 num_rounds=1,
                                 num_players=num_players,
                                 proportions=proportions,
@@ -74,7 +74,7 @@ def run(**kwargs):
         rps_sim.init_type_log_writer()
         rps_sim.run()
     elif game_choice == 3:
-        mtrps_sim = RPSSimulation(num_runs=num_runs,
+        mtrps_sim = RPSSimulation(num_games=num_games,
                                   num_rounds=num_rounds,
                                   num_players=num_players,
                                   ladder_choice=ladder_choice,
