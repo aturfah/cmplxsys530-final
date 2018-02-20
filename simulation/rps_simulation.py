@@ -5,8 +5,8 @@ from math import ceil
 from simulation.base_simulation import BaseSimulation
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
+from agent.counter_rps_agent import CounterRPSAgent
 from stats.calc import calculate_avg_elo
-# from stats.plot import plot_group_ratings
 from log_manager.log_writer import LogWriter
 
 
@@ -22,7 +22,7 @@ class RPSSimulation(BaseSimulation):
             Scissors, and Uniform players respectively
         :param data_delay: int
             Iteration gap to calculate average
-            elo ranking for each strategy (R/P/S/U)
+            elo ranking for each strategy (R/P/S/U/C)
         """
         rps_kwargs = kwargs
         rps_kwargs["game"] = RPSEngine(kwargs["num_rounds"])
@@ -39,6 +39,7 @@ class RPSSimulation(BaseSimulation):
         num_paper = ceil(float(self.proportions[1])*self.num_players)
         num_scissors = ceil(float(self.proportions[2])*self.num_players)
         num_mixed = ceil(float(self.proportions[3])*self.num_players)
+        num_counter = ceil(float(self.proportions[4])*self.num_players)
 
         for rock_ind in range(num_rock):
             agent_id = 'rock_{}'.format(rock_ind)
@@ -58,6 +59,11 @@ class RPSSimulation(BaseSimulation):
         for mixed_ind in range(num_mixed):
             agent_id = 'mixed_{}'.format(mixed_ind)
             player = RPSAgent(id_in=agent_id)
+            self.ladder.add_player(player)
+
+        for counter_ind in range(num_counter):
+            agent_id = 'counter_{}'.format(counter_ind)
+            player = CounterRPSAgent(id_in=agent_id)
             self.ladder.add_player(player)
 
     def init_type_log_writer(self):

@@ -25,6 +25,8 @@ def run(**kwargs):
                             Default is 3.\n
     --num_playeres/-np: Number of agents in the simulation.\n
                             Default is 10.\n
+    --proportions/-p:   Proportions for RPS Simulations.\n
+                            5 Values corresponding to RPSUC respectively.\n
     --ladder/-l:        Which ladder matching to use. Options are:\n
                             [0] Weighted (default)\n
                             [1] Random\n
@@ -56,7 +58,7 @@ def run(**kwargs):
         rps_sim = RPSSimulation(num_games=num_games,
                                 num_rounds=1,
                                 num_players=num_players,
-                                proportions=(0.25, 0.25, 0.25, 0.25),
+                                proportions=(0.25, 0.25, 0.25, 0.25, 0),
                                 data_delay=data_delay,
                                 ladder_choice=ladder_choice)
         rps_sim.add_agents()
