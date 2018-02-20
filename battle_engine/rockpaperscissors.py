@@ -1,44 +1,93 @@
 """Engine implementation for Rock, Paper, Scissors."""
 from numpy.random import uniform
 
+from agent.counter_rps_agent import CounterRPSAgent
 
 class RPSEngine:
     """Engine to run a game of rock, paper, scissors."""
 
-    def __init__(self, bias=0.5):
+    def __init__(self, num_games=1):
         """
         Init method for this class.
 
-        :param bias: float
-            How biased this class is in tiebreaking.
+        :param num_games: int
+            Number of games to play (Default 1).
         """
-        self.bias = bias
+        self.num_games = num_games
+        self.reset_game_state()
+
+    def reset_game_state(self):
+        """Reset game state to all zeros."""
+        self.game_state = {}
+        self.game_state[0] = 0
+        self.game_state[1] = 0
+        self.game_state[2] = 0
 
     def run(self, player1, player2):
         """
-        Run a game of Rock, Paper, Scissors.
+        Run <self.num_games> games.
 
-        Victory determined as follows:
-            Rock < Paper < Scissors < Rock
+        Returns 1 if player1 wins, 0 if player2 wins.
+        In the case of a draw, flip a coin.
 
         :param player1: BaseAgent
-            First agent that will participate in the game
+            A player in this simulation.
         :param player2: BaseAgent
-            The other agent that will participate in the game
+            The other player in this simulation.
         """
-        p1_move = player1.make_move()
-        p2_move = player2.make_move()
+        self.reset_game_state()
 
-        outcome = rps_logic(p1_move, p2_move)
+        if isinstance(player1, CounterRPSAgent):
+            player1.reset_state()
+        if isinstance(player2, CounterRPSAgent):
+            player2.reset_state()
 
-        if outcome == 1:
-            return 1
-        elif outcome == 2:
-            return 0
+        outcome = None
+        for _ in range(self.num_games):
+            p1_move = player1.make_move()
+            p2_move = player2.make_move()
 
-        # It was a draw
-        return int(uniform() < self.bias)
+            if isinstance(player1, CounterRPSAgent):
+                player1.last_move = p2_move
+            if isinstance(player2, CounterRPSAgent):
+                player2.last_move = p1_move
 
+            results = rps_logic(p1_move, p2_move)
+            self.game_state[results] += 1
+
+            outcome = self.win_condition_met()
+            if not outcome["draw"]:
+                break
+
+        if outcome["draw"]:
+            # It was a draw, decide randomly
+            return int(uniform() < 0.5)
+
+        return outcome["winner"]
+
+    def win_condition_met(self):
+        """
+        Assess whether or not condition for winning met and return winner.
+
+        If number of games necessary for victory met, return the winner.
+        """
+        p1_wins = self.game_state[1]
+        p2_wins = self.game_state[2]
+        wins_needed = int(self.num_games/2)+1
+
+        # Initialize results
+        result = {}
+        result["draw"] = True
+        result["winner"] = None
+
+        if p1_wins >= wins_needed:
+            result["draw"] = False
+            result["winner"] = 1
+        elif p2_wins >= wins_needed:
+            result["draw"] = False
+            result["winner"] = 0
+
+        return result
 
 def rps_logic(p1_move, p2_move):
     """
