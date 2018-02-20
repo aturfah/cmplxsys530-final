@@ -3,7 +3,7 @@ import click
 
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
-
+from simulation.multiturn_rps_simulation import MTRPSSimulation
 
 @click.command()
 @click.option("-nr",
@@ -19,7 +19,8 @@ from simulation.rps_simulation import RPSSimulation
               help="Which game to play. Options are\n \
               [0] Coin Flip\n \
               [1] Balanced Population Rock Paper Scissors\n \
-              [2] Skewed Population Rock Paper Scissors")
+              [2] Skewed Population Rock Paper Scissors\n \
+              [3] Multi-Turn Rock Paper Scissors")
 @click.option("-p",
               "--proportions",
               nargs=4,
@@ -56,6 +57,8 @@ def run(**kwargs):
                                 proportions=(0.25, 0.25, 0.25, 0.25),
                                 data_delay=data_delay,
                                 ladder_choice=ladder_choice)
+        rps_sim.add_agents()
+        rps_sim.init_type_log_writer()
         rps_sim.run()
     elif game_choice == 2:
         rps_sim = RPSSimulation(num_runs=num_runs,
@@ -63,7 +66,17 @@ def run(**kwargs):
                                 proportions=proportions,
                                 data_delay=data_delay,
                                 ladder_choice=ladder_choice)
+        rps_sim.add_agents()
+        rps_sim.init_type_log_writer()
         rps_sim.run()
+    elif game_choice == 3:
+        mtrps_sim = MTRPSSimulation(num_runs=num_runs,
+                                    num_players=num_players,
+                                    ladder_choice=ladder_choice,
+                                    data_delay=data_delay)
+        mtrps_sim.add_agents()
+        mtrps_sim.init_type_log_writer()
+        mtrps_sim.run()
     else:
         raise RuntimeError("Invalid Game Choice")
 
