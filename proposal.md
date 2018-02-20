@@ -184,6 +184,19 @@ def make_move(self):
     raise RuntimeError("Something went wrong with strategy selection")
 
 ```
+
+#### CounterRPSAgent
+A ```CounterRPSAgent``` is a special kind of ```RPSAgent```. On the first turn it plays one of Rock, Paper, or Scissors with randomly. Then on all following turns, it plays the move that would beat the opponent's last move. The call for make_move() is shown below.
+
+**CounterRPSAgent's make_move() function**
+```python
+def make_move(self):
+    """Counter opponent's last move."""
+    if self.last_move is None:
+        return super().make_move()
+
+    return (self.last_move + 1) % 3
+````
 &nbsp; 
 
 ### 3) Action and Interaction 
