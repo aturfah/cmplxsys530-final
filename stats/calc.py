@@ -29,29 +29,50 @@ def calculate_avg_elo(ladder, group_by="type"):
 
     return output
 
+
 def calculate_matchups(log_reader, stratify=False):
     """Calculate matchup results for player types."""
     num_games = len(log_reader.data[log_reader.data_keys[0]])
-    results_dict = {}
+    num_files = len(log_reader.files)
 
-    outcome_cols = []
-    type_cols = []
-    elo_cols = []
+    results = {}
 
-    num_files = len(outcome_cols)
+    for file_ind in range(num_files):
+        outcome_key = "{}{}".format("outcome", file_ind)
+        p1_type_key = "{}{}".format("player1.type", file_ind)
+        p2_type_key = "{}{}".format("player2.type", file_ind)
 
-    for key_name in log_reader.data_keys:
-        if "outcome" in key_name:
-            outcome_cols.append(key_name)
-        elif ".type" in key_name:
-            type_cols.append(key_name)
-        elif ".elo" in key_name:
-            elo_cols.append(key_name)
+        outcome_data = log_reader.data[outcome_key]
+        p1_type_data = log_reader.data[p1_type_key]
+        p2_type_data = log_reader.data[p2_type_key]
+        for game_ind in range(num_games):
+            outcome = outcome_data[game_ind]
+            p1_type = p1_type_data[game_ind]
+            p2_type = p2_type_data[game_ind]
 
-    print(outcome_cols)
-    print(type_cols)
-    print(elo_cols)
+            # Initialize the data for the types
+            if p1_type not in results:
+                results[p1_type] = {}
+            if p2_type not in results:
+                results[p2_type] = {}
 
-    for game_ind in range(num_games):
-        for file_ind in range(num_files):
-            pass
+            if p2_type not in results[p1_type]:
+                results[p1_type][p2_type] = {}
+                results[p1_type][p2_type]["wins"] = 0
+                results[p1_type][p2_type]["total"] = 0
+            if p1_type not in results[p2_type]:
+                results[p2_type][p1_type] = {}
+                results[p2_type][p1_type]["wins"] = 0
+                results[p2_type][p1_type]["total"] = 0
+
+            results[p1_type][p2_type]["total"] += 1
+            results[p2_type][p1_type]["total"] += 1
+
+            results[p1_type][p2_type]["wins"] += outcome
+            results[p2_type][p1_type]["wins"] += (outcome + 1) % 2
+
+    import pprint
+    pp = pprint.PrettyPrinter(indent=2)
+    pp.pprint(results)
+
+    return results
