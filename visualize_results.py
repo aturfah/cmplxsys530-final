@@ -42,7 +42,9 @@ def run(prefix, method, numeric_columns):
         if numeric_columns == ():
             log_reader.to_numeric(log_reader.data_keys)
         else:
-            log_reader.to_numeric(numeric_columns)
+            num_col_keys = log_reader.to_data_key(numeric_columns)
+            print(num_col_keys)
+            log_reader.to_numeric(num_col_keys)
 
         plot.plot_log_reader_data(log_reader)
 
