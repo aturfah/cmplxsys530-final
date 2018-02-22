@@ -88,4 +88,3 @@ def calc_ratios(results):
                 results[p1_type][p2_type]["ratio"] = None
 
     return results
- 
