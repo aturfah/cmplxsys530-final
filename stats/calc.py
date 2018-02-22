@@ -80,8 +80,4 @@ def calculate_matchups(log_reader, stratify=False):
             else:
                 results[p1_type][p2_type]["ratio"] = None
     
-    import pprint
-    pp = pprint.PrettyPrinter(indent=2)
-    pp.pprint(results)
-
     return results
