@@ -71,6 +71,15 @@ def calculate_matchups(log_reader, stratify=False):
             results[p1_type][p2_type]["wins"] += outcome
             results[p2_type][p1_type]["wins"] += (outcome + 1) % 2
 
+    for p1_type in results:
+        for p2_type in results[p1_type]:
+            num_wins = results[p1_type][p2_type]["wins"]
+            num_total = results[p1_type][p2_type]["total"]
+            if num_total != 0:
+                results[p1_type][p2_type]["ratio"] = num_wins/num_total
+            else:
+                results[p1_type][p2_type]["ratio"] = None
+    
     import pprint
     pp = pprint.PrettyPrinter(indent=2)
     pp.pprint(results)
