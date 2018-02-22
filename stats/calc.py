@@ -29,6 +29,29 @@ def calculate_avg_elo(ladder, group_by="type"):
 
     return output
 
-def calculate_matchups():
+def calculate_matchups(log_reader, stratify=False):
     """Calculate matchup results for player types."""
-    pass
+    num_games = len(log_reader.data[log_reader.data_keys[0]])
+    results_dict = {}
+
+    outcome_cols = []
+    type_cols = []
+    elo_cols = []
+
+    num_files = len(outcome_cols)
+
+    for key_name in log_reader.data_keys:
+        if "outcome" in key_name:
+            outcome_cols.append(key_name)
+        elif ".type" in key_name:
+            type_cols.append(key_name)
+        elif ".elo" in key_name:
+            elo_cols.append(key_name)
+
+    print(outcome_cols)
+    print(type_cols)
+    print(elo_cols)
+
+    for game_ind in range(num_games):
+        for file_ind in range(num_files):
+            pass
