@@ -68,6 +68,8 @@ def calculate_matchups(log_reader):
             results[p1_type][p2_type]["total"] += 1
             results[p2_type][p1_type]["total"] += 1
 
+            # Increment the counter of whoever won
+            # (outcome+1)%2 turns 0 to 1 and 1 to 0
             results[p1_type][p2_type]["wins"] += outcome
             results[p2_type][p1_type]["wins"] += (outcome + 1) % 2
 
