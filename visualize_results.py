@@ -8,6 +8,7 @@ from log_manager.log_reader import LogReader
 from stats import plot
 from stats import calc
 
+
 @click.command()
 @click.option("-p",
               "--prefix",
@@ -58,6 +59,7 @@ def run(prefix, method, numeric_columns):
             log_reader.to_numeric(num_col_keys)
 
         calc.calculate_matchups(log_reader)
+
 
 if __name__ == "__main__":
     # pylint: disable=no-value-for-parameter
