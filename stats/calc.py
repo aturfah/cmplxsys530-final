@@ -30,7 +30,7 @@ def calculate_avg_elo(ladder, group_by="type"):
     return output
 
 
-def calculate_matchups(log_reader, stratify=False):
+def calculate_matchups(log_reader):
     """Calculate matchup results for player types."""
     num_games = len(log_reader.data[log_reader.data_keys[0]])
     num_files = len(log_reader.files)
@@ -79,5 +79,5 @@ def calculate_matchups(log_reader, stratify=False):
                 results[p1_type][p2_type]["ratio"] = num_wins/num_total
             else:
                 results[p1_type][p2_type]["ratio"] = None
-    
+
     return results
