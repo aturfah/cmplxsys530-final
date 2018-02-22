@@ -61,12 +61,7 @@ class LogReader():
 
     def generate_data_keys(self):
         """Generate list of keys for for self.data."""
-        keys = []
-        for index in range(len(self.files)):
-            file_columns = ["{}{}".format(colname, index)
-                            for colname in self.header]
-            keys.extend(file_columns)
-        self.data_keys = keys
+        self.data_keys = self.to_data_key(self.header)
 
     def read_data(self):
         """Populate the data."""
@@ -90,9 +85,18 @@ class LogReader():
             index += 1
             file_.close()
 
+    def to_data_key(self, colnames):
+        """Convert a list of column names to their representation in data_keys."""
+        keys = []
+        for index in range(len(self.files)):
+            file_columns = ["{}{}".format(colname, index)
+                            for colname in colnames]
+            keys.extend(file_columns)
+        return keys
+
     def to_numeric(self, colnames):
         """Make the columns in colnames numeric data."""
         for colname in colnames:
             if colname not in self.data_keys:
-                raise AttributeError("Invalid column name: {}".format(colname))
+                raise AttributeError("Invalid column name: \"{}\"".format(colname))
             self.data[colname] = [float(datum) for datum in self.data[colname]]
