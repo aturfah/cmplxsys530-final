@@ -18,6 +18,9 @@ from stats import plot
 @click.argument("numeric_columns", nargs=-1)
 def run(prefix, method, numeric_columns):
     """Visualize the data from a LogReader."""
+    if method is None:
+        raise RuntimeError("No method specified.")
+
     filenames = None
     if prefix is None:
         # Hide TK Window
@@ -35,11 +38,14 @@ def run(prefix, method, numeric_columns):
     log_reader = LogReader(prefix=prefix, filenames=filenames)
     log_reader.read_data()
 
-    if True:
-        # All data is numeric in this case, fix later
-        log_reader.to_numeric(log_reader.data_keys)
+    if method == "graph":
+        if numeric_columns == ():
+            log_reader.to_numeric(log_reader.data_keys)
+        else:
+            log_reader.to_numeric(numeric_columns)
 
         plot.plot_log_reader_data(log_reader)
+
 
 
 if __name__ == "__main__":
