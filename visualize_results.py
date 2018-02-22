@@ -12,7 +12,11 @@ from stats import plot
 @click.option("-p",
               "--prefix",
               help="Prefix for files to select.")
-def run(prefix):
+@click.option("-m",
+              "--method",
+              help="What to do with the files.")
+@click.argument("numeric_columns", nargs=-1)
+def run(prefix, method, numeric_columns):
     """Visualize the data from a LogReader."""
     filenames = None
     if prefix is None:
@@ -31,10 +35,11 @@ def run(prefix):
     log_reader = LogReader(prefix=prefix, filenames=filenames)
     log_reader.read_data()
 
-    # All data is numeric in this case, fix later
-    log_reader.to_numeric(log_reader.data_keys)
+    if True:
+        # All data is numeric in this case, fix later
+        log_reader.to_numeric(log_reader.data_keys)
 
-    plot.plot_log_reader_data(log_reader)
+        plot.plot_log_reader_data(log_reader)
 
 
 if __name__ == "__main__":
