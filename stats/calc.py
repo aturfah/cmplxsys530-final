@@ -28,3 +28,7 @@ def calculate_avg_elo(ladder, group_by="type"):
         output[group] = sum(output[group])/len(output[group])
 
     return output
+
+def calculate_matchups():
+    """Calculate matchup results for player types."""
+    pass

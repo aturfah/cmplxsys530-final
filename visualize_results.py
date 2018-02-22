@@ -6,7 +6,7 @@ import click
 
 from log_manager.log_reader import LogReader
 from stats import plot
-
+from stats import calc
 
 @click.command()
 @click.option("-p",
@@ -46,15 +46,18 @@ def run(prefix, method, numeric_columns):
             log_reader.to_numeric(num_col_keys)
 
         plot.plot_log_reader_data(log_reader)
+
     elif method == "numeric":
         num_col_keys = None
         if numeric_columns == ():
-            num_col_keys = log_reader.to_data_key(["player1.elo", "player2.elo"])
+            num_col_keys = log_reader.to_data_key(
+                ["player1.elo", "player2.elo"])
             log_reader.to_numeric(num_col_keys)
         else:
             num_col_keys = log_reader.to_data_key(numeric_columns)
             log_reader.to_numeric(num_col_keys)
 
+        calc.calculate_matchups()
 
 if __name__ == "__main__":
     # pylint: disable=no-value-for-parameter
