@@ -51,7 +51,7 @@ def run(prefix, method, numeric_columns):
         num_col_keys = None
         if numeric_columns == ():
             num_col_keys = log_reader.to_data_key(
-                ["player1.elo", "player2.elo"])
+                ["player1.elo", "player2.elo", "outcome"])
             log_reader.to_numeric(num_col_keys)
         else:
             num_col_keys = log_reader.to_data_key(numeric_columns)
