@@ -57,7 +57,7 @@ def run(prefix, method, numeric_columns):
             num_col_keys = log_reader.to_data_key(numeric_columns)
             log_reader.to_numeric(num_col_keys)
 
-        calc.calculate_matchups()
+        calc.calculate_matchups(log_reader)
 
 if __name__ == "__main__":
     # pylint: disable=no-value-for-parameter
