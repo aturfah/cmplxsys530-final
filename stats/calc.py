@@ -75,8 +75,8 @@ def calculate_matchups(log_reader):
             results[p1_type][p2_type]["wins"] += outcome
             results[p2_type][p1_type]["wins"] += (outcome + 1) % 2
 
-    results = calc_ratios(results)
-    return results
+    ratio_results = calc_ratios(results)
+    return ratio_results
 
 
 def calc_ratios(results):
