@@ -79,6 +79,7 @@ def calculate_matchups(log_reader):
     names, results = calculate_matchup_matrix(results)
     return names, results
 
+
 def calc_ratios(results):
     """Calculate the ratios for a given results dict."""
     for p1_type in results:
@@ -91,6 +92,7 @@ def calc_ratios(results):
                 results[p1_type][p2_type]["ratio"] = None
 
     return results
+
 
 def calculate_matchup_matrix(results):
     """From the results of calc_matchups(), calculate matchups as matrix"""
@@ -109,4 +111,3 @@ def calculate_matchup_matrix(results):
             output[1, row_ind, col_ind] = results[rowname][colname]["total"]
 
     return names, output
-

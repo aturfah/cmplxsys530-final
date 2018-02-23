@@ -46,10 +46,11 @@ def plot_log_reader_data(log_reader):
     change_buttons.on_clicked(new_data)
     plt.show()
 
+
 def plot_matchup_matrix(colnames, matchup_matrix):
     """Plot matchup matrix as heatmap."""
-    plot1_data = matchup_matrix[0,:,:]
-    plot2_data = matchup_matrix[1,:,:]
+    plot1_data = matchup_matrix[0, :, :]
+    plot2_data = matchup_matrix[1, :, :]
 
     num_rows = plot1_data.shape[0]
     num_cols = plot1_data.shape[1]
@@ -66,6 +67,7 @@ def plot_matchup_matrix(colnames, matchup_matrix):
 
     plt.show()
 
+
 def format_plot(ax, colnames, num_rows, num_cols):
     """Do formatting for plots."""
     plt.grid(which="minor", lw=1, color="black")
@@ -74,12 +76,12 @@ def format_plot(ax, colnames, num_rows, num_cols):
     ax.set_xticks(np.arange(num_cols))
     ax.set_yticks([x - 0.5 for x in np.arange(1, num_rows)], minor=True)
     ax.set_xticks([x - 0.5 for x in np.arange(1, num_cols)], minor=True)
-    ax.tick_params(axis="y",which="minor",bottom="off")
-    ax.tick_params(axis="x",which="minor",bottom="off")
+    ax.tick_params(axis="y", which="minor", bottom="off")
+    ax.tick_params(axis="x", which="minor", bottom="off")
     ax.invert_yaxis()
 
     ax.set_xticklabels(colnames, minor=False)
     ax.set_yticklabels(colnames, minor=False)
     plt.xticks(rotation=45)
-    
+
     plt.colorbar(orientation="horizontal", pad=0.25)
