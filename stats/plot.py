@@ -55,33 +55,33 @@ def plot_matchup_matrix(colnames, matchup_matrix):
     num_rows = plot1_data.shape[0]
     num_cols = plot1_data.shape[1]
 
-    ax = plt.subplot(121)
+    wl_axis = plt.subplot(121)
     plt.title("W/L Ratio")
     plt.imshow(plot1_data, cmap="coolwarm")
-    format_plot(ax, colnames, num_rows, num_cols)
+    format_plot(wl_axis, colnames, num_rows, num_cols)
 
-    ax2 = plt.subplot(122)
+    num_games_axis = plt.subplot(122)
     plt.title("# of Games Played")
     plt.imshow(plot2_data, cmap="coolwarm")
-    format_plot(ax2, colnames, num_rows, num_cols)
+    format_plot(num_games_axis, colnames, num_rows, num_cols)
 
     plt.show()
 
 
-def format_plot(ax, colnames, num_rows, num_cols):
+def format_plot(axis, colnames, num_rows, num_cols):
     """Do formatting for plots."""
     plt.grid(which="minor", lw=1, color="black")
 
-    ax.set_yticks(np.arange(num_rows))
-    ax.set_xticks(np.arange(num_cols))
-    ax.set_yticks([x - 0.5 for x in np.arange(1, num_rows)], minor=True)
-    ax.set_xticks([x - 0.5 for x in np.arange(1, num_cols)], minor=True)
-    ax.tick_params(axis="y", which="minor", bottom="off")
-    ax.tick_params(axis="x", which="minor", bottom="off")
-    ax.invert_yaxis()
+    axis.set_yticks(np.arange(num_rows))
+    axis.set_xticks(np.arange(num_cols))
+    axis.set_yticks([x - 0.5 for x in np.arange(1, num_rows)], minor=True)
+    axis.set_xticks([x - 0.5 for x in np.arange(1, num_cols)], minor=True)
+    axis.tick_params(axis="y", which="minor", bottom="off")
+    axis.tick_params(axis="x", which="minor", bottom="off")
+    axis.invert_yaxis()
 
-    ax.set_xticklabels(colnames, minor=False)
-    ax.set_yticklabels(colnames, minor=False)
+    axis.set_xticklabels(colnames, minor=False)
+    axis.set_yticklabels(colnames, minor=False)
     plt.xticks(rotation=45)
 
     plt.colorbar(orientation="horizontal", pad=0.25)
