@@ -58,18 +58,10 @@ def run(prefix, method, numeric_columns):
             num_col_keys = log_reader.to_data_key(numeric_columns)
             log_reader.to_numeric(num_col_keys)
 
-        colnames, matchup_matrix = calc.calculate_matchups(log_reader)
+        results = calc.calculate_matchups(log_reader)
+        colnames, matchup_matrix = calc.calculate_matchup_matrix(results)
 
-        print_matchup_matrix(colnames, matchup_matrix)
         plot.plot_matchup_matrix(colnames, matchup_matrix)
-
-
-def print_matchup_matrix(colnames, matchup_matrix):
-    """Print matchup matrix all pretty formatted."""
-    # Should probably fix this eventually
-    print("\t %s" % " ".join("%10s" % name for name in colnames))
-    for label, row in zip(colnames, matchup_matrix[0, :, :]):
-        print("%10s %s" % (label, " ".join("%0.8f" % val for val in row)))
 
 
 if __name__ == "__main__":
