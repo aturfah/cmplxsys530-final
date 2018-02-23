@@ -76,9 +76,21 @@ def calculate_matchups(log_reader):
             results[p2_type][p1_type]["wins"] += (outcome + 1) % 2
 
     results = calc_ratios(results)
+    names, results = calculate_matchup_matrix(results)
+    return names, results
+
+def calc_ratios(results):
+    """Calculate the ratios for a given results dict."""
+    for p1_type in results:
+        for p2_type in results[p1_type]:
+            num_wins = results[p1_type][p2_type]["wins"]
+            num_total = results[p1_type][p2_type]["total"]
+            if num_total != 0:
+                results[p1_type][p2_type]["ratio"] = num_wins/num_total
+            else:
+                results[p1_type][p2_type]["ratio"] = None
 
     return results
-
 
 def calculate_matchup_matrix(results):
     """From the results of calc_matchups(), calculate matchups as matrix"""
@@ -98,16 +110,3 @@ def calculate_matchup_matrix(results):
 
     return names, output
 
-
-def calc_ratios(results):
-    """Calculate the ratios for a given results dict."""
-    for p1_type in results:
-        for p2_type in results[p1_type]:
-            num_wins = results[p1_type][p2_type]["wins"]
-            num_total = results[p1_type][p2_type]["total"]
-            if num_total != 0:
-                results[p1_type][p2_type]["ratio"] = num_wins/num_total
-            else:
-                results[p1_type][p2_type]["ratio"] = None
-
-    return results

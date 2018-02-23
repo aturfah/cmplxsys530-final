@@ -58,9 +58,8 @@ def run(prefix, method, numeric_columns):
             num_col_keys = log_reader.to_data_key(numeric_columns)
             log_reader.to_numeric(num_col_keys)
 
-        results = calc.calculate_matchups(log_reader)
+        colnames, matchup_matrix = calc.calculate_matchups(log_reader)
 
-        colnames, matchup_matrix = calc.calculate_matchup_matrix(results)
         print_matchup_matrix(colnames, matchup_matrix)
         plot.plot_matchup_matrix(colnames, matchup_matrix)
 
