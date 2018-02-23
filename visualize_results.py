@@ -66,10 +66,7 @@ def run(prefix, method, numeric_columns):
 
 def print_matchup_matrix(colnames, matchup_matrix):
     """Print matchup matrix all pretty formatted."""
-    # print(colnames)
-    # print(matchup_matrix[0, :, :])
-    # print(matchup_matrix[1, :, :])
-
+    # Should probably fix this eventually
     print("\t %s" % " ".join("%10s" % name for name in colnames))
     for label, row in zip(colnames, matchup_matrix[0, :, :]):
         print("%10s %s" % (label, " ".join("%0.8f" % val for val in row)))
