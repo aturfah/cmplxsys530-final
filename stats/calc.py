@@ -76,8 +76,7 @@ def calculate_matchups(log_reader):
             results[p2_type][p1_type]["wins"] += (outcome + 1) % 2
 
     results = calc_ratios(results)
-    names, results = calculate_matchup_matrix(results)
-    return names, results
+    return calculate_matchup_matrix(results)
 
 
 def calc_ratios(results):
@@ -95,7 +94,7 @@ def calc_ratios(results):
 
 
 def calculate_matchup_matrix(results):
-    """From the results of calc_matchups(), calculate matchups as matrix"""
+    """Convert matchups from dict to a numpy matrix."""
     names = list(results.keys())
     num_cols = len(names)
 
