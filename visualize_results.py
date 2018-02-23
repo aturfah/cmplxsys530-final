@@ -15,7 +15,7 @@ from stats import calc
               help="Prefix for files to select.")
 @click.option("-m",
               "--method",
-              help="What to do with the files.")
+              help="What type of visualization to do.")
 @click.argument("numeric_columns", nargs=-1)
 def run(prefix, method, numeric_columns):
     """Visualize the data from a LogReader."""
