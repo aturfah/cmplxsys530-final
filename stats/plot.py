@@ -51,16 +51,29 @@ def plot_matchup_matrix(colnames, matchup_matrix):
     plot1_data = matchup_matrix[0,:,:]
     plot2_data = matchup_matrix[1,:,:]
 
-    
+    num_rows = plot1_data.shape[0]
+    num_cols = plot1_data.shape[1]
+
     ax = plt.subplot(121)
     plt.title("W/L Ratio")
     plt.imshow(plot1_data, cmap="coolwarm")
+    format_plot(ax, colnames, num_rows, num_cols)
+
+    ax2 = plt.subplot(122)
+    plt.title("# of Games Played")
+    plt.imshow(plot2_data, cmap="coolwarm")
+    format_plot(ax2, colnames, num_rows, num_cols)
+
+    plt.show()
+
+def format_plot(ax, colnames, num_rows, num_cols):
+    """Do formatting for plots."""
     plt.grid(which="minor", lw=1, color="black")
 
-    ax.set_yticks(np.arange(plot1_data.shape[0]))
-    ax.set_xticks(np.arange(plot1_data.shape[1]))
-    ax.set_yticks([x - 0.5 for x in np.arange(1, plot1_data.shape[1])], minor=True)
-    ax.set_xticks([x - 0.5 for x in np.arange(1, plot1_data.shape[1])], minor=True)
+    ax.set_yticks(np.arange(num_rows))
+    ax.set_xticks(np.arange(num_cols))
+    ax.set_yticks([x - 0.5 for x in np.arange(1, num_rows)], minor=True)
+    ax.set_xticks([x - 0.5 for x in np.arange(1, num_cols)], minor=True)
     ax.tick_params(axis="y",which="minor",bottom="off")
     ax.tick_params(axis="x",which="minor",bottom="off")
     ax.invert_yaxis()
@@ -69,13 +82,4 @@ def plot_matchup_matrix(colnames, matchup_matrix):
     ax.set_yticklabels(colnames, minor=False)
     plt.xticks(rotation=45)
     
-    plt.colorbar()
-
-
-    plt.subplot(122)
-    plt.title("# of Games Played")
-    plt.imshow(plot2_data, cmap="coolwarm")
-    
-    plt.colorbar()
-
-    plt.show()
+    plt.colorbar(orientation="horizontal", pad=0.25)
