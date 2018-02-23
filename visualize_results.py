@@ -39,7 +39,7 @@ def run(prefix, method, numeric_columns):
     log_reader = LogReader(prefix=prefix, filenames=filenames)
     log_reader.read_data()
 
-    if method == "graph":
+    if method == "elo":
         if numeric_columns == ():
             log_reader.to_numeric(log_reader.data_keys)
         else:
@@ -48,7 +48,7 @@ def run(prefix, method, numeric_columns):
 
         plot.plot_log_reader_data(log_reader)
 
-    elif method == "numeric":
+    elif method == "matchups":
         num_col_keys = None
         if numeric_columns == ():
             num_col_keys = log_reader.to_data_key(
