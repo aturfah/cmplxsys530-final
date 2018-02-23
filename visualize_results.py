@@ -62,6 +62,7 @@ def run(prefix, method, numeric_columns):
 
         colnames, matchup_matrix = calc.calculate_matchup_matrix(results)
         print_matchup_matrix(colnames, matchup_matrix)
+        plot.plot_matchup_matrix(colnames, matchup_matrix)
 
 
 def print_matchup_matrix(colnames, matchup_matrix):
