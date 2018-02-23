@@ -76,7 +76,7 @@ def calculate_matchups(log_reader):
             results[p2_type][p1_type]["wins"] += (outcome + 1) % 2
 
     results = calc_ratios(results)
-    return calculate_matchup_matrix(results)
+    return results
 
 
 def calc_ratios(results):
