@@ -1,5 +1,7 @@
 """Package to calculate interesting ladder metrics."""
 
+import numpy as np
+
 
 def calculate_avg_elo(ladder, group_by="type"):
     """
@@ -76,6 +78,25 @@ def calculate_matchups(log_reader):
     results = calc_ratios(results)
 
     return results
+
+
+def calculate_matchup_matrix(results):
+    """From the results of calc_matchups(), calculate matchups as matrix"""
+    names = list(results.keys())
+    num_cols = len(names)
+
+    output = np.zeros((2, num_cols, num_cols))
+
+    # Generate matchup matrix
+    for col_ind in range(num_cols):
+        for row_ind in range(num_cols):
+            rowname = names[row_ind]
+            colname = names[col_ind]
+
+            output[0, row_ind, col_ind] = results[rowname][colname]["ratio"]
+            output[1, row_ind, col_ind] = results[rowname][colname]["total"]
+
+    return names, output
 
 
 def calc_ratios(results):
