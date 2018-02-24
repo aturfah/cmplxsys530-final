@@ -1,0 +1,8 @@
+# Sample CF Simulation
+# Runs 1000 games with 10 players
+# Weighted ladder
+
+game_choice | 0
+num_games | 1000
+num_players | 10
+ladder | 0
