@@ -3,7 +3,6 @@ import click
 
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
-#from simulation.multiturn_rps_simulation import MTRPSSimulation
 
 
 @click.command()
@@ -20,6 +19,7 @@ def run(**kwargs):
     Run the simulation.
 
     Arguments are as follows:\n
+    --file/-f:          Read arguments from file.
     --num_games/-ng:    Number of games to simulate.\n
                             Default is 5000\n
     --num_rounds/-nr:   Number of rounds ber game in Multi-Turn RPS.\n
@@ -40,20 +40,21 @@ def run(**kwargs):
                             Default is 10\n
     """
     if kwargs.get("file"):
-        print("HERE!!!")
-        return
+        params = read_file()
     else:
-        game_choice = kwargs.get("game_choice", None)
-        if game_choice is None:
-            raise RuntimeError("No Game Selected")
-        game_choice = int(game_choice)
+        params = kwargs
 
-        num_games = kwargs.get("num_games", None)
-        num_players = kwargs.get("num_players", None)
-        proportions = kwargs.get("-p", None)
-        data_delay = kwargs.get("data_delay", None)
-        ladder_choice = int(kwargs.get("ladder", None))
-        num_rounds = kwargs.get("num_rounds", None)
+    game_choice = params.get("game_choice", None)
+    if game_choice is None:
+        raise RuntimeError("No Game Selected")
+    game_choice = int(game_choice)
+
+    num_games = params.get("num_games", None)
+    num_players = params.get("num_players", None)
+    proportions = params.get("-p", None)
+    data_delay = params.get("data_delay", None)
+    ladder_choice = int(params.get("ladder", None))
+    num_rounds = params.get("num_rounds", None)
 
     if not proportions and (game_choice == 2 or game_choice == 3):
         raise RuntimeError("No proportions specified.")
@@ -96,6 +97,11 @@ def run(**kwargs):
     else:
         raise RuntimeError("Invalid Game Choice")
 
+
+def read_file():
+    """Read CL arguments from file."""
+    print("HERE!!!")
+    return {}
 
 if __name__ == "__main__":
     # pylint: disable=no-value-for-parameter
