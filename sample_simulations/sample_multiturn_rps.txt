@@ -1,0 +1,11 @@
+# Best of 5 RPS Tournament
+# 30% Rock, 30% Paper, 30% Scissors, 5% Uniform, 5% Counter
+# 50000 games, 40 players
+# Random Ladder
+
+game_choice | 3
+num_rounds | 5
+ladder | 1
+num_games | 50000
+num_players | 20
+proportions | 0.3 0.3 0.3 0.05 0.05
