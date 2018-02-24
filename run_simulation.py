@@ -55,12 +55,12 @@ def run(**kwargs):
         raise RuntimeError("No Game Selected")
     game_choice = int(game_choice)
 
-    num_games = params.get("num_games", None)
-    num_players = params.get("num_players", None)
+    num_games = int(params.get("num_games", None))
+    num_players = int(params.get("num_players", None))
     proportions = params.get("proportions", None)
-    data_delay = params.get("data_delay", None)
+    data_delay = int(params.get("data_delay", None))
     ladder_choice = int(params.get("ladder", None))
-    num_rounds = params.get("num_rounds", None)
+    num_rounds = int(params.get("num_rounds", None))
 
     if not proportions and (game_choice == 2 or game_choice == 3):
         raise RuntimeError("No proportions specified.")
