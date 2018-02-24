@@ -12,8 +12,9 @@ from simulation.rps_simulation import RPSSimulation
 @click.option("-np", "--num_players", default=10)
 @click.option("-g", "--game_choice")
 @click.option("-dd", "--data_delay", default=10)
-@click.argument("-p", "--proportions", nargs=-1)
 @click.option("-l", "--ladder", default=0)
+@click.argument("-p", "--proportions", nargs=-1)
+@click.option("-f", "--file", nargs=1)
 def run(**kwargs):
     """
     Run the simulation.
@@ -38,17 +39,21 @@ def run(**kwargs):
     --data_delay/-dd:   Number of iterations between generating data.\n
                             Default is 10\n
     """
-    game_choice = kwargs.get("game_choice", None)
-    if game_choice is None:
-        raise RuntimeError("No Game Selected")
-    game_choice = int(game_choice)
+    if kwargs.get("file"):
+        print("HERE!!!")
+        return
+    else:
+        game_choice = kwargs.get("game_choice", None)
+        if game_choice is None:
+            raise RuntimeError("No Game Selected")
+        game_choice = int(game_choice)
 
-    num_games = kwargs.get("num_games", None)
-    num_players = kwargs.get("num_players", None)
-    proportions = kwargs.get("-p", None)
-    data_delay = kwargs.get("data_delay", None)
-    ladder_choice = int(kwargs.get("ladder", None))
-    num_rounds = kwargs.get("num_rounds", None)
+        num_games = kwargs.get("num_games", None)
+        num_players = kwargs.get("num_players", None)
+        proportions = kwargs.get("-p", None)
+        data_delay = kwargs.get("data_delay", None)
+        ladder_choice = int(kwargs.get("ladder", None))
+        num_rounds = kwargs.get("num_rounds", None)
 
     if not proportions and (game_choice == 2 or game_choice == 3):
         raise RuntimeError("No proportions specified.")
