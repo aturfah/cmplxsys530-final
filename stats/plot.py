@@ -48,28 +48,43 @@ def plot_log_reader_data(log_reader):
 
 
 def plot_matchup_matrix(colnames, matchup_matrix):
-    """Plot matchup matrix as heatmap."""
+    """
+    Plot matchup matrix as heatmap.
+    
+    :param colnames: list
+        List of column names to display on heatmap; since
+        matrix is NxN, also displays as rows.
+    :param matchup_matrix: np.ndarray
+        2xNxN Matrix of matchup results.
+    """
     plot1_data = matchup_matrix[0, :, :]
     plot2_data = matchup_matrix[1, :, :]
-
-    num_rows = plot1_data.shape[0]
-    num_cols = plot1_data.shape[1]
 
     wl_axis = plt.subplot(121)
     plt.title("W/L Ratio")
     plt.imshow(plot1_data, cmap="coolwarm")
-    format_plot(wl_axis, colnames, num_rows, num_cols)
+    format_plot(wl_axis, colnames)
 
     num_games_axis = plt.subplot(122)
     plt.title("# of Games Played")
     plt.imshow(plot2_data, cmap="coolwarm")
-    format_plot(num_games_axis, colnames, num_rows, num_cols)
+    format_plot(num_games_axis, colnames)
 
     plt.show()
 
 
-def format_plot(axis, colnames, num_rows, num_cols):
-    """Do formatting for plots."""
+def format_plot(axis, colnames):
+    """
+    Do formatting for plots.
+    
+    :param axis: plt.axis
+        Plot figure with graph data.
+    :param colnames: list
+        List of row/column names to display on heatmap.
+    """
+    num_rows = len(colnames)
+    num_cols = len(colnames)
+    
     plt.grid(which="minor", lw=1, color="black")
 
     axis.set_yticks(np.arange(num_rows))
