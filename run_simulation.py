@@ -1,9 +1,11 @@
 """Script to run a ladder simulation."""
+from tkinter import Tk
+from tkinter.filedialog import askopenfile
+
 import click
 
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
-#from simulation.multiturn_rps_simulation import MTRPSSimulation
 
 
 @click.command()
@@ -12,13 +14,15 @@ from simulation.rps_simulation import RPSSimulation
 @click.option("-np", "--num_players", default=10)
 @click.option("-g", "--game_choice")
 @click.option("-dd", "--data_delay", default=10)
-@click.argument("-p", "--proportions", nargs=-1)
 @click.option("-l", "--ladder", default=0)
+@click.option("-f", "--file", is_flag=True)
+@click.argument("proportions", nargs=-1)
 def run(**kwargs):
     """
     Run the simulation.
 
     Arguments are as follows:\n
+    --file/-f:          Read arguments from file.
     --num_games/-ng:    Number of games to simulate.\n
                             Default is 5000\n
     --num_rounds/-nr:   Number of rounds ber game in Multi-Turn RPS.\n
@@ -30,7 +34,7 @@ def run(**kwargs):
     --ladder/-l:        Which ladder matching to use. Options are:\n
                             [0] Weighted (default)\n
                             [1] Random\n
-    --game_choice/-gc:  Choice of game to play. Options are:\n
+    --game_choice/-g:  Choice of game to play. Options are:\n
                             [0] Coin Flip\n
                             [1] Balanced Population RPS\n
                             [2] Skewed Population RPS\n
@@ -38,17 +42,25 @@ def run(**kwargs):
     --data_delay/-dd:   Number of iterations between generating data.\n
                             Default is 10\n
     """
-    game_choice = kwargs.get("game_choice", None)
+    if kwargs.get("file"):
+        params = read_file()
+        for arg in kwargs:
+            if arg not in params:
+                params[arg] = kwargs[arg]
+    else:
+        params = kwargs
+
+    game_choice = params.get("game_choice", None)
     if game_choice is None:
         raise RuntimeError("No Game Selected")
     game_choice = int(game_choice)
 
-    num_games = kwargs.get("num_games", None)
-    num_players = kwargs.get("num_players", None)
-    proportions = kwargs.get("-p", None)
-    data_delay = kwargs.get("data_delay", None)
-    ladder_choice = int(kwargs.get("ladder", None))
-    num_rounds = kwargs.get("num_rounds", None)
+    num_games = int(params.get("num_games", None))
+    num_players = int(params.get("num_players", None))
+    proportions = params.get("proportions", None)
+    data_delay = int(params.get("data_delay", None))
+    ladder_choice = int(params.get("ladder", None))
+    num_rounds = int(params.get("num_rounds", None))
 
     if not proportions and (game_choice == 2 or game_choice == 3):
         raise RuntimeError("No proportions specified.")
@@ -90,6 +102,34 @@ def run(**kwargs):
         mtrps_sim.run()
     else:
         raise RuntimeError("Invalid Game Choice")
+
+
+def read_file():
+    """Read CL arguments from file."""
+    # Hide default window
+    root = Tk()
+    root.withdraw()
+    root.update()
+
+    c_file = askopenfile()
+    if c_file is None:
+        raise RuntimeError("Load Aborted")
+
+    results = {}
+    for line in c_file:
+        line = line.replace("\n", "")
+        if line == "" or line[0] == "#":
+            continue
+
+        parameter, value = line.split("|")
+        parameter = parameter.strip()
+        value = value.strip()
+        if " " in value:
+            value = value.split(" ")
+
+        results[parameter] = value
+
+    return results
 
 
 if __name__ == "__main__":
