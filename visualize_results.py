@@ -6,14 +6,29 @@ import click
 
 from log_manager.log_reader import LogReader
 from stats import plot
+from stats import calc
 
 
 @click.command()
 @click.option("-p",
               "--prefix",
               help="Prefix for files to select.")
-def run(prefix):
-    """Visualize the data from a LogReader."""
+@click.option("-m",
+              "--method",
+              help="What type of visualization to do.")
+@click.argument("numeric_columns", nargs=-1)
+def run(prefix, method, numeric_columns):
+    """
+    Visualize the data from a LogReader.
+
+    :param prefix: str
+        Prefix to specify for LogReader's files
+    :param numeric_columns: tuple
+        Which columns to convert to numeric (for the analysis)
+    """
+    if method is None:
+        raise RuntimeError("No method specified.")
+
     filenames = None
     if prefix is None:
         # Hide TK Window
@@ -31,10 +46,29 @@ def run(prefix):
     log_reader = LogReader(prefix=prefix, filenames=filenames)
     log_reader.read_data()
 
-    # All data is numeric in this case, fix later
-    log_reader.to_numeric(log_reader.data_keys)
+    if method == "elo":
+        if numeric_columns == ():
+            log_reader.to_numeric(log_reader.data_keys)
+        else:
+            num_col_keys = log_reader.to_data_key(numeric_columns)
+            log_reader.to_numeric(num_col_keys)
 
-    plot.plot_log_reader_data(log_reader)
+        plot.plot_log_reader_data(log_reader)
+
+    elif method == "matchups":
+        num_col_keys = None
+        if numeric_columns == ():
+            num_col_keys = log_reader.to_data_key(
+                ["player1.elo", "player2.elo", "outcome"])
+            log_reader.to_numeric(num_col_keys)
+        else:
+            num_col_keys = log_reader.to_data_key(numeric_columns)
+            log_reader.to_numeric(num_col_keys)
+
+        results = calc.calculate_matchups(log_reader)
+        colnames, matchup_matrix = calc.calculate_matchup_matrix(results)
+
+        plot.plot_matchup_matrix(colnames, matchup_matrix)
 
 
 if __name__ == "__main__":
