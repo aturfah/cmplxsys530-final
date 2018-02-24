@@ -30,7 +30,7 @@ def run(**kwargs):
     --ladder/-l:        Which ladder matching to use. Options are:\n
                             [0] Weighted (default)\n
                             [1] Random\n
-    --game_choice/-gc:  Choice of game to play. Options are:\n
+    --game_choice/-g:  Choice of game to play. Options are:\n
                             [0] Coin Flip\n
                             [1] Balanced Population RPS\n
                             [2] Skewed Population RPS\n
