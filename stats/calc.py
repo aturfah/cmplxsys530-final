@@ -80,7 +80,23 @@ def calculate_matchups(log_reader):
             results[p1_type][p2_type]["wins"] += outcome
             results[p2_type][p1_type]["wins"] += (outcome + 1) % 2
 
+
+    
+    results = validate_results(results)
     results = calc_ratios(results)
+    return results
+
+
+def validate_results(results):
+    """Fill in any missing values."""
+    names = results.keys()
+    for p1_type in names:
+        for p2_type in names:
+            if p2_type not in results[p1_type]:
+                results[p1_type][p2_type] = {
+                    "wins": 0,
+                    "total": 0
+                }
     return results
 
 
