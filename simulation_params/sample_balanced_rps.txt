@@ -1,8 +1,0 @@
-# RPS with balanced RPSU populations
-# 2000 games with 8 players
-# Ladder metrics every 10 turns
-
-game_choice | 1
-num_games | 2000
-num_players | 8
-data_delay | 10
