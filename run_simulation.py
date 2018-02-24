@@ -1,6 +1,9 @@
 """Script to run a ladder simulation."""
 import click
 
+from tkinter import Tk
+from tkinter.filedialog import askopenfile
+
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
 
@@ -12,8 +15,8 @@ from simulation.rps_simulation import RPSSimulation
 @click.option("-g", "--game_choice")
 @click.option("-dd", "--data_delay", default=10)
 @click.option("-l", "--ladder", default=0)
-@click.argument("-p", "--proportions", nargs=-1)
-@click.option("-f", "--file", nargs=1)
+@click.option("-f", "--file", is_flag=True)
+@click.argument("proportions", nargs=-1)
 def run(**kwargs):
     """
     Run the simulation.
@@ -41,6 +44,9 @@ def run(**kwargs):
     """
     if kwargs.get("file"):
         params = read_file()
+        for arg in kwargs:
+            if arg not in params:
+                params[arg] = kwargs[arg]
     else:
         params = kwargs
 
@@ -51,7 +57,7 @@ def run(**kwargs):
 
     num_games = params.get("num_games", None)
     num_players = params.get("num_players", None)
-    proportions = params.get("-p", None)
+    proportions = params.get("proportions", None)
     data_delay = params.get("data_delay", None)
     ladder_choice = int(params.get("ladder", None))
     num_rounds = params.get("num_rounds", None)
@@ -100,8 +106,31 @@ def run(**kwargs):
 
 def read_file():
     """Read CL arguments from file."""
-    print("HERE!!!")
-    return {}
+    # Hide default window
+    root = Tk()
+    root.withdraw()
+    root.update()
+
+    c_file = askopenfile()
+    if c_file is None:
+        raise RuntimeError("Load Aborted")
+
+    results = {}
+    for line in c_file:
+        line = line.replace("\n", "")
+        if line == "" or line[0] == "#":
+            continue
+
+        parameter, value = line.split("|")
+        parameter = parameter.strip()
+        value = value.strip()
+        if " " in value:
+            value = value.split(" ")
+
+        results[parameter] = value
+
+    return results
+
 
 if __name__ == "__main__":
     # pylint: disable=no-value-for-parameter
