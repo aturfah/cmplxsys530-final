@@ -1,8 +1,8 @@
 """Script to run a ladder simulation."""
-import click
-
 from tkinter import Tk
 from tkinter.filedialog import askopenfile
+
+import click
 
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
