@@ -112,6 +112,8 @@ NATURES = {
 class Pokemon:
     """The pokemon class."""
 
+    # pylint: disable=too-many-instance-attributes
+    # Packaging values as a dictionary is kind of pointless
     def __init__(self, name, moves, level=100, nature="quirky"):
         """
         Initialize a pokemon.
