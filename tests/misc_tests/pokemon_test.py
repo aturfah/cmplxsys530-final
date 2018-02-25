@@ -68,6 +68,14 @@ def test_stats_calculation():
     assert pkmn.sp_defense == 65     
     assert pkmn.speed == 65
 
+    pkmn2 = Pokemon("spinda", ["tackle"], level=50, nature="adamant")
+    assert pkmn2.max_hp == 120
+    assert pkmn2.attack == 71
+    assert pkmn2.defense == 65
+    assert pkmn2.sp_attack == 58
+    assert pkmn2.sp_defense == 65     
+    assert pkmn2.speed == 65
+
 test_init()
 test_param_validation()
 test_stats_calculation()
