@@ -115,7 +115,7 @@ class Pokemon:
     def __init__(self, name, moves, level=100, nature="quirky"):
         """
         Initialize a pokemon.
-        
+
         Make a new instance of species <name> with moves <moves>
         at level <level> with nature <quirky>
 
