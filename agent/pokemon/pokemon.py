@@ -158,7 +158,12 @@ class Pokemon:
         self.set_stats(nature)
 
     def set_stats(self, nature):
-        """Calculate stats for the pokemon."""
+        """
+        Calculate stats for the pokemon.
+        
+        :param nature: str
+            Nature of the pokemon to modify stats.
+        """
         base_stats = POKEMON_DATA[self.name]["baseStats"]
 
         # Calculate the statistic values
