@@ -1,5 +1,7 @@
 """Class for a pokemon used by a PokemonAgent."""
 
+from math import floor
+
 from config import MOVE_DATA
 from config import POKEMON_DATA
 
@@ -23,4 +25,50 @@ class Pokemon:
         # Validate level
         if level not in range(1, 101):
             raise AttributeError("Level must be between 1 and 100")
+        
+        self.name = name
+        self.level = level
+        self.moves = {}
+        for move in moves:
+            self.moves[move] = MOVE_DATA[move]
 
+        self.set_stats()
+
+    def set_stats(self):
+        """Calculate stats for the pokemon."""
+        base_stats = POKEMON_DATA[self.name]["baseStats"]
+        
+        self.max_hp = calculate_hp_stat(base_stats["hp"], self.level)
+        self.attack = calculate_stat(base_stats["atk"], self.level)
+        self.defense = calculate_stat(base_stats["def"], self.level)
+        self.sp_attack = calculate_stat(base_stats["spa"], self.level)
+        self.sp_defense = calculate_stat(base_stats["spd"], self.level)
+        self.speed = calculate_stat(base_stats["spe"], self.level)
+        
+def calculate_stat(base_val, level):
+    """
+    Calculate the value for a given pokemon statistic.
+    
+    Formula from https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats_2
+
+    :param base_val: int
+        The pokemon's base statistic value in that statistic
+    :param level: int
+        The pokemon's level
+    """
+    return floor(2*base_val*level/100) + 5
+
+def calculate_hp_stat(base_hp, level):
+    """
+    Calculate the value for a pokemon's Hit Points statistic.
+    
+    Formula from https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats_2
+
+    :param base_hp: int
+        The pokemon's base HP statistic
+    :param level: int
+        The pokemon's level
+    """
+    hp_val = floor(2*base_hp*level/100)
+    hp_val += level + 10
+    return hp_val
