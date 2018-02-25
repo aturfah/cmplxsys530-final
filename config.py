@@ -14,5 +14,5 @@ with open("data/moves/sample_moves.json") as move_file:
 
 # Store pokemon (stats) data
 POKEMON_DATA = None
-with open("data/moves/sample_dex.json") as dex_file:
+with open("data/pokemon/sample_dex.json") as dex_file:
     POKEMON_DATA = json.load(dex_file)
