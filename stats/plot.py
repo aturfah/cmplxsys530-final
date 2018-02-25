@@ -50,7 +50,7 @@ def plot_log_reader_data(log_reader):
 def plot_matchup_matrix(colnames, matchup_matrix):
     """
     Plot matchup matrix as heatmap.
-    
+
     :param colnames: list
         List of column names to display on heatmap; since
         matrix is NxN, also displays as rows.
@@ -76,7 +76,7 @@ def plot_matchup_matrix(colnames, matchup_matrix):
 def format_plot(axis, colnames):
     """
     Do formatting for plots.
-    
+
     :param axis: plt.axis
         Plot figure with graph data.
     :param colnames: list
@@ -84,7 +84,7 @@ def format_plot(axis, colnames):
     """
     num_rows = len(colnames)
     num_cols = len(colnames)
-    
+
     plt.grid(which="minor", lw=1, color="black")
 
     axis.set_yticks(np.arange(num_rows))
