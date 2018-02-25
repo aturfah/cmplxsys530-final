@@ -4,6 +4,7 @@ from agent.pokemon.pokemon import Pokemon
 
 
 def test_init():
+    """Test that the initialization runs well with no errors."""
     Pokemon("spinda", ["tackle"], level=50)
 
 
@@ -36,14 +37,14 @@ def test_param_validation():
         assert False
     except AttributeError:
         pass
-    
+
     # Level greater than threshold
     try:
         Pokemon("exploud", ["tackle"], level=500)
         assert False
     except AttributeError:
         pass
-    
+
     # Level is decimal
     try:
         Pokemon("exploud", ["tackle"], level=50.5)
@@ -60,12 +61,13 @@ def test_param_validation():
 
 
 def test_stats_calculation():
+    """Test that stats are calculated properly with and without natures."""
     pkmn = Pokemon("spinda", ["tackle"], level=50)
     assert pkmn.max_hp == 120
     assert pkmn.attack == 65
     assert pkmn.defense == 65
     assert pkmn.sp_attack == 65
-    assert pkmn.sp_defense == 65     
+    assert pkmn.sp_defense == 65
     assert pkmn.speed == 65
 
     pkmn2 = Pokemon("spinda", ["tackle"], level=50, nature="adamant")
@@ -73,8 +75,9 @@ def test_stats_calculation():
     assert pkmn2.attack == 71
     assert pkmn2.defense == 65
     assert pkmn2.sp_attack == 58
-    assert pkmn2.sp_defense == 65     
+    assert pkmn2.sp_defense == 65
     assert pkmn2.speed == 65
+
 
 test_init()
 test_param_validation()
