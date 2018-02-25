@@ -4,7 +4,7 @@ from agent.pokemon.pokemon import Pokemon
 
 
 def test_init():
-    pkmn = Pokemon("spinda", ["tackle"], level=50)
+    Pokemon("spinda", ["tackle"], level=50)
 
 
 def test_param_validation():
@@ -52,5 +52,15 @@ def test_param_validation():
         pass
 
 
+def test_stats_calculation():
+    pkmn = Pokemon("spinda", ["tackle"], level=50)
+    assert pkmn.max_hp == 120
+    assert pkmn.attack == 65
+    assert pkmn.defense == 65
+    assert pkmn.sp_attack == 65
+    assert pkmn.sp_defense == 65     
+    assert pkmn.speed == 65
+
 test_init()
 test_param_validation()
+test_stats_calculation()
