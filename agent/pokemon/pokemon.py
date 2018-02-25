@@ -113,7 +113,21 @@ class Pokemon:
     """The pokemon class."""
 
     def __init__(self, name, moves, level=100, nature="quirky"):
-        """Initialize a pokemon."""
+        """
+        Initialize a pokemon.
+        
+        Make a new instance of species <name> with moves <moves>
+        at level <level> with nature <quirky>
+
+        :param name: str
+            String corresponding to value in config.POKEMON_DATA
+        :param moves: list
+            List of moves corresponding to moves in config.MOVE_DATA
+        :param level: int
+            Level of pokemon to be used in calculations
+        :param nature: str
+            Pokemon nature to be used to modify stat values.
+        """
         # Validate pokemon chosen
         if name not in POKEMON_DATA:
             raise AttributeError("Invalid pokemon chosen: {}.".format(name))
