@@ -151,14 +151,13 @@ class Pokemon:
 
         self.name = name
         self.level = level
-        self.nature = nature
         self.moves = {}
         for move in moves:
             self.moves[move] = MOVE_DATA[move]
 
-        self.set_stats()
+        self.set_stats(nature)
 
-    def set_stats(self):
+    def set_stats(self, nature):
         """Calculate stats for the pokemon."""
         base_stats = POKEMON_DATA[self.name]["baseStats"]
 
@@ -171,9 +170,9 @@ class Pokemon:
         self.speed = calculate_stat(base_stats["spe"], self.level)
 
         # Update with nature modifiers
-        if NATURES[self.nature]["increase"] is not None:
-            increase_stat = NATURES[self.nature]["increase"]
-            decrease_stat = NATURES[self.nature]["decrease"]
+        if NATURES[nature]["increase"] is not None:
+            increase_stat = NATURES[nature]["increase"]
+            decrease_stat = NATURES[nature]["decrease"]
             mod_inc = floor(self.__getattribute__(increase_stat)*1.1)
             mod_dec = floor(self.__getattribute__(decrease_stat)*0.9)
             self.__setattr__(increase_stat, mod_inc)
