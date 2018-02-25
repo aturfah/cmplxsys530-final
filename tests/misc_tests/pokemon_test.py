@@ -1,3 +1,8 @@
 """Test for pokemon module."""
 
-print("TEST GOES HERE!")
+from agent.pokemon.pokemon import Pokemon
+
+def test_init():
+    pkmn = Pokemon("spinda", [])
+
+test_init()
