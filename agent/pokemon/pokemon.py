@@ -168,7 +168,8 @@ def calculate_stat(base_val, level):
     """
     Calculate the value for a given pokemon statistic.
 
-    Formula from https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats_2
+    Formula from
+        https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats_2
 
     :param base_val: int
         The pokemon's base statistic value in that statistic
@@ -182,7 +183,8 @@ def calculate_hp_stat(base_hp, level):
     """
     Calculate the value for a pokemon's Hit Points statistic.
 
-    Formula from https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats_2
+    Formula from
+        https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats_2
 
     :param base_hp: int
         The pokemon's base HP statistic
