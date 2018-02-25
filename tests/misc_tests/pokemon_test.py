@@ -51,6 +51,13 @@ def test_param_validation():
     except AttributeError:
         pass
 
+    # Invalid nature
+    try:
+        Pokemon("exploud", ["tackle"], nature="doot")
+        assert False
+    except AttributeError:
+        pass
+
 
 def test_stats_calculation():
     pkmn = Pokemon("spinda", ["tackle"], level=50)
