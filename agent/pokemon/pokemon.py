@@ -111,7 +111,7 @@ NATURES = {
 class Pokemon:
     """The pokemon class."""
 
-    def __init__(self, name, moves, level=100):
+    def __init__(self, name, moves, level=100, nature="quirky"):
         """Initialize a pokemon."""
         # Validate pokemon chosen
         if name not in POKEMON_DATA:
@@ -128,6 +128,10 @@ class Pokemon:
         if level not in range(1, 101):
             raise AttributeError("Level must be between 1 and 100")
         
+        # Validate nature
+        if nature not in NATURES:
+            raise AttributeError("Invalid nature chosen: {}".format(nature))
+
         self.name = name
         self.level = level
         self.moves = {}
