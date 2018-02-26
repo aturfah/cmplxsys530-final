@@ -40,7 +40,8 @@ class PokemonEngine():
         self.game_state["player2"]["active"] = \
             self.game_state["player2"]["team"].pop(0)
 
-        while not self.win_condition_met():
+        outcome = self.win_condition_met()
+        while outcome["draw"]:
             print("Running moves!")
             # Each player makes a move
             player1_move = player1.make_move()
@@ -50,8 +51,11 @@ class PokemonEngine():
             # Update their gamestates
             player1.update_gamestate(self.game_state["player1"])
             player2.update_gamestate(self.game_state["player2"])
-            break
 
+            outcome = self.win_condition_met()
+
+        print(outcome)
+        print(self.game_state)
         return 0
 
     def calculate_turn(self, move1, move2):
@@ -68,8 +72,8 @@ class PokemonEngine():
         print("Player2's move: {}".format(move2))
 
         move_dict = {}
-        move_dict["player1"] = self.game_state["player1"]["active"].moves[move1[0]]
-        move_dict["player2"] = self.game_state["player2"]["active"].moves[move2[0]]
+        move_dict["player1"] = self.game_state["player1"]["active"].moves[move1[1]]
+        move_dict["player2"] = self.game_state["player2"]["active"].moves[move2[1]]
 
         # Decide who goes first
         p1_speed = self.game_state["player1"]["active"].speed
@@ -115,7 +119,24 @@ class PokemonEngine():
 
         Either all of one player's pokemon have fainted
         """
-        return False
+        p1_state = self.game_state["player1"]
+        p2_state = self.game_state["player2"]
+
+        p1_lost = p1_state["active"] is None and not p1_state["team"]
+        p2_lost = p2_state["active"] is None and not p2_state["team"]
+
+        result = {}
+        result["draw"] = True
+        result["winner"] = None
+
+        if p1_lost and not p2_lost:
+            result["draw"] = False
+            result["winner"] = 0
+        elif p2_lost and not p1_lost:
+            result["draw"] = False
+            result["winner"] = 1
+        
+        return result
 
 
 def calculate_damage(move, attacker, defender):
