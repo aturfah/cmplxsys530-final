@@ -19,7 +19,6 @@ class PokemonEngine():
 
     def reset_game_state(self):
         """Reset game states for a new game."""
-        print("Resetting game states!")
         self.game_state = {}
         self.game_state["player1"] = {}
         self.game_state["player1"]["active"] = None
@@ -43,8 +42,7 @@ class PokemonEngine():
             self.game_state["player2"]["team"].pop(0)
 
         outcome = self.win_condition_met()
-        while outcome["draw"]:
-            print("Running moves!")
+        while not outcome["finished"]:
             # Each player makes a move
             player1_move = player1.make_move()
             player2_move = player2.make_move()
@@ -127,15 +125,23 @@ class PokemonEngine():
         p2_lost = p2_state["active"] is None and not p2_state["team"]
 
         result = {}
-        result["draw"] = True
+        result["finished"] = False
         result["winner"] = None
 
-        if p1_lost and not p2_lost:
+        if not p1_lost and not p2_lost:
+            pass
+        elif p1_lost and not p2_lost:
+            result["finished"] = True
             result["draw"] = False
             result["winner"] = 0
         elif p2_lost and not p1_lost:
+            result["finished"] = True
             result["draw"] = False
             result["winner"] = 1
+        else:
+            result["finished"] = True
+            result["draw"] = True
+            result["winner"] = None
 
         return result
 
