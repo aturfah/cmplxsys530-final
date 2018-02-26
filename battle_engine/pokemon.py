@@ -114,7 +114,8 @@ class PokemonEngine():
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
         self.game_state[player]["active"] = new_active
-        print("{} switched to {} ({}/{})".format(player, new_active.name, new_active.current_hp, new_active.max_hp))
+        print("{} switched to {} ({}/{})".format(player,
+                                                 new_active.name, new_active.current_hp, new_active.max_hp))
 
     def turn_one_attack(self, attacker, move):
         if attacker == "player1":
@@ -170,11 +171,15 @@ class PokemonEngine():
         # Do the move
         slower_poke.current_hp -= calculate_damage(
             move_dict[faster_player], faster_poke, slower_poke)
-        print("{}'s {} attacked with {}".format(faster_player, faster_poke.name, move_dict[faster_player]["name"]))
+        print("{}'s {} attacked with {}".format(faster_player,
+                                                faster_poke.name,
+                                                move_dict[faster_player]["name"]))
         if slower_poke.current_hp > 0:
             faster_poke.current_hp -= calculate_damage(
                 move_dict[slower_player], slower_poke, faster_poke)
-            print("{}'s {} attacked with {}".format(slower_player, slower_poke.name, move_dict[slower_player]["name"]))
+            print("{}'s {} attacked with {}".format(slower_player,
+                                                    slower_poke.name,
+                                                    move_dict[slower_player]["name"]))
 
         if slower_poke.current_hp < 0:
             print("{} fainted...".format(slower_poke.name))
