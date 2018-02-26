@@ -15,5 +15,5 @@ class PokemonAgent(BaseAgent):
         self.gamestate = None
 
     def make_move(self):
-        """Make a move. For now just do first move."""
+        """Make a move. For now just use first move."""
         return "ATTACK", 1
