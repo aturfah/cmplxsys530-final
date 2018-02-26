@@ -1,5 +1,6 @@
 """Class for a pokemon player."""
 
+from numpy.random import uniform
 from agent.base_agent import BaseAgent
 
 
@@ -26,8 +27,20 @@ class PokemonAgent(BaseAgent):
         self.gamestate = new_gamestate
 
     def make_move(self):
-        """Make a move. For now just use first move."""
-        return "ATTACK", 0
+        """
+        Make a move. 
+        
+        Either use first move or switch to first pokemon.
+        """
+        response = ()
+        can_switch = len(self.gamestate["team"]) > 0
+
+        if can_switch and uniform() < 0.5:
+            response = "SWITCH", 0
+        else:
+            response = "ATTACK", 0
+
+        return response
 
     def switch_faint(self):
         """
