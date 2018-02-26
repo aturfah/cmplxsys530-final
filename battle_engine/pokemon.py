@@ -53,6 +53,21 @@ class PokemonEngine():
             player2.update_gamestate(self.game_state["player2"])
 
             outcome = self.win_condition_met()
+            if not outcome["finished"]:
+                update = False
+                if self.game_state["player1"]["active"] is None:
+                    switchin_ind = player1.switch_faint()
+                    self.game_state["player1"]["active"] = \
+                        self.game_state["player1"]["team"].pop(switchin_ind)
+                    update = True
+                if self.game_state["player2"]["active"] is None:
+                    switchin_ind = player2.switch_faint()
+                    self.game_state["player2"]["active"] = \
+                        self.game_state["player2"]["team"].pop(switchin_ind)
+                    update = True
+                if update:
+                    player1.update_gamestate(self.game_state["player1"])
+                    player2.update_gamestate(self.game_state["player2"])
 
         if outcome["draw"]:
             # It was a draw, decide randomly
@@ -116,15 +131,6 @@ class PokemonEngine():
         # Update the game state
         self.game_state[faster_player]["active"] = faster_poke
         self.game_state[slower_player]["active"] = slower_poke
-
-        # If a pokemon faints, send in the next one.
-        already_finshed = self.win_condition_met()["finished"]
-        if self.game_state["player1"]["active"] is None and not already_finshed:
-            self.game_state["player1"]["active"] = \
-                self.game_state["player1"]["team"].pop(0)
-        if self.game_state["player2"]["active"] is None and not already_finshed:
-            self.game_state["player2"]["active"] = \
-                self.game_state["player2"]["team"].pop(0)
 
     def win_condition_met(self):
         """
