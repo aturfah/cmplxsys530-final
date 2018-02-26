@@ -63,15 +63,25 @@ class PokemonEngine():
                     self.game_state["player1"]["active"] = \
                         self.game_state["player1"]["team"].pop(switchin_ind)
                     update = True
+                    new_active = self.game_state["player1"]["active"]
+                    print("{} sent out {} ({}/{})".format("player1",
+                                                 new_active.name, new_active.current_hp, new_active.max_hp))
+
                 if self.game_state["player2"]["active"] is None:
                     switchin_ind = player2.switch_faint()
                     self.game_state["player2"]["active"] = \
                         self.game_state["player2"]["team"].pop(switchin_ind)
+                    new_active = self.game_state["player2"]["active"]
+                    print("{} sent out {} ({}/{})".format("player2",
+                                                 new_active.name, new_active.current_hp, new_active.max_hp))
                     update = True
                 if update:
                     player1.update_gamestate(self.game_state["player1"])
                     player2.update_gamestate(self.game_state["player2"])
 
+            print(" ")
+
+        print("#####FINISHED#####")
         if outcome["draw"]:
             # It was a draw, decide randomly
             return int(uniform() < 0.5)
@@ -106,7 +116,6 @@ class PokemonEngine():
             # Both switch
             self.switch_pokemon("player1", move1[1])
             self.switch_pokemon("player2", move2[1])
-        print(" ")
 
     def switch_pokemon(self, player, position):
         """Switch a player's pokemon out."""
