@@ -28,3 +28,11 @@ class PokemonAgent(BaseAgent):
     def make_move(self):
         """Make a move. For now just use first move."""
         return "ATTACK", 0
+
+    def switch_faint(self):
+        """
+        Choose switch-in after pokemon has fainted.
+        
+        For now pick next pokemon in lineup.
+        """
+        return 0
