@@ -68,12 +68,15 @@ class PokemonEngine():
             switched to.
         """
         move_dict = {}
-        move_dict["player1"] = self.game_state["player1"]["active"].moves[move1[1]]
-        move_dict["player2"] = self.game_state["player2"]["active"].moves[move2[1]]
+        p1_active = self.game_state["player1"]["active"]
+        p2_active = self.game_state["player2"]["active"]
+
+        move_dict["player1"] = p1_active.moves[move1[1]]
+        move_dict["player2"] = p2_active.moves[move2[1]]
 
         # Decide who goes first
-        p1_speed = self.game_state["player1"]["active"].speed
-        p2_speed = self.game_state["player2"]["active"].speed
+        p1_speed = p1_active.speed
+        p2_speed = p2_active.speed
 
         if p1_speed == p2_speed:
             # Speed tie, coin flip
@@ -92,9 +95,10 @@ class PokemonEngine():
             faster_player = "player2"
             slower_player = "player1"
 
-        # Do the move
         faster_poke = self.game_state[faster_player]["active"]
         slower_poke = self.game_state[slower_player]["active"]
+        
+        # Do the move
         slower_poke.current_hp -= calculate_damage(
             move_dict[faster_player], faster_poke, slower_poke)
         if slower_poke.current_hp > 0:
@@ -106,6 +110,7 @@ class PokemonEngine():
         if faster_poke.current_hp < 0:
             faster_poke = None
 
+        # Update the game state
         self.game_state[faster_player]["active"] = faster_poke
         self.game_state[slower_player]["active"] = slower_poke
 
