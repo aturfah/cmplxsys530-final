@@ -67,22 +67,45 @@ class PokemonEngine():
         print("Player1's move: {}".format(move1))
         print("Player2's move: {}".format(move2))
 
+        move_dict = {}
+        move_dict["player1"] = move1
+        move_dict["player2"] = move2
+
         # Decide who goes first
         p1_speed = self.game_state["player1"]["active"].speed
         p2_speed = self.game_state["player2"]["active"].speed
 
         if p1_speed == p2_speed:
             # Speed tie, coin flip
-            p1_first = uniform() > 0.5
+            if uniform() > 0.5:
+                faster_player = "player1"
+                slower_player = "player2"
+            else:
+                faster_player = "player2"
+                slower_player = "player1"
         elif p1_speed > p2_speed:
             # Player1 goes first
-            p1_first = True
+            faster_player = "player1"
+            slower_player = "player2"
         else:
             # Player2 goes first
-            p1_first = False
+            faster_player = "player2"
+            slower_player = "player1"
         
-        
+        # Do the move
+        faster_poke = self.game_state[faster_player]["active"]
+        slower_poke = self.game_state[slower_player]["active"]
+        slower_poke.current_hp -= calculate_damage(move_dict[faster_player], faster_poke, slower_poke)
+        if slower_poke.current_hp > 0:
+            faster_poke.current_hp -= calculate_damage(move_dict[slower_player], slower_poke, faster_poke)
 
+        if slower_poke.current_hp < 0:
+            slower_poke = None
+        if faster_poke.current_hp < 0:
+            faster_poke = None
+        
+        self.game_state[faster_player]["active"] = faster_poke
+        self.game_state[slower_player]["active"] = slower_poke
 
     def win_condition_met(self):
         """
@@ -91,3 +114,7 @@ class PokemonEngine():
         Either all of one player's pokemon have fainted
         """
         return False
+
+def calculate_damage(move, attacker, defender):
+    return 0
+
