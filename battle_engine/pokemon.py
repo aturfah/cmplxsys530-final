@@ -41,6 +41,9 @@ class PokemonEngine():
         self.game_state["player2"]["active"] = \
             self.game_state["player2"]["team"].pop(0)
 
+        player1.update_gamestate(self.game_state["player1"])
+        player2.update_gamestate(self.game_state["player2"])
+
         outcome = self.win_condition_met()
         while not outcome["finished"]:
             # Each player makes a move
@@ -85,6 +88,52 @@ class PokemonEngine():
             followed by the index of the attack or pokemon to be
             switched to.
         """
+        p1_switch = move1[0] == "SWITCH"
+        p2_switch = move2[0] == "SWITCH"
+
+        if not p1_switch and not p2_switch:
+            # Both attack
+            self.turn_both_attack(move1, move2)
+        elif p1_switch:
+            # player1 switches, player2 attacks
+            self.switch_pokemon("player1", move1[1])
+            self.turn_one_attack("player2", move2)
+        elif p2_switch:
+            # player2 switches, player1 attacks
+            self.switch_pokemon("player2", move2[1])
+            self.turn_one_attack("player1", move1)
+        else:
+            # Both switch
+            self.switch_pokemon("player1", move1[1])
+            self.switch_pokemon("player2", move2[1])
+
+    def switch_pokemon(self, player, position):
+        """Switch a player's pokemon out."""
+        cur_active = self.game_state[player]["active"]
+        self.game_state[player]["team"].append(cur_active)
+        new_active = self.game_state[player]["team"].pop(position)
+        self.game_state[player]["active"] = new_active
+        print("{} switched to {}".format(player, new_active.name))
+
+    def turn_one_attack(self, attacker, move):
+        if attacker == "player1":
+            defender = "player2"
+        else:
+            defender = "player1"
+
+        atk_poke = self.game_state[attacker]["active"]
+        def_poke = self.game_state[defender]["active"]
+
+        atk_move = atk_poke.moves[move[1]]
+
+        def_poke.current_hp -= calculate_damage(atk_move, atk_poke, def_poke)
+        if def_poke.current_hp < 0:
+            def_poke = None
+
+        self.game_state[defender]["active"] = def_poke
+
+    def turn_both_attack(self, move1, move2):
+        """Run a turn where both players attack."""
         move_dict = {}
         p1_active = self.game_state["player1"]["active"]
         p2_active = self.game_state["player2"]["active"]
