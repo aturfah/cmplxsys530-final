@@ -1,5 +1,7 @@
 """Engine to run the turn of a pokemon game."""
 
+from math import floor
+
 from numpy.random import uniform
 
 from config import MOVE_DATA
@@ -54,9 +56,11 @@ class PokemonEngine():
 
             outcome = self.win_condition_met()
 
-        print(outcome)
-        print(self.game_state)
-        return 0
+        if outcome["draw"]:
+            # It was a draw, decide randomly
+            return int(uniform() < 0.5)
+
+        return outcome["winner"]
 
     def calculate_turn(self, move1, move2):
         """
@@ -68,9 +72,6 @@ class PokemonEngine():
             followed by the index of the attack or pokemon to be
             switched to.
         """
-        print("Player1's move: {}".format(move1))
-        print("Player2's move: {}".format(move2))
-
         move_dict = {}
         move_dict["player1"] = self.game_state["player1"]["active"].moves[move1[1]]
         move_dict["player2"] = self.game_state["player2"]["active"].moves[move2[1]]
@@ -135,21 +136,22 @@ class PokemonEngine():
         elif p2_lost and not p1_lost:
             result["draw"] = False
             result["winner"] = 1
-        
+
         return result
 
 
 def calculate_damage(move, attacker, defender):
-    damage = 2*attacker.level/5 + 2
+    damage = floor(2*attacker.level/5 + 2)
     damage = damage * move["basePower"]
     if move["category"] == "Physical":
         damage = damage * attacker.attack/defender.defense
     elif move["category"] == "Special":
         damage = damage * attacker.sp_attack/defender.sp_defense
-    damage = damage/50 + 2
+    damage = floor(damage)
+    damage = floor(damage/50) + 2
 
     modifier = uniform(0.85, 1.00)
 
-    damage = damage*modifier
+    damage = floor(damage*modifier)
 
     return damage
