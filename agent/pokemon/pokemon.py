@@ -151,9 +151,9 @@ class Pokemon:
 
         self.name = name
         self.level = level
-        self.moves = {}
+        self.moves = []
         for move in moves:
-            self.moves[move] = MOVE_DATA[move]
+            self.moves.append(MOVE_DATA[move])
 
         self.set_stats(nature)
 
