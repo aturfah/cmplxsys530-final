@@ -13,6 +13,7 @@ def test_run():
 
     p_eng = PokemonEngine()
 
-    p_eng.run(player1, player2)
+    outcome = p_eng.run(player1, player2)
+    assert outcome == 1
 
 test_run()
