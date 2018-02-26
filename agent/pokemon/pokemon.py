@@ -160,7 +160,7 @@ class Pokemon:
     def set_stats(self, nature):
         """
         Calculate stats for the pokemon.
-        
+
         :param nature: str
             Nature of the pokemon to modify stats.
         """
