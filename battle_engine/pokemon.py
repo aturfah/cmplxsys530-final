@@ -68,8 +68,8 @@ class PokemonEngine():
         print("Player2's move: {}".format(move2))
 
         move_dict = {}
-        move_dict["player1"] = move1
-        move_dict["player2"] = move2
+        move_dict["player1"] = self.game_state["player1"]["active"].moves[move1[0]]
+        move_dict["player2"] = self.game_state["player2"]["active"].moves[move2[0]]
 
         # Decide who goes first
         p1_speed = self.game_state["player1"]["active"].speed
