@@ -19,7 +19,7 @@ class PokemonAgent(BaseAgent):
         self.gamestate = None
         self.opp_gamestate = None
 
-    self.update_gamestate(self, new_gamestate):
+    def update_gamestate(self, new_gamestate):
         """Update internal gamestate for self."""
         self.gamestate = new_gamestate
 
