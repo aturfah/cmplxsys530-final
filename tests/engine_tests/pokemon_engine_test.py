@@ -9,7 +9,7 @@ def test_run():
     """Test running of a pokemon game."""
     exploud = Pokemon("exploud", ["tackle"])
     floatzel = Pokemon("floatzel", ["watergun"])
-    spinda = Pokemon("floatzel", ["tackle"])
+    spinda = Pokemon("spinda", ["thundershock"])
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([floatzel])
