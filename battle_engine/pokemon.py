@@ -1,7 +1,9 @@
 """Engine to run the turn of a pokemon game."""
 
+
 class PokemonEngine():
     """Class to run a pokemon game."""
+
     def __init__(self, generation, turn_limit=2000):
         """Initialization method."""
         self.generation = generation
@@ -10,11 +12,21 @@ class PokemonEngine():
 
     def reset_game_state(self):
         self.game_state = {}
-    
+        self.game_state["player1"] = {}
+        self.game_state["player2"] = {}
+
     def run(self, player1, player2):
         """Run a game of pokemon."""
-        pass
+        self.reset_game_state()
         
+        while not self.win_condition_met():
+            player1_move = player1.make_move()
+            player2_move = player2.make_move()
+            self.calculate_turn(player1_move, player2_move)
+            break
+
+        return 0
+
     def calculate_turn(self, move1, move2):
         """
         Calculate results of a turn of a pokemon game.
@@ -26,3 +38,11 @@ class PokemonEngine():
             switched to.
         """
         pass
+
+    def win_condition_met(self):
+        """
+        Determine whether or not condition for victory is met.
+
+        Either all of one player's pokemon have fainted
+        """
+        return False
