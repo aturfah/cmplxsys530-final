@@ -16,3 +16,7 @@ with open("data/moves/sample_moves.json") as move_file:
 POKEMON_DATA = None
 with open("data/pokemon/sample_dex.json") as dex_file:
     POKEMON_DATA = json.load(dex_file)
+
+WEAKNESS_CHART = None
+with open("data/weakness.json") as weakness_file:
+    WEAKNESS_CHART = json.load(weakness_file)
