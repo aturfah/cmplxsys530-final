@@ -154,7 +154,7 @@ class Pokemon:
         self.moves = []
         for move in moves:
             self.moves.append(MOVE_DATA[move])
-
+        self.types = POKEMON_DATA[self.name]["types"]
         self.set_stats(nature)
 
     def set_stats(self, nature):
