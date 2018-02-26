@@ -7,6 +7,9 @@ class PokemonAgent(BaseAgent):
     
     def __init__(self, team):
         """Initialize the agent."""
+        if not team:
+            raise AttributeError("Team must have at least one pokemon")
+
         super().__init__(type="PokemonAgent")
         self.team = team
         self.gamestate = None
