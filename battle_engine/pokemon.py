@@ -1,5 +1,7 @@
 """Engine to run the turn of a pokemon game."""
 
+from config import MOVE_DATA
+from config import POKEMON_DATA
 
 class PokemonEngine():
     """Class to run a pokemon game."""
@@ -13,12 +15,25 @@ class PokemonEngine():
     def reset_game_state(self):
         self.game_state = {}
         self.game_state["player1"] = {}
+        self.game_state["player1"]["active"] = None
+        self.game_state["player1"]["team"] = None
         self.game_state["player2"] = {}
+        self.game_state["player2"]["active"] = None
+        self.game_state["player2"]["team"] = None
 
     def run(self, player1, player2):
         """Run a game of pokemon."""
         self.reset_game_state()
         
+        # Initialize the players' teams
+        self.game_state["player1"]["team"] = player1.team
+        self.game_state["player2"]["team"] = player2.team
+
+        # Each player leads with first pokemon on their side
+        self.game_state["player1"]["active"] = self.game_state["player1"]["team"].pop(0)
+        self.game_state["player2"]["active"] = self.game_state["player2"]["team"].pop(0)
+
+
         while not self.win_condition_met():
             player1_move = player1.make_move()
             player2_move = player2.make_move()
@@ -37,7 +52,8 @@ class PokemonEngine():
             followed by the index of the attack or pokemon to be
             switched to.
         """
-        pass
+        
+
 
     def win_condition_met(self):
         """
