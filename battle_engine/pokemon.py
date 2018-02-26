@@ -1,6 +1,7 @@
 """Engine to run the turn of a pokemon game."""
 
 from math import floor
+from copy import deepcopy
 
 from numpy.random import uniform
 
@@ -29,8 +30,8 @@ class PokemonEngine():
         self.reset_game_state()
 
         # Initialize the players' teams
-        self.game_state["player1"]["team"] = player1.team
-        self.game_state["player2"]["team"] = player2.team
+        self.game_state["player1"]["team"] = deepcopy(player1.team)
+        self.game_state["player2"]["team"] = deepcopy(player2.team)
 
         # Each player leads with first pokemon on their side
         self.game_state["player1"]["active"] = \
