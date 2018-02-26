@@ -98,7 +98,7 @@ class PokemonEngine():
 
         faster_poke = self.game_state[faster_player]["active"]
         slower_poke = self.game_state[slower_player]["active"]
-        
+
         # Do the move
         slower_poke.current_hp -= calculate_damage(
             move_dict[faster_player], faster_poke, slower_poke)
