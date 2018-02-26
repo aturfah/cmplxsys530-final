@@ -4,15 +4,12 @@ from math import floor
 
 from numpy.random import uniform
 
-from config import MOVE_DATA
-from config import POKEMON_DATA
-
 
 class PokemonEngine():
     """Class to run a pokemon game."""
 
     def __init__(self, generation="gen7", turn_limit=2000):
-        """Initialization method."""
+        """Initialize a new PokemonEngine."""
         self.generation = generation
         self.turn_limit = turn_limit
         self.reset_game_state()
@@ -147,6 +144,7 @@ class PokemonEngine():
 
 
 def calculate_damage(move, attacker, defender):
+    """Calculate damage of a move."""
     # Calculate actual damage
     damage = floor(2*attacker.level/5 + 2)
     damage = damage * move["basePower"]
