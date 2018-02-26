@@ -5,6 +5,7 @@ from copy import deepcopy
 
 from numpy.random import uniform
 
+from config import WEAKNESS_CHART
 
 class PokemonEngine():
     """Class to run a pokemon game."""
@@ -165,6 +166,10 @@ def calculate_damage(move, attacker, defender):
     modifier = uniform(0.85, 1.00)
     if move["type"] in attacker.types:
         modifier = modifier * 1.5
+    
+    for def_type in defender.types:
+        if move["type"] in WEAKNESS_CHART[def_type]:
+            modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
 
     damage = floor(damage*modifier)
 
