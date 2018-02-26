@@ -30,8 +30,10 @@ class PokemonEngine():
         self.game_state["player2"]["team"] = player2.team
 
         # Each player leads with first pokemon on their side
-        self.game_state["player1"]["active"] = self.game_state["player1"]["team"].pop(0)
-        self.game_state["player2"]["active"] = self.game_state["player2"]["team"].pop(0)
+        self.game_state["player1"]["active"] = \
+            self.game_state["player1"]["team"].pop(0)
+        self.game_state["player2"]["active"] = \
+            self.game_state["player2"]["team"].pop(0)
 
 
         while not self.win_condition_met():
