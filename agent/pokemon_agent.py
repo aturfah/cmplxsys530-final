@@ -23,6 +23,6 @@ class PokemonAgent(BaseAgent):
         """Update internal gamestate for self."""
         self.gamestate = new_gamestate
 
-    def make_move(self, my_gamestate=None):
+    def make_move(self):
         """Make a move. For now just use first move."""
         return "ATTACK", 0
