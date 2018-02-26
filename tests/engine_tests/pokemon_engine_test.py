@@ -7,13 +7,22 @@ from battle_engine.pokemon import PokemonEngine
 def test_run():
     exploud = Pokemon("exploud", ["tackle"])
     floatzel = Pokemon("floatzel", ["watergun"])
+    spinda = Pokemon("floatzel", ["tackle"])
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([floatzel])
+    player3 = PokemonAgent([spinda])
 
     p_eng = PokemonEngine()
 
     outcome = p_eng.run(player1, player2)
     assert outcome == 1
+    outcome = p_eng.run(player2, player1)
+    assert outcome == 0
+
+    outcome = p_eng.run(player1, player3)
+    assert outcome == 1
+    outcome = p_eng.run(player3, player2)
+    assert outcome == 0
 
 test_run()
