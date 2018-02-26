@@ -10,23 +10,30 @@ def test_run():
     exploud = Pokemon("exploud", ["tackle"])
     floatzel = Pokemon("floatzel", ["watergun"])
     elec_floatzel = Pokemon("floatzel", ["thundershock"])
-    spinda = Pokemon("spinda", ["tackle"])
+    spinda = Pokemon("spinda", ["thundershock"])
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([floatzel])
     player3 = PokemonAgent([elec_floatzel])
+    player4 = PokemonAgent([spinda])
 
     p_eng = PokemonEngine()
 
     outcome = p_eng.run(player1, player2)
     assert outcome == 1
+    print("\n")
     outcome = p_eng.run(player2, player1)
     assert outcome == 0
-
+    print("\n")
     outcome = p_eng.run(player1, player3)
     assert outcome == 1
+    print("\n")
     outcome = p_eng.run(player2, player3)
     assert outcome == 0
+    print("\n")
 
+    outcome = p_eng.run(player3, player4)
+    assert outcome == 0
+    print("\n")
 
 test_run()
