@@ -12,8 +12,17 @@ class PokemonAgent(BaseAgent):
 
         super().__init__(type="PokemonAgent")
         self.team = team
-        self.gamestate = None
+        self.reset_gamestates()
 
-    def make_move(self):
+    def reset_gamestates(self):
+        """Reset gamestate values for a new battle."""
+        self.gamestate = None
+        self.opp_gamestate = None
+
+    self.update_gamestate(self, new_gamestate):
+        """Update internal gamestate for self."""
+        self.gamestate = new_gamestate
+
+    def make_move(self, my_gamestate=None):
         """Make a move. For now just use first move."""
         return "ATTACK", 1
