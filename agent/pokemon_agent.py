@@ -10,4 +10,7 @@ class PokemonAgent(BaseAgent):
         super().__init__(type="PokemonAgent")
         self.team = team
         self.gamestate = None
-    
+
+    def make_move(self):
+        """Make a move. For now just do first move."""
+        return "ATTACK", 1
