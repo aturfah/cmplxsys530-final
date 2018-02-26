@@ -168,6 +168,7 @@ class Pokemon:
 
         # Calculate the statistic values
         self.max_hp = calculate_hp_stat(base_stats["hp"], self.level)
+        self.current_hp = self.max_hp
         self.attack = calculate_stat(base_stats["atk"], self.level)
         self.defense = calculate_stat(base_stats["def"], self.level)
         self.sp_attack = calculate_stat(base_stats["spa"], self.level)
