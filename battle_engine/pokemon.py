@@ -117,6 +117,15 @@ class PokemonEngine():
         self.game_state[faster_player]["active"] = faster_poke
         self.game_state[slower_player]["active"] = slower_poke
 
+        # If a pokemon faints, send in the next one.
+        already_finshed = self.win_condition_met()["finished"]
+        if self.game_state["player1"]["active"] is None and not already_finshed:
+            self.game_state["player1"]["active"] = \
+                self.game_state["player1"]["team"].pop(0)
+        if self.game_state["player2"]["active"] is None and not already_finshed:
+            self.game_state["player2"]["active"] = \
+                self.game_state["player2"]["team"].pop(0)
+
     def win_condition_met(self):
         """
         Determine whether or not condition for victory is met.
