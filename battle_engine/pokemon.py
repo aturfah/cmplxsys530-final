@@ -147,6 +147,7 @@ class PokemonEngine():
 
 
 def calculate_damage(move, attacker, defender):
+    # Calculate actual damage
     damage = floor(2*attacker.level/5 + 2)
     damage = damage * move["basePower"]
     if move["category"] == "Physical":
@@ -156,7 +157,10 @@ def calculate_damage(move, attacker, defender):
     damage = floor(damage)
     damage = floor(damage/50) + 2
 
+    # Calculate modifiers
     modifier = uniform(0.85, 1.00)
+    if move["type"] in attacker.types:
+        modifier = modifier * 1.5
 
     damage = floor(damage*modifier)
 
