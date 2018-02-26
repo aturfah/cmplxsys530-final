@@ -91,19 +91,21 @@ class PokemonEngine():
             # Player2 goes first
             faster_player = "player2"
             slower_player = "player1"
-        
+
         # Do the move
         faster_poke = self.game_state[faster_player]["active"]
         slower_poke = self.game_state[slower_player]["active"]
-        slower_poke.current_hp -= calculate_damage(move_dict[faster_player], faster_poke, slower_poke)
+        slower_poke.current_hp -= calculate_damage(
+            move_dict[faster_player], faster_poke, slower_poke)
         if slower_poke.current_hp > 0:
-            faster_poke.current_hp -= calculate_damage(move_dict[slower_player], slower_poke, faster_poke)
+            faster_poke.current_hp -= calculate_damage(
+                move_dict[slower_player], slower_poke, faster_poke)
 
         if slower_poke.current_hp < 0:
             slower_poke = None
         if faster_poke.current_hp < 0:
             faster_poke = None
-        
+
         self.game_state[faster_player]["active"] = faster_poke
         self.game_state[slower_player]["active"] = slower_poke
 
@@ -115,6 +117,18 @@ class PokemonEngine():
         """
         return False
 
-def calculate_damage(move, attacker, defender):
-    return 0
 
+def calculate_damage(move, attacker, defender):
+    damage = 2*attacker.level/5 + 2
+    damage = damage * move["basePower"]
+    if move["category"] == "Physical":
+        damage = damage * attacker.attack/defender.defense
+    elif move["category"] == "Special":
+        damage = damage * attacker.sp_attack/defender.sp_defense
+    damage = damage/50 + 2
+
+    modifier = uniform(0.85, 1.00)
+
+    damage = damage*modifier
+
+    return damage
