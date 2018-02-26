@@ -25,16 +25,17 @@ def test_run():
 def test_run_multiple_pokemon():
     """Test running a game with multiple pokemon"""
     exploud = Pokemon("exploud", ["tackle"])
-    floatzel = Pokemon("floatzel", ["watergun"])
+    spinda1 = Pokemon("spinda", ["watergun"])
+    spinda2 = Pokemon("spinda", ["tackle"])
+    spinda3 = Pokemon("spinda", ["thundershock"])
 
-    player1 = PokemonAgent([exploud, exploud, exploud, exploud])
-    player2 = PokemonAgent([floatzel, floatzel])
+    player1 = PokemonAgent([exploud])
+    player2 = PokemonAgent([spinda1, spinda2, spinda3])
 
     p_eng = PokemonEngine()
 
     p_eng.run(player1, player2)
     assert p_eng.game_state["player1"]["active"] is not None
-    assert p_eng.game_state["player1"]["team"]
     assert p_eng.game_state["player2"]["active"] is None
     assert not p_eng.game_state["player2"]["team"]
 
