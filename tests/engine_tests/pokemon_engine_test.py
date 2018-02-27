@@ -52,5 +52,5 @@ def test_run_multiple_moves():
     
 
 test_run()
-test_run_multiple_pokemon()
 test_run_multiple_moves()
+test_run_multiple_pokemon()
