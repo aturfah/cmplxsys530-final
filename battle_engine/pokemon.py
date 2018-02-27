@@ -248,11 +248,14 @@ def calculate_damage(move, attacker, defender):
     damage = floor(damage)
     damage = floor(damage/50) + 2
 
-    # Calculate modifiers
+    # Random modifier
     modifier = uniform(0.85, 1.00)
+
+    # STAB Modifier
     if move["type"] in attacker.types:
         modifier = modifier * 1.5
 
+    # Weakness modifier
     for def_type in defender.types:
         if move["type"] in WEAKNESS_CHART[def_type]:
             modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
