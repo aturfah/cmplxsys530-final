@@ -30,13 +30,15 @@ class PokemonAgent(BaseAgent):
         """
         Make a move. 
         
-        Either use first move or switch to first pokemon.
+        Either use random move or switch to first pokemon.
         """
         response = ()
         can_switch = len(self.gamestate["team"]) > 0
 
         if can_switch and uniform() < 0.5:
-            response = "SWITCH", 0
+            move = uniform(0, len(self.gamestate["active"].moves))
+            move = int(move)
+            response = "SWITCH", move
         else:
             response = "ATTACK", 0
 
