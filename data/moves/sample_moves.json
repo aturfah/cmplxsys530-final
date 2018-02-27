@@ -78,16 +78,20 @@
 		"name": "Shadow Ball",
 		"pp": 15,
 		"priority": 0,
-		"flags: {bullet: 1, protect: 1, mirror": 1
-	},
-	"secondary": {
-		"chance": 20,
-		"boosts": {
-			"spd": -1
-		}
-	},
-	"target": "normal",
-	"type": "Ghost",
-	"zMovePower": 160,
-	"contestType": "Clever"
+		"flags": {
+			"bullet": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 20,
+			"boosts": {
+				"spd": -1
+			}
+		},
+		"target": "normal",
+		"type": "Ghost",
+		"zMovePower": 160,
+		"contestType": "Clever"
+	}
 }
