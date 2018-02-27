@@ -44,8 +44,8 @@ def test_run_multiple_moves():
     exploud = Pokemon("exploud", ["shadowball"])
     spinda = Pokemon("spinda", ["watergun", "tackle", "thundershock"])
 
-    player1 = PokemonAgent(exploud)
-    player2 = PokemonAgent(spinda)
+    player1 = PokemonAgent([exploud])
+    player2 = PokemonAgent([spinda])
 
     p_eng = PokemonEngine()
     p_eng.run(player1, player2)
