@@ -242,10 +242,9 @@ def calculate_damage(move, attacker, defender):
     damage = floor(2*attacker.level/5 + 2)
     damage = damage * move["basePower"]
     if move["category"] == "Physical":
-        damage = damage * attacker.attack/defender.defense
+        damage = floor(damage * attacker.attack)/defender.defense
     elif move["category"] == "Special":
-        damage = damage * attacker.sp_attack/defender.sp_defense
-    damage = floor(damage)
+        damage = floor(damage * attacker.sp_attack)/defender.sp_defense
     damage = floor(damage/50) + 2
 
     # Random modifier
