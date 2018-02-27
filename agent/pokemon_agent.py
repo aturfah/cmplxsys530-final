@@ -36,11 +36,11 @@ class PokemonAgent(BaseAgent):
         can_switch = len(self.gamestate["team"]) > 0
 
         if can_switch and uniform() < 0.5:
+            response = "SWITCH", 0
+        else:
             move = uniform(0, len(self.gamestate["active"].moves))
             move = int(move)
-            response = "SWITCH", move
-        else:
-            response = "ATTACK", 0
+            response = "ATTACK", move
 
         return response
 
