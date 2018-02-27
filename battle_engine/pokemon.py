@@ -29,7 +29,7 @@ class PokemonEngine():
 
     def run(self, player1, player2):
         """Run a game of pokemon."""
-        print("#####BEGIN#####\n")
+        print("##### BEGIN #####\n")
         self.reset_game_state()
 
         # Initialize the players' teams
@@ -82,7 +82,7 @@ class PokemonEngine():
 
             print(" ")
 
-        print("#####FINISHED#####\n")
+        print("##### FINISHED #####\n")
         if outcome["draw"]:
             # It was a draw, decide randomly
             return int(uniform() < 0.5)
