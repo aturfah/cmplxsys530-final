@@ -23,7 +23,7 @@ def test_run():
     assert not p_eng.game_state["player2"]["team"]
 
 def test_run_multiple_pokemon():
-    """Test running a game with multiple pokemon"""
+    """Test running a game with multiple pokemon."""
     exploud = Pokemon("exploud", ["tackle"])
     spinda1 = Pokemon("spinda", ["watergun"])
     spinda2 = Pokemon("spinda", ["tackle"])
@@ -38,6 +38,10 @@ def test_run_multiple_pokemon():
     assert p_eng.game_state["player1"]["active"] is not None
     assert p_eng.game_state["player2"]["active"] is None
     assert not p_eng.game_state["player2"]["team"]
+
+def test_run_multiple_moves():
+    """Test running a game with multiple moves."""
+    
 
 test_run()
 test_run_multiple_pokemon()
