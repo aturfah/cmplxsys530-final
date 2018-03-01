@@ -13,6 +13,26 @@ Ali Turfah
 The goal of this project is to create a model of the Pokemon Showdown (PS) metagame. The primary results of interest are the emergent strategies that correspond to "high-ladder" play, as well as how they manifest themselves in the actual battles.<br/>
 Ideally this will be done by building up from the rules simpler turn-based games, like Rock, Paper, Scissors (RPS) with varying strategies.
 
+### Background
+
+#### Vocabulary
+A pokemon has one or two of 16 types, health, speed, defense and attacking values that are used to calculate how much damage it takes/recieves, as well as how many attacks it can take before 'fainting'. If a pokemon has 'fainted', it is unable to be used and therefore cannot be switched to. A battle is over when all of a player's pokemon have fainted.
+Moves are either attacking or status moves, where the former's viability relies primarily on the power and the latter has secondary effects like halving an opponent's speed or increasing the user's attack. In additon each move can only be used a limited number of times, however this rarely comes into play.
+Items are equipment that can be attached to a pokemon to grant secondary effects. For example, a Choice Band multiplies a pokemon's attack statistic by 1.5 at the cost of locking into a single move, whereas an Aguav Berry restores 50% of a pokemon's health once it gets below 25% of its maximum Hit Points. A pokemon can only equip one item.
+A set refers to a pokemon with specific moves, battling statistic values, and item of choice. Variations on sets exist, where moves/statistics can be modified for specific uses. 
+
+
+####Pokemon Battes
+Under normal conditions, during each turn of a Pokemon battle a player has 9 possible moves that they can make; choosing from one of 4 attacks or switching to one of the 5 teammates. 
+Initially each turn has roughly 81 possible outcomes (the pairs of each player's nine choices), each resulting in a different battle state. So, one can calculate the payoff of a player's move is the weighted sum of the outcome of all the opponent's moves, given the player's move (Figure 1 below). Projecting two turns forward, each of these 81 turns can result in roughly 81 different outcomes, for 81<sup>2</sup> possible outcomes in two turns. To consider the payoff in this situation, one would need to take a weighted sum over the second level of moves that emerge from that player's move (Figure 2 below). Because of the immense space that the possible combinations of turns can result in, it is usually not particularly helpful to proceed in calculating too many turns in advance.
+
+<img src="payoff_one_layer.bmp" width=350 alt="Figure1"><br/>
+<small>Figure1: Outcomes needed to be considered for payoff of Player1 Move1  (P1M1) at one layer.</small><br/>
+<img src="payoff_two_layer.bmp" width=450 alt="Figure2"><br/>
+<small>Figure2: Outcomes needed to be considered for payoff of Player1 Move1 (P1M1) at two layers.</small> <br/>
+
+In reality, a player does not know the opponent's set from the start, and oftentimes recieves incomplete information regarding which set the opponent is using. For example, a player only sees the percent damage an opponent recieves (as opposed to the exact value of hit points lost), and only sees a move once the opponent uses it. This can lead to interesting mindgames where players can bluff certain sets, however this behavior is not of particular interest at this point in time.
+
 &nbsp;  
 ### Justification
 ABMs were chosen to model this system because it allows for control at the level of the player, in individual games, and analysis of the results as they play out at the metagame level.
@@ -20,20 +40,9 @@ ABMs were chosen to model this system because it allows for control at the level
 &nbsp; 
 ### Main Micro-level Processes and Macro-level Dynamics of Interest
 
-The Micro-level process is how the game plays out. In the case of Rock/Paper/Scissors, it is which move the players cast. In the case of pokemon, it is the decisions made at each turn by the players (switching, attacking, setting up). 
+The Micro-level process is how the game plays out. In the case of Rock/Paper/Scissors, it is which move the players cast. In the case of pokemon, it is the decisions made at each turn by the players (switching, attacking, setting up).
 &nbsp; 
 The Macro-level process of interest is which strategies tend to dominate and the trends in dominant strategies. Since PS matches players based on Elo ranking (as opposed to randomly), another feature of interest is how that affects metagame development/which strategies dominate.
-
-### On Pokemon Battes
-Under normal conditions, during each turn of a Pokemon battle a player has 9 possible moves that they can make; choosing from one of 4 attacks or switching to one of the 5 teammates. 
-Moves are either attacking or status moves, where the former's viability relies primarily on the power and the latter has secondary effects like halving an opponent's speed or increasing the user's attack. In additon each move can only be used a limited number of times, however this rarely comes into play.
-A pokemon has one or two of 16 types, health, speed, defense and attacking values that are used to calculate how much damage it takes/recieves, as well as how many attacks it can take before 'fainting'. If a pokemon has 'fainted', it is unable to be used and therefore cannot be switched to. A battle is over when all of a player's pokemon have fainted.
-Initially each turn has roughly 81 possible outcomes (the pairs of each player's nine choices), each resulting in a different battle state. So, one can calculate the payoff of a player's move is the weighted sum of the outcome of all the opponent's moves, given the player's move (Figure 1 below). Projecting two turns forward, each of these 81 turns can result in roughly 81 different outcomes, for 81<sup>2</sup> possible outcomes in two turns. To consider the payoff in this situation, one would need to take a weighted sum over the second level of moves that emerge from that player's move (Figure 2 below). Because of the immense space that the possible combinations of turns can result in, it is usually not particularly helpful to proceed in calculating too many turns in advance.
-
-<img src="payoff_one_layer.bmp" width=350 alt="Figure1"><br/>Figure1: Outcomes needed to be considered for payoff of Player1 Move1  (P1M1) at one layer.<br/>
-<img src="payoff_two_layer.bmp" width=450 alt="Figure2"><br/>
-Figure2: Outcomes needed to be considered for payoff of Player1 Move1 (P1M1) at two layers. <br/>
-
 
 
 ## Model Outline
