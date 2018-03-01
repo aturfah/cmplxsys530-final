@@ -212,18 +212,39 @@ def make_move(self):
 ````
 &nbsp; 
 
-#### Coming Soon™: PokemonAgent
-While yet to be implemented, a ```PokemonAgent``` has some similarities with the RPS agents above. In addition to the attributes of the ```BaseAgent```, a ```PokemonAgent``` will have the following attributes.
+#### PokemonAgent
+A preliminary version of ```PokemonAgent``` has been implemented, with methods to make moves and update their internal game state. This class has the following attributes.
 <ul>
-<li><i>strategy</i>: How a player weights their moves. For example, it may strongly prefer moves that should give high payouts to the user, without considering much of how it affects the opponent. Alternatively, much like a CounterRPSAgent, its possible to make the play that would beat the opponent's last move.</li>
 <li><i>team</i>: A team of 6 pokemon that are used in battle.</li>
 <li><i>game_state</i>: The state of the game, <b>to the player's knowledge</b>. The player's knowledge part is important because not all information is readily availible from the start, so uncertainty is unavoidable.</li>
 </ul>
 Similarly, the player will also need additional methods. They are as follows:
 <ul>
-<li><i>generate_moves()</i>: Given the agent's game_state, generate the list of all possible moves, with their respective payoffs.</li>
-
+<li><i>make_move()</i>: Decide what move to make at this specific turn. The current implementation randomly decides whether or not to switch or attack, and makes a random choice from there.</li>
+<li><i>switch_faint()</i>: Decide which pokemon to switch to once a teammate has fainted. This is considered a 'free switch', since it will take no damage upon siwtching in. Again the current implementation is a random choice.</li>
 </ul>
+
+**PokemonAgent's make_move() function**
+```python
+def make_move(self):
+        """
+        Make a move.
+
+        Either use random move or switch to first pokemon.
+        """
+        response = ()
+        can_switch = len(self.gamestate["team"]) > 0
+
+        if can_switch and uniform() < 0.5:
+            response = "SWITCH", 0
+        else:
+            move = uniform(0, len(self.gamestate["active"].moves))
+            move = int(move)
+            response = "ATTACK", move
+
+        return response
+````
+
 
 
 ### 3) Action and Interaction 
