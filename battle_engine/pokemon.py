@@ -229,8 +229,10 @@ class PokemonEngine():
 
         too_many_turns = self.game_state["num_turns"] > self.turn_limit
 
-        p1_lost = (p1_state["active"] is None and not p1_state["team"]) or too_many_turns
-        p2_lost = (p2_state["active"] is None and not p2_state["team"]) or too_many_turns
+        p1_lost = p1_state["active"] is None and not p1_state["team"]
+        p1_lost = p1_lost or too_many_turns
+        p2_lost = p2_state["active"] is None and not p2_state["team"]
+        p2_lost = p2_lost or too_many_turns
 
         result = {}
         result["finished"] = False
