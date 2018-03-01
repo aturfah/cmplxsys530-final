@@ -66,7 +66,7 @@ class PokemonEngine():
                     update = True
                     new_active = self.game_state["player1"]["active"]
                     print("{} sent out {} ({}/{})".format("player1",
-                                                 new_active.name, new_active.current_hp, new_active.max_hp))
+                                                          new_active.name, new_active.current_hp, new_active.max_hp))
 
                 if self.game_state["player2"]["active"] is None:
                     switchin_ind = player2.switch_faint()
@@ -74,7 +74,7 @@ class PokemonEngine():
                         self.game_state["player2"]["team"].pop(switchin_ind)
                     new_active = self.game_state["player2"]["active"]
                     print("{} sent out {} ({}/{})".format("player2",
-                                                 new_active.name, new_active.current_hp, new_active.max_hp))
+                                                          new_active.name, new_active.current_hp, new_active.max_hp))
                     update = True
                 if update:
                     player1.update_gamestate(self.game_state["player1"])
@@ -219,16 +219,21 @@ class PokemonEngine():
         result["winner"] = None
 
         if not p1_lost and not p2_lost:
+            # Not finished
             pass
         elif p1_lost and not p2_lost:
+            # Player1 lost
             result["finished"] = True
             result["draw"] = False
             result["winner"] = 0
         elif p2_lost and not p1_lost:
+            # Player2 lost
             result["finished"] = True
             result["draw"] = False
             result["winner"] = 1
         else:
+            # Both players lost, like a final
+            # Pokemon explosion or something.
             result["finished"] = True
             result["draw"] = True
             result["winner"] = None
