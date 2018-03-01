@@ -22,6 +22,7 @@ def test_run():
     assert p_eng.game_state["player2"]["active"] is None
     assert not p_eng.game_state["player2"]["team"]
 
+
 def test_run_multiple_pokemon():
     """Test running a game with multiple pokemon."""
     exploud = Pokemon("exploud", ["tackle"])
@@ -39,6 +40,7 @@ def test_run_multiple_pokemon():
     assert p_eng.game_state["player2"]["active"] is None
     assert not p_eng.game_state["player2"]["team"]
 
+
 def test_run_multiple_moves():
     """Test running a game with multiple moves."""
     exploud = Pokemon("exploud", ["shadowball"])
@@ -49,7 +51,7 @@ def test_run_multiple_moves():
 
     p_eng = PokemonEngine()
     p_eng.run(player1, player2)
-    
+
 
 test_run()
 test_run_multiple_moves()
