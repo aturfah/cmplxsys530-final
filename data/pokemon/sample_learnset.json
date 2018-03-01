@@ -1,0 +1,21 @@
+{
+    "exploud": {
+        "learnset": [
+            "tackle",
+            "thundershock"
+        ]
+    },
+    "spinda": {
+        "learnset": [
+            "tackle",
+            "watergun",
+            "thundershock"
+        ]
+    },
+    "floatzel": {
+        "learnset": [
+            "tackle",
+            "watergun"
+        ]
+    }
+}
