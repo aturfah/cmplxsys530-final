@@ -53,6 +53,20 @@ def test_run_multiple_moves():
     p_eng.run(player1, player2)
 
 
+def test_run_infinite():
+    """Test running a game where it'll go on forever."""
+    exploud1 = Pokemon("exploud", ["shadowball"])
+    exploud2 = Pokemon("exploud", ["shadowball"])
+
+    player1 = PokemonAgent([exploud1])
+    player2 = PokemonAgent([exploud2])
+
+    p_eng = PokemonEngine()
+    p_eng.run(player1, player2)
+    # We got to the turn limit
+    assert p_eng.game_state["num_turns"] > p_eng.turn_limit
+
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
+test_run_infinite()
