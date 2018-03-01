@@ -298,6 +298,10 @@ At the battle level, logs of battles will be have to be manually tracked to make
 
 In the best case, an interface would be able to be put on the agent so that way a human can actually play against an automated agent. 
 
+At the metagame level, analysis of how strategies fare against one another can be visualized with matchup heatmaps. Some sample visualizations can be found below, which visualizes a series of RPS games between Rock, Paper, Scissors, Uniform, and the Counter strategies. This example was done using a weighted ladder. The details of the simulation can be found under `sample_simulations/sample_multiturn_rps.txt`.
+![Matchups](matchups.png "Matchup visualization for RPS simulation")<br/>
+
+
 &nbsp; 
 
 ### 6) Parameter Sweep
@@ -308,4 +312,6 @@ In addition, I'm interested to see how the use of a weighted ladder scheme as op
 ![Random Matched Ladder](RPS_Random.png "Random Matched Ladder Results")<br/>
 Conversely, when matching players against those with similar Elo rankings, we see a significant difference in the overall development. The strategies section off, and since the players who would be able to counter the dominant strategy never play against it, the cyclic pattern does not occur.
 ![Random Matched Ladder](RPS_Weighted.png "Elo-Weighted Ladder Results")<br/>
+
+
 _Simulations were run for 50,000 iterations with 100 of each type of RPSAgent. Measures for average elo rankings were taken every 10 iterations._
