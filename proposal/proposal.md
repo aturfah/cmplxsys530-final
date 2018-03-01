@@ -255,7 +255,7 @@ The choice of ladder determines who gets to interact with whom. Should a ```Weig
  
 **_Action Sequence_**
 
-Each agent calls their ```make_move()``` function at each turn. An example can be found in the RPSAgent section above.
+Each agent calls their ```make_move()``` function at each turn. An example can be found in the `RPSAgent` or `PokemonAgent` section above.
 
 &nbsp; 
 ### 4) Model Parameters and Initialization
