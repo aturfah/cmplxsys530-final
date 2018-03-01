@@ -26,6 +26,7 @@ class PokemonEngine():
         self.game_state["player2"] = {}
         self.game_state["player2"]["active"] = None
         self.game_state["player2"]["team"] = None
+        self.game_state["num_turns"] = 0
 
     def run(self, player1, player2):
         """Run a game of pokemon."""
@@ -47,6 +48,9 @@ class PokemonEngine():
 
         outcome = self.win_condition_met()
         while not outcome["finished"]:
+            # Increment turn counter
+            self.game_state["num_turns"] += 1
+
             # Each player makes a move
             player1_move = player1.make_move()
             player2_move = player2.make_move()
@@ -223,8 +227,10 @@ class PokemonEngine():
         p1_state = self.game_state["player1"]
         p2_state = self.game_state["player2"]
 
-        p1_lost = p1_state["active"] is None and not p1_state["team"]
-        p2_lost = p2_state["active"] is None and not p2_state["team"]
+        too_many_turns = self.game_state["num_turns"] > self.turn_limit
+
+        p1_lost = (p1_state["active"] is None and not p1_state["team"]) or too_many_turns
+        p2_lost = (p2_state["active"] is None and not p2_state["team"]) or too_many_turns
 
         result = {}
         result["finished"] = False
