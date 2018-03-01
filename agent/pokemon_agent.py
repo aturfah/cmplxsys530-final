@@ -28,8 +28,8 @@ class PokemonAgent(BaseAgent):
 
     def make_move(self):
         """
-        Make a move. 
-        
+        Make a move.
+
         Either use random move or switch to first pokemon.
         """
         response = ()
@@ -47,7 +47,9 @@ class PokemonAgent(BaseAgent):
     def switch_faint(self):
         """
         Choose switch-in after pokemon has fainted.
-        
-        For now pick next pokemon in lineup.
+
+        For now pick a random pokemon.
         """
-        return 0
+        choice = uniform(0, len(self.gamestate["team"]))
+        choice = int(choice)
+        return choice
