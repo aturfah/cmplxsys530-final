@@ -35,13 +35,13 @@ In reality, a player does not know the opponent's set from the start, and oftent
 
 &nbsp;  
 ### Justification
-Mathematical or Verbal models would not be able to adequately represent this system. A mathematical model would just explode in the number of equations necessary to represent the system, which would not be able to capture the random aspects of the game. A verbal model, on the other hand, would have to be incredibly complex to account for the different types of situations that a game can take. Thus, agent-based modelling is an appealing choice because each player's teams and strategies can easily be represented as class attributes and functions respectively.
+Mathematical or Verbal models would not be able to adequately represent this system. A mathematical model would just explode in the number of equations necessary to represent the system, which would not be able to capture the random aspects of the game. A verbal model, on the other hand, would have to be incredibly complex to account for the different types of situations that a game can take. Thus, agent-based modelling is an appealing choice because each player's teams and strategies can easily be represented as class attributes and functions respectively. It would also allow for a much finer way to incorportate subtle differences in how players make their moves with simple modifications to if-else statements.
 
 
 &nbsp; 
 ### Main Micro-level Processes and Macro-level Dynamics of Interest
 
-The Micro-level process is how the game plays out. In the case of Rock/Paper/Scissors, it is which move the players cast. In the case of pokemon, it is the decisions made at each turn by the players (switching, attacking, setting up). 
+The Micro-level process is how the game plays out. In the case of Rock/Paper/Scissors, it is which move the players cast. In the case of pokemon, it is the decisions made at each turn by the players (switching, attacking, setting up). These decisions will be based on optimizing some 'battle position' function, which assesses the current state of the game and compare it to the hypothetical game state should the player make a move. This function is discussed in the `PokemonAgent` section below.
 &nbsp; 
 The Macro-level process of interest is which strategies tend to dominate and the trends in dominant strategies. Since PS matches players based on Elo ranking (as opposed to randomly), another feature of interest is how that affects metagame development/which strategies dominate.
 
@@ -246,7 +246,9 @@ def make_move(self):
         return response
 ````
 
-
+**PokemonAgent's battle position function**
+There are multiple possible ways to inform a player's move, given their battle position. A simple way to calculat ethis would be to compare the player's team health (hitpoints remaining/Maximum hitpoints) to his opponent's team health (calculated the same way), and play in a way to maximize damage given for damage received. This metric assumes each pokemon is equally important for a given battle.
+A more nuanced version would weight and normalize the player's team health by the amount of damage they can deal to the opponent's remaining team. So, a pokemon that can do very little damage to the opponent would be weighted extremely low, and thus having that pokemon faint would decrease the player's position function very minimally. In addition, this version allows values to change as a battle progresses. So, once a pokemon has served its purpose and is no longer useful, its weighting would decrease as there isn't much left on the opponent's team that it can help against. This method is biased against defensive pokemon, who do not often deal large amounts of damage, and so would need to be further tweaked to account for that.
 
 ### 3) Action and Interaction 
  
