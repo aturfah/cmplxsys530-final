@@ -15,10 +15,10 @@ Ideally this will be done by building up from the rules simpler turn-based games
 
 ### Background
 
-#### Vocabulary
+#### Terms
 A pokemon has one or two of 16 types, health, speed, defense and attacking values that are used to calculate how much damage it takes/recieves, as well as how many attacks it can take before 'fainting'. If a pokemon has 'fainted', it is unable to be used and therefore cannot be switched to. A battle is over when all of a player's pokemon have fainted.
-Moves are either attacking or status moves, where the former's viability relies primarily on the power and the latter has secondary effects like halving an opponent's speed or increasing the user's attack. In additon each move can only be used a limited number of times, however this rarely comes into play.
-Items are equipment that can be attached to a pokemon to grant secondary effects. For example, a Choice Band multiplies a pokemon's attack statistic by 1.5 at the cost of locking into a single move, whereas an Aguav Berry restores 50% of a pokemon's health once it gets below 25% of its maximum Hit Points. A pokemon can only equip one item.
+Moves are either attacking or status moves, where the former's purpose is to deal damage whereas the latter is used for secondary secondary effects like halving an opponent's speed or increasing the user's attack. In additon each move can only be used a limited number of times, however this rarely comes into play.
+Items are equipment that can be attached to a pokemon to grant secondary effects. For example, a "Choice Band" multiplies a pokemon's attack statistic by 1.5 at the cost of locking into a single move, whereas an Aguav Berry restores 50% of a pokemon's health once it gets below 25% of its maximum Hit Points. A pokemon can only equip one item.
 A set refers to a pokemon with specific moves, battling statistic values, and item of choice. Variations on sets exist, where moves/statistics can be modified for specific uses. 
 
 
@@ -35,12 +35,13 @@ In reality, a player does not know the opponent's set from the start, and oftent
 
 &nbsp;  
 ### Justification
-ABMs were chosen to model this system because it allows for control at the level of the player, in individual games, and analysis of the results as they play out at the metagame level.
+Mathematical or Verbal models would not be able to adequately represent this system. A mathematical model would just explode in the number of equations necessary to represent the system, which would not be able to capture the random aspects of the game. A verbal model, on the other hand, would have to be incredibly complex to account for the different types of situations that a game can take. Thus, agent-based modelling is an appealing choice because each player's teams and strategies can easily be represented as class attributes and functions respectively.
+
 
 &nbsp; 
 ### Main Micro-level Processes and Macro-level Dynamics of Interest
 
-The Micro-level process is how the game plays out. In the case of Rock/Paper/Scissors, it is which move the players cast. In the case of pokemon, it is the decisions made at each turn by the players (switching, attacking, setting up).
+The Micro-level process is how the game plays out. In the case of Rock/Paper/Scissors, it is which move the players cast. In the case of pokemon, it is the decisions made at each turn by the players (switching, attacking, setting up). 
 &nbsp; 
 The Macro-level process of interest is which strategies tend to dominate and the trends in dominant strategies. Since PS matches players based on Elo ranking (as opposed to randomly), another feature of interest is how that affects metagame development/which strategies dominate.
 
