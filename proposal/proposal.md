@@ -23,7 +23,7 @@ Items are equipment that can be attached to a pokemon to grant secondary effects
 A set refers to a pokemon with specific moves, battling statistic values, and item of choice. Variations on sets exist, where moves/statistics can be modified for specific uses. 
 
 
-#### Pokemon Battes
+#### Pokemon Battles
 
 Under normal conditions, during each turn of a Pokemon battle a player has 9 possible moves that they can make; choosing from one of 4 attacks or switching to one of the 5 teammates. 
 Initially each turn has roughly 81 possible outcomes (the pairs of each player's nine choices), each resulting in a different battle state. So, one can calculate the payoff of a player's move is the weighted sum of the outcome of all the opponent's moves, given the player's move (Figure 1 below). Projecting two turns forward, each of these 81 turns can result in roughly 81 different outcomes, for 81<sup>2</sup> possible outcomes in two turns. To consider the payoff in this situation, one would need to take a weighted sum over the second level of moves that emerge from that player's move (Figure 2 below). Because of the immense space that the possible combinations of turns can result in, it is usually not particularly helpful to proceed in calculating too many turns in advance.
