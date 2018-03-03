@@ -175,11 +175,14 @@ class PokemonEngine():
         faster_poke = self.game_state[faster_player]["active"]
         slower_poke = self.game_state[slower_player]["active"]
 
-        # Do the move
+        # Faster pokemon attacks first.
+        # If the slower pokemon is still alive,
+        # it attacks as well.
         self.attack(faster_player, move_dict[faster_player])
         if slower_poke.current_hp > 0:
             self.attack(slower_player, move_dict[slower_player])
 
+        # Who faints at the end of this turn.
         if slower_poke.current_hp < 0:
             print("{} fainted...".format(slower_poke.name))
             slower_poke = None
@@ -193,7 +196,6 @@ class PokemonEngine():
 
     def turn_order(self, p1_active, p2_active):
         """Calculate turn order for when players move."""
-        # Decide who goes first
         p1_speed = p1_active.speed
         p2_speed = p2_active.speed
 
