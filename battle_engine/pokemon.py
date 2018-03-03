@@ -170,6 +170,29 @@ class PokemonEngine():
         move_dict["player1"] = p1_active.moves[move1[1]]
         move_dict["player2"] = p2_active.moves[move2[1]]
 
+        faster_player, slower_player = self.turn_order(p1_active, p2_active)
+
+        faster_poke = self.game_state[faster_player]["active"]
+        slower_poke = self.game_state[slower_player]["active"]
+
+        # Do the move
+        self.attack(faster_player, move_dict[faster_player])
+        if slower_poke.current_hp > 0:
+            self.attack(slower_player, move_dict[slower_player])
+
+        if slower_poke.current_hp < 0:
+            print("{} fainted...".format(slower_poke.name))
+            slower_poke = None
+        if faster_poke.current_hp < 0:
+            print("{} fainted...".format(faster_poke.name))
+            faster_poke = None
+
+        # Update the game state
+        self.game_state[faster_player]["active"] = faster_poke
+        self.game_state[slower_player]["active"] = slower_poke
+
+    def turn_order(self, p1_active, p2_active):
+        """Calculate turn order for when players move."""
         # Decide who goes first
         p1_speed = p1_active.speed
         p2_speed = p2_active.speed
@@ -191,24 +214,7 @@ class PokemonEngine():
             faster_player = "player2"
             slower_player = "player1"
 
-        faster_poke = self.game_state[faster_player]["active"]
-        slower_poke = self.game_state[slower_player]["active"]
-
-        # Do the move
-        self.attack(faster_player, move_dict[faster_player])
-        if slower_poke.current_hp > 0:
-            self.attack(slower_player, move_dict[slower_player])
-
-        if slower_poke.current_hp < 0:
-            print("{} fainted...".format(slower_poke.name))
-            slower_poke = None
-        if faster_poke.current_hp < 0:
-            print("{} fainted...".format(faster_poke.name))
-            faster_poke = None
-
-        # Update the game state
-        self.game_state[faster_player]["active"] = faster_poke
-        self.game_state[slower_player]["active"] = slower_poke
+        return faster_player, slower_player
 
     def win_condition_met(self):
         """
