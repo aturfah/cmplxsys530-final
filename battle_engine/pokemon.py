@@ -120,11 +120,13 @@ class PokemonEngine():
         elif p1_switch:
             # player1 switches, player2 attacks
             self.switch_pokemon("player1", move1[1])
-            self.turn_one_attack("player2", move2)
+            attack = self.game_state["player2"]["active"].moves[move2[1]]
+            self.attack("player2", attack)
         elif p2_switch:
             # player2 switches, player1 attacks
             self.switch_pokemon("player2", move2[1])
-            self.turn_one_attack("player1", move1)
+            attack = self.game_state["player1"]["active"].moves[move1[1]]
+            self.attack("player1", attack)
         else:
             # Both switch
             self.switch_pokemon("player1", move1[1])
@@ -142,8 +144,8 @@ class PokemonEngine():
                       new_active.current_hp,
                       new_active.max_hp))
 
-    def turn_one_attack(self, attacker, move):
-        """Turn where only one player attacks."""
+    def attack(self, attacker, move):
+        """A player attacks the opposing pokemon."""
         if attacker == "player1":
             defender = "player2"
         else:
@@ -152,14 +154,12 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
-        atk_move = atk_poke.moves[move[1]]
-
-        def_poke.current_hp -= calculate_damage(atk_move, atk_poke, def_poke)
+        def_poke.current_hp -= calculate_damage(move, atk_poke, def_poke)
         if def_poke.current_hp < 0:
             def_poke = None
 
         self.game_state[defender]["active"] = def_poke
-        print("{} attacked with {}".format(attacker, atk_move["name"]))
+        print("{} attacked with {}".format(attacker, move["name"]))
 
     def turn_both_attack(self, move1, move2):
         """Run a turn where both players attack."""
@@ -195,19 +195,9 @@ class PokemonEngine():
         slower_poke = self.game_state[slower_player]["active"]
 
         # Do the move
-        slower_poke.current_hp -= calculate_damage(
-            move_dict[faster_player], faster_poke, slower_poke)
-        print("{}'s {} attacked with {}"
-              .format(faster_player,
-                      faster_poke.name,
-                      move_dict[faster_player]["name"]))
+        self.attack(faster_player, move_dict[faster_player])
         if slower_poke.current_hp > 0:
-            faster_poke.current_hp -= calculate_damage(
-                move_dict[slower_player], slower_poke, faster_poke)
-            print("{}'s {} attacked with {}"
-                  .format(slower_player,
-                          slower_poke.name,
-                          move_dict[slower_player]["name"]))
+            self.attack(slower_player, move_dict[slower_player])
 
         if slower_poke.current_hp < 0:
             print("{} fainted...".format(slower_poke.name))
