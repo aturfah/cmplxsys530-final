@@ -23,15 +23,15 @@ Items are equipment that can be attached to a pokemon to grant secondary effects
 A set refers to a pokemon with specific moves, battling statistic values, and item of choice. Variations on sets exist, where moves/statistics can be modified for specific uses. 
 
 
-####Pokemon Battes
+#### Pokemon Battes
 
 Under normal conditions, during each turn of a Pokemon battle a player has 9 possible moves that they can make; choosing from one of 4 attacks or switching to one of the 5 teammates. 
 Initially each turn has roughly 81 possible outcomes (the pairs of each player's nine choices), each resulting in a different battle state. So, one can calculate the payoff of a player's move is the weighted sum of the outcome of all the opponent's moves, given the player's move (Figure 1 below). Projecting two turns forward, each of these 81 turns can result in roughly 81 different outcomes, for 81<sup>2</sup> possible outcomes in two turns. To consider the payoff in this situation, one would need to take a weighted sum over the second level of moves that emerge from that player's move (Figure 2 below). Because of the immense space that the possible combinations of turns can result in, it is usually not particularly helpful to proceed in calculating too many turns in advance.
 
 <img src="payoff_one_layer.bmp" width=350 alt="Figure1"><br/>
-<small>Figure1: Outcomes needed to be considered for payoff of Player1 Move1  (P1M1) at one layer.</small><br/>
+<small>Figure 1: Outcomes needed to be considered for payoff of Player1 Move1  (P1M1) at one layer.</small><br/>
 <img src="payoff_two_layer.bmp" width=450 alt="Figure2"><br/>
-<small>Figure2: Outcomes needed to be considered for payoff of Player1 Move1 (P1M1) at two layers.</small> <br/>
+<small>Figure 2: Outcomes needed to be considered for payoff of Player1 Move1 (P1M1) at two layers.</small><br/>
 
 In reality, a player does not know the opponent's set from the start, and oftentimes recieves incomplete information regarding which set the opponent is using. For example, a player only sees the percent damage an opponent recieves (as opposed to the exact value of hit points lost), and only sees a move once the opponent uses it. This can lead to interesting mindgames where players can bluff certain sets, however this behavior is not of particular interest at this point in time.
 
@@ -50,7 +50,6 @@ The Macro-level process of interest is which strategies tend to dominate and the
 
 ## Model Outline
 
-&nbsp; 
 ### 1) Environment
 The environment will be the "ladder", or the matchmaking service that pairs players for a battle. There will be two types of ladders, one that pairs players based on Elo Ranking (```WeightedLadder```) and another that pairs them randomly (```RandomLadder```). The ladder is also responsible for updating player scores after a game is completed.
 
@@ -251,6 +250,7 @@ def make_move(self):
 **PokemonAgent's battle position function**
 <br/>
 There are multiple possible ways to inform a player's move, given their battle position. A simple way to calculat ethis would be to compare the player's team health (hitpoints remaining/Maximum hitpoints) to his opponent's team health (calculated the same way), and play in a way to maximize damage given for damage received. This metric assumes each pokemon is equally important for a given battle.
+
 A more nuanced version would weight and normalize the player's team health by the amount of damage they can deal to the opponent's remaining team. So, a pokemon that can do very little damage to the opponent would be weighted extremely low, and thus having that pokemon faint would decrease the player's position function very minimally. In addition, this version allows values to change as a battle progresses. So, once a pokemon has served its purpose and is no longer useful, its weighting would decrease as there isn't much left on the opponent's team that it can help against. This method is biased against defensive pokemon, who do not often deal large amounts of damage, and so would need to be further tweaked to account for that.
 
 ### 3) Action and Interaction 
