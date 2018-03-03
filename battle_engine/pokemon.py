@@ -43,9 +43,11 @@ class PokemonEngine():
         self.game_state["player2"]["active"] = \
             self.game_state["player2"]["team"].pop(0)
 
+        # Set initial game states for players
         player1.update_gamestate(self.game_state["player1"])
         player2.update_gamestate(self.game_state["player2"])
 
+        # Initial setting of outcome variable
         outcome = self.win_condition_met()
         while not outcome["finished"]:
             # Increment turn counter
