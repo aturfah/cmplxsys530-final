@@ -29,7 +29,12 @@ class PokemonEngine():
         self.game_state["num_turns"] = 0
 
     def run(self, player1, player2):
-        """Run a game of pokemon."""
+        """
+        Run a game of pokemon.
+        
+        :param player1/2: PokemonAgent
+            Players 1 and 2 for this game.
+        """
         print("##### BEGIN #####\n")
         self.reset_game_state()
 
@@ -152,7 +157,16 @@ class PokemonEngine():
         return turn_info
 
     def switch_pokemon(self, player, position):
-        """Switch a player's pokemon out."""
+        """
+        Switch a player's pokemon out.
+        
+        :param player: str
+            The player ("player1" or "player2") who is
+            doing the switching.
+        :param position: int
+            The position in the team that this player
+            is switching out to.
+        """
         cur_active = self.game_state[player]["active"]
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
@@ -164,7 +178,15 @@ class PokemonEngine():
                       new_active.max_hp))
 
     def attack(self, attacker, move):
-        """Attack opposing pokemon with the move."""
+        """
+        Attack opposing pokemon with the move.
+        
+        :param player: str
+            The player ("player1" or "player2")
+            who is attacking.
+        :param move: dict
+            The data for the move that is being done.
+        """
         if attacker == "player1":
             defender = "player2"
         else:
@@ -188,7 +210,12 @@ class PokemonEngine():
         return [results]
 
     def turn_both_attack(self, move1, move2):
-        """Run a turn where both players attack."""
+        """
+        Run a turn where both players attack.
+        
+        :param move1/2: dict
+            The data for player1/2's moves.
+        """
         move_dict = {}
         p1_active = self.game_state["player1"]["active"]
         p2_active = self.game_state["player2"]["active"]
@@ -214,7 +241,9 @@ class PokemonEngine():
         """
         Determine whether or not condition for victory is met.
 
-        Either all of one player's pokemon have fainted
+        Either all of one player's pokemon have fainted (in which
+        case it is a victory), or maximum number of turns allowed
+        have passed.
         """
         p1_state = self.game_state["player1"]
         p2_state = self.game_state["player2"]
@@ -253,7 +282,13 @@ class PokemonEngine():
         return result
 
     def anonymize_gamestate(self, player_id):
-        """Anonymize the gamestate for consumption by opponent."""
+        """
+        Anonymize the gamestate for consumption by opponent.
+        
+        :param player_id: str
+            The player whose data needs to be anonymized.
+            Either "player1" or "player2"
+        """
         data = deepcopy(self.game_state[player_id])
         anon_data = {}
 
@@ -278,7 +313,14 @@ class PokemonEngine():
 
 
 def turn_order(p1_active, p2_active):
-    """Calculate turn order for when players move."""
+    """
+    Calculate turn order for when players move.
+    
+    :param p1_active: Pokemon
+        Player1's active pokemon.
+    :param p2_active: Pokemon
+        Player2's active pokemon.
+    """
     p1_speed = p1_active.speed
     p2_speed = p2_active.speed
 
