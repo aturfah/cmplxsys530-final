@@ -26,6 +26,10 @@ class PokemonAgent(BaseAgent):
         """Update internal gamestate for self."""
         self.gamestate = new_gamestate
 
+    def new_info(self, turn_info, my_id):
+        """Get new info for opponent's game_state."""
+        pass
+
     def make_move(self):
         """
         Make a move.
