@@ -156,7 +156,7 @@ class PokemonEngine():
                       new_active.max_hp))
 
     def attack(self, attacker, move):
-        """A player attacks the opposing pokemon."""
+        """Attack opposing pokemon with the move."""
         if attacker == "player1":
             defender = "player2"
         else:
@@ -167,7 +167,8 @@ class PokemonEngine():
 
         def_poke.current_hp -= calculate_damage(move, atk_poke, def_poke)
 
-        print("{}'s {} attacked with {}".format(attacker, atk_poke.name, move["name"]))
+        print("{}'s {} attacked with {}".format(
+            attacker, atk_poke.name, move["name"]))
 
     def turn_both_attack(self, move1, move2):
         """Run a turn where both players attack."""
@@ -178,7 +179,7 @@ class PokemonEngine():
         move_dict["player1"] = p1_active.moves[move1[1]]
         move_dict["player2"] = p2_active.moves[move2[1]]
 
-        faster_player, slower_player = self.turn_order(p1_active, p2_active)
+        faster_player, slower_player = turn_order(p1_active, p2_active)
 
         # Faster pokemon attacks first.
         # If the slower pokemon is still alive,
@@ -186,30 +187,6 @@ class PokemonEngine():
         self.attack(faster_player, move_dict[faster_player])
         if self.game_state[slower_player]["active"].current_hp > 0:
             self.attack(slower_player, move_dict[slower_player])
-
-    def turn_order(self, p1_active, p2_active):
-        """Calculate turn order for when players move."""
-        p1_speed = p1_active.speed
-        p2_speed = p2_active.speed
-
-        if p1_speed == p2_speed:
-            # Speed tie, coin flip
-            if uniform() > 0.5:
-                faster_player = "player1"
-                slower_player = "player2"
-            else:
-                faster_player = "player2"
-                slower_player = "player1"
-        elif p1_speed > p2_speed:
-            # Player1 goes first
-            faster_player = "player1"
-            slower_player = "player2"
-        else:
-            # Player2 goes first
-            faster_player = "player2"
-            slower_player = "player1"
-
-        return faster_player, slower_player
 
     def win_condition_met(self):
         """
@@ -252,6 +229,31 @@ class PokemonEngine():
             result["winner"] = None
 
         return result
+
+
+def turn_order(p1_active, p2_active):
+    """Calculate turn order for when players move."""
+    p1_speed = p1_active.speed
+    p2_speed = p2_active.speed
+
+    if p1_speed == p2_speed:
+        # Speed tie, coin flip
+        if uniform() > 0.5:
+            faster_player = "player1"
+            slower_player = "player2"
+        else:
+            faster_player = "player2"
+            slower_player = "player1"
+    elif p1_speed > p2_speed:
+        # Player1 goes first
+        faster_player = "player1"
+        slower_player = "player2"
+    else:
+        # Player2 goes first
+        faster_player = "player2"
+        slower_player = "player1"
+
+    return faster_player, slower_player
 
 
 def calculate_damage(move, attacker, defender):
