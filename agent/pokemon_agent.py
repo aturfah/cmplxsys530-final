@@ -15,17 +15,21 @@ class PokemonAgent(BaseAgent):
         super().__init__(type="PokemonAgent")
         self.team = team
         self.gamestate = None
-        self.opp_gamestate = None
+        self.opp_gamestate = {}
+        self.opp_gamestate["team"] = {}
+        self.opp_gamestate["moves"] = {}
 
     def reset_gamestates(self):
         """Reset gamestate values for a new battle."""
         self.gamestate = None
-        self.opp_gamestate = None
+        self.opp_gamestate = {}
+        self.opp_gamestate["data"] = {}
+        self.opp_gamestate["moves"] = {}
 
     def update_gamestate(self, my_gamestate, opp_gamestate):
         """Update internal gamestate for self."""
         self.gamestate = my_gamestate
-        self.opp_gamestate = opp_gamestate
+        self.opp_gamestate["data"] = opp_gamestate
 
     def new_info(self, turn_info, my_id):
         """Get new info for opponent's game_state."""
@@ -35,7 +39,13 @@ class PokemonAgent(BaseAgent):
                 pass
             else:
                 # We're the defender, just learned about a move
-                pass
+                opp_name = self.opp_gamestate["data"]["active"]["name"]
+
+                if opp_name not in self.opp_gamestate["moves"]:
+                    self.opp_gamestate["moves"][opp_name] = []
+                if info["move"] not in self.opp_gamestate["moves"][opp_name]:
+                    self.opp_gamestate["moves"][opp_name].append(info["move"])
+
 
     def make_move(self):
         """
