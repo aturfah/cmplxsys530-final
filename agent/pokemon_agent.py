@@ -28,7 +28,13 @@ class PokemonAgent(BaseAgent):
 
     def new_info(self, turn_info, my_id):
         """Get new info for opponent's game_state."""
-        pass
+        for info in turn_info:
+            if info["attacker"] == my_id:
+                # We're the attacker
+                pass
+            else:
+                # We're the defender, just learned about a move
+                pass
 
     def make_move(self):
         """
