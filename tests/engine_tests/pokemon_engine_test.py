@@ -25,7 +25,7 @@ def test_run():
 
 def test_run_multiple_pokemon():
     """Test running a game with multiple pokemon."""
-    exploud = Pokemon("exploud", ["tackle"])
+    exploud = Pokemon("exploud", ["tackle"], level=90)
     spinda1 = Pokemon("spinda", ["watergun"])
     spinda2 = Pokemon("spinda", ["tackle"])
     magikarp = Pokemon("magikarp", ["thundershock"])
@@ -41,6 +41,7 @@ def test_run_multiple_pokemon():
     assert not p_eng.game_state["player2"]["team"]
 
     assert len(player1.opp_gamestate["moves"]["magikarp"]) == 1
+    assert player1.opp_gamestate["moves"]["magikarp"][0]["name"] == "Thunder Shock"
     assert len(player1.opp_gamestate["moves"]["spinda"]) == 2
 
 def test_run_multiple_moves():
