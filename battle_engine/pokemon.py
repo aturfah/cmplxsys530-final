@@ -62,8 +62,8 @@ class PokemonEngine():
             player2.new_info(turn_info, "player2")
 
             # Update their gamestates
-            player1.update_gamestate(self.game_state["player1"])
-            player2.update_gamestate(self.game_state["player2"])
+            player1.update_gamestate(self.game_state["player1"], self.anonymize_gamestate(self.game_state["player2"]))
+            player2.update_gamestate(self.game_state["player2"], self.anonymize_gamestate(self.game_state["player1"]))
 
             outcome = self.win_condition_met()
             if not outcome["finished"]:
@@ -246,6 +246,9 @@ class PokemonEngine():
 
         return result
 
+    def anonymize_gamestate(self, player_id):
+        """Anonymize the gamestate for consumption by opponent."""
+        return None
 
 def turn_order(p1_active, p2_active):
     """Calculate turn order for when players move."""
