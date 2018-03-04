@@ -31,7 +31,7 @@ class PokemonEngine():
     def run(self, player1, player2):
         """
         Run a game of pokemon.
-        
+
         :param player1/2: PokemonAgent
             Players 1 and 2 for this game.
         """
@@ -159,7 +159,7 @@ class PokemonEngine():
     def switch_pokemon(self, player, position):
         """
         Switch a player's pokemon out.
-        
+
         :param player: str
             The player ("player1" or "player2") who is
             doing the switching.
@@ -180,7 +180,7 @@ class PokemonEngine():
     def attack(self, attacker, move):
         """
         Attack opposing pokemon with the move.
-        
+
         :param player: str
             The player ("player1" or "player2")
             who is attacking.
@@ -212,7 +212,7 @@ class PokemonEngine():
     def turn_both_attack(self, move1, move2):
         """
         Run a turn where both players attack.
-        
+
         :param move1/2: dict
             The data for player1/2's moves.
         """
@@ -220,10 +220,13 @@ class PokemonEngine():
         p1_active = self.game_state["player1"]["active"]
         p2_active = self.game_state["player2"]["active"]
 
-        move_dict["player1"] = p1_active.moves[move1[1]]
-        move_dict["player2"] = p2_active.moves[move2[1]]
+        p1_move = p1_active.moves[move1[1]]
+        p2_move = p2_active.moves[move2[1]]
 
-        faster_player, slower_player = turn_order(p1_active, p2_active)
+        move_dict["player1"] = p1_move
+        move_dict["player2"] = p2_move
+
+        faster_player, slower_player = self.turn_order(p1_move, p2_move)
 
         # Faster pokemon attacks first.
         # If the slower pokemon is still alive,
@@ -284,7 +287,7 @@ class PokemonEngine():
     def anonymize_gamestate(self, player_id):
         """
         Anonymize the gamestate for consumption by opponent.
-        
+
         :param player_id: str
             The player whose data needs to be anonymized.
             Either "player1" or "player2"
@@ -311,37 +314,44 @@ class PokemonEngine():
 
         return anon_data
 
+    def turn_order(self, p1_move, p2_move):
+        """
+        Calculate turn order for when players move.
 
-def turn_order(p1_active, p2_active):
-    """
-    Calculate turn order for when players move.
-    
-    :param p1_active: Pokemon
-        Player1's active pokemon.
-    :param p2_active: Pokemon
-        Player2's active pokemon.
-    """
-    p1_speed = p1_active.speed
-    p2_speed = p2_active.speed
-
-    if p1_speed == p2_speed:
-        # Speed tie, coin flip
-        if uniform() > 0.5:
-            faster_player = "player1"
-            slower_player = "player2"
+        :param p1_move: Pokemon
+            Player1's move.
+        :param p2_active: Pokemon
+            Player2's move.
+        """
+        if p1_move["priority"] != p2_move["priority"]:
+            if p1_move["priority"] > p2_move["priority"]:
+                faster_player = "player1"
+                slower_player = "player2"
+            else:
+                faster_player = "player2"
+                slower_player = "player1"
         else:
-            faster_player = "player2"
-            slower_player = "player1"
-    elif p1_speed > p2_speed:
-        # Player1 goes first
-        faster_player = "player1"
-        slower_player = "player2"
-    else:
-        # Player2 goes first
-        faster_player = "player2"
-        slower_player = "player1"
+            p1_speed = self.game_state["player1"]["active"].speed
+            p2_speed = self.game_state["player2"]["active"].speed
 
-    return faster_player, slower_player
+            if p1_speed == p2_speed:
+                # Speed tie, coin flip
+                if uniform() > 0.5:
+                    faster_player = "player1"
+                    slower_player = "player2"
+                else:
+                    faster_player = "player2"
+                    slower_player = "player1"
+            elif p1_speed > p2_speed:
+                # Player1 goes first
+                faster_player = "player1"
+                slower_player = "player2"
+            else:
+                # Player2 goes first
+                faster_player = "player2"
+                slower_player = "player1"
+
+        return faster_player, slower_player
 
 
 def calculate_damage(move, attacker, defender):
