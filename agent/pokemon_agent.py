@@ -22,9 +22,10 @@ class PokemonAgent(BaseAgent):
         self.gamestate = None
         self.opp_gamestate = None
 
-    def update_gamestate(self, new_gamestate):
+    def update_gamestate(self, my_gamestate, opp_gamestate):
         """Update internal gamestate for self."""
-        self.gamestate = new_gamestate
+        self.gamestate = my_gamestate
+        self.opp_gamestate = opp_gamestate
 
     def new_info(self, turn_info, my_id):
         """Get new info for opponent's game_state."""
