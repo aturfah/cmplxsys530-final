@@ -59,7 +59,7 @@ class PokemonEngine():
             turn_info = self.calculate_turn(player1_move, player2_move)
 
             player1.new_info(turn_info, "player1")
-            player2.new_info(turn_info, "pleyer2")
+            player2.new_info(turn_info, "player2")
 
             # Update their gamestates
             player1.update_gamestate(self.game_state["player1"])
