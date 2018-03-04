@@ -114,10 +114,10 @@ class PokemonEngine():
         p1_switch = move1[0] == "SWITCH"
         p2_switch = move2[0] == "SWITCH"
 
-        turn_info = {}
+        turn_info = []
 
         if not p1_switch and not p2_switch:
-            self.turn_both_attack(move1, move2)
+            turn_info = self.turn_both_attack(move1, move2)
         elif p1_switch:
             self.switch_pokemon("player1", move1[1])
             attack = self.game_state["player2"]["active"].moves[move2[1]]
@@ -139,6 +139,8 @@ class PokemonEngine():
             print("{} fainted...".format(
                 self.game_state["player2"]["active"].name))
             self.game_state["player2"]["active"] = None
+        
+        return turn_info
 
     def switch_pokemon(self, player, position):
         """Switch a player's pokemon out."""
@@ -174,7 +176,7 @@ class PokemonEngine():
         results["pct_damage"] = damage/def_poke.max_hp
         results["attacker"] = attacker
         results["defender"] = defender
-        return results
+        return [results]
 
     def turn_both_attack(self, move1, move2):
         """Run a turn where both players attack."""
@@ -190,9 +192,14 @@ class PokemonEngine():
         # Faster pokemon attacks first.
         # If the slower pokemon is still alive,
         # it attacks as well.
-        self.attack(faster_player, move_dict[faster_player])
+        results = []
+        new_data = self.attack(faster_player, move_dict[faster_player])
+        results.extend(new_data)
         if self.game_state[slower_player]["active"].current_hp > 0:
-            self.attack(slower_player, move_dict[slower_player])
+            new_data = self.attack(slower_player, move_dict[slower_player])
+            results.extend(new_data)
+        
+        return results
 
     def win_condition_met(self):
         """
