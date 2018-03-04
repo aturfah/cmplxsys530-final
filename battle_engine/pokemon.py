@@ -114,16 +114,18 @@ class PokemonEngine():
         p1_switch = move1[0] == "SWITCH"
         p2_switch = move2[0] == "SWITCH"
 
+        turn_info = {}
+
         if not p1_switch and not p2_switch:
             self.turn_both_attack(move1, move2)
         elif p1_switch:
             self.switch_pokemon("player1", move1[1])
             attack = self.game_state["player2"]["active"].moves[move2[1]]
-            self.attack("player2", attack)
+            turn_info = self.attack("player2", attack)
         elif p2_switch:
             self.switch_pokemon("player2", move2[1])
             attack = self.game_state["player1"]["active"].moves[move1[1]]
-            self.attack("player1", attack)
+            turn_info = self.attack("player1", attack)
         else:
             self.switch_pokemon("player1", move1[1])
             self.switch_pokemon("player2", move2[1])
@@ -160,10 +162,19 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
-        def_poke.current_hp -= calculate_damage(move, atk_poke, def_poke)
+        damage = calculate_damage(move, atk_poke, def_poke)
+        def_poke.current_hp -= damage
 
         print("{}'s {} attacked with {}".format(
             attacker, atk_poke.name, move["name"]))
+
+        results = {}
+        results["move"] = move
+        results["damage"] = damage
+        results["pct_damage"] = damage/def_poke.max_hp
+        results["attacker"] = attacker
+        results["defender"] = defender
+        return results
 
     def turn_both_attack(self, move1, move2):
         """Run a turn where both players attack."""
