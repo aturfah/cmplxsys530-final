@@ -15,7 +15,7 @@ class PokemonAgent(BaseAgent):
         super().__init__(type="PokemonAgent")
         self.team = team
         self.gamestate = None
-        self.reset_gamestates()
+        self.opp_gamestate = None
 
     def reset_gamestates(self):
         """Reset gamestate values for a new battle."""
