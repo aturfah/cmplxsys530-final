@@ -132,6 +132,17 @@ class PokemonEngine():
             self.switch_pokemon("player1", move1[1])
             self.switch_pokemon("player2", move2[1])
 
+        p1_active = self.game_state["player1"]["active"]
+        p2_active = self.game_state["player2"]["active"]
+
+        # Who faints at the end of this turn.
+        if p1_active.current_hp < 0:
+            print("{} fainted...".format(p1_active.name))
+            self.game_state["player1"]["active"] = None
+        if p2_active.current_hp < 0:
+            print("{} fainted...".format(p2_active.name))
+            self.game_state["player2"]["active"] = None
+
     def switch_pokemon(self, player, position):
         """Switch a player's pokemon out."""
         cur_active = self.game_state[player]["active"]
@@ -155,10 +166,7 @@ class PokemonEngine():
         def_poke = self.game_state[defender]["active"]
 
         def_poke.current_hp -= calculate_damage(move, atk_poke, def_poke)
-        if def_poke.current_hp < 0:
-            def_poke = None
 
-        self.game_state[defender]["active"] = def_poke
         print("{} attacked with {}".format(attacker, move["name"]))
 
     def turn_both_attack(self, move1, move2):
@@ -181,18 +189,6 @@ class PokemonEngine():
         self.attack(faster_player, move_dict[faster_player])
         if slower_poke.current_hp > 0:
             self.attack(slower_player, move_dict[slower_player])
-
-        # Who faints at the end of this turn.
-        if slower_poke.current_hp < 0:
-            print("{} fainted...".format(slower_poke.name))
-            slower_poke = None
-        if faster_poke.current_hp < 0:
-            print("{} fainted...".format(faster_poke.name))
-            faster_poke = None
-
-        # Update the game state
-        self.game_state[faster_player]["active"] = faster_poke
-        self.game_state[slower_player]["active"] = slower_poke
 
     def turn_order(self, p1_active, p2_active):
         """Calculate turn order for when players move."""
