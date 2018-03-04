@@ -167,7 +167,7 @@ class PokemonEngine():
 
         def_poke.current_hp -= calculate_damage(move, atk_poke, def_poke)
 
-        print("{} attacked with {}".format(attacker, move["name"]))
+        print("{}'s {} attacked with {}".format(attacker, atk_poke.name, move["name"]))
 
     def turn_both_attack(self, move1, move2):
         """Run a turn where both players attack."""
@@ -180,14 +180,11 @@ class PokemonEngine():
 
         faster_player, slower_player = self.turn_order(p1_active, p2_active)
 
-        faster_poke = self.game_state[faster_player]["active"]
-        slower_poke = self.game_state[slower_player]["active"]
-
         # Faster pokemon attacks first.
         # If the slower pokemon is still alive,
         # it attacks as well.
         self.attack(faster_player, move_dict[faster_player])
-        if slower_poke.current_hp > 0:
+        if self.game_state[slower_player]["active"].current_hp > 0:
             self.attack(slower_player, move_dict[slower_player])
 
     def turn_order(self, p1_active, p2_active):
