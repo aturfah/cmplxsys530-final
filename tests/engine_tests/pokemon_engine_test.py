@@ -2,7 +2,7 @@
 
 from agent.pokemon_agent import PokemonAgent
 from pokemon.pokemon import Pokemon
-from battle_engine.pokemon import PokemonEngine
+from battle_engine.pokemon_engine import PokemonEngine
 
 
 def test_run():
