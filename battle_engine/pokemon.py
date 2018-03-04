@@ -266,10 +266,13 @@ class PokemonEngine():
                 "pct_hp": pct_hp
             })
 
-        anon_data["active"] = {
-            "name": data["active"].name,
-            "pct_hp": data["active"].current_hp/data["active"].max_hp
-        }
+        if data["active"] is not None:
+            anon_data["active"] = {
+                "name": data["active"].name,
+                "pct_hp": data["active"].current_hp/data["active"].max_hp
+            }
+        else:
+            anon_data["active"] = None
 
         return anon_data
 
