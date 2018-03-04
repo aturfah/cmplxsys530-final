@@ -44,8 +44,10 @@ class PokemonEngine():
             self.game_state["player2"]["team"].pop(0)
 
         # Set initial game states for players
-        player1.update_gamestate(self.game_state["player1"])
-        player2.update_gamestate(self.game_state["player2"])
+        player1.update_gamestate(
+            self.game_state["player1"], self.anonymize_gamestate("player2"))
+        player2.update_gamestate(
+            self.game_state["player2"], self.anonymize_gamestate("player1"))
 
         # Initial setting of outcome variable
         outcome = self.win_condition_met()
@@ -62,8 +64,10 @@ class PokemonEngine():
             player2.new_info(turn_info, "player2")
 
             # Update their gamestates
-            player1.update_gamestate(self.game_state["player1"], self.anonymize_gamestate(self.game_state["player2"]))
-            player2.update_gamestate(self.game_state["player2"], self.anonymize_gamestate(self.game_state["player1"]))
+            player1.update_gamestate(
+                self.game_state["player1"], self.anonymize_gamestate("player2"))
+            player2.update_gamestate(
+                self.game_state["player2"], self.anonymize_gamestate("player1"))
 
             outcome = self.win_condition_met()
             if not outcome["finished"]:
@@ -92,8 +96,10 @@ class PokemonEngine():
                                   new_active.max_hp))
                     update = True
                 if update:
-                    player1.update_gamestate(self.game_state["player1"])
-                    player2.update_gamestate(self.game_state["player2"])
+                    player1.update_gamestate(
+                        self.game_state["player1"], self.anonymize_gamestate("player2"))
+                    player2.update_gamestate(
+                        self.game_state["player2"], self.anonymize_gamestate("player1"))
 
             print(" ")
 
@@ -142,7 +148,7 @@ class PokemonEngine():
             print("{} fainted...".format(
                 self.game_state["player2"]["active"].name))
             self.game_state["player2"]["active"] = None
-        
+
         return turn_info
 
     def switch_pokemon(self, player, position):
@@ -201,7 +207,7 @@ class PokemonEngine():
         if self.game_state[slower_player]["active"].current_hp > 0:
             new_data = self.attack(slower_player, move_dict[slower_player])
             results.extend(new_data)
-        
+
         return results
 
     def win_condition_met(self):
@@ -248,7 +254,25 @@ class PokemonEngine():
 
     def anonymize_gamestate(self, player_id):
         """Anonymize the gamestate for consumption by opponent."""
-        return None
+        data = deepcopy(self.game_state[player_id])
+        anon_data = {}
+
+        anon_data["team"] = []
+        for pokemon in data["team"]:
+            pct_hp = pokemon.current_hp/pokemon.max_hp
+            name = pokemon.name
+            anon_data["team"].append({
+                "name": name,
+                "pct_hp": pct_hp
+            })
+
+        anon_data["active"] = {
+            "name": data["active"].name,
+            "pct_hp": data["active"].current_hp/data["active"].max_hp
+        }
+
+        return anon_data
+
 
 def turn_order(p1_active, p2_active):
     """Calculate turn order for when players move."""
