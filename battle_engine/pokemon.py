@@ -115,32 +115,27 @@ class PokemonEngine():
         p2_switch = move2[0] == "SWITCH"
 
         if not p1_switch and not p2_switch:
-            # Both attack
             self.turn_both_attack(move1, move2)
         elif p1_switch:
-            # player1 switches, player2 attacks
             self.switch_pokemon("player1", move1[1])
             attack = self.game_state["player2"]["active"].moves[move2[1]]
             self.attack("player2", attack)
         elif p2_switch:
-            # player2 switches, player1 attacks
             self.switch_pokemon("player2", move2[1])
             attack = self.game_state["player1"]["active"].moves[move1[1]]
             self.attack("player1", attack)
         else:
-            # Both switch
             self.switch_pokemon("player1", move1[1])
             self.switch_pokemon("player2", move2[1])
 
-        p1_active = self.game_state["player1"]["active"]
-        p2_active = self.game_state["player2"]["active"]
-
-        # Who faints at the end of this turn.
-        if p1_active.current_hp < 0:
-            print("{} fainted...".format(p1_active.name))
+        # Figure out who faints at the end of this turn.
+        if self.game_state["player1"]["active"].current_hp < 0:
+            print("{} fainted...".format(
+                self.game_state["player1"]["active"].name))
             self.game_state["player1"]["active"] = None
-        if p2_active.current_hp < 0:
-            print("{} fainted...".format(p2_active.name))
+        if self.game_state["player2"]["active"].current_hp < 0:
+            print("{} fainted...".format(
+                self.game_state["player2"]["active"].name))
             self.game_state["player2"]["active"] = None
 
     def switch_pokemon(self, player, position):
