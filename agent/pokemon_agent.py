@@ -46,7 +46,6 @@ class PokemonAgent(BaseAgent):
                 if info["move"] not in self.opp_gamestate["moves"][opp_name]:
                     self.opp_gamestate["moves"][opp_name].append(info["move"])
 
-
     def make_move(self):
         """
         Make a move.
