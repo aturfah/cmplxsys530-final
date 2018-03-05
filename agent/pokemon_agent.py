@@ -14,14 +14,14 @@ class PokemonAgent(BaseAgent):
 
         super().__init__(type="PokemonAgent")
         self.team = team
-        self.gamestate = None
+        self.gamestate = {}
         self.opp_gamestate = {}
         self.opp_gamestate["team"] = {}
         self.opp_gamestate["moves"] = {}
 
     def reset_gamestates(self):
         """Reset gamestate values for a new battle."""
-        self.gamestate = None
+        self.gamestate = {}
         self.opp_gamestate = {}
         self.opp_gamestate["data"] = {}
         self.opp_gamestate["moves"] = {}
