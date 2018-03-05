@@ -44,6 +44,7 @@ def test_opp_gamestate():
 
     opp_gamestate = anonymize_gamestate_helper(gamestate)
 
+    # Update the gamestate
     pa1.update_gamestate(gamestate, opp_gamestate)
     pa2.update_gamestate(gamestate, opp_gamestate)
 
@@ -57,9 +58,17 @@ def test_opp_gamestate():
     turn_info["move"] = spinda.moves[0]
     turn_info = [turn_info]
 
+    # Give new info
     pa1.new_info(turn_info, "player1")
     # New info is stored properly
     assert len(pa1.opp_gamestate["moves"]["spinda"]) == 1
+
+    # Assert that reseting the gamestate actually does it
+    pa2.reset_gamestates()
+    assert not pa2.gamestate
+    assert not pa2.opp_gamestate["data"]
+    assert not pa2.opp_gamestate["moves"]
+
 
 
 test_make_move()
