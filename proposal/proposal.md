@@ -261,7 +261,58 @@ The choice of ladder determines who gets to interact with whom. Should a ```Weig
  
 **_Action Sequence_**
 
-Each agent calls their ```make_move()``` function at each turn. An example can be found in the `RPSAgent` or `PokemonAgent` section above.
+Each agent calls their ```make_move()``` function at each turn. An example can be found in the `RPSAgent` or `PokemonAgent` section above. Below is the Action Sequence for a Rock/Paper/Scissors game.
+```python
+    def run(self, player1, player2):
+        """
+        Run <self.num_games> games.
+
+        Returns 1 if player1 wins, 0 if player2 wins.
+        In the case of a draw, flip a coin.
+
+        :param player1: BaseAgent
+            A player in this simulation.
+        :param player2: BaseAgent
+            The other player in this simulation.
+        """
+        self.reset_game_state()
+
+        # CounterRPSAgents reset their state
+        if isinstance(player1, CounterRPSAgent):
+            player1.reset_state()
+        if isinstance(player2, CounterRPSAgent):
+            player2.reset_state()
+
+        outcome = None
+        for _ in range(self.num_games):
+            # Players make their move
+            p1_move = player1.make_move()
+            p2_move = player2.make_move()
+
+            # CounterRPSAgents update their internal state
+            if isinstance(player1, CounterRPSAgent):
+                player1.last_move = p2_move
+            if isinstance(player2, CounterRPSAgent):
+                player2.last_move = p1_move
+
+            # Figure out who won
+            results = rps_logic(p1_move, p2_move)
+            self.game_state[results] += 1
+
+            # If condition to end the game is met, ie
+            # "n / num_games" games have been won by a player,
+            # end the game.
+            outcome = self.win_condition_met()
+            if not outcome["draw"]:
+                break
+
+        if outcome["draw"]:
+            # It was a draw, decide randomly
+            return int(uniform() < 0.5)
+
+        return outcome["winner"]
+
+```
 
 &nbsp; 
 ### 4) Model Parameters and Initialization
