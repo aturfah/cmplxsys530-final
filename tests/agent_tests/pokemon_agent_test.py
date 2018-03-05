@@ -2,6 +2,7 @@
 
 from pokemon.pokemon import Pokemon
 from agent.pokemon_agent import PokemonAgent
+from battle_engine.pokemon_engine import anonymize_gamestate_helper
 
 
 def test_make_move():
@@ -30,4 +31,36 @@ def test_make_move():
         assert val in range(4)
 
 
+def test_opp_gamestate():
+    """Test that opponent's gamestate is updated properly."""
+    spinda = Pokemon("spinda", ["tackle"])
+
+    pa1 = PokemonAgent([spinda])
+    pa2 = PokemonAgent([spinda])
+
+    gamestate = {}
+    gamestate["team"] = []
+    gamestate["active"] = spinda
+
+    opp_gamestate = anonymize_gamestate_helper(gamestate)
+
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    pa2.update_gamestate(gamestate, opp_gamestate)
+
+    # Gamestate updating happens properly.
+    assert pa1.opp_gamestate["data"]
+    assert not pa1.opp_gamestate["data"]["team"]
+    assert pa1.opp_gamestate["data"]["active"]["name"] == "spinda"
+
+    turn_info = {}
+    turn_info["attacker"] = "player2"
+    turn_info["move"] = spinda.moves[0]
+    turn_info = [turn_info]
+
+    pa1.new_info(turn_info, "player1")
+    # New info is stored properly
+    assert len(pa1.opp_gamestate["moves"]["spinda"]) == 1
+
+
 test_make_move()
+test_opp_gamestate()
