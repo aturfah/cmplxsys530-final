@@ -44,6 +44,7 @@ def test_run_multiple_pokemon():
     assert player1.opp_gamestate["moves"]["magikarp"][0]["name"] == "Thunder Shock"
     assert len(player1.opp_gamestate["moves"]["spinda"]) == 2
 
+
 def test_run_multiple_moves():
     """Test running a game with multiple moves."""
     exploud = Pokemon("exploud", ["shadowball"])
@@ -68,6 +69,7 @@ def test_run_infinite():
     p_eng.run(player1, player2)
     # We got to the turn limit
     assert p_eng.game_state["num_turns"] > p_eng.turn_limit
+
 
 test_run()
 test_run_multiple_moves()

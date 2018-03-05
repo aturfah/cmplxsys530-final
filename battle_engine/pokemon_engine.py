@@ -286,7 +286,7 @@ class PokemonEngine():
 
     def anonymize_gamestate(self, player_id):
         """
-        Anonymize the gamestate for consumption by opponent.
+        Anonymize the internal gamestate for consumption by opponent.
 
         :param player_id: str
             The player whose data needs to be anonymized.
@@ -336,7 +336,7 @@ class PokemonEngine():
 
 
 def anonymize_gamestate_helper(data):
-    """Helper function to anonymize gamestate data."""
+    """Anonymize some gamestate data."""
     anon_data = {}
 
     anon_data["team"] = []
@@ -357,6 +357,7 @@ def anonymize_gamestate_helper(data):
         anon_data["active"] = None
 
     return anon_data
+
 
 def calculate_damage(move, attacker, defender):
     """Calculate damage of a move."""

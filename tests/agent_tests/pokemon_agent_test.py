@@ -10,7 +10,7 @@ def test_make_move():
     spinda = Pokemon(
         "spinda",
         ["tackle", "watergun", "thundershock", "shadowball"])
-    magikarp = Pokemon("magikarp",["tackle"])
+    magikarp = Pokemon("magikarp", ["tackle"])
     pa1 = PokemonAgent([spinda, magikarp, magikarp, magikarp])
 
     # Set player's gamestate
@@ -82,6 +82,7 @@ def test_switch_faint():
     pa1.update_gamestate(gamestate, opp_gamestate)
     val = pa1.switch_faint()
     assert val in range(3)
+
 
 test_make_move()
 test_opp_gamestate()
