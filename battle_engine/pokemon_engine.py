@@ -29,7 +29,12 @@ class PokemonEngine():
         self.game_state["num_turns"] = 0
 
     def run(self, player1, player2):
-        """Run a game of pokemon."""
+        """
+        Run a game of pokemon.
+
+        :param player1/2: PokemonAgent
+            Players 1 and 2 for this game.
+        """
         print("##### BEGIN #####\n")
         self.reset_game_state()
 
@@ -43,9 +48,13 @@ class PokemonEngine():
         self.game_state["player2"]["active"] = \
             self.game_state["player2"]["team"].pop(0)
 
-        player1.update_gamestate(self.game_state["player1"])
-        player2.update_gamestate(self.game_state["player2"])
+        # Set initial game states for players
+        player1.update_gamestate(
+            self.game_state["player1"], self.anonymize_gamestate("player2"))
+        player2.update_gamestate(
+            self.game_state["player2"], self.anonymize_gamestate("player1"))
 
+        # Initial setting of outcome variable
         outcome = self.win_condition_met()
         while not outcome["finished"]:
             # Increment turn counter
@@ -54,11 +63,16 @@ class PokemonEngine():
             # Each player makes a move
             player1_move = player1.make_move()
             player2_move = player2.make_move()
-            self.calculate_turn(player1_move, player2_move)
+            turn_info = self.calculate_turn(player1_move, player2_move)
+
+            player1.new_info(turn_info, "player1")
+            player2.new_info(turn_info, "player2")
 
             # Update their gamestates
-            player1.update_gamestate(self.game_state["player1"])
-            player2.update_gamestate(self.game_state["player2"])
+            player1.update_gamestate(
+                self.game_state["player1"], self.anonymize_gamestate("player2"))
+            player2.update_gamestate(
+                self.game_state["player2"], self.anonymize_gamestate("player1"))
 
             outcome = self.win_condition_met()
             if not outcome["finished"]:
@@ -87,8 +101,10 @@ class PokemonEngine():
                                   new_active.max_hp))
                     update = True
                 if update:
-                    player1.update_gamestate(self.game_state["player1"])
-                    player2.update_gamestate(self.game_state["player2"])
+                    player1.update_gamestate(
+                        self.game_state["player1"], self.anonymize_gamestate("player2"))
+                    player2.update_gamestate(
+                        self.game_state["player2"], self.anonymize_gamestate("player1"))
 
             print(" ")
 
@@ -112,24 +128,45 @@ class PokemonEngine():
         p1_switch = move1[0] == "SWITCH"
         p2_switch = move2[0] == "SWITCH"
 
+        turn_info = []
+
         if not p1_switch and not p2_switch:
-            # Both attack
-            self.turn_both_attack(move1, move2)
+            turn_info = self.turn_both_attack(move1, move2)
         elif p1_switch:
-            # player1 switches, player2 attacks
             self.switch_pokemon("player1", move1[1])
-            self.turn_one_attack("player2", move2)
+            attack = self.game_state["player2"]["active"].moves[move2[1]]
+            turn_info = self.attack("player2", attack)
         elif p2_switch:
-            # player2 switches, player1 attacks
             self.switch_pokemon("player2", move2[1])
-            self.turn_one_attack("player1", move1)
+            attack = self.game_state["player1"]["active"].moves[move1[1]]
+            turn_info = self.attack("player1", attack)
         else:
-            # Both switch
             self.switch_pokemon("player1", move1[1])
             self.switch_pokemon("player2", move2[1])
 
+        # Figure out who faints at the end of this turn.
+        if self.game_state["player1"]["active"].current_hp < 0:
+            print("{} fainted...".format(
+                self.game_state["player1"]["active"].name))
+            self.game_state["player1"]["active"] = None
+        if self.game_state["player2"]["active"].current_hp < 0:
+            print("{} fainted...".format(
+                self.game_state["player2"]["active"].name))
+            self.game_state["player2"]["active"] = None
+
+        return turn_info
+
     def switch_pokemon(self, player, position):
-        """Switch a player's pokemon out."""
+        """
+        Switch a player's pokemon out.
+
+        :param player: str
+            The player ("player1" or "player2") who is
+            doing the switching.
+        :param position: int
+            The position in the team that this player
+            is switching out to.
+        """
         cur_active = self.game_state[player]["active"]
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
@@ -140,8 +177,16 @@ class PokemonEngine():
                       new_active.current_hp,
                       new_active.max_hp))
 
-    def turn_one_attack(self, attacker, move):
-        """Turn where only one player attacks."""
+    def attack(self, attacker, move):
+        """
+        Attack opposing pokemon with the move.
+
+        :param player: str
+            The player ("player1" or "player2")
+            who is attacking.
+        :param move: dict
+            The data for the move that is being done.
+        """
         if attacker == "player1":
             defender = "player2"
         else:
@@ -150,79 +195,58 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
-        atk_move = atk_poke.moves[move[1]]
+        damage = calculate_damage(move, atk_poke, def_poke)
+        def_poke.current_hp -= damage
 
-        def_poke.current_hp -= calculate_damage(atk_move, atk_poke, def_poke)
-        if def_poke.current_hp < 0:
-            def_poke = None
+        print("{}'s {} attacked with {}".format(
+            attacker, atk_poke.name, move["name"]))
 
-        self.game_state[defender]["active"] = def_poke
-        print("{} attacked with {}".format(attacker, atk_move["name"]))
+        results = {}
+        results["move"] = move
+        results["damage"] = damage
+        results["pct_damage"] = damage/def_poke.max_hp
+        results["attacker"] = attacker
+        results["defender"] = defender
+        return [results]
 
     def turn_both_attack(self, move1, move2):
-        """Run a turn where both players attack."""
+        """
+        Run a turn where both players attack.
+
+        :param move1/2: dict
+            The data for player1/2's moves.
+        """
         move_dict = {}
         p1_active = self.game_state["player1"]["active"]
         p2_active = self.game_state["player2"]["active"]
 
-        move_dict["player1"] = p1_active.moves[move1[1]]
-        move_dict["player2"] = p2_active.moves[move2[1]]
+        p1_move = p1_active.moves[move1[1]]
+        p2_move = p2_active.moves[move2[1]]
 
-        # Decide who goes first
-        p1_speed = p1_active.speed
-        p2_speed = p2_active.speed
+        move_dict["player1"] = p1_move
+        move_dict["player2"] = p2_move
 
-        if p1_speed == p2_speed:
-            # Speed tie, coin flip
-            if uniform() > 0.5:
-                faster_player = "player1"
-                slower_player = "player2"
-            else:
-                faster_player = "player2"
-                slower_player = "player1"
-        elif p1_speed > p2_speed:
-            # Player1 goes first
-            faster_player = "player1"
-            slower_player = "player2"
-        else:
-            # Player2 goes first
-            faster_player = "player2"
-            slower_player = "player1"
+        faster_player, slower_player = self.turn_order(p1_move, p2_move)
 
-        faster_poke = self.game_state[faster_player]["active"]
-        slower_poke = self.game_state[slower_player]["active"]
+        # Faster pokemon attacks first.
+        # If the slower pokemon is still alive,
+        # it attacks as well.
+        results = []
+        new_data = self.attack(faster_player, move_dict[faster_player])
+        results.extend(new_data)
+        if self.game_state[slower_player]["active"].current_hp > 0:
+            new_data = self.attack(slower_player, move_dict[slower_player])
+            results.extend(new_data)
 
-        # Do the move
-        slower_poke.current_hp -= calculate_damage(
-            move_dict[faster_player], faster_poke, slower_poke)
-        print("{}'s {} attacked with {}"
-              .format(faster_player,
-                      faster_poke.name,
-                      move_dict[faster_player]["name"]))
-        if slower_poke.current_hp > 0:
-            faster_poke.current_hp -= calculate_damage(
-                move_dict[slower_player], slower_poke, faster_poke)
-            print("{}'s {} attacked with {}"
-                  .format(slower_player,
-                          slower_poke.name,
-                          move_dict[slower_player]["name"]))
-
-        if slower_poke.current_hp < 0:
-            print("{} fainted...".format(slower_poke.name))
-            slower_poke = None
-        if faster_poke.current_hp < 0:
-            print("{} fainted...".format(faster_poke.name))
-            faster_poke = None
-
-        # Update the game state
-        self.game_state[faster_player]["active"] = faster_poke
-        self.game_state[slower_player]["active"] = slower_poke
+        return results
 
     def win_condition_met(self):
         """
         Determine whether or not condition for victory is met.
 
-        Either all of one player's pokemon have fainted
+        Either all of one player's pokemon have fainted (in which
+        case it is a victory), or maximum number of turns allowed
+        have passed.
         """
         p1_state = self.game_state["player1"]
         p2_state = self.game_state["player2"]
@@ -260,6 +284,79 @@ class PokemonEngine():
 
         return result
 
+    def anonymize_gamestate(self, player_id):
+        """
+        Anonymize the gamestate for consumption by opponent.
+
+        :param player_id: str
+            The player whose data needs to be anonymized.
+            Either "player1" or "player2"
+        """
+        data = deepcopy(self.game_state[player_id])
+        return anonymize_gamestate_helper(data)
+
+    def turn_order(self, p1_move, p2_move):
+        """
+        Calculate turn order for when players move.
+
+        :param p1_move: Pokemon
+            Player1's move.
+        :param p2_active: Pokemon
+            Player2's move.
+        """
+        if p1_move["priority"] != p2_move["priority"]:
+            if p1_move["priority"] > p2_move["priority"]:
+                faster_player = "player1"
+                slower_player = "player2"
+            else:
+                faster_player = "player2"
+                slower_player = "player1"
+        else:
+            p1_speed = self.game_state["player1"]["active"].speed
+            p2_speed = self.game_state["player2"]["active"].speed
+
+            if p1_speed == p2_speed:
+                # Speed tie, coin flip
+                if uniform() > 0.5:
+                    faster_player = "player1"
+                    slower_player = "player2"
+                else:
+                    faster_player = "player2"
+                    slower_player = "player1"
+            elif p1_speed > p2_speed:
+                # Player1 goes first
+                faster_player = "player1"
+                slower_player = "player2"
+            else:
+                # Player2 goes first
+                faster_player = "player2"
+                slower_player = "player1"
+
+        return faster_player, slower_player
+
+
+def anonymize_gamestate_helper(data):
+    """Helper function to anonymize gamestate data."""
+    anon_data = {}
+
+    anon_data["team"] = []
+    for pokemon in data["team"]:
+        pct_hp = pokemon.current_hp/pokemon.max_hp
+        name = pokemon.name
+        anon_data["team"].append({
+            "name": name,
+            "pct_hp": pct_hp
+        })
+
+    if data["active"] is not None:
+        anon_data["active"] = {
+            "name": data["active"].name,
+            "pct_hp": data["active"].current_hp/data["active"].max_hp
+        }
+    else:
+        anon_data["active"] = None
+
+    return anon_data
 
 def calculate_damage(move, attacker, defender):
     """Calculate damage of a move."""

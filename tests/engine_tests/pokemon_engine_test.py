@@ -2,7 +2,7 @@
 
 from agent.pokemon_agent import PokemonAgent
 from pokemon.pokemon import Pokemon
-from battle_engine.pokemon import PokemonEngine
+from battle_engine.pokemon_engine import PokemonEngine
 
 
 def test_run():
@@ -25,13 +25,13 @@ def test_run():
 
 def test_run_multiple_pokemon():
     """Test running a game with multiple pokemon."""
-    exploud = Pokemon("exploud", ["tackle"])
+    exploud = Pokemon("exploud", ["tackle"], level=90)
     spinda1 = Pokemon("spinda", ["watergun"])
     spinda2 = Pokemon("spinda", ["tackle"])
-    spinda3 = Pokemon("spinda", ["thundershock"])
+    magikarp = Pokemon("magikarp", ["thundershock"])
 
     player1 = PokemonAgent([exploud])
-    player2 = PokemonAgent([spinda1, spinda2, spinda3])
+    player2 = PokemonAgent([spinda1, spinda2, magikarp])
 
     p_eng = PokemonEngine()
 
@@ -40,6 +40,9 @@ def test_run_multiple_pokemon():
     assert p_eng.game_state["player2"]["active"] is None
     assert not p_eng.game_state["player2"]["team"]
 
+    assert len(player1.opp_gamestate["moves"]["magikarp"]) == 1
+    assert player1.opp_gamestate["moves"]["magikarp"][0]["name"] == "Thunder Shock"
+    assert len(player1.opp_gamestate["moves"]["spinda"]) == 2
 
 def test_run_multiple_moves():
     """Test running a game with multiple moves."""

@@ -10,7 +10,7 @@ if (!$args) {
 foreach ($module in $modules) {
     Write-Output "Module: $module"
     Write-Output "## pycodestyle"
-    pycodestyle $module
+    pycodestyle $module --max-line-length 100
     Write-Output "## pydocstyle"
     pydocstyle $module
     Write-Output "## pylint"
