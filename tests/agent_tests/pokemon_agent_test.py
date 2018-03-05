@@ -10,9 +10,7 @@ def test_make_move():
     spinda = Pokemon(
         "spinda",
         ["tackle", "watergun", "thundershock", "shadowball"])
-    magikarp = Pokemon(
-        "magikarp",
-        ["tackle", "watergun", "thundershock", "shadowball"])
+    magikarp = Pokemon("magikarp",["tackle"])
     pa1 = PokemonAgent([spinda, magikarp, magikarp, magikarp])
 
     # Set player's gamestate
@@ -70,6 +68,21 @@ def test_opp_gamestate():
     assert not pa2.opp_gamestate["moves"]
 
 
+def test_switch_faint():
+    """Test that switch_faint() picks a valid pokemon."""
+    exploud = Pokemon("exploud", ["tackle"])
+    pa1 = PokemonAgent([exploud])
+
+    gamestate = {}
+    gamestate["team"] = [exploud, exploud, exploud]
+    gamestate["active"] = None
+
+    opp_gamestate = anonymize_gamestate_helper(gamestate)
+
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    val = pa1.switch_faint()
+    assert val in range(3)
 
 test_make_move()
 test_opp_gamestate()
+test_switch_faint()
