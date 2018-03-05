@@ -293,26 +293,7 @@ class PokemonEngine():
             Either "player1" or "player2"
         """
         data = deepcopy(self.game_state[player_id])
-        anon_data = {}
-
-        anon_data["team"] = []
-        for pokemon in data["team"]:
-            pct_hp = pokemon.current_hp/pokemon.max_hp
-            name = pokemon.name
-            anon_data["team"].append({
-                "name": name,
-                "pct_hp": pct_hp
-            })
-
-        if data["active"] is not None:
-            anon_data["active"] = {
-                "name": data["active"].name,
-                "pct_hp": data["active"].current_hp/data["active"].max_hp
-            }
-        else:
-            anon_data["active"] = None
-
-        return anon_data
+        return anonymize_gamestate_helper(data)
 
     def turn_order(self, p1_move, p2_move):
         """
@@ -353,6 +334,29 @@ class PokemonEngine():
 
         return faster_player, slower_player
 
+
+def anonymize_gamestate_helper(data):
+    """Helper function to anonymize gamestate data."""
+    anon_data = {}
+
+    anon_data["team"] = []
+    for pokemon in data["team"]:
+        pct_hp = pokemon.current_hp/pokemon.max_hp
+        name = pokemon.name
+        anon_data["team"].append({
+            "name": name,
+            "pct_hp": pct_hp
+        })
+
+    if data["active"] is not None:
+        anon_data["active"] = {
+            "name": data["active"].name,
+            "pct_hp": data["active"].current_hp/data["active"].max_hp
+        }
+    else:
+        anon_data["active"] = None
+
+    return anon_data
 
 def calculate_damage(move, attacker, defender):
     """Calculate damage of a move."""
