@@ -16,7 +16,7 @@ class PokemonAgent(BaseAgent):
         self.team = team
         self.gamestate = {}
         self.opp_gamestate = {}
-        self.opp_gamestate["team"] = {}
+        self.opp_gamestate["data"] = {}
         self.opp_gamestate["moves"] = {}
 
     def reset_gamestates(self):
