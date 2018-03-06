@@ -10,9 +10,17 @@ def test_init():
 
 def test_param_validation():
     """Test that parameter validation."""
-    # Invalid pokemon choice
+    pokemon_validation()
+    move_validation()
+    nature_validation()
+    level_validation()
+
+
+def move_validation():
+    """Validate the moves provided."""
+    # Invalid moves provided
     try:
-        Pokemon("doot", ["tackle"], level=100)
+        Pokemon("exploud", ["doot"], level=100)
         assert False
     except AttributeError:
         pass
@@ -24,13 +32,19 @@ def test_param_validation():
     except AttributeError:
         pass
 
-    # Invalid moves provided
+
+def nature_validation():
+    """Validate nature properly handled."""
+    # Invalid nature
     try:
-        Pokemon("exploud", ["doot"], level=100)
+        Pokemon("exploud", ["tackle"], nature="doot")
         assert False
     except AttributeError:
         pass
 
+
+def level_validation():
+    """Validate proper handling of invalid levels."""
     # Level less than threshold
     try:
         Pokemon("exploud", ["tackle"], level=-1)
@@ -52,9 +66,12 @@ def test_param_validation():
     except AttributeError:
         pass
 
-    # Invalid nature
+
+def pokemon_validation():
+    """Validate pokemon choice."""
+    # Invalid pokemon choice
     try:
-        Pokemon("exploud", ["tackle"], nature="doot")
+        Pokemon("doot", ["tackle"], level=100)
         assert False
     except AttributeError:
         pass
