@@ -7,8 +7,8 @@ from battle_engine.pokemon_engine import PokemonEngine
 
 def test_run():
     """Test running of a pokemon game."""
-    exploud = Pokemon("exploud", ["tackle"])
-    floatzel = Pokemon("floatzel", ["watergun"])
+    exploud = Pokemon(name="exploud", moves=["tackle"])
+    floatzel = Pokemon(name="floatzel", moves=["watergun"])
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([floatzel])
@@ -25,10 +25,10 @@ def test_run():
 
 def test_run_multiple_pokemon():
     """Test running a game with multiple pokemon."""
-    exploud = Pokemon("exploud", ["tackle"], level=90)
-    spinda1 = Pokemon("spinda", ["watergun"])
-    spinda2 = Pokemon("spinda", ["tackle"])
-    magikarp = Pokemon("magikarp", ["thundershock"])
+    exploud = Pokemon(name="exploud", moves=["tackle"], level=90)
+    spinda1 = Pokemon(name="spinda", moves=["watergun"])
+    spinda2 = Pokemon(name="spinda", moves=["tackle"])
+    magikarp = Pokemon(name="magikarp", moves=["thundershock"])
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([spinda1, spinda2, magikarp])
@@ -47,8 +47,8 @@ def test_run_multiple_pokemon():
 
 def test_run_multiple_moves():
     """Test running a game with multiple moves."""
-    exploud = Pokemon("exploud", ["shadowball"])
-    spinda = Pokemon("spinda", ["watergun", "tackle", "thundershock"])
+    exploud = Pokemon(name="exploud", moves=["shadowball"])
+    spinda = Pokemon(name="spinda", moves=["watergun", "tackle", "thundershock"])
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([spinda])
@@ -59,8 +59,8 @@ def test_run_multiple_moves():
 
 def test_run_infinite():
     """Test running a game where it'll go on forever."""
-    exploud1 = Pokemon("exploud", ["shadowball"])
-    exploud2 = Pokemon("exploud", ["shadowball"])
+    exploud1 = Pokemon(name="exploud", moves=["shadowball"])
+    exploud2 = Pokemon(name="exploud", moves=["shadowball"])
 
     player1 = PokemonAgent([exploud1])
     player2 = PokemonAgent([exploud2])
