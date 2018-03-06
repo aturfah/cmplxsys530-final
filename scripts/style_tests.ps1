@@ -1,7 +1,7 @@
 # Script to run code style tests
 
 if (!$args) {
-    $modules =  "agent", "battle_engine", "ladder", "simulation", "stats", "tests", "log_manager"
+    $modules =  "agent", "battle_engine", "ladder", "simulation", "stats", "tests", "log_manager", "pokemon"
 } else {
     $modules = $args
 }
