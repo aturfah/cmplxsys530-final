@@ -12,7 +12,7 @@ class Pokemon:
 
     # pylint: disable=too-many-instance-attributes
     # Packaging values as a dictionary is kind of pointless
-    def __init__(self, name, moves, level=100, nature="quirky", evs=None):
+    def __init__(self, **kwargs):
         """
         Initialize a pokemon.
 
@@ -31,6 +31,12 @@ class Pokemon:
             Dictionary of key/value pairs with EVs for each stat.
             Key should be stat code, value should be number of EVs.
         """
+        name = kwargs["name"]
+        moves = kwargs["move"]
+        level = kwargs.get("level", 100)
+        nature = kwargs.get("nature", "quirky")
+        evs = kwargs.get("evs", {})
+
         # Validate pokemon chosen
         if name not in POKEMON_DATA:
             raise AttributeError("Invalid pokemon chosen: {}.".format(name))
@@ -51,8 +57,6 @@ class Pokemon:
             raise AttributeError("Invalid nature chosen: {}".format(nature))
 
         # Validate EVs
-        if evs is None:
-            evs = {}
         for stat in evs:
             if evs[stat] < 0:
                 raise AttributeError("EVs cannot be less than 0.")
