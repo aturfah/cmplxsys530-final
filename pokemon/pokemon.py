@@ -77,13 +77,13 @@ class Pokemon:
         base_stats = POKEMON_DATA[self.name]["baseStats"]
 
         # Calculate the statistic values
-        self.max_hp = calculate_hp_stat(base_stats["hp"], self.level)
+        self.max_hp = calculate_hp_stat(base_stats["hp"], evs.get("hp",0), self.level)
         self.current_hp = self.max_hp
-        self.attack = calculate_stat(base_stats["atk"], self.level)
-        self.defense = calculate_stat(base_stats["def"], self.level)
-        self.sp_attack = calculate_stat(base_stats["spa"], self.level)
-        self.sp_defense = calculate_stat(base_stats["spd"], self.level)
-        self.speed = calculate_stat(base_stats["spe"], self.level)
+        self.attack = calculate_stat(base_stats["atk"], evs.get("atk", 0), self.level)
+        self.defense = calculate_stat(base_stats["def"], evs.get("def", 0), self.level)
+        self.sp_attack = calculate_stat(base_stats["spa"], evs.get("spa", 0), self.level)
+        self.sp_defense = calculate_stat(base_stats["spd"], evs.get("spd", 0), self.level)
+        self.speed = calculate_stat(base_stats["spe"], evs.get("spe", 0), self.level)
 
         # Update with nature modifiers
         if NATURES[nature]["increase"] is not None:
@@ -95,7 +95,7 @@ class Pokemon:
             self.__setattr__(decrease_stat, mod_dec)
 
 
-def calculate_stat(base_val, level):
+def calculate_stat(base_val, ev_val, level):
     """
     Calculate the value for a given pokemon statistic.
 
@@ -110,7 +110,7 @@ def calculate_stat(base_val, level):
     return floor(2*base_val*level/100) + 5
 
 
-def calculate_hp_stat(base_hp, level):
+def calculate_hp_stat(base_hp, ev_val, level):
     """
     Calculate the value for a pokemon's Hit Points statistic.
 
