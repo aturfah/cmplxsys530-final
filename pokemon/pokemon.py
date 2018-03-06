@@ -109,7 +109,7 @@ def calculate_stat(base_val, ev_val, level):
     :param level: int
         The pokemon's level
     """
-    return floor(2*(base_val + floor(ev_val))*level/100) + 5
+    return floor(2*(base_val + 31 + floor(ev_val))*level/100) + 5
 
 
 def calculate_hp_stat(base_hp, ev_val, level):
@@ -126,6 +126,6 @@ def calculate_hp_stat(base_hp, ev_val, level):
     :param level: int
         The pokemon's level
     """
-    hp_val = floor(2*(base_hp + floor(ev_val/4))*level/100)
+    hp_val = floor(2*(base_hp + 31 + floor(ev_val/4))*level/100)
     hp_val += level + 10
     return hp_val
