@@ -14,6 +14,7 @@ def test_param_validation():
     move_validation()
     nature_validation()
     level_validation()
+    ev_validation()
 
 
 def move_validation():
@@ -76,6 +77,32 @@ def pokemon_validation():
     except AttributeError:
         pass
 
+
+def ev_validation():
+    """Validate provided EVs"""
+    # Negative EVs
+    try:
+        evs = {"hp": -1, "atk": 1}
+        Pokemon("exploud", ["tackle"], evs=evs)
+        assert False
+    except AttributeError:
+        pass
+    
+    # Too many EVs
+    try:
+        evs = {"hp": 500, "atk": 1}
+        Pokemon("exploud", ["tackle"], evs=evs)
+        assert False
+    except AttributeError:
+        pass
+
+    # Decimal EVs
+    try:
+        evs = {"hp": 500.5, "atk": 1}
+        Pokemon("exploud", ["tackle"], evs=evs)
+        assert False
+    except AttributeError:
+        pass
 
 def test_stats_calculation():
     """Test that stats are calculated properly with and without natures."""
