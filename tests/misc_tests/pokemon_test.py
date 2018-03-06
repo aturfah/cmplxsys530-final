@@ -106,21 +106,21 @@ def ev_validation():
 
 def test_stats_calculation():
     """Test that stats are calculated properly with and without natures."""
-    pkmn = Pokemon("spinda", ["tackle"], level=50)
-    assert pkmn.max_hp == 120
-    assert pkmn.attack == 65
-    assert pkmn.defense == 65
-    assert pkmn.sp_attack == 65
-    assert pkmn.sp_defense == 65
-    assert pkmn.speed == 65
+    pkmn1 = Pokemon("spinda", ["tackle"], level=50)
+    assert pkmn1.max_hp == 135
+    assert pkmn1.attack == 80
+    assert pkmn1.defense == 80
+    assert pkmn1.sp_attack == 80
+    assert pkmn1.sp_defense == 80
+    assert pkmn1.speed == 80
 
     pkmn2 = Pokemon("spinda", ["tackle"], level=50, nature="adamant")
-    assert pkmn2.max_hp == 120
-    assert pkmn2.attack == 71
-    assert pkmn2.defense == 65
-    assert pkmn2.sp_attack == 58
-    assert pkmn2.sp_defense == 65
-    assert pkmn2.speed == 65
+    assert pkmn2.max_hp == 135
+    assert pkmn2.attack == 88
+    assert pkmn2.defense == 80
+    assert pkmn2.sp_attack == 72
+    assert pkmn2.sp_defense == 80
+    assert pkmn2.speed == 80
 
     evs = {}
     evs["atk"] = 252
