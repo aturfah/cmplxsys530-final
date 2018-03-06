@@ -87,7 +87,7 @@ def ev_validation():
         assert False
     except AttributeError:
         pass
-    
+
     # Too many EVs
     try:
         evs = {"hp": 500, "atk": 1}
@@ -103,6 +103,7 @@ def ev_validation():
         assert False
     except AttributeError:
         pass
+
 
 def test_stats_calculation():
     """Test that stats are calculated properly with and without natures."""
@@ -134,6 +135,7 @@ def test_stats_calculation():
     assert pkmn3.sp_attack == 78
     assert pkmn3.sp_defense == 80
     assert pkmn3.speed == 87
+
 
 test_init()
 test_param_validation()
