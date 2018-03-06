@@ -12,7 +12,7 @@ class Pokemon:
 
     # pylint: disable=too-many-instance-attributes
     # Packaging values as a dictionary is kind of pointless
-    def __init__(self, name, moves, level=100, nature="quirky", evs={}):
+    def __init__(self, name, moves, level=100, nature="quirky", evs=None):
         """
         Initialize a pokemon.
 
@@ -51,6 +51,8 @@ class Pokemon:
             raise AttributeError("Invalid nature chosen: {}".format(nature))
 
         # Validate EVs
+        if evs is None:
+            evs = {}
         for stat in evs:
             if evs[stat] < 0:
                 raise AttributeError("EVs cannot be less than 0.")
@@ -77,13 +79,19 @@ class Pokemon:
         base_stats = POKEMON_DATA[self.name]["baseStats"]
 
         # Calculate the statistic values
-        self.max_hp = calculate_hp_stat(base_stats["hp"], evs.get("hp",0), self.level)
+        self.max_hp = calculate_hp_stat(
+            base_stats["hp"], evs.get("hp", 0), self.level)
         self.current_hp = self.max_hp
-        self.attack = calculate_stat(base_stats["atk"], evs.get("atk", 0), self.level)
-        self.defense = calculate_stat(base_stats["def"], evs.get("def", 0), self.level)
-        self.sp_attack = calculate_stat(base_stats["spa"], evs.get("spa", 0), self.level)
-        self.sp_defense = calculate_stat(base_stats["spd"], evs.get("spd", 0), self.level)
-        self.speed = calculate_stat(base_stats["spe"], evs.get("spe", 0), self.level)
+        self.attack = calculate_stat(
+            base_stats["atk"], evs.get("atk", 0), self.level)
+        self.defense = calculate_stat(
+            base_stats["def"], evs.get("def", 0), self.level)
+        self.sp_attack = calculate_stat(
+            base_stats["spa"], evs.get("spa", 0), self.level)
+        self.sp_defense = calculate_stat(
+            base_stats["spd"], evs.get("spd", 0), self.level)
+        self.speed = calculate_stat(
+            base_stats["spe"], evs.get("spe", 0), self.level)
 
         # Update with nature modifiers
         if NATURES[nature]["increase"] is not None:
