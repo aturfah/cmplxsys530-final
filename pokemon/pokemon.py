@@ -32,7 +32,7 @@ class Pokemon:
             Key should be stat code, value should be number of EVs.
         """
         name = kwargs["name"]
-        moves = kwargs["move"]
+        moves = kwargs["moves"]
         level = kwargs.get("level", 100)
         nature = kwargs.get("nature", "quirky")
         evs = kwargs.get("evs", {})
