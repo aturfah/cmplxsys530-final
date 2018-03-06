@@ -12,7 +12,7 @@ class Pokemon:
 
     # pylint: disable=too-many-instance-attributes
     # Packaging values as a dictionary is kind of pointless
-    def __init__(self, name, moves, level=100, nature="quirky"):
+    def __init__(self, name, moves, level=100, nature="quirky", evs={}):
         """
         Initialize a pokemon.
 
@@ -27,6 +27,9 @@ class Pokemon:
             Level of pokemon to be used in calculations
         :param nature: str
             Pokemon nature to be used to modify stat values.
+        :param evs: dict
+            Dictionary of key/value pairs with EVs for each stat.
+            Key should be stat code, value should be number of EVs.
         """
         # Validate pokemon chosen
         if name not in POKEMON_DATA:
