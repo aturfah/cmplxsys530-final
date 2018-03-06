@@ -79,7 +79,7 @@ def pokemon_validation():
 
 
 def ev_validation():
-    """Validate provided EVs"""
+    """Validate provided EVs."""
     # Negative EVs
     try:
         evs = {"hp": -1, "atk": 1}
