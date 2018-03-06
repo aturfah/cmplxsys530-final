@@ -122,6 +122,12 @@ def test_stats_calculation():
     assert pkmn2.sp_defense == 65
     assert pkmn2.speed == 65
 
+    evs = {}
+    evs["atk"] = 252
+    evs["spe"] = 128
+    evs["hp"] = 128
+    pkmn3 = Pokemon("spinda", ["tackle"], level=50, nature="adamant", evs=evs)
+    assert pkmn3.max_hp > 0
 
 test_init()
 test_param_validation()
