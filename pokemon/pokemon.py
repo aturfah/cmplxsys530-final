@@ -50,15 +50,24 @@ class Pokemon:
         if nature not in NATURES:
             raise AttributeError("Invalid nature chosen: {}".format(nature))
 
+        # Validate EVs
+        for stat in evs:
+            if evs[stat] < 0:
+                raise AttributeError("EVs cannot be less than 0.")
+            if evs[stat] > 255:
+                raise AttributeError("EVs cannot exceed 255.")
+            if not isinstance(evs[stat], int):
+                raise AttributeError("EVs must be integer values.")
+
         self.name = name
         self.level = level
         self.moves = []
         for move in moves:
             self.moves.append(MOVE_DATA[move])
         self.types = POKEMON_DATA[self.name]["types"]
-        self.set_stats(nature)
+        self.set_stats(nature, evs)
 
-    def set_stats(self, nature):
+    def set_stats(self, nature, evs):
         """
         Calculate stats for the pokemon.
 
