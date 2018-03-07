@@ -8,9 +8,9 @@ from battle_engine.pokemon_engine import anonymize_gamestate_helper
 def test_make_move():
     """Test that make_move is outputting valid info."""
     spinda = Pokemon(
-        "spinda",
-        ["tackle", "watergun", "thundershock", "shadowball"])
-    magikarp = Pokemon("magikarp", ["tackle"])
+        name="spinda",
+        moves=["tackle", "watergun", "thundershock", "shadowball"])
+    magikarp = Pokemon(name="magikarp", moves=["tackle"])
     pa1 = PokemonAgent([spinda, magikarp, magikarp, magikarp])
 
     # Set player's gamestate
@@ -31,7 +31,7 @@ def test_make_move():
 
 def test_opp_gamestate():
     """Test that opponent's gamestate is updated properly."""
-    spinda = Pokemon("spinda", ["tackle"])
+    spinda = Pokemon(name="spinda", moves=["tackle"])
 
     pa1 = PokemonAgent([spinda])
     pa2 = PokemonAgent([spinda])
@@ -70,7 +70,7 @@ def test_opp_gamestate():
 
 def test_switch_faint():
     """Test that switch_faint() picks a valid pokemon."""
-    exploud = Pokemon("exploud", ["tackle"])
+    exploud = Pokemon(name="exploud", moves=["tackle"])
     pa1 = PokemonAgent([exploud])
 
     gamestate = {}
@@ -83,7 +83,11 @@ def test_switch_faint():
     val = pa1.switch_faint()
     assert val in range(3)
 
+def test_battle_posn():
+    """Test battle position functions work."""
+    pass
 
 test_make_move()
 test_opp_gamestate()
 test_switch_faint()
+test_battle_posn()
