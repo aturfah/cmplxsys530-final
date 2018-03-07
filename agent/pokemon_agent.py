@@ -105,22 +105,24 @@ class PokemonAgent(BaseAgent):
 
     def calc_position(self):
         """Calculate the value for self's battle position."""
+        my_posn = 0
         active_poke = self.gamestate["active"]
-        my_posn = active_poke.current_hp / active_poke.max_hp
+        if active_poke is not None:
+            my_posn += active_poke.current_hp / active_poke.max_hp
 
         for poke in self.gamestate["team"]:
             my_posn += poke.current_hp / poke.max_hp
 
-        my_posn = my_posn/6
         return my_posn
 
     def calc_opp_position(self):
         """Calculate the opponent's battle position."""
+        opp_posn = 0
         active_poke = self.opp_gamestate["data"]["active"]
-        opp_posn = active_poke["pct_hp"]
+        if active_poke is not None:
+            opp_posn += active_poke["pct_hp"]
 
         for poke in self.opp_gamestate["data"]["team"]:
             opp_posn += poke["pct_hp"]
 
-        opp_posn = opp_posn/6
         return opp_posn
