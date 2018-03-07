@@ -94,10 +94,10 @@ def test_battle_posn():
     gamestate["team"] = []
     gamestate["active"] = magikarp
 
-    opp_gamestate = {}
-    opp_gamestate["team"] = []
-    opp_gamestate["active"] = magikarp_opp
-    opp_gamestate = anonymize_gamestate_helper(opp_gamestate)
+    opp_gamestate_dict = {}
+    opp_gamestate_dict["team"] = []
+    opp_gamestate_dict["active"] = magikarp_opp
+    opp_gamestate = anonymize_gamestate_helper(opp_gamestate_dict)
 
     pa1.update_gamestate(gamestate, opp_gamestate)
     assert pa1.calc_position() == 1
@@ -110,6 +110,15 @@ def test_battle_posn():
     assert pa1.calc_position() < 0.1
     assert pa1.calc_opp_position() == 1
     assert pa1.battle_position() < 1
+
+    # Now we're in a better position.
+    magikarp.current_hp = magikarp.max_hp/2
+    magikarp_opp.current_hp = 1
+    opp_gamestate = anonymize_gamestate_helper(opp_gamestate_dict)
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    assert pa1.calc_position() == 0.5
+    assert pa1.calc_opp_position() < 0.1
+    assert pa1.battle_position() > 1
 
 
 test_make_move()
