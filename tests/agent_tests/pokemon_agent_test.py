@@ -83,9 +83,34 @@ def test_switch_faint():
     val = pa1.switch_faint()
     assert val in range(3)
 
+
 def test_battle_posn():
     """Test battle position functions work."""
-    pass
+    magikarp = Pokemon(name="magikarp", moves=["tackle"])
+    magikarp_opp = Pokemon(name="magikarp", moves=["tackle"])
+    pa1 = PokemonAgent([magikarp])
+
+    gamestate = {}
+    gamestate["team"] = []
+    gamestate["active"] = magikarp
+
+    opp_gamestate = {}
+    opp_gamestate["team"] = []
+    opp_gamestate["active"] = magikarp_opp
+    opp_gamestate = anonymize_gamestate_helper(opp_gamestate)
+
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    assert pa1.calc_position() == 1
+    assert pa1.calc_opp_position() == 1
+    assert pa1.battle_position() == 1
+
+    # We're now in a bad position
+    magikarp.current_hp = 1
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    assert pa1.calc_position() < 0.1
+    assert pa1.calc_opp_position() == 1
+    assert pa1.battle_position() < 1
+
 
 test_make_move()
 test_opp_gamestate()
