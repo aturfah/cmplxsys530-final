@@ -113,7 +113,7 @@ class PokemonAgent(BaseAgent):
 
         my_posn = my_posn/6
         return my_posn
-    
+
     def calc_opp_position(self):
         """Calculate the opponent's battle position."""
         active_poke = self.opp_gamestate["data"]["active"]
@@ -121,6 +121,6 @@ class PokemonAgent(BaseAgent):
 
         for poke in self.opp_gamestate["data"]["team"]:
             opp_posn += poke["pct_hp"]
-        
+
         opp_posn = opp_posn/6
         return opp_posn
