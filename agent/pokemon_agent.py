@@ -97,7 +97,7 @@ class PokemonAgent(BaseAgent):
         return choice
 
     def battle_position(self):
-        """Calculate the battle position."""
+        """Calculate the battle position function."""
         self_component = self.calc_position()
         opp_component = self.calc_opp_position()
 
