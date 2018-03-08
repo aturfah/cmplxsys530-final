@@ -5,6 +5,12 @@ from pokemon.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
 
 
+def suppress_print():
+    import os
+    import sys
+    f = open(os.devnull, 'w')
+    sys.stdout = f
+
 def test_run():
     """Test running of a pokemon game."""
     exploud = Pokemon(name="exploud", moves=["tackle"])
@@ -70,7 +76,7 @@ def test_run_infinite():
     # We got to the turn limit
     assert p_eng.game_state["num_turns"] > p_eng.turn_limit
 
-
+suppress_print()
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
