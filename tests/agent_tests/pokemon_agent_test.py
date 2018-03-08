@@ -8,9 +8,9 @@ from battle_engine.pokemon_engine import anonymize_gamestate_helper
 def test_make_move():
     """Test that make_move is outputting valid info."""
     spinda = Pokemon(
-        "spinda",
-        ["tackle", "watergun", "thundershock", "shadowball"])
-    magikarp = Pokemon("magikarp", ["tackle"])
+        name="spinda",
+        moves=["tackle", "watergun", "thundershock", "shadowball"])
+    magikarp = Pokemon(name="magikarp", moves=["tackle"])
     pa1 = PokemonAgent([spinda, magikarp, magikarp, magikarp])
 
     # Set player's gamestate
@@ -31,7 +31,7 @@ def test_make_move():
 
 def test_opp_gamestate():
     """Test that opponent's gamestate is updated properly."""
-    spinda = Pokemon("spinda", ["tackle"])
+    spinda = Pokemon(name="spinda", moves=["tackle"])
 
     pa1 = PokemonAgent([spinda])
     pa2 = PokemonAgent([spinda])
@@ -70,7 +70,7 @@ def test_opp_gamestate():
 
 def test_switch_faint():
     """Test that switch_faint() picks a valid pokemon."""
-    exploud = Pokemon("exploud", ["tackle"])
+    exploud = Pokemon(name="exploud", moves=["tackle"])
     pa1 = PokemonAgent([exploud])
 
     gamestate = {}
@@ -84,6 +84,44 @@ def test_switch_faint():
     assert val in range(3)
 
 
+def test_battle_posn():
+    """Test battle position functions work."""
+    magikarp = Pokemon(name="magikarp", moves=["tackle"])
+    magikarp_opp = Pokemon(name="magikarp", moves=["tackle"])
+    pa1 = PokemonAgent([magikarp])
+
+    gamestate = {}
+    gamestate["team"] = []
+    gamestate["active"] = magikarp
+
+    opp_gamestate_dict = {}
+    opp_gamestate_dict["team"] = []
+    opp_gamestate_dict["active"] = magikarp_opp
+    opp_gamestate = anonymize_gamestate_helper(opp_gamestate_dict)
+
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    assert pa1.calc_position() == 1
+    assert pa1.calc_opp_position() == 1
+    assert pa1.battle_position() == 1
+
+    # We're now in a bad position
+    magikarp.current_hp = 1
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    assert pa1.calc_position() < 0.1
+    assert pa1.calc_opp_position() == 1
+    assert pa1.battle_position() < 1
+
+    # Now we're in a better position.
+    magikarp.current_hp = magikarp.max_hp/2
+    magikarp_opp.current_hp = 1
+    opp_gamestate = anonymize_gamestate_helper(opp_gamestate_dict)
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    assert pa1.calc_position() == 0.5
+    assert pa1.calc_opp_position() < 0.1
+    assert pa1.battle_position() > 1
+
+
 test_make_move()
 test_opp_gamestate()
 test_switch_faint()
+test_battle_posn()

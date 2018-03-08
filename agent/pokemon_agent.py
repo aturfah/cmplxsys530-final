@@ -95,3 +95,34 @@ class PokemonAgent(BaseAgent):
         choice = uniform(0, len(self.gamestate["team"]))
         choice = int(choice)
         return choice
+
+    def battle_position(self):
+        """Calculate the battle position function."""
+        self_component = self.calc_position()
+        opp_component = self.calc_opp_position()
+
+        return self_component / opp_component
+
+    def calc_position(self):
+        """Calculate the value for self's battle position."""
+        my_posn = 0
+        active_poke = self.gamestate["active"]
+        if active_poke is not None:
+            my_posn += active_poke.current_hp / active_poke.max_hp
+
+        for poke in self.gamestate["team"]:
+            my_posn += poke.current_hp / poke.max_hp
+
+        return my_posn
+
+    def calc_opp_position(self):
+        """Calculate the opponent's battle position."""
+        opp_posn = 0
+        active_poke = self.opp_gamestate["data"]["active"]
+        if active_poke is not None:
+            opp_posn += active_poke["pct_hp"]
+
+        for poke in self.opp_gamestate["data"]["team"]:
+            opp_posn += poke["pct_hp"]
+
+        return opp_posn
