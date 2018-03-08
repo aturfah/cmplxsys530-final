@@ -4,13 +4,14 @@ Class for calculating damage stats for a pokemon.
 Based on https://www.smogon.com/smog/issue4/damage_stats
 """
 
+
 class DamageStatCalc():
     """The class to do the thing."""
 
     def __init__(self):
         """Initialize the calculator."""
         self.damage_stats = {}
-    
+
     def build_stats(self):
         """Build the dictionary for the stat numbers."""
         self.damage_stats[5] = 2.19
@@ -53,15 +54,16 @@ class DamageStatCalc():
         self.damage_stats[250] = 25.52
         self.damage_stats[255] = 260
 
-    def estimate_dmg_val(self, stat_val, is_hp = False, is_atk = False, max_evs = False):
+    def estimate_dmg_val(self, stat_val, is_hp=False, is_atk=False, max_evs=False):
         """Estimate the value of a damage_statistic."""
         dmg_val = None
         if stat_val in self.damage_stats:
             dmg_val = self.damage_stats[stat_val]
         else:
-            # IMPLEMENT ME LATER
-            pass
-        
+            closest_num, offset = self.find_closest_level(stat_val)
+            dmg_val = self.damage_stats[closest_num]
+            dmg_val += 0.19*offset
+
         if is_hp:
             dmg_val = dmg_val + 5
         elif is_atk:
@@ -71,3 +73,10 @@ class DamageStatCalc():
             dmg_val = dmg_val * 4
 
         return dmg_val
+
+    def find_closest_level(self, number):
+        """Find the closest value in the keys to this number"""
+        closest_num = None
+        offset = None
+
+        return closest_num, offset
