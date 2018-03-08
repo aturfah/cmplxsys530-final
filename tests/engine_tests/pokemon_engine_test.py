@@ -25,7 +25,7 @@ def test_run():
 
 def test_run_multiple_pokemon():
     """Test running a game with multiple pokemon."""
-    exploud = Pokemon(name="exploud", moves=["tackle"], level=90)
+    exploud = Pokemon(name="exploud", moves=["tackle"], level=95)
     spinda1 = Pokemon(name="spinda", moves=["watergun"])
     spinda2 = Pokemon(name="spinda", moves=["tackle"])
     magikarp = Pokemon(name="magikarp", moves=["thundershock"])
