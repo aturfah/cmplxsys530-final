@@ -4,6 +4,7 @@ Class for calculating damage stats for a pokemon.
 Based on https://www.smogon.com/smog/issue4/damage_stats
 """
 
+from math import inf
 
 class DamageStatCalc():
     """The class to do the thing."""
@@ -78,5 +79,23 @@ class DamageStatCalc():
         """Find the closest value in the keys to this number"""
         closest_num = None
         offset = None
+        values = self.damage_stats.keys()
+
+        if number < values[0]:
+            return values[0]
+
+        differences = [number - val for val in values]
+
+        smallest_diff_ind = None
+        smallest_diff = inf
+        index = 0
+        for diff in differences:
+            if diff < smallest_diff:
+                smallest_diff = diff
+                smallest_diff_ind = index
+            index += 1
+        
+        closest_num = values[smallest_diff_ind]
+        offset = smallest_diff
 
         return closest_num, offset
