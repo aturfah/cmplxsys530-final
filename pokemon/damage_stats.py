@@ -57,8 +57,13 @@ class DamageStatCalc():
         self.damage_stats[250] = 25.52
         self.damage_stats[255] = 260
 
-    def estimate_dmg_val(self, stat_val, is_hp=False, is_atk=False, max_evs=False, positive_nature=False):
+    def estimate_dmg_val(self, stat_val, **kwargs):
         """Estimate the value of a damage_statistic."""
+        is_hp = kwargs.get("is_hp", False)
+        is_atk = kwargs.get("is_atk", False)
+        max_evs = kwargs.get("max_evs", False)
+        positive_nature = kwargs.get("positive_nature", False)
+
         dmg_val = None
         if stat_val in self.damage_stats:
             dmg_val = self.damage_stats[stat_val]
