@@ -26,7 +26,8 @@ def test_estimate_dmg_val():
     assert dsc.estimate_dmg_val(144, is_hp=True) == 20.43
     assert dsc.estimate_dmg_val(88, is_atk=True) == 40.4
     assert dsc.estimate_dmg_val(150, is_atk=True, max_evs=True, positive_nature=True) == 83.6
-
+    assert dsc.estimate_dmg_val(90, is_hp=True) == 15.29
+    assert dsc.estimate_dmg_val(120) == 13.14
 
 test_init()
 test_nearest_num()
