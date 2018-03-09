@@ -6,12 +6,14 @@ Based on https://www.smogon.com/smog/issue4/damage_stats
 
 from math import inf
 
+
 class DamageStatCalc():
     """The class to do the thing."""
 
     def __init__(self):
         """Initialize the calculator."""
         self.damage_stats = {}
+        self.build_stats()
 
     def build_stats(self):
         """Build the dictionary for the stat numbers."""
@@ -76,13 +78,17 @@ class DamageStatCalc():
         return dmg_val
 
     def find_closest_level(self, number):
-        """Find the closest value in the keys to this number"""
+        """
+        Find the closest value in the keys to this number.
+
+        Rounds down, so 215 mathces to 200.
+        """
         closest_num = None
         offset = None
-        values = self.damage_stats.keys()
+        values = list(self.damage_stats.keys())
 
         if number < values[0]:
-            return values[0]
+            return values[0], number - values[0]
 
         differences = [number - val for val in values]
 
@@ -90,11 +96,11 @@ class DamageStatCalc():
         smallest_diff = inf
         index = 0
         for diff in differences:
-            if diff < smallest_diff:
+            if abs(diff) < smallest_diff:
                 smallest_diff = diff
                 smallest_diff_ind = index
             index += 1
-        
+
         closest_num = values[smallest_diff_ind]
         offset = smallest_diff
 
