@@ -6,10 +6,12 @@ from battle_engine.pokemon_engine import PokemonEngine
 
 
 def suppress_print():
+    """Suppress print from PokemonEngine."""
     import os
     import sys
     f = open(os.devnull, 'w')
     sys.stdout = f
+
 
 def test_run():
     """Test running of a pokemon game."""
@@ -54,7 +56,8 @@ def test_run_multiple_pokemon():
 def test_run_multiple_moves():
     """Test running a game with multiple moves."""
     exploud = Pokemon(name="exploud", moves=["shadowball"])
-    spinda = Pokemon(name="spinda", moves=["watergun", "tackle", "thundershock"])
+    spinda = Pokemon(name="spinda", moves=[
+                     "watergun", "tackle", "thundershock"])
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([spinda])
@@ -75,6 +78,7 @@ def test_run_infinite():
     p_eng.run(player1, player2)
     # We got to the turn limit
     assert p_eng.game_state["num_turns"] > p_eng.turn_limit
+
 
 suppress_print()
 test_run()
