@@ -57,7 +57,7 @@ class DamageStatCalc():
         self.damage_stats[250] = 25.52
         self.damage_stats[255] = 260
 
-    def estimate_dmg_val(self, stat_val, is_hp=False, is_atk=False, max_evs=False):
+    def estimate_dmg_val(self, stat_val, is_hp=False, is_atk=False, max_evs=False, positive_nature=False):
         """Estimate the value of a damage_statistic."""
         dmg_val = None
         if stat_val in self.damage_stats:
@@ -74,6 +74,9 @@ class DamageStatCalc():
                 dmg_val += 3
 
             dmg_val = dmg_val * 4
+
+        if positive_nature:
+            dmg_val *= 1.1
 
         # Hacky way to get around the .499999
         # not rounding properly.
