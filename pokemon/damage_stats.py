@@ -65,7 +65,7 @@ class DamageStatCalc():
         else:
             closest_num, offset = self.find_closest_level(stat_val)
             dmg_val = self.damage_stats[closest_num]
-            dmg_val += 0.19*offset
+            dmg_val += 0.19*offset/2
 
         if is_hp:
             dmg_val = dmg_val + 5
@@ -74,6 +74,10 @@ class DamageStatCalc():
                 dmg_val += 3
 
             dmg_val = dmg_val * 4
+
+        # Hacky way to get around the .499999
+        # not rounding properly.
+        dmg_val = round(round(dmg_val, 3), 2)
 
         return dmg_val
 
