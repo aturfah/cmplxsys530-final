@@ -165,6 +165,7 @@ def test_battle_posn_multiple():
     assert pa1.battle_position() < 1.5
     assert pa1.calc_position() > 1
 
+
 test_make_move()
 test_opp_gamestate()
 test_switch_faint()
