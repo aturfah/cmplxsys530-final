@@ -4,6 +4,12 @@ Ali Turfah
 * Course Title: Computer Modeling of Complex Systems
 * Term: Winter, 2018
 
+&nbsp;
+
+__*LS Comments:*__
+*No real comments to make at this time other than to say awesome job and it looks like you have everything well in hand! If you have any particular questions or if there is something in particular you would like feedback on, let me know. Other than that, good work and really look forward to seeing what you come up with! :)*
+
+
 
 
 &nbsp; 
