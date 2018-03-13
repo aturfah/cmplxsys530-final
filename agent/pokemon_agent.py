@@ -2,7 +2,7 @@
 
 from numpy.random import uniform
 from agent.base_agent import BaseAgent
-
+from pokemon.damage_stats import DamageStatCalc
 
 class PokemonAgent(BaseAgent):
     """Class for a pokemon player."""
@@ -18,6 +18,7 @@ class PokemonAgent(BaseAgent):
         self.opp_gamestate = {}
         self.opp_gamestate["data"] = {}
         self.opp_gamestate["moves"] = {}
+        self.dmg_stat_calc = DamageStatCalc()
 
     def reset_gamestates(self):
         """Reset gamestate values for a new battle."""
