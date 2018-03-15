@@ -6,6 +6,7 @@ from pokemon.damage_stats import DamageStatCalc
 from config import MOVE_DATA
 from config import POKEMON_DATA
 
+
 def test_init():
     """Make sure everything initializes properly."""
     dsc = DamageStatCalc()
@@ -70,6 +71,7 @@ def range_no_params():
     assert dmg_range[0] == 10.2
     assert dmg_range[1] == 13
 
+
 def range_atk_params():
     """Range calculations with attack parameters."""
     dsc = DamageStatCalc()
@@ -100,9 +102,11 @@ def range_atk_params():
     assert dmg_range[0] > 26 and dmg_range[0] < 26.351
     assert dmg_range[1] == 32
 
+
 def range_def_params():
     """Test calculations when using defense parameters."""
     pass
+
 
 test_init()
 test_nearest_num()
