@@ -387,6 +387,7 @@ def calculate_damage(move, attacker, defender):
 
     return damage
 
+
 def calculate_modifier(move, attacker, defender):
     """Calculate the damage modifier for an attack."""
     modifier = 1
