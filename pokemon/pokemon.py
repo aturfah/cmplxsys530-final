@@ -113,6 +113,7 @@ class Pokemon:
             key = "base_stats"
         return self.__getattribute__(key)
 
+
 def calculate_stat(base_val, ev_val, level):
     """
     Calculate the value for a given pokemon statistic.
