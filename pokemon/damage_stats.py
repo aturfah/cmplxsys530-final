@@ -5,6 +5,7 @@ Based on https://www.smogon.com/smog/issue4/damage_stats
 """
 
 from math import inf
+from math import ceil, floor
 
 from battle_engine.pokemon_engine import calculate_modifier
 
@@ -43,10 +44,13 @@ class DamageStatCalc():
         d_hp = self.estimate_dmg_val(defender["baseStats"]["hp"], is_hp=True, **hp_params)
         d_def = self.estimate_dmg_val(defender["baseStats"][move_cat[1]], **def_params)
 
+        print(d_atk, move["basePower"], modifier, d_hp, d_def)
+
         max_dmg = d_atk * modifier * move["basePower"]
         max_dmg = max_dmg / (d_hp * d_def)
 
-        return (0.85*max_dmg, max_dmg)
+        # Ceiling so we get a conservative estimate
+        return (0.85*floor(max_dmg), ceil(max_dmg))
 
     def estimate_dmg_val(self, stat_val, **kwargs):
         """Estimate the value of a damage_statistic."""
