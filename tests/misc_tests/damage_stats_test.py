@@ -42,7 +42,7 @@ def test_dmg_range():
 
 def range_basic():
     """Basic Range Calculations"""
-     dsc = DamageStatCalc()
+    dsc = DamageStatCalc()
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
     defender = Pokemon(name="spinda", moves=["tackle"])
