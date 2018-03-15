@@ -42,6 +42,7 @@ def test_dmg_range():
     range_no_params()
     range_atk_params()
     range_def_params()
+    range_hp_params()
 
 
 def range_no_params():
@@ -126,6 +127,10 @@ def range_def_params():
     dmg_range = dsc.calculate_range(move, attacker, defender, params)
     assert dmg_range[0] > 11
     assert dmg_range[1] == 14
+
+def range_hp_params():
+    """Test calculations when using HP Parameters."""
+    pass
 
 test_init()
 test_nearest_num()
