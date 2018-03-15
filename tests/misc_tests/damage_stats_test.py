@@ -1,6 +1,10 @@
 """Unit tests for damage_stats calculator."""
 
+from pokemon.pokemon import Pokemon
 from pokemon.damage_stats import DamageStatCalc
+
+from config import MOVE_DATA
+from config import POKEMON_DATA
 
 
 def test_init():
@@ -33,6 +37,118 @@ def test_estimate_dmg_val():
     assert dsc.estimate_dmg_val(120) == 13.14
 
 
+def test_dmg_range():
+    """Test calculation of the damage range."""
+    range_no_params()
+    range_atk_params()
+    range_def_params()
+    range_hp_params()
+
+
+def range_no_params():
+    """Range Calculations with no parameters."""
+    dsc = DamageStatCalc()
+
+    attacker = Pokemon(name="spinda", moves=["tackle"])
+    defender = Pokemon(name="spinda", moves=["tackle"])
+    move = MOVE_DATA["tackle"]
+    params = {}
+    params["atk"] = {}
+    params["def"] = {}
+    params["hp"] = {}
+
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 16
+    assert dmg_range[1] == 20
+
+    attacker = Pokemon(name="floatzel", moves=["watergun"])
+    move = MOVE_DATA['watergun']
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 21
+    assert dmg_range[1] == 26
+
+    defender = attacker
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 10
+    assert dmg_range[1] == 13
+
+
+def range_atk_params():
+    """Range calculations with attack parameters."""
+    dsc = DamageStatCalc()
+
+    attacker = POKEMON_DATA["spinda"]
+    defender = POKEMON_DATA["spinda"]
+    move = MOVE_DATA["tackle"]
+
+    params = {}
+    params["atk"] = {}
+    params["atk"]["max_evs"] = True
+    params["atk"]["positive_nature"] = True
+    params["def"] = {}
+    params["hp"] = {}
+
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 25
+    assert dmg_range[1] == 30
+
+    attacker = POKEMON_DATA["exploud"]
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 32
+    assert dmg_range[1] == 39
+
+    params["atk"]["positive_nature"] = False
+    defender = POKEMON_DATA["floatzel"]
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 26
+    assert dmg_range[1] == 32
+
+
+def range_def_params():
+    """Test calculations when using defense parameters."""
+    dsc = DamageStatCalc()
+
+    attacker = POKEMON_DATA["spinda"]
+    defender = POKEMON_DATA["spinda"]
+    move = MOVE_DATA["tackle"]
+
+    params = {}
+    params["atk"] = {}
+    params["def"] = {}
+    params["def"]["max_evs"] = True
+    params["def"]["positive_nature"] = True
+    params["hp"] = {}
+
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 10
+    assert dmg_range[1] == 13
+
+    params["def"]["positive_nature"] = False
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 11
+    assert dmg_range[1] == 14
+
+
+def range_hp_params():
+    """Test calculations when using HP Parameters."""
+    dsc = DamageStatCalc()
+
+    attacker = POKEMON_DATA["spinda"]
+    defender = POKEMON_DATA["spinda"]
+    move = MOVE_DATA["tackle"]
+
+    params = {}
+    params["atk"] = {}
+    params["def"] = {}
+    params["hp"] = {}
+    params["hp"]["max_evs"] = True
+
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 13
+    assert dmg_range[1] == 16
+
+
 test_init()
 test_nearest_num()
 test_estimate_dmg_val()
+test_dmg_range()

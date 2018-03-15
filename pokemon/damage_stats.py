@@ -5,6 +5,9 @@ Based on https://www.smogon.com/smog/issue4/damage_stats
 """
 
 from math import inf
+from math import ceil, floor
+
+from battle_engine.pokemon_engine import calculate_modifier
 
 
 class DamageStatCalc():
@@ -15,12 +18,56 @@ class DamageStatCalc():
         self.damage_stats = {}
         self.build_stats()
 
-    def calculate_range(self, attacker, defender, move):
-        """Calculate the damage range for a player's attack."""
-        pass
+    def calculate_range(self, move, attacker, defender, params):
+        """
+        Calculate the damage range for a player's attack.
+
+        :param attacker: dict-like
+            Stats and boosts for the attacking pokemon.
+        :param defender: dict-like
+            Stats and boosts for the defending pokemon.
+        :param move: dict
+            Dictionary with the move's data.
+        :param params: dict
+            Dictionary with three required keys, 'atk' and
+            'def', and 'hp' with the kwargs for the estimate_dmg_val
+            calculations.
+        """
+        move_cat = ("atk", "def")
+        if move["category"] != "Physical":
+            move_cat = ("spa", "spd")
+
+        atk_params = params["atk"]
+        hp_params = params["hp"]
+        def_params = params["def"]
+
+        modifier = calculate_modifier(move, attacker, defender)
+        d_atk = self.estimate_dmg_val(attacker["baseStats"][move_cat[0]], is_atk=True, **atk_params)
+        d_hp = self.estimate_dmg_val(defender["baseStats"]["hp"], is_hp=True, **hp_params)
+        d_def = self.estimate_dmg_val(defender["baseStats"][move_cat[1]], **def_params)
+
+        max_dmg = d_atk * modifier * move["basePower"]
+        max_dmg = max_dmg / (d_hp * d_def)
+
+        # Ceiling/Floor so we get a conservative estimate
+        return (floor(0.85*max_dmg), ceil(max_dmg))
 
     def estimate_dmg_val(self, stat_val, **kwargs):
-        """Estimate the value of a damage_statistic."""
+        """
+        Estimate the value of a damage_statistic.
+
+        :param stat_val: int
+            The pokemon's base value for this statistic.
+        :param is_hp: bool
+            Whether or not we are calculating the HP statisitc.
+        :param is_atk: bool
+            Whether or not we are calculating an Attack statistic.
+        :param max_evs: bool
+            Whether or not this stat has the maximum number of EVs.
+        :param positive_nature: bool
+            Whether or not this stat has a positive nature associated
+            with it.
+        """
         is_hp = kwargs.get("is_hp", False)
         is_atk = kwargs.get("is_atk", False)
         max_evs = kwargs.get("max_evs", False)
@@ -34,12 +81,12 @@ class DamageStatCalc():
             dmg_val = self.damage_stats[closest_num]
             dmg_val += 0.19*offset/2
 
+        if max_evs:
+            dmg_val += 3
+
         if is_hp:
             dmg_val = dmg_val + 5
         elif is_atk:
-            if max_evs:
-                dmg_val += 3
-
             dmg_val = dmg_val * 4
 
         if positive_nature:
@@ -56,6 +103,8 @@ class DamageStatCalc():
         Find the closest value in the keys to this number.
 
         Rounds down, so 215 mathces to 200.
+        :param number: int
+            The number we are looking for a match for.
         """
         closest_num = None
         offset = None

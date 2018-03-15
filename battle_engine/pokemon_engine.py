@@ -360,28 +360,45 @@ def anonymize_gamestate_helper(data):
 
 
 def calculate_damage(move, attacker, defender):
-    """Calculate damage of a move."""
+    """
+    Calculate damage of a move.
+
+    :param move: dict
+        Data of the attacking move.
+    :param attacker: dict or Pokemon
+        Data of the attacking Pokemon. Must support the [] operator.
+    :param defender: dict or Pokemon
+        Data of the defending Pokemon. Must support the [] operator.
+    """
     # Calculate actual damage
-    damage = floor(2*attacker.level/5 + 2)
+    damage = floor(2*attacker["level"]/5 + 2)
     damage = damage * move["basePower"]
     if move["category"] == "Physical":
-        damage = floor(damage * attacker.attack)/defender.defense
+        damage = floor(damage * attacker["attack"])/defender["defense"]
     elif move["category"] == "Special":
-        damage = floor(damage * attacker.sp_attack)/defender.sp_defense
+        damage = floor(damage * attacker["sp_attack"])/defender["sp_defense"]
     damage = floor(damage/50) + 2
 
     # Random modifier
-    modifier = uniform(0.85, 1.00)
-
-    # STAB Modifier
-    if move["type"] in attacker.types:
-        modifier = modifier * 1.5
-
-    # Weakness modifier
-    for def_type in defender.types:
-        if move["type"] in WEAKNESS_CHART[def_type]:
-            modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
+    modifier = calculate_modifier(move, attacker, defender)
+    modifier = modifier * uniform(0.85, 1.00)
 
     damage = floor(damage*modifier)
 
     return damage
+
+
+def calculate_modifier(move, attacker, defender):
+    """Calculate the damage modifier for an attack."""
+    modifier = 1
+
+    # STAB Modifier
+    if move["type"] in attacker["types"]:
+        modifier = modifier * 1.5
+
+    # Weakness modifier
+    for def_type in defender["types"]:
+        if move["type"] in WEAKNESS_CHART[def_type]:
+            modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
+
+    return modifier

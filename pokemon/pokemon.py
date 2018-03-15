@@ -71,6 +71,7 @@ class Pokemon:
         for move in moves:
             self.moves.append(MOVE_DATA[move])
         self.types = POKEMON_DATA[self.name]["types"]
+        self.base_stats = POKEMON_DATA[self.name]["baseStats"]
         self.set_stats(nature, evs)
 
     def set_stats(self, nature, evs):
@@ -80,7 +81,7 @@ class Pokemon:
         :param nature: str
             Nature of the pokemon to modify stats.
         """
-        base_stats = POKEMON_DATA[self.name]["baseStats"]
+        base_stats = self.base_stats
 
         # Calculate the statistic values
         self.max_hp = calculate_hp_stat(
@@ -105,6 +106,17 @@ class Pokemon:
             mod_dec = floor(self.__getattribute__(decrease_stat)*0.9)
             self.__setattr__(increase_stat, mod_inc)
             self.__setattr__(decrease_stat, mod_dec)
+
+    def __getitem__(self, key):
+        """
+        Define [] operating on this object.
+
+        :param key: str
+            Attribute of this object to get.
+        """
+        if key == "baseStats":
+            key = "base_stats"
+        return self.__getattribute__(key)
 
 
 def calculate_stat(base_val, ev_val, level):
