@@ -371,12 +371,12 @@ def calculate_damage(move, attacker, defender):
         Data of the defending Pokemon. Must support the [] operator.
     """
     # Calculate actual damage
-    damage = floor(2*attacker.level/5 + 2)
+    damage = floor(2*attacker["level"]/5 + 2)
     damage = damage * move["basePower"]
     if move["category"] == "Physical":
-        damage = floor(damage * attacker.attack)/defender.defense
+        damage = floor(damage * attacker["attack"])/defender["defense"]
     elif move["category"] == "Special":
-        damage = floor(damage * attacker.sp_attack)/defender.sp_defense
+        damage = floor(damage * attacker["sp_attack"])/defender["sp_defense"]
     damage = floor(damage/50) + 2
 
     # Random modifier
@@ -392,11 +392,11 @@ def calculate_modifier(move, attacker, defender):
     modifier = 1
 
     # STAB Modifier
-    if move["type"] in attacker.types:
+    if move["type"] in attacker["types"]:
         modifier = modifier * 1.5
 
     # Weakness modifier
-    for def_type in defender.types:
+    for def_type in defender["types"]:
         if move["type"] in WEAKNESS_CHART[def_type]:
             modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
 
