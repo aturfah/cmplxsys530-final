@@ -53,7 +53,21 @@ class DamageStatCalc():
         return (floor(0.85*max_dmg), ceil(max_dmg))
 
     def estimate_dmg_val(self, stat_val, **kwargs):
-        """Estimate the value of a damage_statistic."""
+        """
+        Estimate the value of a damage_statistic.
+
+        :param stat_val: int
+            The pokemon's base value for this statistic.
+        :param is_hp: bool
+            Whether or not we are calculating the HP statisitc.
+        :param is_atk: bool
+            Whether or not we are calculating an Attack statistic.
+        :param max_evs: bool
+            Whether or not this stat has the maximum number of EVs.
+        :param positive_nature: bool
+            Whether or not this stat has a positive nature associated
+            with it.
+        """
         is_hp = kwargs.get("is_hp", False)
         is_atk = kwargs.get("is_atk", False)
         max_evs = kwargs.get("max_evs", False)
