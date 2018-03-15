@@ -40,8 +40,8 @@ class DamageStatCalc():
 
         modifier = calculate_modifier(move, attacker, defender)
         d_atk = self.estimate_dmg_val(attacker["baseStats"][move_cat[0]], is_atk=True, **atk_params)
-        d_hp = self.estimate_dmg_val(defender["baseStasts"]["hp"], is_hp=True, **hp_params)
-        d_def = self.estimate_dmg_val(defender["baseStasts"][move_cat[1]], **def_params)
+        d_hp = self.estimate_dmg_val(defender["baseStats"]["hp"], is_hp=True, **hp_params)
+        d_def = self.estimate_dmg_val(defender["baseStats"][move_cat[1]], **def_params)
 
         max_dmg = d_atk * modifier * move["basePower"]
         max_dmg = max_dmg / (d_hp * d_def)
