@@ -105,8 +105,23 @@ def range_atk_params():
 
 def range_def_params():
     """Test calculations when using defense parameters."""
-    pass
+    dsc = DamageStatCalc()
 
+    attacker = POKEMON_DATA["spinda"]
+    defender = POKEMON_DATA["spinda"]
+    move = MOVE_DATA["tackle"]
+
+    params = {}
+    params["atk"] = {}
+    params["def"] = {}
+    params["def"]["max_evs"] = True
+    params["def"]["positive_nature"] = True
+    params["hp"] = {}
+
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    print(dmg_range)
+    assert dmg_range[0] > 10
+    assert dmg_range[1] == 13
 
 test_init()
 test_nearest_num()
