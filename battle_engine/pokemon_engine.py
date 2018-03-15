@@ -360,7 +360,16 @@ def anonymize_gamestate_helper(data):
 
 
 def calculate_damage(move, attacker, defender):
-    """Calculate damage of a move."""
+    """
+    Calculate damage of a move.
+
+    :param move: dict
+        Data of the attacking move.
+    :param attacker: dict or Pokemon
+        Data of the attacking Pokemon. Must support the [] operator.
+    :param defender: dict or Pokemon
+        Data of the defending Pokemon. Must support the [] operator.
+    """
     # Calculate actual damage
     damage = floor(2*attacker.level/5 + 2)
     damage = damage * move["basePower"]
