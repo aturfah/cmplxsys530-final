@@ -38,13 +38,15 @@ class DamageStatCalc():
             move_cat = ("spa", "spd")
 
         atk_params = params["atk"]
-        def_params = params["def"]
         hp_params = params["hp"]
+        def_params = params["def"]
 
         modifier = calculate_modifier(move, attacker, defender)
         d_atk = self.estimate_dmg_val(attacker["baseStats"][move_cat[0]], is_atk=True, **atk_params)
         d_hp = self.estimate_dmg_val(defender["baseStats"]["hp"], is_hp=True, **hp_params)
         d_def = self.estimate_dmg_val(defender["baseStats"][move_cat[1]], **def_params)
+
+        print(d_atk, d_hp, d_def, modifier, move["basePower"])
 
         max_dmg = d_atk * modifier * move["basePower"]
         max_dmg = max_dmg / (d_hp * d_def)
@@ -67,12 +69,12 @@ class DamageStatCalc():
             dmg_val = self.damage_stats[closest_num]
             dmg_val += 0.19*offset/2
 
+        if max_evs:
+            dmg_val += 3
+
         if is_hp:
             dmg_val = dmg_val + 5
         elif is_atk:
-            if max_evs:
-                dmg_val += 3
-
             dmg_val = dmg_val * 4
 
         if positive_nature:
