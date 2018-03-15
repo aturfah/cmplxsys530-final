@@ -138,7 +138,16 @@ def test_stats_calculation():
     assert pkmn3.sp_defense == 80
     assert pkmn3.speed == 87
 
+def test_getitem_validation():
+    """Test using the [] operator on this object."""
+    pkmn1 = Pokemon(name="spinda", moves=["tackle"], level=50)
+
+    assert pkmn1.level == pkmn1["level"]
+    assert pkmn1.name == pkmn1["name"]
+    assert pkmn1.base_stats["atk"] == pkmn1["baseStats"]["atk"]
+    assert pkmn1.base_stats["atk"] == pkmn1["base_stats"]["atk"]
 
 test_init()
 test_param_validation()
 test_stats_calculation()
+test_getitem_validation()
