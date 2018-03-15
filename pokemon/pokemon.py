@@ -110,7 +110,7 @@ class Pokemon:
     def __getitem__(self, key):
         """
         Define [] operating on this object.
-        
+
         :param key: str
             Attribute of this object to get.
         """
