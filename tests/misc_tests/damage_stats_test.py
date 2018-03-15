@@ -38,11 +38,12 @@ def test_estimate_dmg_val():
 
 def test_dmg_range():
     """Test calculation of the damage range."""
-    range_basic()
+    range_no_param()
+    range_atk_param()
 
 
-def range_basic():
-    """Basic Range Calculations"""
+def range_no_param():
+    """Basic Range Calculations."""
     dsc = DamageStatCalc()
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
@@ -67,6 +68,10 @@ def range_basic():
     dmg_range = dsc.calculate_range(move, attacker, defender, params)
     assert dmg_range[0] == 10.2
     assert dmg_range[1] == 13
+
+def range_atk_param():
+    """Range calculations with attack parameters."""
+    pass
 
 
 test_init()
