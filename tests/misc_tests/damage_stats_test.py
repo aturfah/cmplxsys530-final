@@ -1,7 +1,9 @@
 """Unit tests for damage_stats calculator."""
 
+from pokemon.pokemon import Pokemon
 from pokemon.damage_stats import DamageStatCalc
 
+from config import MOVE_DATA
 
 def test_init():
     """Make sure everything initializes properly."""
@@ -34,7 +36,17 @@ def test_estimate_dmg_val():
 
 def test_dmg_range():
     """Test calculation of the damage range."""
-    pass
+    dsc = DamageStatCalc()
+
+    attacker = Pokemon(name="spinda", moves=["tackle"])
+    defender = Pokemon(name="spinda", moves=["tackle"])
+    move = MOVE_DATA['tackle']
+    params = {}
+    params["atk"] = {}
+    params["def"] = {}
+    params["hp"] = {}
+
+    print(dsc.calculate_range(move, attacker, defender, params))
 
 test_init()
 test_nearest_num()
