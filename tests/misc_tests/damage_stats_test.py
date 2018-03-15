@@ -119,9 +119,13 @@ def range_def_params():
     params["hp"] = {}
 
     dmg_range = dsc.calculate_range(move, attacker, defender, params)
-    print(dmg_range)
     assert dmg_range[0] > 10
     assert dmg_range[1] == 13
+
+    params["def"]["positive_nature"] = False
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] > 11
+    assert dmg_range[1] == 14
 
 test_init()
 test_nearest_num()
