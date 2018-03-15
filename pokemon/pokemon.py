@@ -71,8 +71,8 @@ class Pokemon:
         for move in moves:
             self.moves.append(MOVE_DATA[move])
         self.types = POKEMON_DATA[self.name]["types"]
-        self.set_stats(nature, evs)
         self.base_stats = POKEMON_DATA[self.name]["baseStats"]
+        self.set_stats(nature, evs)
 
     def set_stats(self, nature, evs):
         """
