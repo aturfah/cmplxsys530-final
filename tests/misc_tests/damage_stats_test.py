@@ -38,11 +38,12 @@ def test_estimate_dmg_val():
 
 def test_dmg_range():
     """Test calculation of the damage range."""
-    range_no_param()
-    range_atk_param()
+    range_no_params()
+    range_atk_params()
+    range_def_params()
 
 
-def range_no_param():
+def range_no_params():
     """Range Calculations with no parameters."""
     dsc = DamageStatCalc()
 
@@ -69,7 +70,7 @@ def range_no_param():
     assert dmg_range[0] == 10.2
     assert dmg_range[1] == 13
 
-def range_atk_param():
+def range_atk_params():
     """Range calculations with attack parameters."""
     dsc = DamageStatCalc()
 
@@ -99,6 +100,9 @@ def range_atk_param():
     assert dmg_range[0] > 26 and dmg_range[0] < 26.351
     assert dmg_range[1] == 32
 
+def range_def_params():
+    """Test calculations when using defense parameters."""
+    pass
 
 test_init()
 test_nearest_num()
