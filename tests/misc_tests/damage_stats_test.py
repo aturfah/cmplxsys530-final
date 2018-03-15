@@ -40,6 +40,7 @@ def test_dmg_range():
     """Test calculation of the damage range."""
     range_basic()
 
+
 def range_basic():
     """Basic Range Calculations"""
     dsc = DamageStatCalc()
@@ -55,6 +56,18 @@ def range_basic():
     dmg_range = dsc.calculate_range(move, attacker, defender, params)
     assert dmg_range[0] > 16
     assert dmg_range[1] <= 20
+
+    attacker = Pokemon(name="floatzel", moves=["watergun"])
+    move = MOVE_DATA['watergun']
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 21.25
+    assert dmg_range[1] == 26
+
+    defender = attacker
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 10.2
+    assert dmg_range[1] == 13
+
 
 test_init()
 test_nearest_num()
