@@ -16,7 +16,7 @@ class DamageStatCalc():
         self.damage_stats = {}
         self.build_stats()
 
-    def calculate_range(self, move, attacker, defender):
+    def calculate_range(self, move, attacker, defender, params):
         """
         Calculate the damage range for a player's attack.
         :param attacker: dict
@@ -25,16 +25,23 @@ class DamageStatCalc():
             Stats and boosts for the defending pokemon.
         :param move: dict
             Dictionary with the move's data.
+        :param params: dict
+            Dictionary with three required keys, 'atk' and
+            'def', and 'hp' with the kwargs for the estimate_dmg_val
+            calculations.
         """
         move_cat = ("atk", "def")
         if move["category"] != "Physical":
             move_cat = ("spa", "spd")
 
-        modifier = calculate_modifier(move, attacker, defender)
-        d_atk = self.estimate_dmg_val(attacker["baseStats"][move_cat[0]], is_atk=True)
+        atk_params = params["atk"]
+        def_params = params["def"]
+        hp_params = params["hp"]
 
-        d_hp = self.estimate_dmg_val(defender["baseStasts"]["hp"], is_hp=True)
-        d_def = self.estimate_dmg_val(defender["baseStasts"][move_cat[1]])
+        modifier = calculate_modifier(move, attacker, defender)
+        d_atk = self.estimate_dmg_val(attacker["baseStats"][move_cat[0]], is_atk=True, **atk_params)
+        d_hp = self.estimate_dmg_val(defender["baseStasts"]["hp"], is_hp=True, **hp_params)
+        d_def = self.estimate_dmg_val(defender["baseStasts"][move_cat[1]], **def_params)
 
         max_dmg = d_atk * modifier * move["basePower"]
         max_dmg = max_dmg / (d_hp * d_def)
