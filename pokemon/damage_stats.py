@@ -103,6 +103,8 @@ class DamageStatCalc():
         Find the closest value in the keys to this number.
 
         Rounds down, so 215 mathces to 200.
+        :param number: int
+            The number we are looking for a match for.
         """
         closest_num = None
         offset = None
