@@ -108,7 +108,12 @@ class Pokemon:
             self.__setattr__(decrease_stat, mod_dec)
 
     def __getitem__(self, key):
-        """Define [] operating on this object."""
+        """
+        Define [] operating on this object.
+        
+        :param key: str
+            Attribute of this object to get.
+        """
         if key == "baseStats":
             key = "base_stats"
         return self.__getattribute__(key)
