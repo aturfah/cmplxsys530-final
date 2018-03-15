@@ -4,7 +4,7 @@ from pokemon.pokemon import Pokemon
 from pokemon.damage_stats import DamageStatCalc
 
 from config import MOVE_DATA
-
+from config import POKEMON_DATA
 
 def test_init():
     """Make sure everything initializes properly."""
@@ -48,7 +48,7 @@ def range_no_param():
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
     defender = Pokemon(name="spinda", moves=["tackle"])
-    move = MOVE_DATA['tackle']
+    move = MOVE_DATA["tackle"]
     params = {}
     params["atk"] = {}
     params["def"] = {}
@@ -71,7 +71,33 @@ def range_no_param():
 
 def range_atk_param():
     """Range calculations with attack parameters."""
-    pass
+    dsc = DamageStatCalc()
+
+    attacker = POKEMON_DATA["spinda"]
+    defender = POKEMON_DATA["spinda"]
+    move = MOVE_DATA["tackle"]
+
+    params = {}
+    params["atk"] = {}
+    params["atk"]["max_evs"] = True
+    params["atk"]["positive_nature"] = True
+    params["def"] = {}
+    params["hp"] = {}
+
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 24.65
+    assert dmg_range[1] == 30
+
+    attacker = POKEMON_DATA["exploud"]
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 32.3
+    assert dmg_range[1] == 39
+
+    params["atk"]["positive_nature"] = False
+    defender = POKEMON_DATA["floatzel"]
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] > 26 and dmg_range[0] < 26.351
+    assert dmg_range[1] == 32
 
 
 test_init()
