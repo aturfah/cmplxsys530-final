@@ -16,7 +16,15 @@ class DamageStatCalc():
         self.build_stats()
 
     def calculate_range(self, attacker, defender, move):
-        """Calculate the damage range for a player's attack."""
+        """
+        Calculate the damage range for a player's attack.
+        :param attacker: dict
+            Stats and boosts for the attacking pokemon.
+        :param defender: dict
+            Stats and boosts for the defending pokemon.
+        :param move: dict
+            Dictionary with the move's data.
+        """
         pass
 
     def estimate_dmg_val(self, stat_val, **kwargs):
