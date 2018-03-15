@@ -22,9 +22,9 @@ class DamageStatCalc():
         """
         Calculate the damage range for a player's attack.
 
-        :param attacker: dict
+        :param attacker: dict-like
             Stats and boosts for the attacking pokemon.
-        :param defender: dict
+        :param defender: dict-like
             Stats and boosts for the defending pokemon.
         :param move: dict
             Dictionary with the move's data.
