@@ -38,6 +38,8 @@ class DamageStatCalc():
         def_params = params["def"]
         hp_params = params["hp"]
 
+        # pew epw
+
         modifier = calculate_modifier(move, attacker, defender)
         d_atk = self.estimate_dmg_val(attacker["baseStats"][move_cat[0]], is_atk=True, **atk_params)
         d_hp = self.estimate_dmg_val(defender["baseStats"]["hp"], is_hp=True, **hp_params)
