@@ -9,6 +9,7 @@ from math import ceil, floor
 
 from battle_engine.pokemon_engine import calculate_modifier
 
+
 class DamageStatCalc():
     """The class to do the thing."""
 
@@ -20,6 +21,7 @@ class DamageStatCalc():
     def calculate_range(self, move, attacker, defender, params):
         """
         Calculate the damage range for a player's attack.
+
         :param attacker: dict
             Stats and boosts for the attacking pokemon.
         :param defender: dict
