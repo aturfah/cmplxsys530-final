@@ -52,7 +52,7 @@ class DamageStatCalc():
         max_dmg = max_dmg / (d_hp * d_def)
 
         # Ceiling/Floor so we get a conservative estimate
-        return (0.85*floor(max_dmg), ceil(max_dmg))
+        return (floor(0.85*max_dmg), ceil(max_dmg))
 
     def estimate_dmg_val(self, stat_val, **kwargs):
         """Estimate the value of a damage_statistic."""
