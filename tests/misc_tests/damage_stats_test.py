@@ -32,7 +32,11 @@ def test_estimate_dmg_val():
     assert dsc.estimate_dmg_val(90, is_hp=True) == 15.29
     assert dsc.estimate_dmg_val(120) == 13.14
 
+def test_dmg_range():
+    """Test calculation of the damage range."""
+    pass
 
 test_init()
 test_nearest_num()
 test_estimate_dmg_val()
+test_dmg_range()
