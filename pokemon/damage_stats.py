@@ -49,7 +49,7 @@ class DamageStatCalc():
         max_dmg = d_atk * modifier * move["basePower"]
         max_dmg = max_dmg / (d_hp * d_def)
 
-        # Ceiling so we get a conservative estimate
+        # Ceiling/Floor so we get a conservative estimate
         return (0.85*floor(max_dmg), ceil(max_dmg))
 
     def estimate_dmg_val(self, stat_val, **kwargs):
