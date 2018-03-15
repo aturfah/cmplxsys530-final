@@ -6,6 +6,7 @@ Based on https://www.smogon.com/smog/issue4/damage_stats
 
 from math import inf
 
+from battle_engine.pokemon_engine import calculate_modifier
 
 class DamageStatCalc():
     """The class to do the thing."""
@@ -15,7 +16,7 @@ class DamageStatCalc():
         self.damage_stats = {}
         self.build_stats()
 
-    def calculate_range(self, attacker, defender, move):
+    def calculate_range(self, move, attacker, defender):
         """
         Calculate the damage range for a player's attack.
         :param attacker: dict
@@ -25,7 +26,20 @@ class DamageStatCalc():
         :param move: dict
             Dictionary with the move's data.
         """
-        pass
+        move_cat = ("atk", "def")
+        if move["category"] != "Physical":
+            move_cat = ("spa", "spd")
+
+        modifier = calculate_modifier(move, attacker, defender)
+        d_atk = self.estimate_dmg_val(attacker["baseStats"][move_cat[0]], is_atk=True)
+
+        d_hp = self.estimate_dmg_val(defender["baseStasts"]["hp"], is_hp=True)
+        d_def = self.estimate_dmg_val(defender["baseStasts"][move_cat[1]])
+
+        max_dmg = d_atk * modifier * move["basePower"]
+        max_dmg = max_dmg / (d_hp * d_def)
+
+        return (0.85*max_dmg, max_dmg)
 
     def estimate_dmg_val(self, stat_val, **kwargs):
         """Estimate the value of a damage_statistic."""
