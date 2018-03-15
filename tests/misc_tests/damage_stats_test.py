@@ -43,7 +43,7 @@ def test_dmg_range():
 
 
 def range_no_param():
-    """Basic Range Calculations."""
+    """Range Calculations with no parameters."""
     dsc = DamageStatCalc()
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
