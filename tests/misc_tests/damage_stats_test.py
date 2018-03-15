@@ -5,6 +5,7 @@ from pokemon.damage_stats import DamageStatCalc
 
 from config import MOVE_DATA
 
+
 def test_init():
     """Make sure everything initializes properly."""
     dsc = DamageStatCalc()
@@ -34,9 +35,14 @@ def test_estimate_dmg_val():
     assert dsc.estimate_dmg_val(90, is_hp=True) == 15.29
     assert dsc.estimate_dmg_val(120) == 13.14
 
+
 def test_dmg_range():
     """Test calculation of the damage range."""
-    dsc = DamageStatCalc()
+    range_basic()
+
+def range_basic():
+    """Basic Range Calculations"""
+     dsc = DamageStatCalc()
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
     defender = Pokemon(name="spinda", moves=["tackle"])
@@ -46,7 +52,9 @@ def test_dmg_range():
     params["def"] = {}
     params["hp"] = {}
 
-    print(dsc.calculate_range(move, attacker, defender, params))
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] > 16
+    assert dmg_range[1] <= 20
 
 test_init()
 test_nearest_num()
