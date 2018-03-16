@@ -207,6 +207,8 @@ class PokemonEngine():
         results["pct_damage"] = damage/def_poke.max_hp
         results["attacker"] = attacker
         results["defender"] = defender
+        results["atk_poke"] = atk_poke.name
+        results["def_poke"] = def_poke.name
         return [results]
 
     def turn_both_attack(self, move1, move2):
