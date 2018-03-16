@@ -19,6 +19,7 @@ class PokemonAgent(BaseAgent):
         self.opp_gamestate = {}
         self.opp_gamestate["data"] = {}
         self.opp_gamestate["moves"] = {}
+        self.opp_gamestate["investment"] = {}
         self.dmg_stat_calc = DamageStatCalc()
 
     def reset_gamestates(self):
@@ -27,6 +28,7 @@ class PokemonAgent(BaseAgent):
         self.opp_gamestate = {}
         self.opp_gamestate["data"] = {}
         self.opp_gamestate["moves"] = {}
+        self.opp_gamestate["investment"] = {}
 
     def update_gamestate(self, my_gamestate, opp_gamestate):
         """
