@@ -128,3 +128,11 @@ class PokemonAgent(BaseAgent):
             opp_posn += poke["pct_hp"]
 
         return opp_posn
+
+    def infer_attacking(self):
+        """Infer opponent's investment when we are attacking."""
+        pass
+
+    def infer_defending(self):
+        """Infer opponent's investment when we are on defense."""
+        pass
