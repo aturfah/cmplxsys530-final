@@ -4,6 +4,7 @@ from numpy.random import uniform
 from agent.base_agent import BaseAgent
 from pokemon.damage_stats import DamageStatCalc
 
+from config import USAGE_STATS
 
 class PokemonAgent(BaseAgent):
     """Class for a pokemon player."""
