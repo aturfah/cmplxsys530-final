@@ -36,16 +36,16 @@
 			"evoLevel": 40,
 			"eggGroups": ["Monster", "Field"]
 		},
-		"magikarp": {
-			"num": 129,
-			"species": "Magikarp",
-			"types": ["Water"],
-			"baseStats": {"hp": 20, "atk": 10, "def": 55, "spa": 15, "spd": 20, "spe": 80},
-			"abilities": {"0": "Swift Swim", "H": "Rattled"},
-			"heightm": 0.9,
-			"weightkg": 10,
-			"color": "Red",
-			"evos": ["gyarados"],
-			"eggGroups": ["Water 2", "Dragon"]
+	"magikarp": {
+		"num": 129,
+		"species": "Magikarp",
+		"types": ["Water"],
+		"baseStats": {"hp": 20, "atk": 10, "def": 55, "spa": 15, "spd": 20, "spe": 80},
+		"abilities": {"0": "Swift Swim", "H": "Rattled"},
+		"heightm": 0.9,
+		"weightkg": 10,
+		"color": "Red",
+		"evos": ["gyarados"],
+		"eggGroups": ["Water 2", "Dragon"]
 	}
 }
