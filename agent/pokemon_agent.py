@@ -6,6 +6,7 @@ from pokemon.damage_stats import DamageStatCalc
 
 from config import USAGE_STATS
 
+
 class PokemonAgent(BaseAgent):
     """Class for a pokemon player."""
 
