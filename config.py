@@ -129,7 +129,7 @@ NATURES = {
 
 USAGE_STATS = {}
 for filename in [name for name in listdir("data/usage/") if isfile(join("data/usage", name))]:
-    with open(filename) as usage_file:
+    with open(join("data/usage/", filename)) as usage_file:
         tier = None
         if "pu" in filename:
             tier = "pu"
