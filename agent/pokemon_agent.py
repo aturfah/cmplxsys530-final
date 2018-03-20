@@ -217,21 +217,32 @@ class PokemonAgent(BaseAgent):
         dmg_pct = turn_info["pct_damage"]
 
         if atk_inference:
-            stat = "atk"
+            stat = "def"
             if move["category"] != "Physical":
-                stat = "spa"
+                stat = "spd"
             poke_name = turn_info["def_poke"]
             valid_results = self.valid_results_atk(poke_name, stat, dmg_pct, results, combinations)
 
             if not self.opp_gamestate["investment"][poke_name][stat]:
-                self.opp_gamestate["investment"][poke_name][stat] = valid_results
+                self.opp_gamestate["investment"][poke_name]["def"] = []
+                self.opp_gamestate["investment"][poke_name]["hp"] = []
+                for res in valid_results:
+                    self.opp_gamestate["investment"][poke_name]["def"].append(res["def"])
+                    self.opp_gamestate["investment"][poke_name]["hp"].append(res["hp"])
             else:
-                self.opp_gamestate["investment"][poke_name][stat] = [
-                    result for result in valid_results
-                    if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
+                def_results = [res["def"] for res in valid_results]
+                hp_results = [res["hp"] for res in valid_results]
+
+                self.opp_gamestate["investment"][poke_name]["def"] = [
+                    result for result in def_results
+                    if result in self.opp_gamestate["investment"][poke_name]["def"]
+                ]
+
+                self.opp_gamestate["investment"][poke_name]["hp"] = [
+                    result for result in hp_results
+                    if result in self.opp_gamestate["investment"][poke_name]["hp"]
                 ]
         else:
-            print("HERE")
             stat = "atk"
             if move["category"] != "Physical":
                 stat = "spa"
