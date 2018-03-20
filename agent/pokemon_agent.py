@@ -221,13 +221,13 @@ class PokemonAgent(BaseAgent):
             if move["category"] != "Physical":
                 stat = "spa"
             poke_name = turn_info["def_poke"]
+            valid_results = self.valid_results_atk(poke_name, stat, dmg_pct, results, combinations)
         else:
             stat = "def"
             if move["category"] != "Physical":
                 stat = "spd"
             poke_name = turn_info["atk_poke"]
-
-        valid_results = self.valid_results_def(poke_name, stat, dmg_pct, results, combinations)
+            valid_results = self.valid_results_def(poke_name, stat, dmg_pct, results, combinations)
 
         if not self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]:
             self.opp_gamestate["investment"][turn_info["atk_poke"]][stat] = valid_results
@@ -254,6 +254,30 @@ class PokemonAgent(BaseAgent):
                 result_dict = {}
                 result_dict["max_evs"] = combinations[result_ind][0]
                 result_dict["positive_nature"] = combinations[result_ind][1]
+                valid_results.append(result_dict)
+
+        return valid_results
+
+    def valid_results_atk(self, poke_name, stat, dmg_pct, results, combinations):
+        """Generate valid results for attacking."""
+        valid_results = []
+        num_results = len(results)
+
+        for result_ind in range(num_results):
+            result = results[result_ind]
+            if dmg_pct >= result[0] and dmg_pct <= result[1]:
+                if poke_name not in self.opp_gamestate["investment"]:
+                    self.opp_gamestate["investment"][poke_name] = {}
+
+                if stat not in self.opp_gamestate["investment"][poke_name]:
+                    self.opp_gamestate["investment"][poke_name][stat] = []
+
+                result_dict = {}
+                result_dict["def"] = {}
+                result_dict["hp"] = {}
+                result_dict["def"]["max_evs"] = combinations[result_ind][0]
+                result_dict["def"]["positive_nature"] = combinations[result_ind][1]
+                result_dict["hp"]["max_evs"] = combinations[result_ind][2]
                 valid_results.append(result_dict)
 
         return valid_results
