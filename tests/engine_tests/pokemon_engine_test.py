@@ -9,8 +9,8 @@ def suppress_print():
     """Suppress print from PokemonEngine."""
     import os
     import sys
-    f = open(os.devnull, 'w')
-    sys.stdout = f
+    pew = open(os.devnull, 'w')
+    sys.stdout = pew
 
 
 def test_run():
