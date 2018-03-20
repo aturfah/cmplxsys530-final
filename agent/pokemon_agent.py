@@ -143,12 +143,13 @@ class PokemonAgent(BaseAgent):
 
     def infer_defending(self, turn_info):
         """Infer opponent's investment when we are on defense."""
-        print(turn_info)
-
         move = turn_info["move"]
         dmg_pct = turn_info["pct_damage"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
         opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
+        stat = "def"
+        if move["category"] != "Physical":
+            stat = "spd"
 
         params = {}
         params["atk"] = {}
@@ -169,13 +170,36 @@ class PokemonAgent(BaseAgent):
         combinations.append((False, True))
         combinations.append((True, True))
 
-        ranges = []
+        results = []
         for comb_ind in range(4):
             comb = combinations[comb_ind]
             params["atk"]["max_evs"] = comb[0]
             params["atk"]["positive_nature"] = comb[1]
 
-            ranges.append(self.dmg_stat_calc.calculate_range(
+            results.append(self.dmg_stat_calc.calculate_range(
                 move, opp_poke, my_poke, params))
 
-        print(dmg_pct, ranges)
+        valid_results = []
+        for result_ind in range(4):
+            result = results[result_ind]
+            if dmg_pct >= result[0] and dmg_pct <= result[1]:
+                if turn_info["atk_poke"] not in self.opp_gamestate["investment"]:
+                    self.opp_gamestate["investment"][turn_info["atk_poke"]] = {}
+
+                if stat not in self.opp_gamestate["investment"][turn_info["atk_poke"]]:
+                    self.opp_gamestate["investment"][turn_info["atk_poke"]][stat] = []
+
+                result_dict = {}
+                result_dict["max_evs"] = combinations[result_ind][0]
+                result_dict["positive_nature"] = combinations[result_ind][1]
+                valid_results.append(result_dict)
+
+        if not self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]:
+            self.opp_gamestate["investment"][turn_info["atk_poke"]][stat] = valid_results
+        else:
+            self.opp_gamestate["investment"][turn_info["atk_poke"]][stat] = [
+                result for result in valid_results
+                if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
+            ]
+
+        print(self.opp_gamestate["investment"][turn_info["atk_poke"]][stat])
