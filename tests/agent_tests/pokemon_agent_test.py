@@ -220,8 +220,6 @@ def test_infer_defense_evs():
     assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["max_evs"]
     assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["positive_nature"]
 
-    # pa1.new_info(new_info, "player1")
-
 
 test_make_move()
 test_opp_gamestate()
