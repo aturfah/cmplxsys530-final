@@ -4,6 +4,7 @@ from numpy.random import uniform
 from agent.base_agent import BaseAgent
 from pokemon.damage_stats import DamageStatCalc
 
+from config import POKEMON_DATA
 from config import USAGE_STATS
 
 
@@ -67,7 +68,7 @@ class PokemonAgent(BaseAgent):
                 pass
             else:
                 # Just got attacked, infer data about attacking pokemon
-                self.infer_defending(turn_info)
+                self.infer_defending(info)
 
                 # We're the defender, just learned about a move
                 opp_name = self.opp_gamestate["data"]["active"]["name"]
@@ -143,3 +144,19 @@ class PokemonAgent(BaseAgent):
     def infer_defending(self, turn_info):
         """Infer opponent's investment when we are on defense."""
         print(turn_info)
+
+        dmg_pct = turn_info["pct_damage"]
+        my_poke = POKEMON_DATA[turn_info["def_poke"]]
+        opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
+        
+        params = {}
+        params["atk"] = {}
+        params["def"] = {}
+        if self.gamestate["active"].evs["def"] > 124:
+            params["def"]["max_evs"] = True
+        if self.gamestate["active"].increase_stat == "defense":
+            params["def"]["max_evs"] = True
+        params["hp"] = {}
+
+        print(params)
+
