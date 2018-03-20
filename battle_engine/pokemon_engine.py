@@ -204,7 +204,7 @@ class PokemonEngine():
         results = {}
         results["move"] = move
         results["damage"] = damage
-        results["pct_damage"] = damage/def_poke.max_hp
+        results["pct_damage"] = 100*damage/def_poke.max_hp
         results["attacker"] = attacker
         results["defender"] = defender
         results["atk_poke"] = atk_poke.name
