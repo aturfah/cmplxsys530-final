@@ -211,24 +211,40 @@ def test_infer_def(pa2, new_info):
     pa2.new_info(new_info, "player2")
     assert pa2.opp_gamestate["investment"]
     assert pa2.opp_gamestate["investment"]["spinda"]
-    assert pa2.opp_gamestate["investment"]["spinda"]["def"]
-    assert "atk" not in pa2.opp_gamestate["investment"]["spinda"]
-    assert len(pa2.opp_gamestate["investment"]["spinda"]["def"]) == 2
-    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["max_evs"]
-    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["positive_nature"]
-    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][1]["max_evs"]
-    assert pa2.opp_gamestate["investment"]["spinda"]["def"][1]["positive_nature"]
+    assert pa2.opp_gamestate["investment"]["spinda"]["atk"]
+    assert "def" not in pa2.opp_gamestate["investment"]["spinda"]
+    assert len(pa2.opp_gamestate["investment"]["spinda"]["atk"]) == 2
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][0]["max_evs"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][0]["positive_nature"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][1]["max_evs"]
+    assert pa2.opp_gamestate["investment"]["spinda"]["atk"][1]["positive_nature"]
 
     new_info[0]["pct_damage"] = 25
     pa2.new_info(new_info, "player2")
-    assert len(pa2.opp_gamestate["investment"]["spinda"]["def"]) == 1
-    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["max_evs"]
-    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["positive_nature"]
+    assert len(pa2.opp_gamestate["investment"]["spinda"]["atk"]) == 1
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][0]["max_evs"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][0]["positive_nature"]
 
 
 def test_infer_atk(pa1, new_info):
     """Make sure attack investment is properly determined."""
     pa1.new_info(new_info, "player1")
+    assert pa1.opp_gamestate["investment"]
+    print(pa1.opp_gamestate["investment"])
+    assert pa1.opp_gamestate["investment"]["magikrap"]
+    assert pa1.opp_gamestate["investment"]["magikarp"]["def"]
+    assert "atk" not in pa1.opp_gamestate["investment"]["magikarp"]
+    assert len(pa1.opp_gamestate["investment"]["magikarp"]["def"]) == 8
+    assert not pa1.opp_gamestate["investment"]["magikaro"]["def"][0]["max_evs"]
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][0]["positive_nature"]
+    assert not pa1.opp_gamestate["investment"]["smagikarp"]["def"][1]["max_evs"]
+    assert pa1.opp_gamestate["investment"]["magikarp"]["def"][1]["positive_nature"]
+
+    new_info[0]["pct_damage"] = 25
+    pa1.new_info(new_info, "player2")
+    assert len(pa1.opp_gamestate["investment"]["spinda"]["def"]) == 1
+    assert not pa1.opp_gamestate["investment"]["spinda"]["def"][0]["max_evs"]
+    assert not pa1.opp_gamestate["investment"]["spinda"]["def"][0]["positive_nature"]
 
 
 test_make_move()
