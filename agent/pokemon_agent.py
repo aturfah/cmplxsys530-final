@@ -66,6 +66,9 @@ class PokemonAgent(BaseAgent):
                 # We're the attacker
                 pass
             else:
+                # Just got attacked, infer data about attacking pokemon
+                self.infer_defending(turn_info)
+
                 # We're the defender, just learned about a move
                 opp_name = self.opp_gamestate["data"]["active"]["name"]
 
@@ -137,6 +140,6 @@ class PokemonAgent(BaseAgent):
         """Infer opponent's investment when we are attacking."""
         pass
 
-    def infer_defending(self):
+    def infer_defending(self, turn_info):
         """Infer opponent's investment when we are on defense."""
-        pass
+        print(turn_info)
