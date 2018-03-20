@@ -4,6 +4,8 @@ from pokemon.pokemon import Pokemon
 from agent.pokemon_agent import PokemonAgent
 from battle_engine.pokemon_engine import anonymize_gamestate_helper
 
+from config import MOVE_DATA
+
 
 def test_make_move():
     """Test that make_move is outputting valid info."""
@@ -166,8 +168,45 @@ def test_battle_posn_multiple():
     assert pa1.calc_position() > 1
 
 
+def test_infer_defense_evs():
+    """Make sure defense EVs are properly inferred."""
+
+    print("DEFENSE EV TEST")
+
+    magikarp = Pokemon(name="magikarp", moves=["tackle"])
+    spinda = Pokemon(name="spinda", moves=["tackle"])
+
+    pa1 = PokemonAgent([magikarp])
+    pa2 = PokemonAgent([spinda])
+
+    # Set the gamestate
+    gamestate = {}
+    gamestate["team"] = []
+    gamestate["active"] = magikarp
+    opp_gamestate_dict = {}
+    opp_gamestate_dict["team"] = []
+    opp_gamestate_dict["active"] = spinda
+    opp_gamestate = anonymize_gamestate_helper(opp_gamestate_dict)
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    pa2.update_gamestate(opp_gamestate_dict,
+                         anonymize_gamestate_helper(gamestate))
+
+    # Set the new info
+    new_info = {}
+    new_info["move"] = MOVE_DATA["tackle"]
+    new_info["attacker"] = "player1"
+    new_info["defender"] = "player2"
+    new_info["pct_damage"] = 25.4
+    new_info["damage"] = 46
+    new_info["atk_poke"] = "spinda"
+    new_info["def_poke"] = "magikarp"
+
+    new_info = [new_info]
+    print(new_info)
+
 test_make_move()
 test_opp_gamestate()
 test_switch_faint()
 test_battle_posn_one()
 test_battle_posn_multiple()
+test_infer_defense_evs()
