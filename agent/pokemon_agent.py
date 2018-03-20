@@ -173,7 +173,7 @@ class PokemonAgent(BaseAgent):
 
             results.append(self.dmg_stat_calc.calculate_range(move, my_poke, opp_poke, params))
 
-        return combinations, results
+        return results, combinations
 
     def infer_defending(self, turn_info):
         """Infer opponent's investment when we are on defense."""
@@ -229,10 +229,13 @@ class PokemonAgent(BaseAgent):
             poke_name = turn_info["atk_poke"]
             valid_results = self.valid_results_def(poke_name, stat, dmg_pct, results, combinations)
 
-        if not self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]:
-            self.opp_gamestate["investment"][turn_info["atk_poke"]][stat] = valid_results
+        print(atk_inference)
+        print(valid_results)
+        print(self.opp_gamestate["investment"])
+        if not self.opp_gamestate["investment"][poke_name][stat]:
+            self.opp_gamestate["investment"][poke_name][stat] = valid_results
         else:
-            self.opp_gamestate["investment"][turn_info["atk_poke"]][stat] = [
+            self.opp_gamestate["investment"][poke_name][stat] = [
                 result for result in valid_results
                 if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
             ]
