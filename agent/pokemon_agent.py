@@ -5,7 +5,6 @@ from agent.base_agent import BaseAgent
 from pokemon.damage_stats import DamageStatCalc
 
 from config import POKEMON_DATA
-from config import USAGE_STATS
 
 
 class PokemonAgent(BaseAgent):
