@@ -56,6 +56,9 @@ def test_opp_gamestate():
     turn_info = {}
     turn_info["attacker"] = "player2"
     turn_info["move"] = spinda.moves[0]
+    turn_info["pct_damage"] = 0
+    turn_info["def_poke"] = "spinda"
+    turn_info["atk_poke"] = "spinda"
     turn_info = [turn_info]
 
     # Give new info
@@ -200,9 +203,11 @@ def test_infer_defense_evs():
     new_info["damage"] = 46
     new_info["atk_poke"] = "spinda"
     new_info["def_poke"] = "magikarp"
-
     new_info = [new_info]
-    print(new_info)
+
+    pa2.new_info(new_info, "player2")
+    # pa1.new_info(new_info, "player1")
+
 
 test_make_move()
 test_opp_gamestate()
