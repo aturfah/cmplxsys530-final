@@ -72,6 +72,8 @@ class Pokemon:
             self.moves.append(MOVE_DATA[move])
         self.types = POKEMON_DATA[self.name]["types"]
         self.base_stats = POKEMON_DATA[self.name]["baseStats"]
+        self.evs = evs
+        self.increase_stat = None
         self.set_stats(nature, evs)
 
     def set_stats(self, nature, evs):
@@ -104,6 +106,7 @@ class Pokemon:
             decrease_stat = NATURES[nature]["decrease"]
             mod_inc = floor(self.__getattribute__(increase_stat)*1.1)
             mod_dec = floor(self.__getattribute__(decrease_stat)*0.9)
+            self.increase_stat = increase_stat
             self.__setattr__(increase_stat, mod_inc)
             self.__setattr__(decrease_stat, mod_dec)
 
