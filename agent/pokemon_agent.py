@@ -145,17 +145,27 @@ class PokemonAgent(BaseAgent):
         """Infer opponent's investment when we are on defense."""
         print(turn_info)
 
+        move = turn_info["move"]
         dmg_pct = turn_info["pct_damage"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
         opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
 
         params = {}
         params["atk"] = {}
+
         params["def"] = {}
         if self.gamestate["active"].evs.get("def", 0) > 124:
             params["def"]["max_evs"] = True
         if self.gamestate["active"].increase_stat == "defense":
             params["def"]["max_evs"] = True
-        params["hp"] = {}
 
-        print(params)
+        params["hp"] = {}
+        if self.gamestate["active"].evs.get("hp", 0) > 124:
+            params["hp"]["max_evs"] = True
+
+        # Different cases for attack investment
+
+        # Case 1: No investment
+        dmg_range = self.dmg_stat_calc.calculate_range(move, opp_poke, my_poke, params)
+
+        print(dmg_pct, dmg_range)
