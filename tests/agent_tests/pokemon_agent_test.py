@@ -174,8 +174,6 @@ def test_battle_posn_multiple():
 def test_infer_defense_evs():
     """Make sure defense EVs are properly inferred."""
 
-    print("DEFENSE EV TEST")
-
     magikarp = Pokemon(name="magikarp", moves=["tackle"])
     spinda = Pokemon(name="spinda", moves=["tackle"])
 
@@ -206,6 +204,13 @@ def test_infer_defense_evs():
     new_info = [new_info]
 
     pa2.new_info(new_info, "player2")
+    assert pa2.opp_gamestate["investment"]
+    assert pa2.opp_gamestate["investment"]["spinda"]
+    assert pa2.opp_gamestate["investment"]["spinda"]["def"]
+    assert "atk" not in pa2.opp_gamestate["investment"]["spinda"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["max_evs"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["positive_nature"]
+
     # pa1.new_info(new_info, "player1")
 
 
