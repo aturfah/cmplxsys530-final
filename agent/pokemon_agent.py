@@ -122,10 +122,12 @@ class PokemonAgent(BaseAgent):
         """
         for info in turn_info:
             if info["attacker"] == my_id:
-                self.infer_attacking(info)
+                results, combinations = self.infer_attacking(info)
+
             else:
                 # Just got attacked, infer data about attacking pokemon
-                self.infer_defending(info)
+                results, combinations = self.infer_defending(info)
+                self.update_def_inference(info, results, combinations)
 
                 # We're the defender, just learned about a move
                 opp_name = self.opp_gamestate["data"]["active"]["name"]
@@ -207,10 +209,11 @@ class PokemonAgent(BaseAgent):
             results.append(self.dmg_stat_calc.calculate_range(
                 move, opp_poke, my_poke, params))
 
-        self.update_def_inference(move, turn_info, results, combinations)
+        return results, combinations
 
-    def update_def_inference(self, move, turn_info, results, combinations):
+    def update_def_inference(self, turn_info, results, combinations):
         """Update the defense investment information with the results."""
+        move = turn_info["move"]
         dmg_pct = turn_info["pct_damage"]
         stat = "def"
         if move["category"] != "Physical":
