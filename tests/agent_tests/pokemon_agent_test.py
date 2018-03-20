@@ -171,8 +171,8 @@ def test_battle_posn_multiple():
     assert pa1.calc_position() > 1
 
 
-def test_infer_defense_evs():
-    """Make sure defense investment is properly inferred."""
+def test_infer_investment():
+    """Make sure investment is properly inferred."""
     magikarp = Pokemon(name="magikarp", moves=["tackle"])
     spinda = Pokemon(name="spinda", moves=["tackle"])
 
@@ -202,6 +202,12 @@ def test_infer_defense_evs():
     new_info["def_poke"] = "magikarp"
     new_info = [new_info]
 
+    test_infer_def(pa2, new_info)
+    test_infer_atk(pa1, new_info)
+
+
+def test_infer_def(pa2, new_info):
+    """Make sure defense investment is properly inferred."""
     pa2.new_info(new_info, "player2")
     assert pa2.opp_gamestate["investment"]
     assert pa2.opp_gamestate["investment"]["spinda"]
@@ -219,9 +225,10 @@ def test_infer_defense_evs():
     assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["max_evs"]
     assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["positive_nature"]
 
-def test_infer_attack_evs():
+
+def test_infer_atk(pa1, new_info):
     """Make sure attack investment is properly determined."""
-    pass
+    pa1.new_info(new_info, "player1")
 
 
 test_make_move()
@@ -229,5 +236,4 @@ test_opp_gamestate()
 test_switch_faint()
 test_battle_posn_one()
 test_battle_posn_multiple()
-test_infer_defense_evs()
-test_infer_attack_evs()
+test_infer_investment()
