@@ -56,7 +56,7 @@ def test_opp_gamestate():
     turn_info = {}
     turn_info["attacker"] = "player2"
     turn_info["move"] = spinda.moves[0]
-    turn_info["pct_damage"] = 0
+    turn_info["pct_damage"] = 28
     turn_info["def_poke"] = "spinda"
     turn_info["atk_poke"] = "spinda"
     turn_info = [turn_info]
