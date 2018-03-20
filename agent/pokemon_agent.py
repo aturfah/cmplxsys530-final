@@ -138,7 +138,7 @@ class PokemonAgent(BaseAgent):
                     self.opp_gamestate["moves"][opp_name].append(info["move"])
 
     def infer_attacking(self, turn_info):
-        """Infer opponent's investment when we are attacking."""
+        """Infer opponent's defense investment when we are attacking."""
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
         opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
@@ -171,7 +171,7 @@ class PokemonAgent(BaseAgent):
             params["def"]["positive_nature"] = comb[1]
             params["hp"]["max_evs"] = comb[2]
 
-            results.append(self.dmg_stat_calc.calculate_range(move, my_poke, opp_poke, params))
+            results.append(self.dmg_stat_calc.calculate_range(move, opp_poke, my_poke, params))
 
         return results, combinations
 
@@ -222,23 +222,29 @@ class PokemonAgent(BaseAgent):
                 stat = "spa"
             poke_name = turn_info["def_poke"]
             valid_results = self.valid_results_atk(poke_name, stat, dmg_pct, results, combinations)
+
+            if not self.opp_gamestate["investment"][poke_name][stat]:
+                self.opp_gamestate["investment"][poke_name][stat] = valid_results
+            else:
+                self.opp_gamestate["investment"][poke_name][stat] = [
+                    result for result in valid_results
+                    if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
+                ]
         else:
-            stat = "def"
+            print("HERE")
+            stat = "atk"
             if move["category"] != "Physical":
-                stat = "spd"
+                stat = "spa"
             poke_name = turn_info["atk_poke"]
             valid_results = self.valid_results_def(poke_name, stat, dmg_pct, results, combinations)
 
-        print(atk_inference)
-        print(valid_results)
-        print(self.opp_gamestate["investment"])
-        if not self.opp_gamestate["investment"][poke_name][stat]:
-            self.opp_gamestate["investment"][poke_name][stat] = valid_results
-        else:
-            self.opp_gamestate["investment"][poke_name][stat] = [
-                result for result in valid_results
-                if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
-            ]
+            if not self.opp_gamestate["investment"][poke_name][stat]:
+                self.opp_gamestate["investment"][poke_name][stat] = valid_results
+            else:
+                self.opp_gamestate["investment"][poke_name][stat] = [
+                    result for result in valid_results
+                    if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
+                ]
 
     def valid_results_def(self, poke_name, stat, dmg_pct, results, combinations):
         """Generate valid results for defense"""
