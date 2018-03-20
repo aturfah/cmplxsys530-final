@@ -197,7 +197,7 @@ def test_infer_defense_evs():
     new_info["move"] = MOVE_DATA["tackle"]
     new_info["attacker"] = "player1"
     new_info["defender"] = "player2"
-    new_info["pct_damage"] = 25.4
+    new_info["pct_damage"] = 27
     new_info["damage"] = 46
     new_info["atk_poke"] = "spinda"
     new_info["def_poke"] = "magikarp"
@@ -208,6 +208,15 @@ def test_infer_defense_evs():
     assert pa2.opp_gamestate["investment"]["spinda"]
     assert pa2.opp_gamestate["investment"]["spinda"]["def"]
     assert "atk" not in pa2.opp_gamestate["investment"]["spinda"]
+    assert len(pa2.opp_gamestate["investment"]["spinda"]["def"]) == 2
+    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["max_evs"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["positive_nature"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["def"][1]["max_evs"]
+    assert pa2.opp_gamestate["investment"]["spinda"]["def"][1]["positive_nature"]
+
+    new_info[0]["pct_damage"] = 25
+    pa2.new_info(new_info, "player2")
+    assert len(pa2.opp_gamestate["investment"]["spinda"]["def"]) == 1
     assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["max_evs"]
     assert not pa2.opp_gamestate["investment"]["spinda"]["def"][0]["positive_nature"]
 
