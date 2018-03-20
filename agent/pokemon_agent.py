@@ -157,15 +157,25 @@ class PokemonAgent(BaseAgent):
         if self.gamestate["active"].evs.get("def", 0) > 124:
             params["def"]["max_evs"] = True
         if self.gamestate["active"].increase_stat == "defense":
-            params["def"]["max_evs"] = True
+            params["def"]["positive_nature"] = True
 
         params["hp"] = {}
         if self.gamestate["active"].evs.get("hp", 0) > 124:
             params["hp"]["max_evs"] = True
 
-        # Different cases for attack investment
+        combinations = []
+        combinations.append((False, False))
+        combinations.append((True, False))
+        combinations.append((False, True))
+        combinations.append((True, True))
 
-        # Case 1: No investment
-        dmg_range = self.dmg_stat_calc.calculate_range(move, opp_poke, my_poke, params)
+        ranges = []
+        for comb_ind in range(4):
+            comb = combinations[comb_ind]
+            params["atk"]["max_evs"] = comb[0]
+            params["atk"]["positive_nature"] = comb[1]
 
-        print(dmg_pct, dmg_range)
+            ranges.append(self.dmg_stat_calc.calculate_range(
+                move, opp_poke, my_poke, params))
+
+        print(dmg_pct, ranges)
