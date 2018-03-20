@@ -175,10 +175,10 @@ class PokemonAgent(BaseAgent):
             results.append(self.dmg_stat_calc.calculate_range(
                 move, opp_poke, my_poke, params))
 
-        self.update_inference(move, turn_info, results, combinations)
+        self.update_def_inference(move, turn_info, results, combinations)
 
-    def update_inference(self, move, turn_info, results, combinations):
-        """Update the investment information with the results."""
+    def update_def_inference(self, move, turn_info, results, combinations):
+        """Update the defense investment information with the results."""
         dmg_pct = turn_info["pct_damage"]
         stat = "def"
         if move["category"] != "Physical":
