@@ -123,7 +123,7 @@ class PokemonAgent(BaseAgent):
         for info in turn_info:
             if info["attacker"] == my_id:
                 results, combinations = self.infer_attacking(info)
-
+                self.update_inference(True, info, results, combinations)
             else:
                 # Just got attacked, infer data about attacking pokemon
                 results, combinations = self.infer_defending(info)
@@ -224,7 +224,7 @@ class PokemonAgent(BaseAgent):
             stat = "def"
             if move["category"] != "Physical":
                 stat = "spd"
-            
+
         num_results = len(results)
         valid_results = []
         for result_ind in range(num_results):
