@@ -122,8 +122,7 @@ class PokemonAgent(BaseAgent):
         """
         for info in turn_info:
             if info["attacker"] == my_id:
-                # We're the attacker
-                pass
+                self.infer_attacking(info)
             else:
                 # Just got attacked, infer data about attacking pokemon
                 self.infer_defending(info)
@@ -136,9 +135,43 @@ class PokemonAgent(BaseAgent):
                 if info["move"] not in self.opp_gamestate["moves"][opp_name]:
                     self.opp_gamestate["moves"][opp_name].append(info["move"])
 
-    def infer_attacking(self):
+    def infer_attacking(self, turn_info):
         """Infer opponent's investment when we are attacking."""
-        pass
+        move = turn_info["move"]
+        my_poke = POKEMON_DATA[turn_info["def_poke"]]
+        opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
+
+        params = {}
+        params["atk"] = {}
+        if self.gamestate["active"].evs.get("atk", 0) > 124:
+            params["atk"]["max_evs"] = True
+        if self.gamestate["active"].increase_stat == "attack":
+            params["atk"]["positive_nature"] = True
+
+        params["def"] = {}
+        params["hp"] = {}
+
+        combinations = []
+        combinations.append((False, False, False))
+        combinations.append((False, False, True))
+        combinations.append((True, False, False))
+        combinations.append((True, False, True))
+        combinations.append((False, True, False))
+        combinations.append((False, True, True))
+        combinations.append((True, True, False))
+        combinations.append((True, True, True))
+        num_combinations = len(combinations)
+
+        results = []
+        for comb_ind in range(num_combinations):
+            comb = combinations[comb_ind]
+            params["def"]["max_evs"] = comb[0]
+            params["def"]["positive_nature"] = comb[1]
+            params["hp"]["max_evs"] = comb[2]
+
+            results.append(self.dmg_stat_calc.calculate_range(move, my_poke, opp_poke, params))
+
+        return combinations, results
 
     def infer_defending(self, turn_info):
         """Infer opponent's investment when we are on defense."""
