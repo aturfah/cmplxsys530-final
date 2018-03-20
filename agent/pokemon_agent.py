@@ -48,36 +48,6 @@ class PokemonAgent(BaseAgent):
         self.gamestate = my_gamestate
         self.opp_gamestate["data"] = opp_gamestate
 
-    def new_info(self, turn_info, my_id):
-        """
-        Get new info for opponent's game_state.
-
-        Assumes Species Clause is in effect.
-
-        :param turn_info: list
-            What happened on that turn, who took what damage.
-            Each element should be a dict.
-        :param my_id: str
-            Name corresponding to the "attacker" or "defender"
-            values of this dict. To know which values the method
-            should be looking at in turn_info.
-        """
-        for info in turn_info:
-            if info["attacker"] == my_id:
-                # We're the attacker
-                pass
-            else:
-                # Just got attacked, infer data about attacking pokemon
-                self.infer_defending(info)
-
-                # We're the defender, just learned about a move
-                opp_name = self.opp_gamestate["data"]["active"]["name"]
-
-                if opp_name not in self.opp_gamestate["moves"]:
-                    self.opp_gamestate["moves"][opp_name] = []
-                if info["move"] not in self.opp_gamestate["moves"][opp_name]:
-                    self.opp_gamestate["moves"][opp_name].append(info["move"])
-
     def make_move(self):
         """
         Make a move.
@@ -137,6 +107,36 @@ class PokemonAgent(BaseAgent):
 
         return opp_posn
 
+    def new_info(self, turn_info, my_id):
+        """
+        Get new info for opponent's game_state.
+
+        Assumes Species Clause is in effect.
+
+        :param turn_info: list
+            What happened on that turn, who took what damage.
+            Each element should be a dict.
+        :param my_id: str
+            Name corresponding to the "attacker" or "defender"
+            values of this dict. To know which values the method
+            should be looking at in turn_info.
+        """
+        for info in turn_info:
+            if info["attacker"] == my_id:
+                # We're the attacker
+                pass
+            else:
+                # Just got attacked, infer data about attacking pokemon
+                self.infer_defending(info)
+
+                # We're the defender, just learned about a move
+                opp_name = self.opp_gamestate["data"]["active"]["name"]
+
+                if opp_name not in self.opp_gamestate["moves"]:
+                    self.opp_gamestate["moves"][opp_name] = []
+                if info["move"] not in self.opp_gamestate["moves"][opp_name]:
+                    self.opp_gamestate["moves"][opp_name].append(info["move"])
+
     def infer_attacking(self):
         """Infer opponent's investment when we are attacking."""
         pass
@@ -148,15 +148,14 @@ class PokemonAgent(BaseAgent):
         dmg_pct = turn_info["pct_damage"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
         opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
-        
+
         params = {}
         params["atk"] = {}
         params["def"] = {}
-        if self.gamestate["active"].evs["def"] > 124:
+        if self.gamestate["active"].evs.get("def", 0) > 124:
             params["def"]["max_evs"] = True
         if self.gamestate["active"].increase_stat == "defense":
             params["def"]["max_evs"] = True
         params["hp"] = {}
 
         print(params)
-
