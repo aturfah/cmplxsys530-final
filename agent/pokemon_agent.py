@@ -220,26 +220,14 @@ class PokemonAgent(BaseAgent):
             stat = "atk"
             if move["category"] != "Physical":
                 stat = "spa"
+            poke_name = turn_info["def_poke"]
         else:
             stat = "def"
             if move["category"] != "Physical":
                 stat = "spd"
+            poke_name = turn_info["atk_poke"]
 
-        num_results = len(results)
-        valid_results = []
-        for result_ind in range(num_results):
-            result = results[result_ind]
-            if dmg_pct >= result[0] and dmg_pct <= result[1]:
-                if turn_info["atk_poke"] not in self.opp_gamestate["investment"]:
-                    self.opp_gamestate["investment"][turn_info["atk_poke"]] = {}
-
-                if stat not in self.opp_gamestate["investment"][turn_info["atk_poke"]]:
-                    self.opp_gamestate["investment"][turn_info["atk_poke"]][stat] = []
-
-                result_dict = {}
-                result_dict["max_evs"] = combinations[result_ind][0]
-                result_dict["positive_nature"] = combinations[result_ind][1]
-                valid_results.append(result_dict)
+        valid_results = self.valid_results_def(poke_name, stat, dmg_pct, results, combinations)
 
         if not self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]:
             self.opp_gamestate["investment"][turn_info["atk_poke"]][stat] = valid_results
@@ -248,3 +236,24 @@ class PokemonAgent(BaseAgent):
                 result for result in valid_results
                 if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
             ]
+
+    def valid_results_def(self, poke_name, stat, dmg_pct, results, combinations):
+        """Generate valid results for defense"""
+        valid_results = []
+        num_results = len(results)
+
+        for result_ind in range(num_results):
+            result = results[result_ind]
+            if dmg_pct >= result[0] and dmg_pct <= result[1]:
+                if poke_name not in self.opp_gamestate["investment"]:
+                    self.opp_gamestate["investment"][poke_name] = {}
+
+                if stat not in self.opp_gamestate["investment"][poke_name]:
+                    self.opp_gamestate["investment"][poke_name][stat] = []
+
+                result_dict = {}
+                result_dict["max_evs"] = combinations[result_ind][0]
+                result_dict["positive_nature"] = combinations[result_ind][1]
+                valid_results.append(result_dict)
+
+        return valid_results
