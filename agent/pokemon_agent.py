@@ -138,7 +138,7 @@ class PokemonAgent(BaseAgent):
                     self.opp_gamestate["moves"][opp_name].append(info["move"])
 
     def results_attacking(self, turn_info):
-        """Infer opponent's defense investment when we are attacking."""
+        """Generate possible results for when we are attacking."""
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
         opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
@@ -176,7 +176,7 @@ class PokemonAgent(BaseAgent):
         return results, combinations
 
     def results_defending(self, turn_info):
-        """Infer opponent's investment when we are on defense."""
+        """Generate possible results for when we are defending."""
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
         opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
@@ -212,7 +212,7 @@ class PokemonAgent(BaseAgent):
         return results, combinations
 
     def valid_results_atk(self, poke_name, stat, dmg_pct, results, combinations):
-        """Generate valid results for attacking."""
+        """Decide which of potential the potential results are valid given damage dealt."""
         valid_results = []
         num_results = len(results)
 
@@ -238,7 +238,7 @@ class PokemonAgent(BaseAgent):
         return valid_results
 
     def valid_results_def(self, poke_name, stat, dmg_pct, results, combinations):
-        """Generate valid results for defense."""
+        """Decide which of potential the potential results are valid given damage dealt."""
         valid_results = []
         num_results = len(results)
 
@@ -259,7 +259,7 @@ class PokemonAgent(BaseAgent):
         return valid_results
 
     def update_atk_inference(self, turn_info, results, combinations):
-        """Update the inference for when we are attacking."""
+        """Update the opponent's defense investment information."""
         move = turn_info["move"]
         dmg_pct = turn_info["pct_damage"]
 
@@ -288,7 +288,7 @@ class PokemonAgent(BaseAgent):
             ]
 
     def update_def_inference(self, turn_info, results, combinations):
-        """Update the defense investment information with the results."""
+        """Update the opponent's attack investment information."""
         move = turn_info["move"]
         dmg_pct = turn_info["pct_damage"]
 
