@@ -216,16 +216,17 @@ class PokemonAgent(BaseAgent):
         valid_results = []
         num_results = len(results)
 
+        # Initialize the data for this pokemon if not already there
+        if poke_name not in self.opp_gamestate["investment"]:
+            self.opp_gamestate["investment"][poke_name] = {}
+
+        if stat not in self.opp_gamestate["investment"][poke_name]:
+            self.opp_gamestate["investment"][poke_name][stat] = []
+            self.opp_gamestate["investment"][poke_name]["hp"] = []
+
         for result_ind in range(num_results):
             result = results[result_ind]
             if dmg_pct >= result[0] and dmg_pct <= result[1]:
-                if poke_name not in self.opp_gamestate["investment"]:
-                    self.opp_gamestate["investment"][poke_name] = {}
-
-                if "def" not in self.opp_gamestate["investment"][poke_name]:
-                    self.opp_gamestate["investment"][poke_name][stat] = []
-                    self.opp_gamestate["investment"][poke_name]["hp"] = []
-
                 result_dict = {}
                 result_dict[stat] = {}
                 result_dict["hp"] = {}
