@@ -122,11 +122,11 @@ class PokemonAgent(BaseAgent):
         """
         for info in turn_info:
             if info["attacker"] == my_id:
-                results, combinations = self.infer_attacking(info)
+                results, combinations = self.results_attacking(info)
                 self.update_atk_inference(info, results, combinations)
             else:
                 # Just got attacked, infer data about attacking pokemon
-                results, combinations = self.infer_defending(info)
+                results, combinations = self.results_defending(info)
                 self.update_def_inference(info, results, combinations)
 
                 # We're the defender, just learned about a move
@@ -137,7 +137,7 @@ class PokemonAgent(BaseAgent):
                 if info["move"] not in self.opp_gamestate["moves"][opp_name]:
                     self.opp_gamestate["moves"][opp_name].append(info["move"])
 
-    def infer_attacking(self, turn_info):
+    def results_attacking(self, turn_info):
         """Infer opponent's defense investment when we are attacking."""
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
@@ -175,7 +175,7 @@ class PokemonAgent(BaseAgent):
 
         return results, combinations
 
-    def infer_defending(self, turn_info):
+    def results_defending(self, turn_info):
         """Infer opponent's investment when we are on defense."""
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
