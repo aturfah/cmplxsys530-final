@@ -241,12 +241,16 @@ def test_infer_attacking(pa1, new_info):
     assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][1]["max_evs"]
     assert pa1.opp_gamestate["investment"]["magikarp"]["def"][1]["positive_nature"]
 
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["hp"][0]["max_evs"]
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["hp"][1]["max_evs"]
+
     new_info[0]["pct_damage"] = 29
     pa1.new_info(new_info, "player1")
 
     assert len(pa1.opp_gamestate["investment"]["magikarp"]["def"]) == 1
     assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][0]["max_evs"]
     assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][0]["positive_nature"]
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["hp"][0]["max_evs"]
 
 
 test_make_move()
