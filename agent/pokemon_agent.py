@@ -211,27 +211,6 @@ class PokemonAgent(BaseAgent):
 
         return results, combinations
 
-    def valid_results_def(self, poke_name, dmg_pct, results, combinations):
-        """Generate valid results for defense"""
-        valid_results = []
-        num_results = len(results)
-
-        for result_ind in range(num_results):
-            result = results[result_ind]
-            if dmg_pct >= result[0] and dmg_pct <= result[1]:
-                if poke_name not in self.opp_gamestate["investment"]:
-                    self.opp_gamestate["investment"][poke_name] = {}
-
-                if "atk" not in self.opp_gamestate["investment"][poke_name]:
-                    self.opp_gamestate["investment"][poke_name]["atk"] = []
-
-                result_dict = {}
-                result_dict["max_evs"] = combinations[result_ind][0]
-                result_dict["positive_nature"] = combinations[result_ind][1]
-                valid_results.append(result_dict)
-
-        return valid_results
-
     def valid_results_atk(self, poke_name, dmg_pct, results, combinations):
         """Generate valid results for attacking."""
         valid_results = []
@@ -253,6 +232,27 @@ class PokemonAgent(BaseAgent):
                 result_dict["def"]["max_evs"] = combinations[result_ind][0]
                 result_dict["def"]["positive_nature"] = combinations[result_ind][1]
                 result_dict["hp"]["max_evs"] = combinations[result_ind][2]
+                valid_results.append(result_dict)
+
+        return valid_results
+
+    def valid_results_def(self, poke_name, dmg_pct, results, combinations):
+        """Generate valid results for defense."""
+        valid_results = []
+        num_results = len(results)
+
+        for result_ind in range(num_results):
+            result = results[result_ind]
+            if dmg_pct >= result[0] and dmg_pct <= result[1]:
+                if poke_name not in self.opp_gamestate["investment"]:
+                    self.opp_gamestate["investment"][poke_name] = {}
+
+                if "atk" not in self.opp_gamestate["investment"][poke_name]:
+                    self.opp_gamestate["investment"][poke_name]["atk"] = []
+
+                result_dict = {}
+                result_dict["max_evs"] = combinations[result_ind][0]
+                result_dict["positive_nature"] = combinations[result_ind][1]
                 valid_results.append(result_dict)
 
         return valid_results
