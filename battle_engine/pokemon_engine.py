@@ -68,6 +68,16 @@ class PokemonEngine():
             player1.new_info(turn_info, "player1")
             player2.new_info(turn_info, "player2")
 
+            # Figure out who faints at the end of this turn.
+            if self.game_state["player1"]["active"].current_hp < 0:
+                print("{} fainted...".format(
+                    self.game_state["player1"]["active"].name))
+                self.game_state["player1"]["active"] = None
+            if self.game_state["player2"]["active"].current_hp < 0:
+                print("{} fainted...".format(
+                    self.game_state["player2"]["active"].name))
+                self.game_state["player2"]["active"] = None
+
             # Update their gamestates
             player1.update_gamestate(
                 self.game_state["player1"], self.anonymize_gamestate("player2"))
@@ -143,16 +153,6 @@ class PokemonEngine():
         else:
             self.switch_pokemon("player1", move1[1])
             self.switch_pokemon("player2", move2[1])
-
-        # Figure out who faints at the end of this turn.
-        if self.game_state["player1"]["active"].current_hp < 0:
-            print("{} fainted...".format(
-                self.game_state["player1"]["active"].name))
-            self.game_state["player1"]["active"] = None
-        if self.game_state["player2"]["active"].current_hp < 0:
-            print("{} fainted...".format(
-                self.game_state["player2"]["active"].name))
-            self.game_state["player2"]["active"] = None
 
         return turn_info
 
