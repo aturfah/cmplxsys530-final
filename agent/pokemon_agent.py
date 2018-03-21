@@ -211,7 +211,6 @@ class PokemonAgent(BaseAgent):
 
         return results, combinations
 
-    # pylint: disable-msg=too-many-arguments
     def valid_results_atk(self, poke_name, stat, dmg_pct, results, combinations):
         """Generate valid results for attacking."""
         valid_results = []
@@ -238,7 +237,6 @@ class PokemonAgent(BaseAgent):
 
         return valid_results
 
-    # pylint: disable-msg=too-many-arguments
     def valid_results_def(self, poke_name, stat, dmg_pct, results, combinations):
         """Generate valid results for defense."""
         valid_results = []
