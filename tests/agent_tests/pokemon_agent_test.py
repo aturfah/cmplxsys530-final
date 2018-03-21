@@ -202,12 +202,12 @@ def test_infer_investment():
     new_info["def_poke"] = "magikarp"
     new_info = [new_info]
 
-    test_infer_def(pa2, new_info)
-    test_infer_atk(pa1, new_info)
+    test_infer_defending(pa2, new_info)
+    test_infer_attacking(pa1, new_info)
 
 
-def test_infer_def(pa2, new_info):
-    """Make sure defense investment is properly inferred."""
+def test_infer_defending(pa2, new_info):
+    """Make sure opponent attack investment is properly inferred."""
     pa2.new_info(new_info, "player2")
     assert pa2.opp_gamestate["investment"]
     assert pa2.opp_gamestate["investment"]["spinda"]
@@ -226,8 +226,8 @@ def test_infer_def(pa2, new_info):
     assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][0]["positive_nature"]
 
 
-def test_infer_atk(pa1, new_info):
-    """Make sure attack investment is properly determined."""
+def test_infer_attacking(pa1, new_info):
+    """Make sure opponent defense investment is properly determined."""
     pa1.new_info(new_info, "player1")
 
     assert pa1.opp_gamestate["investment"]
