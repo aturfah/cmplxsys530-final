@@ -40,12 +40,12 @@ class PokemonSimulation(BaseSimulation):
 
 def default_team_exploud():
     """Generate an Exploud for these players."""
-    return Pokemon(name="exploud", moves=["tackle"])
+    return [Pokemon(name="exploud", moves=["tackle"])]
 
 def default_team_spinda():
     """Generate a Spinda for these players."""
-    return Pokemon(name="spinda", moves=["tackle"])
+    return [Pokemon(name="spinda", moves=["tackle"])]
 
 def default_team_floatzel():
     """Generate a FLoatzel for the player."""
-    return Pokemon(name="floatzel", moves=["watergun"])
+    return [Pokemon(name="floatzel", moves=["watergun"])]
