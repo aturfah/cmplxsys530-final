@@ -8,6 +8,7 @@ from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
 from simulation.pkmn_simulation import PokemonSimulation
 
+from tests.engine_tests.pokemon_engine_test import suppress_print
 
 @click.command()
 @click.option("-ng", "--num_games", default=5000)
@@ -108,6 +109,7 @@ def run(**kwargs):
                                      ladder_choice=ladder_choice,
                                      data_delay=data_delay)
         pkmn_sim.add_agents()
+        suppress_print() # TODO: Delete me later.
         pkmn_sim.run()
     else:
         raise RuntimeError("Invalid Game Choice")
