@@ -7,6 +7,7 @@ from pokemon_helpers.pokemon import Pokemon
 from log_manager.log_writer import LogWriter
 from stats.calc import calculate_avg_elo
 
+from numpy.random import uniform
 
 class PokemonSimulation(BaseSimulation):
     """Class for Pokemon Simulation."""
@@ -25,7 +26,10 @@ class PokemonSimulation(BaseSimulation):
         for ind in range(self.num_players):
             if ind % 3 == 0:
                 pkmn_agent = PokemonAgent(default_team_exploud())
-                pkmn_agent.type = "exploud"
+                if uniform() < 0.5:
+                    pkmn_agent.type = "exploud1"
+                else:
+                    pkmn_agent.type = "exploud2"
             elif ind % 3 == 1:
                 pkmn_agent = PokemonAgent(default_team_floatzel())
                 pkmn_agent.type = "floatzel"
@@ -48,7 +52,8 @@ class PokemonSimulation(BaseSimulation):
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""
         header = []
-        header.append("exploud")
+        header.append("exploud1")
+        header.append("exploud2")
         header.append("spinda")
         header.append("floatzel")
 
