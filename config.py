@@ -1,5 +1,8 @@
 """Config file with directory info."""
 import os
+from os import listdir
+from os.path import isfile, join
+
 import json
 
 # Log file directory
@@ -123,3 +126,13 @@ NATURES = {
         "decrease": None
     }
 }
+
+USAGE_STATS = {}
+for filename in [name for name in listdir("data/usage/") if isfile(join("data/usage", name))]:
+    with open(join("data/usage/", filename)) as usage_file:
+        tier = None
+        if "pu" in filename:
+            tier = "pu"
+        if "1630" not in filename:
+            continue
+        USAGE_STATS["pu"] = json.load(usage_file)["data"]

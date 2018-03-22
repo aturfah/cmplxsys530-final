@@ -1,16 +1,16 @@
 """Unit tests for pokemon engine."""
 
 from agent.pokemon_agent import PokemonAgent
-from pokemon.pokemon import Pokemon
+from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
 
 
 def suppress_print():
-    """Suppress print from PokemonEngine."""
+    """Suppress print from pokemon_helpersEngine."""
     import os
     import sys
-    f = open(os.devnull, 'w')
-    sys.stdout = f
+    pew = open(os.devnull, 'w')
+    sys.stdout = pew
 
 
 def test_run():

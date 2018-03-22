@@ -68,6 +68,16 @@ class PokemonEngine():
             player1.new_info(turn_info, "player1")
             player2.new_info(turn_info, "player2")
 
+            # Figure out who faints at the end of this turn.
+            if self.game_state["player1"]["active"].current_hp < 0:
+                print("{} fainted...".format(
+                    self.game_state["player1"]["active"].name))
+                self.game_state["player1"]["active"] = None
+            if self.game_state["player2"]["active"].current_hp < 0:
+                print("{} fainted...".format(
+                    self.game_state["player2"]["active"].name))
+                self.game_state["player2"]["active"] = None
+
             # Update their gamestates
             player1.update_gamestate(
                 self.game_state["player1"], self.anonymize_gamestate("player2"))
@@ -144,16 +154,6 @@ class PokemonEngine():
             self.switch_pokemon("player1", move1[1])
             self.switch_pokemon("player2", move2[1])
 
-        # Figure out who faints at the end of this turn.
-        if self.game_state["player1"]["active"].current_hp < 0:
-            print("{} fainted...".format(
-                self.game_state["player1"]["active"].name))
-            self.game_state["player1"]["active"] = None
-        if self.game_state["player2"]["active"].current_hp < 0:
-            print("{} fainted...".format(
-                self.game_state["player2"]["active"].name))
-            self.game_state["player2"]["active"] = None
-
         return turn_info
 
     def switch_pokemon(self, player, position):
@@ -204,9 +204,11 @@ class PokemonEngine():
         results = {}
         results["move"] = move
         results["damage"] = damage
-        results["pct_damage"] = damage/def_poke.max_hp
+        results["pct_damage"] = 100*damage/def_poke.max_hp
         results["attacker"] = attacker
         results["defender"] = defender
+        results["atk_poke"] = atk_poke.name
+        results["def_poke"] = def_poke.name
         return [results]
 
     def turn_both_attack(self, move1, move2):

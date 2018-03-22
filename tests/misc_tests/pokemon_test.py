@@ -1,6 +1,6 @@
 """Test for pokemon module."""
 
-from pokemon.pokemon import Pokemon
+from pokemon_helpers.pokemon import Pokemon
 
 
 def test_init():

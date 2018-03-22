@@ -1,8 +1,10 @@
 """Unit tests for PokemonAgent class."""
 
-from pokemon.pokemon import Pokemon
+from pokemon_helpers.pokemon import Pokemon
 from agent.pokemon_agent import PokemonAgent
 from battle_engine.pokemon_engine import anonymize_gamestate_helper
+
+from config import MOVE_DATA
 
 
 def test_make_move():
@@ -54,6 +56,9 @@ def test_opp_gamestate():
     turn_info = {}
     turn_info["attacker"] = "player2"
     turn_info["move"] = spinda.moves[0]
+    turn_info["pct_damage"] = 28
+    turn_info["def_poke"] = "spinda"
+    turn_info["atk_poke"] = "spinda"
     turn_info = [turn_info]
 
     # Give new info
@@ -166,8 +171,91 @@ def test_battle_posn_multiple():
     assert pa1.calc_position() > 1
 
 
+def test_infer_investment():
+    """Make sure investment is properly inferred."""
+    magikarp = Pokemon(name="magikarp", moves=["tackle"])
+    spinda = Pokemon(name="spinda", moves=["tackle"])
+
+    pa1 = PokemonAgent([magikarp])
+    pa2 = PokemonAgent([spinda])
+
+    # Set the gamestate
+    gamestate = {}
+    gamestate["team"] = []
+    gamestate["active"] = magikarp
+    opp_gamestate_dict = {}
+    opp_gamestate_dict["team"] = []
+    opp_gamestate_dict["active"] = spinda
+    opp_gamestate = anonymize_gamestate_helper(opp_gamestate_dict)
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    pa2.update_gamestate(opp_gamestate_dict,
+                         anonymize_gamestate_helper(gamestate))
+
+    # Set the new info
+    new_info = {}
+    new_info["move"] = MOVE_DATA["tackle"]
+    new_info["attacker"] = "player1"
+    new_info["defender"] = "player2"
+    new_info["pct_damage"] = 27
+    new_info["damage"] = 46
+    new_info["atk_poke"] = "spinda"
+    new_info["def_poke"] = "magikarp"
+    new_info = [new_info]
+
+    test_infer_defending(pa2, new_info)
+    test_infer_attacking(pa1, new_info)
+
+
+def test_infer_defending(pa2, new_info):
+    """Make sure opponent attack investment is properly inferred."""
+    pa2.new_info(new_info, "player2")
+    assert pa2.opp_gamestate["investment"]
+    assert pa2.opp_gamestate["investment"]["spinda"]
+    assert pa2.opp_gamestate["investment"]["spinda"]["atk"]
+    assert "def" not in pa2.opp_gamestate["investment"]["spinda"]
+    assert len(pa2.opp_gamestate["investment"]["spinda"]["atk"]) == 2
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][0]["max_evs"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][0]["positive_nature"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][1]["max_evs"]
+    assert pa2.opp_gamestate["investment"]["spinda"]["atk"][1]["positive_nature"]
+
+    new_info[0]["pct_damage"] = 25
+    pa2.new_info(new_info, "player2")
+    assert len(pa2.opp_gamestate["investment"]["spinda"]["atk"]) == 1
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][0]["max_evs"]
+    assert not pa2.opp_gamestate["investment"]["spinda"]["atk"][0]["positive_nature"]
+
+
+def test_infer_attacking(pa1, new_info):
+    """Make sure opponent defense investment is properly determined."""
+    pa1.new_info(new_info, "player1")
+
+    assert pa1.opp_gamestate["investment"]
+    assert pa1.opp_gamestate["investment"]["magikarp"]
+    assert pa1.opp_gamestate["investment"]["magikarp"]["def"]
+    assert "atk" not in pa1.opp_gamestate["investment"]["magikarp"]
+    assert len(pa1.opp_gamestate["investment"]["magikarp"]["def"]) == 2
+    assert len(pa1.opp_gamestate["investment"]["magikarp"]["hp"]) == 2
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][0]["max_evs"]
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][0]["positive_nature"]
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][1]["max_evs"]
+    assert pa1.opp_gamestate["investment"]["magikarp"]["def"][1]["positive_nature"]
+
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["hp"][0]["max_evs"]
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["hp"][1]["max_evs"]
+
+    new_info[0]["pct_damage"] = 29
+    pa1.new_info(new_info, "player1")
+
+    assert len(pa1.opp_gamestate["investment"]["magikarp"]["def"]) == 1
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][0]["max_evs"]
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][0]["positive_nature"]
+    assert not pa1.opp_gamestate["investment"]["magikarp"]["hp"][0]["max_evs"]
+
+
 test_make_move()
 test_opp_gamestate()
 test_switch_faint()
 test_battle_posn_one()
 test_battle_posn_multiple()
+test_infer_investment()

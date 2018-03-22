@@ -35,8 +35,8 @@
 			"prevo": "loudred",
 			"evoLevel": 40,
 			"eggGroups": ["Monster", "Field"]
-		},
-		"magikarp": {
+	},
+	"magikarp": {
 			"num": 129,
 			"species": "Magikarp",
 			"types": ["Water"],
