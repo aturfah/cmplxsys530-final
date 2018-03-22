@@ -2,7 +2,7 @@
 
 from numpy.random import uniform
 from agent.base_agent import BaseAgent
-from pokemon.damage_stats import DamageStatCalc
+from pokemon_helpers.damage_stats import DamageStatCalc
 
 from config import POKEMON_DATA
 

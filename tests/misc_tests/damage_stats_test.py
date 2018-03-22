@@ -1,7 +1,7 @@
 """Unit tests for damage_stats calculator."""
 
-from pokemon.pokemon import Pokemon
-from pokemon.damage_stats import DamageStatCalc
+from pokemon_helpers.pokemon import Pokemon
+from pokemon_helpers.damage_stats import DamageStatCalc
 
 from config import MOVE_DATA
 from config import POKEMON_DATA
