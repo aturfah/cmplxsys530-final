@@ -63,7 +63,7 @@ class PokemonSimulation(BaseSimulation):
 
 def default_team_exploud():
     """Generate an Exploud for these players."""
-    return [Pokemon(name="exploud", moves=["tackle"])]
+    return [Pokemon(name="exploud", moves=["tackle", "shadowball"])]
 
 
 def default_team_spinda():
