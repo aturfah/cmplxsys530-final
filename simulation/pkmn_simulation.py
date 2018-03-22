@@ -7,6 +7,7 @@ from pokemon_helpers.pokemon import Pokemon
 from log_manager.log_writer import LogWriter
 from stats.calc import calculate_avg_elo
 
+
 class PokemonSimulation(BaseSimulation):
     """Class for Pokemon Simulation."""
 
@@ -58,9 +59,11 @@ def default_team_exploud():
     """Generate an Exploud for these players."""
     return [Pokemon(name="exploud", moves=["tackle"])]
 
+
 def default_team_spinda():
     """Generate a Spinda for these players."""
     return [Pokemon(name="spinda", moves=["tackle"])]
+
 
 def default_team_floatzel():
     """Generate a FLoatzel for the player."""
