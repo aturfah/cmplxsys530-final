@@ -54,7 +54,7 @@ class PokemonSimulation(BaseSimulation):
         header.append("spinda")
         header.append("floatzel")
 
-        self.type_log_writer = LogWriter(header, prefix="RPSTypes")
+        self.type_log_writer = LogWriter(header, prefix="PKMNTypes")
 
 
 def default_team_exploud():
