@@ -34,7 +34,9 @@ class PokemonSimulation(BaseSimulation):
 
     def run(self):
         """Run this simulation."""
-        print("RUNNING!!!")
+        for _ in range(self.num_games):
+            outcome, player1, player2 = self.ladder.run_game()
+            self.write_player_log(outcome, player1, player2)
 
 def default_team_exploud():
     """Generate an Exploud for these players."""
