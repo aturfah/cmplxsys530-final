@@ -1,13 +1,14 @@
 """Script for running Pokemon Simulation."""
 
-from simulation.base_simulation import BaseSimulation
-from battle_engine.pokemon_engine import PokemonEngine
+from numpy.random import uniform
+
 from agent.pokemon_agent import PokemonAgent
-from pokemon_helpers.pokemon import Pokemon
+from battle_engine.pokemon_engine import PokemonEngine
 from log_manager.log_writer import LogWriter
+from pokemon_helpers.pokemon import Pokemon
+from simulation.base_simulation import BaseSimulation
 from stats.calc import calculate_avg_elo
 
-from numpy.random import uniform
 
 class PokemonSimulation(BaseSimulation):
     """Class for Pokemon Simulation."""
