@@ -35,7 +35,7 @@ class PokemonEngine():
         :param player1/2: PokemonAgent
             Players 1 and 2 for this game.
         """
-        print("##### BEGIN #####\n")
+        # print("##### BEGIN #####\n")
         self.reset_game_state()
 
         # Initialize the players' teams
@@ -70,12 +70,12 @@ class PokemonEngine():
 
             # Figure out who faints at the end of this turn.
             if self.game_state["player1"]["active"].current_hp < 0:
-                print("{} fainted...".format(
-                    self.game_state["player1"]["active"].name))
+                # print("{} fainted...".format(
+                #     self.game_state["player1"]["active"].name))
                 self.game_state["player1"]["active"] = None
             if self.game_state["player2"]["active"].current_hp < 0:
-                print("{} fainted...".format(
-                    self.game_state["player2"]["active"].name))
+                # print("{} fainted...".format(
+                #     self.game_state["player2"]["active"].name))
                 self.game_state["player2"]["active"] = None
 
             # Update their gamestates
@@ -92,23 +92,23 @@ class PokemonEngine():
                     self.game_state["player1"]["active"] = \
                         self.game_state["player1"]["team"].pop(switchin_ind)
                     update = True
-                    new_active = self.game_state["player1"]["active"]
-                    print("{} sent out {} ({}/{})"
-                          .format("player1",
-                                  new_active.name,
-                                  new_active.current_hp,
-                                  new_active.max_hp))
+                    # new_active = self.game_state["player1"]["active"]
+                    # print("{} sent out {} ({}/{})"
+                    #       .format("player1",
+                    #               new_active.name,
+                    #               new_active.current_hp,
+                    #               new_active.max_hp))
 
                 if self.game_state["player2"]["active"] is None:
                     switchin_ind = player2.switch_faint()
                     self.game_state["player2"]["active"] = \
                         self.game_state["player2"]["team"].pop(switchin_ind)
-                    new_active = self.game_state["player2"]["active"]
-                    print("{} sent out {} ({}/{})"
-                          .format("player2",
-                                  new_active.name,
-                                  new_active.current_hp,
-                                  new_active.max_hp))
+                    # new_active = self.game_state["player2"]["active"]
+                    # print("{} sent out {} ({}/{})"
+                    #       .format("player2",
+                    #               new_active.name,
+                    #               new_active.current_hp,
+                    #               new_active.max_hp))
                     update = True
                 if update:
                     player1.update_gamestate(
@@ -116,9 +116,9 @@ class PokemonEngine():
                     player2.update_gamestate(
                         self.game_state["player2"], self.anonymize_gamestate("player1"))
 
-            print(" ")
+            # print(" ")
 
-        print("##### FINISHED #####\n")
+        # print("##### FINISHED #####\n")
         if outcome["draw"]:
             # It was a draw, decide randomly
             return int(uniform() < 0.5)
@@ -171,11 +171,11 @@ class PokemonEngine():
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
         self.game_state[player]["active"] = new_active
-        print("{} switched to {} ({}/{})"
-              .format(player,
-                      new_active.name,
-                      new_active.current_hp,
-                      new_active.max_hp))
+        # print("{} switched to {} ({}/{})"
+        #       .format(player,
+        #               new_active.name,
+        #               new_active.current_hp,
+        #               new_active.max_hp))
 
     def attack(self, attacker, move):
         """
@@ -198,8 +198,8 @@ class PokemonEngine():
         damage = calculate_damage(move, atk_poke, def_poke)
         def_poke.current_hp -= damage
 
-        print("{}'s {} attacked with {}".format(
-            attacker, atk_poke.name, move["name"]))
+        # print("{}'s {} attacked with {}".format(
+        #     attacker, atk_poke.name, move["name"]))
 
         results = {}
         results["move"] = move

@@ -6,7 +6,7 @@ from battle_engine.pokemon_engine import PokemonEngine
 
 
 def suppress_print():
-    """Suppress print from pokemon_helpersEngine."""
+    """Suppress print from PokemonEngine."""
     import os
     import sys
     pew = open(os.devnull, 'w')
