@@ -8,6 +8,7 @@ from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
 from simulation.pkmn_simulation import PokemonSimulation
 
+
 @click.command()
 @click.option("-ng", "--num_games", default=5000)
 @click.option("-nr", "--num_rounds", default=3)
@@ -107,17 +108,10 @@ def run(**kwargs):
                                      ladder_choice=ladder_choice,
                                      data_delay=data_delay)
         pkmn_sim.add_agents()
-        suppress_print() # TODO: Delete me later.
+        pkmn_sim.init_type_log_writer()
         pkmn_sim.run()
     else:
         raise RuntimeError("Invalid Game Choice")
-
-def suppress_print():
-    """Suppress print from PokemonEngine."""
-    import os
-    import sys
-    pew = open(os.devnull, 'w')
-    sys.stdout = pew
 
 
 def read_file():
