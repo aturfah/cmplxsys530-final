@@ -19,8 +19,6 @@ class PokemonSimulation(BaseSimulation):
         self.data_delay = kwargs["data_delay"]
         super().__init__(pkmn_kwargs)
 
-        print("POKEMON SIMULATION!!!")
-
     def add_agents(self):
         """Add the agents to this model."""
         for ind in range(self.num_players):
@@ -34,7 +32,6 @@ class PokemonSimulation(BaseSimulation):
                 pkmn_agent = PokemonAgent(default_team_spinda())
                 pkmn_agent.type = "spinda"
             self.ladder.add_player(pkmn_agent)
-            print("ADDING AGENT {}".format(pkmn_agent.type))
 
     def run(self):
         """Run this simulation."""
