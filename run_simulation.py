@@ -6,6 +6,7 @@ import click
 
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
+from simulation.pkmn_simulation import PokemonSimulation
 
 
 @click.command()
@@ -102,7 +103,12 @@ def run(**kwargs):
         mtrps_sim.init_type_log_writer()
         mtrps_sim.run()
     elif game_choice == 4:
-        print("POKEMON SIMULATION!!!")
+        pkmn_sim = PokemonSimulation(num_games=num_games,
+                                     num_players=num_players,
+                                     ladder_choice=ladder_choice,
+                                     data_delay=data_delay)
+        pkmn_sim.add_agents()
+        pkmn_sim.run()
     else:
         raise RuntimeError("Invalid Game Choice")
 
