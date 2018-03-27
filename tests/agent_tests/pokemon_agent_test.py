@@ -204,8 +204,6 @@ def test_infer_investment():
 
     test_infer_defending(pa2, new_info)
     test_infer_attacking(pa1, new_info)
-    test_infer_speed_faster(pa1, new_info*2)
-    test_infer_speed_slower(pa1, new_info*2)
 
 
 def test_infer_defending(pa2, new_info):
@@ -255,22 +253,61 @@ def test_infer_attacking(pa1, new_info):
     assert not pa1.opp_gamestate["investment"]["magikarp"]["hp"][0]["max_evs"]
 
 
-def test_infer_speed_faster(pa1, new_info):
+def test_infer_speed_investment():
+    """Test how we infer speed."""
+    magikarp = Pokemon(name="magikarp", moves=["tackle"])
+    spinda = Pokemon(name="spinda", moves=["tackle"])
+
+    pa1 = PokemonAgent([magikarp])
+    pa2 = PokemonAgent([spinda])
+
+    gamestate = {}
+    gamestate["team"] = []
+    gamestate["active"] = magikarp
+    opp_gamestate_dict = {}
+    opp_gamestate_dict["team"] = []
+    opp_gamestate_dict["active"] = spinda
+    opp_gamestate = anonymize_gamestate_helper(opp_gamestate_dict)
+    pa1.update_gamestate(gamestate, opp_gamestate)
+    pa2.update_gamestate(opp_gamestate_dict,
+                         anonymize_gamestate_helper(gamestate))
+
+    new_info = {}
+    new_info = {}
+    new_info["move"] = MOVE_DATA["tackle"]
+    new_info["attacker"] = "player2"
+    new_info["defender"] = "player1"
+    new_info["pct_damage"] = 27
+    new_info["damage"] = 46
+    new_info["atk_poke"] = "spinda"
+    new_info["def_poke"] = "magikarp"
+    new_info = [new_info] * 2
+
+    test_infer_speed_faster(pa2, new_info)
+    test_infer_speed_slower(pa1, new_info)
+
+def test_infer_speed_faster(player, new_info):
     """Test how we infer speed on outspeed."""
-    new_info[0]["atk_poke"] = "magikarp"
-    new_info[0]["def_poke"] = "spinda"
-    pa1.new_info(new_info, my_id="player1")
+    player.new_info(new_info, my_id="player1")
 
-    assert pa1.opp_gamestate["investment"]
-    assert pa1.opp_gamestate["investment"]["spinda"]
-    assert pa1.opp_gamestate["investment"]["spinda"]["spe"]
-    speed_inference = pa1.opp_gamestate["investment"]["spinda"]["spe"]
-    assert speed_inference[1] == pa1.gamestate["active"].speed
-    assert speed_inference[0] == 140
+    assert player.opp_gamestate["investment"]
+    assert player.opp_gamestate["investment"]["spinda"]
+    assert player.opp_gamestate["investment"]["spinda"]["spe"]
+    speed_inference = player.opp_gamestate["investment"]["spinda"]["spe"]
+    assert speed_inference[1] == 240
+    assert speed_inference[0] == player.gamestate["active"].speed
 
-def test_infer_speed_slower(pa2, new_info):
-    """Docstring."""
-    pa2.new_info(new_info, my_id="player2")
+def test_infer_speed_slower(player, new_info):
+    """Test how we infer speed when slower."""
+    player.new_info(new_info, my_id="player2")
+
+    assert player.opp_gamestate["investment"]
+    assert player.opp_gamestate["investment"]["magikarp"]
+    assert player.opp_gamestate["investment"]["magikarp"]["spe"]
+    speed_inference = player.opp_gamestate["investment"]["magikarp"]["spe"]
+
+    assert speed_inference[1] == player.gamestate["active"].speed
+    assert speed_inference[0] == 176
 
 test_make_move()
 test_opp_gamestate()
@@ -278,3 +315,4 @@ test_switch_faint()
 test_battle_posn_one()
 test_battle_posn_multiple()
 test_infer_investment()
+test_infer_speed_investment()
