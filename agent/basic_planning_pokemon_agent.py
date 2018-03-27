@@ -1,9 +1,9 @@
 """Pokemon agent who's moves are determined by maximizing personal gain."""
 
-from agent.basic_pokemon_agent import PokemonAgent
-
-from config import USAGE_STATS
 import operator
+
+from agent.basic_pokemon_agent import PokemonAgent
+from config import USAGE_STATS
 
 
 class BasicPlanningPokemonAgent(PokemonAgent):
