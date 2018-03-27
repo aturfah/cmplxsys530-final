@@ -83,14 +83,25 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 opp_gs = deepcopy(self.opp_gamestate)
                 print(p_opt, o_opt)
 
-                # Switch
+                # Player Switches
                 if p_opt[0] == "SWITCH":
                     temp = my_gs["active"]
                     my_gs["active"] = my_gs["team"][p_opt[1]]
                     my_gs["team"].append(temp)
 
+                # Opponent Switches
+                if o_opt[0] == "SWITCH":
+                    temp = opp_gs["active"]
+                    opp_gs["active"] = opp_gs["team"][o_opt[1]]
+                    opp_gs["team"].append(temp)
 
-
+                # Attacking
+                if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
+                    pass
+                elif p_opt[0] == "ATTACK":
+                    pass
+                elif o_opt[0] == "ATTACK":
+                    pass
 
                 my_posn = calc_position_helper(my_gs)
                 opp_posn = calc_opp_position_helper(opp_gs)
