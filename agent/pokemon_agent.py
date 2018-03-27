@@ -172,10 +172,12 @@ class PokemonAgent(BaseAgent):
 
         if outspeed:
             # Update maximum speed to our speed
-            pass
+            self.opp_gamestate["investment"][opp_poke]["spe"][1] = \
+                self.gamestate["active"].speed
         else:
             # Update minimum speed to our speed
-            pass
+            self.opp_gamestate["investment"][opp_poke]["spe"][0] = \
+                self.gamestate["active"].speed
 
     def results_attacking(self, turn_info):
         """Generate possible results for when we are attacking."""
