@@ -149,6 +149,13 @@ class PokemonAgent(BaseAgent):
         if turn_info[0]["move"]["priority"] != turn_info[1]["move"]["priority"]:
             return
 
+        if turn_info[0]["attacker"] == my_id:
+            # We outspeed; ie: we're faster
+            pass
+        else:
+            # We're outsped; ie: we're slower
+            pass
+
     def results_attacking(self, turn_info):
         """Generate possible results for when we are attacking."""
         move = turn_info["move"]
