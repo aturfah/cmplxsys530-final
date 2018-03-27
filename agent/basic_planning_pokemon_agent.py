@@ -1,6 +1,7 @@
 """Pokemon agent who's moves are determined by maximizing personal gain."""
 
 import operator
+from copy import deepcopy
 
 from agent.basic_pokemon_agent import PokemonAgent
 from config import USAGE_STATS
@@ -75,4 +76,13 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         print(player_opts)
         print(opp_opts)
 
-        return None
+        original_gamestate = deepcopy(self.gamestate)
+        original_opp_gamestate = deepcopy(self.opp_gamestate)
+
+        optimal_opt = None
+        maximal_position = -1
+        for p_opt in player_opts:
+            for o_opt in opp_opts:
+                print(p_opt, o_opt)
+
+        return player_opts[0]
