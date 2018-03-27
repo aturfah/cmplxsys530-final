@@ -12,4 +12,11 @@ class BasicPlanningPokemonAgent(PokemonAgent):
     """
     def make_move(self):
         """Choose the move to make."""
-        pass
+        player_opts, opp_opts = self.generate_possibilities()
+
+    def generate_possibilities(self):
+        """Generate a two lists of possible player and opponent moves."""
+        player_opts = []
+        opp_opts = []
+
+        return player_opts, opp_opts
