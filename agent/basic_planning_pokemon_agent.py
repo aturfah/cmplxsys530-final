@@ -4,6 +4,7 @@ import operator
 from copy import deepcopy
 
 from agent.basic_pokemon_agent import PokemonAgent
+from agent.basic_pokemon_agent import calc_opp_position_helper, calc_position_helper
 from config import USAGE_STATS
 
 
@@ -73,16 +74,22 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
     def optimal_move(self, player_opts, opp_opts):
         """Choose the optimal move given the options availible."""
-        print(player_opts)
-        print(opp_opts)
-
-        original_gamestate = deepcopy(self.gamestate)
-        original_opp_gamestate = deepcopy(self.opp_gamestate)
-
         optimal_opt = None
         maximal_position = -1
         for p_opt in player_opts:
+            total_position = 0
             for o_opt in opp_opts:
+                my_gs = deepcopy(self.gamestate)
+                opp_gs = deepcopy(self.opp_gamestate)
                 print(p_opt, o_opt)
 
-        return player_opts[0]
+                my_posn = calc_position_helper(my_gs)
+                opp_posn = calc_opp_position_helper(opp_gs)
+                total_position += my_posn / opp_posn
+
+            total_position = total_position / len(opp_opts)
+            if total_position > maximal_position:
+                optimal_opt = p_opt
+                maximal_position = total_position
+
+        return optimal_opt
