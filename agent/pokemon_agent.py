@@ -150,19 +150,32 @@ class PokemonAgent(BaseAgent):
         if turn_info[0]["move"]["priority"] != turn_info[1]["move"]["priority"]:
             return
 
+        # We're outsped; ie: we're slower
+        opp_poke = turn_info[0]["atk_poke"]
+        outspeed = False
         if turn_info[0]["attacker"] == my_id:
             # We outspeed; ie: we're faster
             opp_poke = turn_info[0]["def_poke"]
-            if opp_poke not in self.opp_gamestate["investment"]:
-                self.opp_gamestate["investment"][opp_poke] = {}
-            if "spe" not in self.opp_gamestate["investment"][opp_poke]:
-                min_speed = Pokemon(name=opp_poke, moves = ["tackle"], nature="brave").speed
-                max_speed = Pokemon(name=opp_poke, moves = ["tackle"], evs={"spe": 252} nature="jolly").speed
-                self.opp_gamestate["investment"][opp_poke]["spe"] = (min_speed,max_speed)
+            outspeed = True
 
+        if opp_poke not in self.opp_gamestate["investment"]:
+            self.opp_gamestate["investment"][opp_poke] = {}
+        if "spe" not in self.opp_gamestate["investment"][opp_poke]:
+            # Slowest possible opponent's pokemon
+            min_speed = Pokemon(name=opp_poke, moves=["tackle"], nature="brave").speed
+            # Fastest possible opponent's pokemon
+            max_speed = Pokemon(name=opp_poke,
+                                moves=["tackle"],
+                                evs={"spe": 252},
+                                nature="jolly").speed
+            self.opp_gamestate["investment"][opp_poke]["spe"] = (min_speed, max_speed)
+
+        if outspeed:
+            # Update maximum speed to our speed
+            pass
         else:
-            # We're outsped; ie: we're slower
-            opp_poke = turn_info[0]["atk_poke"]
+            # Update minimum speed to our speed
+            pass
 
     def results_attacking(self, turn_info):
         """Generate possible results for when we are attacking."""
