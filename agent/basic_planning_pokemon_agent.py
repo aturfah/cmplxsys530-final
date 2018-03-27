@@ -11,6 +11,11 @@ class BasicPlanningPokemonAgent(PokemonAgent):
     This agent will maximize the game_position given the opponent's moves are all
     equally likely.
     """
+    def __init__(self, tier, **kwargs):
+        """Initialize a player with a specific tier."""
+        super().__init__(*kwargs)
+        self.tier = tier
+
     def make_move(self):
         """Choose the move to make."""
         player_opts, opp_opts = self.generate_possibilities()
@@ -37,11 +42,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         opp_active_poke = self.opp_gamestate["data"]["active"]["name"]
         opp_moves = []
         if opp_active_poke in self.opp_gamestate["moves"]:
-            for move in self.opp_gamestate["moves"]:
+            for move in self.opp_gamestate["moves"][opp_active_poke]:
                 opp_moves.append(move)
-        else:
-            print(USAGE_STATS)
-            print(USAGE_STATS[opp_active_poke])
+        if len(opp_moves) < 4:
+            print(USAGE_STATS[self.tier][opp_active_poke])
 
         # Opponent's possible switches
         posn = 0
