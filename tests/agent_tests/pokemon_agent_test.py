@@ -269,6 +269,7 @@ def test_infer_speed(pa1, new_info):
     assert speed_inference[1] == pa1.gamestate["active"].speed
     assert speed_inference[0] == 140
 
+
 test_make_move()
 test_opp_gamestate()
 test_switch_faint()
