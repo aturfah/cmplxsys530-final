@@ -5,7 +5,7 @@ from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import anonymize_gamestate_helper
 
 
-def basic_test():
+def test_generate_possibilities():
     """Basic Test."""
     spinda = Pokemon(name="spinda", moves=["tackle"])
     magikarp = Pokemon(name="magikarp", moves=["tackle"])
@@ -30,4 +30,4 @@ def basic_test():
     assert ("SWITCH", "magikarp") in opp_opts
     assert ("ATTACK", "return") in opp_opts
 
-basic_test()
+test_generate_possibilities()
