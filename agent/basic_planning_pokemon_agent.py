@@ -22,8 +22,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
     def make_move(self):
         """Choose the move to make."""
         player_opts, opp_opts = self.generate_possibilities()
-        print(player_opts)
-        print(opp_opts)
+        move_choice = self.optimal_move(player_opts, opp_opts)
+        return move_choice
 
     def generate_possibilities(self):
         """Generate a two lists of possible player and opponent moves."""
@@ -69,3 +69,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             opp_opts.append(("SWITCH", poke_name))
 
         return player_opts, opp_opts
+
+    def optimal_move(self, player_opts, opp_opts):
+        """Choose the optimal move given the options availible."""
+        print(player_opts)
+        print(opp_opts)
+
+        return None
