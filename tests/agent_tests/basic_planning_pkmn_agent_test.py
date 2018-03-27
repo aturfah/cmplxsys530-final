@@ -31,8 +31,8 @@ def test_generate_possibilities():
     assert ("SWITCH", 0) in player_opts
     assert ("ATTACK", 0) in player_opts
     assert len(opp_opts) == 6
-    assert ("SWITCH", "exploud") in opp_opts
-    assert ("SWITCH", "magikarp") in opp_opts
+    assert ("SWITCH", 0) in opp_opts
+    assert ("SWITCH", 1) in opp_opts
     assert ("ATTACK", "return") in opp_opts
 
 def test_make_move():
