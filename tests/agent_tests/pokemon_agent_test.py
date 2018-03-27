@@ -256,11 +256,10 @@ def test_infer_attacking(pa1, new_info):
 
 def test_infer_speed(pa1, new_info):
     """Test how we infer speed."""
-    new_info[0]["atk_poke"] = "magikarp"
-    new_info[0]["def_poke"] = "spinda"
-
     new_info = new_info * 2
 
+    new_info[0]["atk_poke"] = "magikarp"
+    new_info[0]["def_poke"] = "spinda"
     pa1.new_info(new_info, my_id="player1")
 
     assert pa1.opp_gamestate["investment"]
@@ -269,7 +268,6 @@ def test_infer_speed(pa1, new_info):
     speed_inference = pa1.opp_gamestate["investment"]["spinda"]["spe"]
     assert speed_inference[1] == pa1.gamestate["active"].speed
     assert speed_inference[0] == 140
-
 
 test_make_move()
 test_opp_gamestate()
