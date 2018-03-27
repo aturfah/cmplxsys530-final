@@ -287,6 +287,7 @@ def test_infer_speed_investment():
     test_infer_speed_faster(pa2, new_info)
     test_infer_speed_slower(pa1, new_info)
 
+
 def test_infer_speed_faster(player, new_info):
     """Test how we infer speed on outspeed."""
     player.new_info(new_info, my_id="player1")
@@ -297,6 +298,7 @@ def test_infer_speed_faster(player, new_info):
     speed_inference = player.opp_gamestate["investment"]["spinda"]["spe"]
     assert speed_inference[1] == 240
     assert speed_inference[0] == player.gamestate["active"].speed
+
 
 def test_infer_speed_slower(player, new_info):
     """Test how we infer speed when slower."""
@@ -309,6 +311,7 @@ def test_infer_speed_slower(player, new_info):
 
     assert speed_inference[1] == player.gamestate["active"].speed
     assert speed_inference[0] == 176
+
 
 test_make_move()
 test_opp_gamestate()
