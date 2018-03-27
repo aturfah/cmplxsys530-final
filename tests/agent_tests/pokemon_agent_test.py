@@ -204,6 +204,7 @@ def test_infer_investment():
 
     test_infer_defending(pa2, new_info)
     test_infer_attacking(pa1, new_info)
+    test_infer_speed_investment()
 
 
 def test_infer_defending(pa2, new_info):
@@ -315,4 +316,3 @@ test_switch_faint()
 test_battle_posn_one()
 test_battle_posn_multiple()
 test_infer_investment()
-test_infer_speed_investment()
