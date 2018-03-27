@@ -38,6 +38,9 @@ def test_generate_possibilities():
 def test_make_move():
     """Test the results of make_move()."""
     bppa = init_bppa()
+    move = bppa.make_move()
+
+    assert False
 
 test_generate_possibilities()
 test_make_move()
