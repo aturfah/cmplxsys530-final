@@ -136,3 +136,9 @@ for filename in [name for name in listdir("data/usage/") if isfile(join("data/us
         if "1630" not in filename:
             continue
         USAGE_STATS["pu"] = json.load(usage_file)["data"]
+TEMP_DICT = {}
+for poke_name in USAGE_STATS["pu"]:
+    mod_name = poke_name.lower()
+    TEMP_DICT[mod_name] = USAGE_STATS["pu"][poke_name]
+USAGE_STATS["pu"] = TEMP_DICT
+del TEMP_DICT
