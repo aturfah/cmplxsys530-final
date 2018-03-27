@@ -6,7 +6,7 @@ from battle_engine.pokemon_engine import anonymize_gamestate_helper
 
 
 def test_generate_possibilities():
-    """Basic Test."""
+    """Test function to generate possible player and opponent moves."""
     spinda = Pokemon(name="spinda", moves=["tackle"])
     magikarp = Pokemon(name="magikarp", moves=["tackle"])
     exploud = Pokemon(name="exploud", moves=["tackle"])
