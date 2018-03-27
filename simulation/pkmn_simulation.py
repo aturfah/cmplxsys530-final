@@ -2,7 +2,7 @@
 
 from numpy.random import uniform
 
-from agent.pokemon_agent import PokemonAgent
+from agent.basic_pokemon_agent import PokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
 from log_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import Pokemon
