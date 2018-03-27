@@ -172,13 +172,13 @@ class PokemonAgent(BaseAgent):
 
         if outspeed:
             if self.opp_gamestate["investment"][opp_poke]["spe"][1] > \
-                self.gamestate["active"].speed:
+                    self.gamestate["active"].speed:
                 # Update maximum speed to our speed if necessary
                 self.opp_gamestate["investment"][opp_poke]["spe"][1] = \
                     self.gamestate["active"].speed
         else:
             if self.opp_gamestate["investment"][opp_poke]["spe"][0] < \
-                self.gamestate["active"].speed:
+                    self.gamestate["active"].speed:
                 # Update minimum speed to our speed, if necessary
                 self.opp_gamestate["investment"][opp_poke]["spe"][0] = \
                     self.gamestate["active"].speed
