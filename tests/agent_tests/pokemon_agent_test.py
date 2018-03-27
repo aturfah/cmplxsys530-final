@@ -204,6 +204,7 @@ def test_infer_investment():
 
     test_infer_defending(pa2, new_info)
     test_infer_attacking(pa1, new_info)
+    test_infer_speed(pa1, new_info)
 
 
 def test_infer_defending(pa2, new_info):
@@ -252,6 +253,15 @@ def test_infer_attacking(pa1, new_info):
     assert not pa1.opp_gamestate["investment"]["magikarp"]["def"][0]["positive_nature"]
     assert not pa1.opp_gamestate["investment"]["magikarp"]["hp"][0]["max_evs"]
 
+
+def test_infer_speed(pa1, new_info):
+    """Test how we infer speed."""
+    new_info[0]["atk_poke"] = "magikarp"
+    new_info[0]["atk_poke"] = "spinda"
+
+    new_info = new_info * 2
+
+    pa1.new_info(new_info, my_id="player1")
 
 test_make_move()
 test_opp_gamestate()
