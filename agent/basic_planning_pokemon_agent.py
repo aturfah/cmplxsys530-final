@@ -19,4 +19,22 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         player_opts = []
         opp_opts = []
 
+        # My possible attacks
+        posn = 0
+        for _ in self.gamestate["active"].moves:
+            player_opts.append(("ATTACK", posn))
+            posn += 1
+
+        # My possible switches
+        posn = 0
+        for _ in self.gamestate["team"]:
+            player_opts.append(("SWITCH", posn))
+            posn += 1
+
+        # Opponent's possible attacks
+        posn = 0
+
+        # Opponent's possible switches
+        posn = 0
+
         return player_opts, opp_opts
