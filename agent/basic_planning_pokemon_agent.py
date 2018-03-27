@@ -2,6 +2,7 @@
 
 from agent.basic_pokemon_agent import PokemonAgent
 
+from config import USAGE_STATS
 
 class BasicPlanningPokemonAgent(PokemonAgent):
     """
@@ -33,8 +34,19 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Opponent's possible attacks
         posn = 0
+        opp_active_poke = self.opp_gamestate["data"]["active"]["name"]
+        opp_moves = []
+        if opp_active_poke in self.opp_gamestate["moves"]:
+            for move in self.opp_gamestate["moves"]:
+                opp_moves.append(move)
+        else:
+            print(USAGE_STATS)
+            print(USAGE_STATS[opp_active_poke])
 
         # Opponent's possible switches
         posn = 0
+        for poke in self.opp_gamestate["data"]["team"]:
+            poke_name = poke["name"]
+
 
         return player_opts, opp_opts
