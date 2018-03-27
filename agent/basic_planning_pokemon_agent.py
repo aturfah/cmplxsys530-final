@@ -83,6 +83,15 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 opp_gs = deepcopy(self.opp_gamestate)
                 print(p_opt, o_opt)
 
+                # Switch
+                if p_opt[0] == "SWITCH":
+                    temp = my_gs["active"]
+                    my_gs["active"] = my_gs["team"][p_opt[1]]
+                    my_gs["team"].append(temp)
+
+                
+
+
                 my_posn = calc_position_helper(my_gs)
                 opp_posn = calc_opp_position_helper(opp_gs)
                 total_position += my_posn / opp_posn
