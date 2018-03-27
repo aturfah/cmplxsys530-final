@@ -66,9 +66,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Opponent's possible switches
         posn = 0
-        for poke in self.opp_gamestate["data"]["team"]:
-            poke_name = poke["name"]
-            opp_opts.append(("SWITCH", poke_name))
+        for _ in self.opp_gamestate["data"]["team"]:
+            opp_opts.append(("SWITCH", posn))
+            posn += 1
 
         return player_opts, opp_opts
 
@@ -89,7 +89,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     my_gs["active"] = my_gs["team"][p_opt[1]]
                     my_gs["team"].append(temp)
 
-                
+
 
 
                 my_posn = calc_position_helper(my_gs)
