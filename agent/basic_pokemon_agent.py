@@ -337,14 +337,14 @@ class PokemonAgent(BaseAgent):
             ]
 
 def battle_position_helper(player_gs, opp_gs):
-    """Outsourced helper to calculate the battle position."""
+    """Calculate the battle position for generic gamestates."""
     self_component = calc_position_helper(player_gs)
     opp_component = calc_opp_position_helper(opp_gs)
 
     return self_component / opp_component
 
 def calc_position_helper(player_gs):
-    """Helper to calculate the player's gamestate value."""
+    """Calculate the player's gamestate value."""
     my_posn = 0
     active_poke = player_gs["active"]
     if active_poke is not None:
@@ -356,7 +356,7 @@ def calc_position_helper(player_gs):
     return my_posn
 
 def calc_opp_position_helper(opp_gs):
-    """Helper to calculate the player's opponent's gamestate value."""
+    """Calculate the player's opponent's gamestate value."""
     opp_posn = 0
     active_poke = opp_gs["data"]["active"]
     if active_poke is not None:
