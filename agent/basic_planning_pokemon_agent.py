@@ -10,4 +10,6 @@ class BasicPlanningPokemonAgent(PokemonAgent):
     This agent will maximize the game_position given the opponent's moves are all
     equally likely.
     """
-    pass
+    def make_move(self):
+        """Choose the move to make."""
+        pass
