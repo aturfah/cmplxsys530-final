@@ -8,8 +8,11 @@ from battle_engine.pokemon_engine import anonymize_gamestate_helper
 def basic_test():
     """Basic Test."""
     spinda = Pokemon(name="spinda", moves=["tackle"])
+    magikarp = Pokemon(name="magikarp", moves=["tackle"])
+    exploud = Pokemon(name="exploud", moves=["tackle"])
+
     gamestate = {}
-    gamestate["team"] = []
+    gamestate["team"] = [exploud, magikarp]
     gamestate["active"] = spinda
 
     opp_gamestate = anonymize_gamestate_helper(gamestate)
@@ -17,6 +20,14 @@ def basic_test():
     # Update the gamestate
     bppa = BasicPlanningPokemonAgent(tier="pu", team=[spinda])
     bppa.update_gamestate(gamestate, opp_gamestate)
-    bppa.make_move()
+    player_opts, opp_opts = bppa.generate_possibilities()
+
+    assert len(player_opts) == 3
+    assert ("SWITCH", 0) in player_opts
+    assert ("ATTACK", 0) in player_opts
+    assert len(opp_opts) == 6
+    assert ("SWITCH", "exploud") in opp_opts
+    assert ("SWITCH", "magikarp") in opp_opts
+    assert ("ATTACK", "return") in opp_opts
 
 basic_test()
