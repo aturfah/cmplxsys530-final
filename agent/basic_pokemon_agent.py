@@ -87,27 +87,11 @@ class PokemonAgent(BaseAgent):
 
     def calc_position(self):
         """Calculate the value for self's battle position."""
-        my_posn = 0
-        active_poke = self.gamestate["active"]
-        if active_poke is not None:
-            my_posn += active_poke.current_hp / active_poke.max_hp
-
-        for poke in self.gamestate["team"]:
-            my_posn += poke.current_hp / poke.max_hp
-
-        return my_posn
+        return calc_position_helper(self.gamestate)
 
     def calc_opp_position(self):
         """Calculate the opponent's battle position."""
-        opp_posn = 0
-        active_poke = self.opp_gamestate["data"]["active"]
-        if active_poke is not None:
-            opp_posn += active_poke["pct_hp"]
-
-        for poke in self.opp_gamestate["data"]["team"]:
-            opp_posn += poke["pct_hp"]
-
-        return opp_posn
+        return calc_opp_position_helper(self.opp_gamestate)
 
     def new_info(self, turn_info, my_id):
         """
@@ -351,3 +335,34 @@ class PokemonAgent(BaseAgent):
                 result for result in valid_results
                 if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
             ]
+
+def battle_position_helper(player_gs, opp_gs):
+    """Outsourced helper to calculate the battle position."""
+    self_component = calc_position_helper(player_gs)
+    opp_component = calc_opp_position_helper(opp_gs)
+
+    return self_component / opp_component
+
+def calc_position_helper(player_gs):
+    """Helper to calculate the player's gamestate value."""
+    my_posn = 0
+    active_poke = player_gs["active"]
+    if active_poke is not None:
+        my_posn += active_poke.current_hp / active_poke.max_hp
+
+    for poke in player_gs["team"]:
+        my_posn += poke.current_hp / poke.max_hp
+
+    return my_posn
+
+def calc_opp_position_helper(opp_gs):
+    """Helper to calculate the player's opponent's gamestate value."""
+    opp_posn = 0
+    active_poke = opp_gs["data"]["active"]
+    if active_poke is not None:
+        opp_posn += active_poke["pct_hp"]
+
+    for poke in opp_gs["data"]["team"]:
+        opp_posn += poke["pct_hp"]
+
+    return opp_posn
