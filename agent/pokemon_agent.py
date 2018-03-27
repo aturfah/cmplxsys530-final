@@ -122,11 +122,9 @@ class PokemonAgent(BaseAgent):
             values of this dict. To know which values the method
             should be looking at in turn_info.
         """
-        if len(turn_info) == 2:
-            self.update_speed_inference(turn_info)
-
         for info in turn_info:
             if info["attacker"] == my_id:
+                # We attacked, infer data about defending pokemon
                 results, combinations = self.results_attacking(info)
                 self.update_atk_inference(info, results, combinations)
             else:
@@ -142,7 +140,10 @@ class PokemonAgent(BaseAgent):
                 if info["move"] not in self.opp_gamestate["moves"][opp_name]:
                     self.opp_gamestate["moves"][opp_name].append(info["move"])
 
-    def update_speed_inference(self, turn_info):
+        if len(turn_info) == 2:
+            self.update_speed_inference(turn_info, my_id)
+
+    def update_speed_inference(self, turn_info, my_id):
         """Infer speed information from the turn info."""
         pass
 
