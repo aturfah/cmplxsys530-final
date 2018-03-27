@@ -145,7 +145,9 @@ class PokemonAgent(BaseAgent):
 
     def update_speed_inference(self, turn_info, my_id):
         """Infer speed information from the turn info."""
-        pass
+        # Moves are different priority, no inference can be made
+        if turn_info[0]["move"]["priority"] != turn_info[1]["move"]["priority"]:
+            return
 
     def results_attacking(self, turn_info):
         """Generate possible results for when we are attacking."""
