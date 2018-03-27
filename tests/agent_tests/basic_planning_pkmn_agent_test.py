@@ -30,4 +30,9 @@ def test_generate_possibilities():
     assert ("SWITCH", "magikarp") in opp_opts
     assert ("ATTACK", "return") in opp_opts
 
+def test_make_move():
+    """Test the results of make_move()."""
+    pass
+
 test_generate_possibilities()
+test_make_move()
