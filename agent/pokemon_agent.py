@@ -3,6 +3,7 @@
 from numpy.random import uniform
 from agent.base_agent import BaseAgent
 from pokemon_helpers.damage_stats import DamageStatCalc
+from pokemon_helpers.pokemon import Pokemon
 
 from config import POKEMON_DATA
 
@@ -151,10 +152,17 @@ class PokemonAgent(BaseAgent):
 
         if turn_info[0]["attacker"] == my_id:
             # We outspeed; ie: we're faster
-            pass
+            opp_poke = turn_info[0]["def_poke"]
+            if opp_poke not in self.opp_gamestate["investment"]:
+                self.opp_gamestate["investment"][opp_poke] = {}
+            if "spe" not in self.opp_gamestate["investment"][opp_poke]:
+                min_speed = Pokemon(name=opp_poke, moves = ["tackle"], nature="brave").speed
+                max_speed = Pokemon(name=opp_poke, moves = ["tackle"], evs={"spe": 252} nature="jolly").speed
+                self.opp_gamestate["investment"][opp_poke]["spe"] = (min_speed,max_speed)
+
         else:
             # We're outsped; ie: we're slower
-            pass
+            opp_poke = turn_info[0]["atk_poke"]
 
     def results_attacking(self, turn_info):
         """Generate possible results for when we are attacking."""
