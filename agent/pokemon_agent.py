@@ -3,6 +3,7 @@
 from numpy.random import uniform
 from agent.base_agent import BaseAgent
 from pokemon_helpers.damage_stats import DamageStatCalc
+from pokemon_helpers.pokemon import Pokemon
 
 from config import POKEMON_DATA
 
@@ -124,6 +125,7 @@ class PokemonAgent(BaseAgent):
         """
         for info in turn_info:
             if info["attacker"] == my_id:
+                # We attacked, infer data about defending pokemon
                 results, combinations = self.results_attacking(info)
                 self.update_atk_inference(info, results, combinations)
             else:
@@ -138,6 +140,48 @@ class PokemonAgent(BaseAgent):
                     self.opp_gamestate["moves"][opp_name] = []
                 if info["move"] not in self.opp_gamestate["moves"][opp_name]:
                     self.opp_gamestate["moves"][opp_name].append(info["move"])
+
+        if len(turn_info) == 2:
+            self.update_speed_inference(turn_info, my_id)
+
+    def update_speed_inference(self, turn_info, my_id):
+        """Infer speed information from the turn info."""
+        # Moves are different priority, no inference can be made
+        if turn_info[0]["move"]["priority"] != turn_info[1]["move"]["priority"]:
+            return
+
+        # We're outsped; ie: we're slower
+        opp_poke = turn_info[0]["atk_poke"]
+        outspeed = False
+        if turn_info[0]["attacker"] == my_id:
+            # We outspeed; ie: we're faster
+            opp_poke = turn_info[0]["def_poke"]
+            outspeed = True
+
+        if opp_poke not in self.opp_gamestate["investment"]:
+            self.opp_gamestate["investment"][opp_poke] = {}
+        if "spe" not in self.opp_gamestate["investment"][opp_poke]:
+            # Slowest possible opponent's pokemon
+            min_speed = Pokemon(name=opp_poke, moves=["tackle"], nature="brave").speed
+            # Fastest possible opponent's pokemon
+            max_speed = Pokemon(name=opp_poke,
+                                moves=["tackle"],
+                                evs={"spe": 252},
+                                nature="jolly").speed
+            self.opp_gamestate["investment"][opp_poke]["spe"] = [min_speed, max_speed]
+
+        if outspeed:
+            if self.opp_gamestate["investment"][opp_poke]["spe"][1] > \
+                    self.gamestate["active"].speed:
+                # Update maximum speed to our speed if necessary
+                self.opp_gamestate["investment"][opp_poke]["spe"][1] = \
+                    self.gamestate["active"].speed
+        else:
+            if self.opp_gamestate["investment"][opp_poke]["spe"][0] < \
+                    self.gamestate["active"].speed:
+                # Update minimum speed to our speed, if necessary
+                self.opp_gamestate["investment"][opp_poke]["spe"][0] = \
+                    self.gamestate["active"].speed
 
     def results_attacking(self, turn_info):
         """Generate possible results for when we are attacking."""
