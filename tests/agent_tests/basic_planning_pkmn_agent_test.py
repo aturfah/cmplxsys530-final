@@ -40,6 +40,7 @@ def test_make_move():
     bppa = init_bppa()
     move = bppa.make_move()
 
+    assert move
     assert False
 
 test_generate_possibilities()
