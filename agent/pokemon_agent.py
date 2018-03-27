@@ -168,7 +168,7 @@ class PokemonAgent(BaseAgent):
                                 moves=["tackle"],
                                 evs={"spe": 252},
                                 nature="jolly").speed
-            self.opp_gamestate["investment"][opp_poke]["spe"] = (min_speed, max_speed)
+            self.opp_gamestate["investment"][opp_poke]["spe"] = [min_speed, max_speed]
 
         if outspeed:
             # Update maximum speed to our speed
