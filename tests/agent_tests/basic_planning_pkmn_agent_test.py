@@ -20,6 +20,7 @@ def init_bppa():
     # Update the gamestate
     bppa = BasicPlanningPokemonAgent(tier="pu", team=[spinda])
     bppa.update_gamestate(gamestate, opp_gamestate)
+    bppa.init_opp_gamestate(opp_gamestate["team"], opp_gamestate["active"])
     return bppa
 
 def test_generate_possibilities():
