@@ -35,14 +35,15 @@ class PokemonAgent(BaseAgent):
 
     def init_opp_gamestate(self, opp_team, opp_active):
         """Initialize the investment data for the opponent's team."""
-        possible_combs = generate_all_combinations()
+        possible_combs = generate_all_ev_combinations()
         self.opp_gamestate["investment"][opp_active["name"]] = {}
         self.opp_gamestate["investment"][opp_active["name"]]["hp"] = possible_combs["hp"]
         self.opp_gamestate["investment"][opp_active["name"]]["atk"] = possible_combs["atk"]
         self.opp_gamestate["investment"][opp_active["name"]]["def"] = possible_combs["def"]
         self.opp_gamestate["investment"][opp_active["name"]]["spa"] = possible_combs["spa"]
         self.opp_gamestate["investment"][opp_active["name"]]["spd"] = possible_combs["spd"]
-        self.opp_gamestate["investment"][opp_active["name"]]["spd"] = []
+        self.opp_gamestate["investment"][opp_active["name"]]["spd"] = \
+            generate_spd_range(opp_active["name"])
 
         for opp_poke in opp_team:
             self.opp_gamestate["investment"][opp_poke["name"]] = {}
@@ -51,7 +52,8 @@ class PokemonAgent(BaseAgent):
             self.opp_gamestate["investment"][opp_poke["name"]]["def"] = possible_combs["def"]
             self.opp_gamestate["investment"][opp_poke["name"]]["spa"] = possible_combs["spa"]
             self.opp_gamestate["investment"][opp_poke["name"]]["spd"] = possible_combs["spd"]
-            self.opp_gamestate["investment"][opp_poke["name"]]["spe"] = []
+            self.opp_gamestate["investment"][opp_poke["name"]]["spe"] = \
+                generate_spd_range(opp_poke["name"])
 
 
     def update_gamestate(self, my_gamestate, opp_gamestate):
@@ -388,7 +390,7 @@ def calc_opp_position_helper(opp_gs):
 
     return opp_posn
 
-def generate_all_combinations():
+def generate_all_ev_combinations():
     """Generate all possible stat investment combinations."""
     combinations = {}
 
@@ -405,7 +407,7 @@ def generate_all_combinations():
         result_dict["positive_nature"] = combination[1]
         combinations["atk"].append(result_dict)
         combinations["spa"].append(result_dict)
-    
+
     combinations["hp"] = []
     combinations["def"] = []
     combinations["spd"] = []
@@ -431,3 +433,14 @@ def generate_all_combinations():
     combinations["hp"].append({"max_evs": False})
 
     return combinations
+
+def generate_spd_range(pokemon_name):
+    """Calculate the range for a pokemon's speed."""
+    # Slowest possible opponent's pokemon
+    min_speed = Pokemon(name=pokemon_name, moves=["tackle"], nature="brave").speed
+    # Fastest possible opponent's pokemon
+    max_speed = Pokemon(name=pokemon_name,
+                        moves=["tackle"],
+                        evs={"spe": 252},
+                        nature="jolly").speed
+    return [min_speed, max_speed]
