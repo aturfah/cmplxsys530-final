@@ -91,9 +91,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
                 # Opponent Switches
                 if o_opt[0] == "SWITCH":
-                    temp = opp_gs["active"]
-                    opp_gs["active"] = opp_gs["team"][o_opt[1]]
-                    opp_gs["team"].append(temp)
+                    temp = opp_gs["data"]["active"]
+                    opp_gs["data"]["active"] = opp_gs["data"]["team"][o_opt[1]]
+                    opp_gs["data"]["team"].append(temp)
 
                 # Attacking
                 dmg_range = None
@@ -103,7 +103,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 elif p_opt[0] == "ATTACK":
                     p_poke = my_gs["active"]
                     p_move = p_poke.moves[p_opt[1]]
-                    o_poke_name = opp_gs["active"]["name"]
+                    o_poke_name = opp_gs["data"]["active"]["name"]
                     o_poke = POKEMON_DATA[o_poke_name]
                     params = self.opp_gamestate["investment"][o_poke_name]
                     dmg_range = self.dmg_stat_calc.calculate_range(p_move, p_poke, o_poke, params)
