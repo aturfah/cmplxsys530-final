@@ -33,6 +33,27 @@ class PokemonAgent(BaseAgent):
         self.opp_gamestate["moves"] = {}
         self.opp_gamestate["investment"] = {}
 
+    def init_opp_gamestate(self, opp_team, opp_active):
+        """Initialize the investment data for the opponent's team."""
+        possible_combs = generate_all_combinations()
+        self.opp_gamestate["investment"][opp_active["name"]] = {}
+        self.opp_gamestate["investment"][opp_active["name"]]["hp"] = possible_combs["hp"]
+        self.opp_gamestate["investment"][opp_active["name"]]["atk"] = possible_combs["atk"]
+        self.opp_gamestate["investment"][opp_active["name"]]["def"] = possible_combs["def"]
+        self.opp_gamestate["investment"][opp_active["name"]]["spa"] = possible_combs["spa"]
+        self.opp_gamestate["investment"][opp_active["name"]]["spd"] = possible_combs["spd"]
+        self.opp_gamestate["investment"][opp_active["name"]]["spd"] = []
+
+        for opp_poke in opp_team:
+            self.opp_gamestate["investment"][opp_poke["name"]] = {}
+            self.opp_gamestate["investment"][opp_poke["name"]]["hp"] = possible_combs["hp"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["atk"] = possible_combs["atk"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["def"] = possible_combs["def"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["spa"] = possible_combs["spa"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["spd"] = possible_combs["spd"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["spe"] = []
+
+
     def update_gamestate(self, my_gamestate, opp_gamestate):
         """
         Update internal gamestate for self.
@@ -366,3 +387,47 @@ def calc_opp_position_helper(opp_gs):
         opp_posn += poke["pct_hp"]
 
     return opp_posn
+
+def generate_all_combinations():
+    """Generate all possible stat investment combinations."""
+    combinations = {}
+
+    combinations["atk"] = []
+    combinations["spa"] = []
+    atk_combinations = []
+    atk_combinations.append((False, False))
+    atk_combinations.append((True, False))
+    atk_combinations.append((False, True))
+    atk_combinations.append((True, True))
+    for combination in atk_combinations:
+        result_dict = {}
+        result_dict["max_evs"] = combination[0]
+        result_dict["positive_nature"] = combination[1]
+        combinations["atk"].append(result_dict)
+        combinations["spa"].append(result_dict)
+    
+    combinations["hp"] = []
+    combinations["def"] = []
+    combinations["spd"] = []
+
+    def_combinations = []
+    def_combinations.append((False, False))
+    def_combinations.append((False, False))
+    def_combinations.append((True, False))
+    def_combinations.append((True, False))
+    def_combinations.append((False, True))
+    def_combinations.append((False, True))
+    def_combinations.append((True, True))
+    def_combinations.append((True, True))
+
+    for combination in def_combinations:
+        result_dict = {}
+        result_dict["max_evs"] = combination[0]
+        result_dict["positive_nature"] = combination[1]
+        combinations["def"].append(result_dict)
+        combinations["spd"].append(result_dict)
+
+    combinations["hp"].append({"max_evs": True})
+    combinations["hp"].append({"max_evs": False})
+
+    return combinations
