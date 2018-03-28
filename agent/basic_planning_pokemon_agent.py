@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_pokemon_agent import calc_opp_position_helper, calc_position_helper
-from config import USAGE_STATS
+from config import USAGE_STATS, POKEMON_DATA, MOVE_DATA
 
 
 class BasicPlanningPokemonAgent(PokemonAgent):
@@ -96,12 +96,22 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     opp_gs["team"].append(temp)
 
                 # Attacking
+                dmg_range = None
                 if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
-                    pass
+                    # Figure out who is faster
+                    dmg_range = None
                 elif p_opt[0] == "ATTACK":
-                    pass
+                    p_poke = my_gs["active"]
+                    p_move = p_poke.moves[p_opt[1]]
+                    o_poke_name = opp_gs["active"]["name"]
+                    o_poke = POKEMON_DATA[o_poke_name]
+                    params = self.opp_gamestate["investment"][o_poke_name]
+                    dmg_range = self.dmg_stat_calc.calculate_range(p_move, p_poke, o_poke, params)
+
+                    # Average damage as percent
+                    opp_gs["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
                 elif o_opt[0] == "ATTACK":
-                    pass
+                    dmg_range = None
 
                 my_posn = calc_position_helper(my_gs)
                 opp_posn = calc_opp_position_helper(opp_gs)
