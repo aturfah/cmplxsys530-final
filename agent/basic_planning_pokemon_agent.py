@@ -101,15 +101,33 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     # Figure out who is faster
                     dmg_range = None
                 elif p_opt[0] == "ATTACK":
+                    # Only we attack
                     p_poke = my_gs["active"]
                     p_move = p_poke.moves[p_opt[1]]
                     o_poke_name = opp_gs["data"]["active"]["name"]
                     o_poke = POKEMON_DATA[o_poke_name]
                     params = self.opp_gamestate["investment"][o_poke_name]
-                    dmg_range = self.dmg_stat_calc.calculate_range(p_move, p_poke, o_poke, params)
+
+                    dmg_range = None
+                    param_combs = atk_param_combinations(p_poke, params, p_move)
+                    for param_comb in param_combs:
+                        dmg_val = self.dmg_stat_calc.calculate_range(p_move,
+                                                                     p_poke,
+                                                                     o_poke,
+                                                                     param_comb)
+                        if not dmg_range:
+                            dmg_range = [0, 0]
+
+                        dmg_range[0] += dmg_val[0]
+                        dmg_range[1] += dmg_val[1]
+
+                    # Each combination is weighted equally
+                    dmg_range[0] = dmg_range[0] / len(param_combs)
+                    dmg_range[1] = dmg_range[1] / len(param_combs)
 
                     # Average damage as percent
-                    opp_gs["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
+                    opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
+
                 elif o_opt[0] == "ATTACK":
                     dmg_range = None
 
@@ -123,3 +141,32 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 maximal_position = total_position
 
         return optimal_opt
+
+
+def atk_param_combinations(active_poke, opp_params, move):
+    """Calculate possible parameter combinations for when we're attacking."""
+    results = []
+
+    # Figure out which stat we should use
+    stat = "atk"
+    opp_stat = "def"
+    if move["category"] == "Special":
+        stat = "spa"
+        opp_stat = "spd"
+
+    result_dict = {}
+    result_dict["atk"] = {}
+
+    if stat in active_poke.evs and active_poke.evs[stat] > 128:
+        result_dict["atk"]["max_evs"] = True
+    if active_poke.increase_stat == stat:
+        result_dict["atk"]["positive_nature"] = True
+
+    for hp_params in opp_params["hp"]:
+        for def_params in opp_params[opp_stat]:
+            temp_results = deepcopy(result_dict)
+            temp_results["hp"] = hp_params
+            temp_results["def"] = def_params
+            results.append(temp_results)
+
+    return results
