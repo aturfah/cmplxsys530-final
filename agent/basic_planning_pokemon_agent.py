@@ -104,28 +104,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     dmg_range = None
                 elif p_opt[0] == "ATTACK":
                     # Only we attack
-                    p_poke = my_gs["active"]
-                    p_move = p_poke.moves[p_opt[1]]
-                    o_poke_name = opp_gs["data"]["active"]["name"]
-                    o_poke = POKEMON_DATA[o_poke_name]
-                    params = self.opp_gamestate["investment"][o_poke_name]
-
-                    dmg_range = None
-                    param_combs = atk_param_combinations(p_poke, params, p_move)
-                    for param_comb in param_combs:
-                        dmg_val = self.dmg_stat_calc.calculate_range(p_move,
-                                                                     p_poke,
-                                                                     o_poke,
-                                                                     param_comb)
-                        if not dmg_range:
-                            dmg_range = [0, 0]
-
-                        dmg_range[0] += dmg_val[0]
-                        dmg_range[1] += dmg_val[1]
-
-                    # Each combination is weighted equally
-                    dmg_range[0] = dmg_range[0] / len(param_combs)
-                    dmg_range[1] = dmg_range[1] / len(param_combs)
+                    dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt, o_opt)
 
                     # Average damage as percent
                     opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
@@ -144,6 +123,29 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         return optimal_opt
 
+    def attacking_dmg_range(self, my_gs, opp_gs, p_opt, o_opt):
+        """Calculate the (weighted) damage range for an attack."""
+        p_poke = my_gs["active"]
+        p_move = p_poke.moves[p_opt[1]]
+        o_poke_name = opp_gs["data"]["active"]["name"]
+        o_poke = POKEMON_DATA[o_poke_name]
+        params = self.opp_gamestate["investment"][o_poke_name]
+
+        dmg_range = None
+        param_combs = atk_param_combinations(p_poke, params, p_move)
+        for param_comb in param_combs:
+            dmg_val = self.dmg_stat_calc.calculate_range(p_move, p_poke, o_poke, param_comb)
+            if not dmg_range:
+                dmg_range = [0, 0]
+
+            dmg_range[0] += dmg_val[0]
+            dmg_range[1] += dmg_val[1]
+
+        # Each combination is weighted equally
+        dmg_range[0] = dmg_range[0] / len(param_combs)
+        dmg_range[1] = dmg_range[1] / len(param_combs)
+
+        return dmg_range
 
 def atk_param_combinations(active_poke, opp_params, move):
     """Calculate possible parameter combinations for when we're attacking."""
