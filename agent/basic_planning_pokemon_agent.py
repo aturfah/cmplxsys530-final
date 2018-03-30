@@ -104,13 +104,13 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     dmg_range = None
                 elif p_opt[0] == "ATTACK":
                     # Only we attack
-                    dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt, o_opt)
+                    dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
 
                     # Average damage as percent
                     opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
 
                 elif o_opt[0] == "ATTACK":
-                    dmg_range = None
+                    dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
 
                 my_posn = calc_position_helper(my_gs)
                 opp_posn = calc_opp_position_helper(opp_gs)
@@ -123,7 +123,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         return optimal_opt
 
-    def attacking_dmg_range(self, my_gs, opp_gs, p_opt, o_opt):
+    def attacking_dmg_range(self, my_gs, opp_gs, p_opt):
         """Calculate the (weighted) damage range for an attack."""
         p_poke = my_gs["active"]
         p_move = p_poke.moves[p_opt[1]]
@@ -144,6 +144,12 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         # Each combination is weighted equally
         dmg_range[0] = dmg_range[0] / len(param_combs)
         dmg_range[1] = dmg_range[1] / len(param_combs)
+
+        return dmg_range
+
+    def defending_dmg_range(self, my_gs, opp_gs, o_opt):
+        """Calculate the (weighted) damage range when attacked."""
+        dmg_range = None
 
         return dmg_range
 
