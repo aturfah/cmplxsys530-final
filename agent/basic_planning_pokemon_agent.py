@@ -87,12 +87,14 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 if p_opt[0] == "SWITCH":
                     temp = my_gs["active"]
                     my_gs["active"] = my_gs["team"][p_opt[1]]
+                    my_gs["team"].pop(p_opt[1])
                     my_gs["team"].append(temp)
 
                 # Opponent Switches
                 if o_opt[0] == "SWITCH":
                     temp = opp_gs["data"]["active"]
                     opp_gs["data"]["active"] = opp_gs["data"]["team"][o_opt[1]]
+                    opp_gs["data"]["team"].pop(o_opt[1])
                     opp_gs["data"]["team"].append(temp)
 
                 # Attacking
