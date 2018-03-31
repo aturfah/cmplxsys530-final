@@ -402,7 +402,7 @@ def calc_position_helper(player_gs):
 def calc_opp_position_helper(opp_gs):
     """
     Calculate the player's opponent's gamestate value.
-    
+
     :param opp_gs: dict
         Opponent's gamestate as a dictionary.
     """
