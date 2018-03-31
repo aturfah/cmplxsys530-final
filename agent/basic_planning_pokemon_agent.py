@@ -85,17 +85,11 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
                 # Player Switches
                 if p_opt[0] == "SWITCH":
-                    temp = my_gs["active"]
-                    my_gs["active"] = my_gs["team"][p_opt[1]]
-                    my_gs["team"].pop(p_opt[1])
-                    my_gs["team"].append(temp)
+                    my_gs = update_gs_switch(my_gs, p_opt)
 
                 # Opponent Switches
                 if o_opt[0] == "SWITCH":
-                    temp = opp_gs["data"]["active"]
-                    opp_gs["data"]["active"] = opp_gs["data"]["team"][o_opt[1]]
-                    opp_gs["data"]["team"].pop(o_opt[1])
-                    opp_gs["data"]["team"].append(temp)
+                    opp_gs = update_gs_switch(opp_gs, o_opt, False)
 
                 # Attacking
                 if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
@@ -268,3 +262,18 @@ def def_param_combinations(active_poke, opp_params, move):
         results.append(temp_results)
 
     return results
+
+def update_gs_switch(gamestate, opt, my_gs=True):
+    """Update the gamestate on switch."""
+    if my_gs:
+        temp = gamestate["active"]
+        gamestate["active"] = gamestate["team"][opt[1]]
+        gamestate["team"].pop(opt[1])
+        gamestate["team"].append(temp)
+    else:
+        temp = gamestate["data"]["active"]
+        gamestate["data"]["active"] = gamestate["data"]["team"][opt[1]]
+        gamestate["data"]["team"].pop(opt[1])
+        gamestate["data"]["team"].append(temp)
+
+    return gamestate
