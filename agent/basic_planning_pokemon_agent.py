@@ -134,7 +134,16 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return optimal_opt
 
     def attacking_dmg_range(self, my_gs, opp_gs, p_opt):
-        """Calculate the (weighted) damage range for an attack."""
+        """
+        Calculate the (weighted) damage range for an attack.
+
+        :param my_gs: dict
+            This player's gamestate as a dictionary.
+        :param opp_gs: dict
+            The opponent's gamestate as a dictionary.
+        :param p_opt: tuple
+            This player's choice at this turn.
+        """
         p_poke = my_gs["active"]
         p_move = p_poke.moves[p_opt[1]]
         o_poke_name = opp_gs["data"]["active"]["name"]
@@ -162,7 +171,16 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return dmg_range
 
     def defending_dmg_range(self, my_gs, opp_gs, o_opt):
-        """Calculate the (weighted) damage range when attacked."""
+        """
+        Calculate the (weighted) damage range when attacked.
+
+        :param my_gs: dict
+            This player's gamestate as a dictionary.
+        :param opp_gs: dict
+            The opponent's gamestate as a dictionary.
+        :param o_opt: tuple
+            The opponent's move choice at this turn.
+        """
         p_poke = my_gs["active"]
         o_move = MOVE_DATA[o_opt[1]]
         o_poke_name = opp_gs["data"]["active"]["name"]
