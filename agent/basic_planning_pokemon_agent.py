@@ -106,38 +106,24 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
                     if p_poke.speed > (min_opp_spe + max_opp_spe) / 2:
                         # We attack first, then opponent attacks
-                        dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
-                        opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
+                        opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
                         if opp_gs["data"]["active"]["pct_hp"] > 0:
-                            dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
-                            my_gs["active"].current_hp -= my_gs["active"].max_hp * \
-                                                        (dmg_range[0] + dmg_range[1]) / 200
+                            my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
                     else:
                         # Opponent attacks first, then us
-                        dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
-                        my_gs["active"].current_hp -= my_gs["active"].max_hp * \
-                                                        (dmg_range[0] + dmg_range[1]) / 200
+                        my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
 
                         if my_gs["active"].current_hp > 0:
-                            dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
-                            avg_dmg_range = (dmg_range[0] + dmg_range[1]) / 200
-                            opp_gs["data"]["active"]["pct_hp"] -= avg_dmg_range
+                            opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
                 elif p_opt[0] == "ATTACK":
                     # Only we attack
-                    dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
-
-                    # Average damage as decimal
-                    opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
+                    opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
                 elif o_opt[0] == "ATTACK":
                     # Only opponent attacks
-                    dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
-
-                    # Average damage as portion of total HP
-                    my_gs["active"].current_hp -= my_gs["active"].max_hp * \
-                                                 (dmg_range[0] + dmg_range[1]) / 200
+                    my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
 
                 my_posn = calc_position_helper(my_gs) + 0.01
                 opp_posn = calc_opp_position_helper(opp_gs) + 0.01
@@ -205,6 +191,23 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         dmg_range[1] = dmg_range[1] / len(param_combs)
 
         return dmg_range
+
+    def update_opp_gs_atk(self, my_gs, opp_gs, p_opt):
+        """Updated opponent gamestate when we're attacking."""
+        dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
+
+        # Average damage as decimal
+        opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
+        return opp_gs
+
+    def update_my_gs_def(self, my_gs, opp_gs, o_opt):
+        """Update my_gs variable when on defense."""
+        dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
+
+        # Average damage as portion of total HP
+        my_gs["active"].current_hp -= my_gs["active"].max_hp * \
+                                        (dmg_range[0] + dmg_range[1]) / 200
+        return my_gs
 
 def atk_param_combinations(active_poke, opp_params, move):
     """Calculate possible parameter combinations for when we're attacking."""
