@@ -82,7 +82,6 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             for o_opt in opp_opts:
                 my_gs = deepcopy(self.gamestate)
                 opp_gs = deepcopy(self.opp_gamestate)
-                print(p_opt, o_opt)
 
                 # Player Switches
                 if p_opt[0] == "SWITCH":
