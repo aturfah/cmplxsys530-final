@@ -42,8 +42,8 @@ class PokemonAgent(BaseAgent):
         self.opp_gamestate["investment"][opp_active["name"]]["def"] = possible_combs["def"]
         self.opp_gamestate["investment"][opp_active["name"]]["spa"] = possible_combs["spa"]
         self.opp_gamestate["investment"][opp_active["name"]]["spd"] = possible_combs["spd"]
-        self.opp_gamestate["investment"][opp_active["name"]]["spd"] = \
-            generate_spd_range(opp_active["name"])
+        self.opp_gamestate["investment"][opp_active["name"]]["spe"] = \
+            generate_spe_range(opp_active["name"])
 
         for opp_poke in opp_team:
             self.opp_gamestate["investment"][opp_poke["name"]] = {}
@@ -53,7 +53,7 @@ class PokemonAgent(BaseAgent):
             self.opp_gamestate["investment"][opp_poke["name"]]["spa"] = possible_combs["spa"]
             self.opp_gamestate["investment"][opp_poke["name"]]["spd"] = possible_combs["spd"]
             self.opp_gamestate["investment"][opp_poke["name"]]["spe"] = \
-                generate_spd_range(opp_poke["name"])
+                generate_spe_range(opp_poke["name"])
 
 
     def update_gamestate(self, my_gamestate, opp_gamestate):
@@ -434,7 +434,7 @@ def generate_all_ev_combinations():
 
     return combinations
 
-def generate_spd_range(pokemon_name):
+def generate_spe_range(pokemon_name):
     """Calculate the range for a pokemon's speed."""
     # Slowest possible opponent's pokemon
     min_speed = Pokemon(name=pokemon_name, moves=["tackle"], nature="brave").speed
