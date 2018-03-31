@@ -141,9 +141,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     my_gs["active"].current_hp -= my_gs["active"].max_hp * \
                                                  (dmg_range[0] + dmg_range[1]) / 200
 
-                my_posn = calc_position_helper(my_gs)
-                opp_posn = calc_opp_position_helper(opp_gs)
+                my_posn = calc_position_helper(my_gs) + 0.01
+                opp_posn = calc_opp_position_helper(opp_gs) + 0.01
                 total_position += my_posn / opp_posn
+                print(my_posn, opp_posn, total_position)
 
             avg_position = total_position / len(opp_opts)
             if avg_position > maximal_position:
