@@ -99,7 +99,6 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     opp_gs["data"]["team"].append(temp)
 
                 # Attacking
-                dmg_range = None
                 if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
                     # Figure out who is faster
                     p_poke = my_gs["active"]
@@ -144,7 +143,6 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 my_posn = calc_position_helper(my_gs) + 0.01
                 opp_posn = calc_opp_position_helper(opp_gs) + 0.01
                 total_position += my_posn / opp_posn
-                print(my_posn, opp_posn, total_position)
 
             avg_position = total_position / len(opp_opts)
             if avg_position > maximal_position:
@@ -195,7 +193,6 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         dmg_range = None
         param_combs = def_param_combinations(p_poke, params, o_move)
-
         for param_comb in param_combs:
             dmg_val = self.dmg_stat_calc.calculate_range(o_move, o_poke, p_poke, param_comb)
             if not dmg_range:
