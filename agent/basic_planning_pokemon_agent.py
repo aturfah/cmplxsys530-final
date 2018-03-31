@@ -183,7 +183,16 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return dmg_range
 
     def update_opp_gs_atk(self, my_gs, opp_gs, p_opt):
-        """Update opponent gamestate when we're attacking."""
+        """
+        Update opponent gamestate when we're attacking.
+
+        :param my_gs: dict
+            This player's gamestate as a dictionary.
+        :param opp_gs: dict
+            The opponent's gamestate as a dictionary.
+        :param p_opt: tuple
+            This player's choice for a move this turn.
+        """
         dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
 
         # Average damage as decimal
@@ -191,7 +200,16 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return opp_gs
 
     def update_my_gs_def(self, my_gs, opp_gs, o_opt):
-        """Update my_gs variable when on defense."""
+        """
+        Update my_gs variable when on defense.
+
+        :param my_gs: dict
+            This player's gamestate as a dictionary.
+        :param opp_gs: dict
+            The opponent's gamestate as a dictionary.
+        :param o_opt: tuple
+            The opponent's choice for a move this turn.
+        """
         dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
 
         # Average damage as portion of total HP
@@ -200,7 +218,18 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return my_gs
 
     def determine_faster(self, my_gs, opp_gs, p_opt, o_opt):
-        """Determine who is faster."""
+        """
+        Determine whether this player is faster.
+
+        :param my_gs: dict
+            This player's gamestate as a dictionary.
+        :param opp_gs: dict
+            The opponent's gamestate as a dictionary.
+        :param p_opt: tuple
+            This player's choice for a move this turn.
+        :param o_opt: tuple
+            The opponent's choice for a move this turn.
+        """
         p_poke = my_gs["active"]
         o_poke_name = opp_gs["data"]["active"]["name"]
 
@@ -217,7 +246,16 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
 
 def atk_param_combinations(active_poke, opp_params, move):
-    """Calculate possible parameter combinations for when we're attacking."""
+    """
+    Calculate possible parameter combinations for when we're attacking.
+
+    :param active_poke: Pokemon (dict-like)
+        This player's active (attacking) pokemon.
+    :param opp_params: dict
+        The opponent's investment inferences.
+    :param move: dict
+        The move that we are attacking with.
+    """
     results = []
 
     # Figure out which stat we should use
@@ -246,7 +284,16 @@ def atk_param_combinations(active_poke, opp_params, move):
 
 
 def def_param_combinations(active_poke, opp_params, move):
-    """Parameter combinations for when we're on the defensive."""
+    """
+    Parameter combinations for when we're on the defensive.
+
+    :param active_poke: Pokemon (dict-like)
+        This player's active (defending) pokemon.
+    :param opp_params:
+        The investment inferences of the opponent's pokemon.
+    :param move:
+        The move that our opponent used.
+    """
     results = []
 
     # Figure out which stat we should use
@@ -279,7 +326,16 @@ def def_param_combinations(active_poke, opp_params, move):
 
 
 def update_gs_switch(gamestate, opt, my_gs=True):
-    """Update the gamestate on switch."""
+    """
+    Update the gamestate on switch.
+
+    :param gamestate: dict
+        The gamestate to be updated.
+    :param opt: tuple
+        The move that was made by whoever's gamestate that was.
+    :param my_gs: bool
+        Whether or not this is this player's gamestate.
+    """
     if my_gs:
         temp = gamestate["active"]
         gamestate["active"] = gamestate["team"][opt[1]]
