@@ -1,7 +1,5 @@
 """Script for running Pokemon Simulation."""
 
-from numpy.random import uniform
-
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
