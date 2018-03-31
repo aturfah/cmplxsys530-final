@@ -203,9 +203,17 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """Determine who is faster."""
         p_poke = my_gs["active"]
         o_poke_name = opp_gs["data"]["active"]["name"]
-        min_opp_spe, max_opp_spe = self.opp_gamestate["investment"][o_poke_name]["spe"]
 
-        return p_poke.speed > (min_opp_spe + max_opp_spe) / 2
+        p_move = p_poke.moves[p_opt[1]]
+        o_move = MOVE_DATA[o_opt[1]]
+
+        # Same priority is decided by speed
+        if p_move["priority"] == o_move["priority"]:
+            min_opp_spe, max_opp_spe = self.opp_gamestate["investment"][o_poke_name]["spe"]
+            return p_poke.speed > (min_opp_spe + max_opp_spe) / 2
+
+        # Moves of different priority will always go in priority order
+        return p_move["priority"] > o_move["priority"]
 
 
 def atk_param_combinations(active_poke, opp_params, move):
