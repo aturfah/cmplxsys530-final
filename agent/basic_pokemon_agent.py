@@ -364,16 +364,16 @@ def battle_position_helper(player_gs, opp_gs):
     self_component = calc_position_helper(player_gs)
     opp_component = calc_opp_position_helper(opp_gs)
 
-    return self_component / opp_component
+    return (self_component+0.01) / (opp_component+0.01)
 
 def calc_position_helper(player_gs):
     """Calculate the player's gamestate value."""
     my_posn = 0
     active_poke = player_gs["active"]
-    if active_poke is not None:
+    if active_poke is not None and active_poke.current_hp > 0:
         my_posn += active_poke.current_hp / active_poke.max_hp
 
-    for poke in player_gs["team"]:
+    for poke in player_gs["team"] and poke.current_hp > 0:
         my_posn += poke.current_hp / poke.max_hp
 
     return my_posn
@@ -382,11 +382,12 @@ def calc_opp_position_helper(opp_gs):
     """Calculate the player's opponent's gamestate value."""
     opp_posn = 0
     active_poke = opp_gs["data"]["active"]
-    if active_poke is not None:
+    if active_poke is not None and active_poke["pct_hp"] > 0:
         opp_posn += active_poke["pct_hp"]
 
     for poke in opp_gs["data"]["team"]:
-        opp_posn += poke["pct_hp"]
+        if poke["pct_hp"] > 0:
+            opp_posn += poke["pct_hp"]
 
     return opp_posn
 
