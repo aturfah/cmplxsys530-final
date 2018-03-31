@@ -381,7 +381,12 @@ def battle_position_helper(player_gs, opp_gs):
 
 
 def calc_position_helper(player_gs):
-    """Calculate the player's gamestate value."""
+    """
+    Calculate the player's gamestate value.
+
+    :param player_gs: dict
+        This player's gamestate (as a dictionary)
+    """
     my_posn = 0
     active_poke = player_gs["active"]
     if active_poke is not None and active_poke.current_hp > 0:
@@ -395,7 +400,12 @@ def calc_position_helper(player_gs):
 
 
 def calc_opp_position_helper(opp_gs):
-    """Calculate the player's opponent's gamestate value."""
+    """
+    Calculate the player's opponent's gamestate value.
+    
+    :param opp_gs: dict
+        Opponent's gamestate as a dictionary.
+    """
     opp_posn = 0
     active_poke = opp_gs["data"]["active"]
     if active_poke is not None and active_poke["pct_hp"] > 0:
@@ -454,7 +464,12 @@ def generate_all_ev_combinations():
 
 
 def generate_spe_range(pokemon_name):
-    """Calculate the range for a pokemon's speed."""
+    """
+    Calculate the range for a pokemon's speed.
+
+    :param pokemon_name: str
+        The name of the pokemon for whom the range is being calculated.
+    """
     # Slowest possible opponent's pokemon
     min_speed = Pokemon(name=pokemon_name, moves=["tackle"], nature="brave").speed
     # Fastest possible opponent's pokemon
