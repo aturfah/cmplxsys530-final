@@ -340,6 +340,14 @@ class PokemonAgent(BaseAgent):
                 if result in self.opp_gamestate["investment"][poke_name]["hp"]
             ]
 
+            # Stop it from becoming nothing
+            if not self.opp_gamestate["investment"][poke_name][stat]:
+                self.opp_gamestate["investment"][poke_name][stat] = \
+                        generate_all_ev_combinations()[stat]
+            if not self.opp_gamestate["investment"][poke_name]["hp"]:
+                self.opp_gamestate["investment"][poke_name]["hp"] = \
+                        generate_all_ev_combinations()["hp"]
+
     def update_def_inference(self, turn_info, results, combinations):
         """Update the opponent's attack investment information."""
         move = turn_info["move"]
@@ -358,6 +366,12 @@ class PokemonAgent(BaseAgent):
                 result for result in valid_results
                 if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
             ]
+
+        # Stop it from becoming nothing
+        if not self.opp_gamestate["investment"][poke_name][stat]:
+            self.opp_gamestate["investment"][poke_name][stat] = \
+                    generate_all_ev_combinations()[stat]
+
 
 def battle_position_helper(player_gs, opp_gs):
     """Calculate the battle position for generic gamestates."""
