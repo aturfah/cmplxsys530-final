@@ -340,7 +340,7 @@ class PokemonAgent(BaseAgent):
                 if result in self.opp_gamestate["investment"][poke_name]["hp"]
             ]
 
-            # Stop it from becoming nothing
+            # Stop it from becoming empty
             if not self.opp_gamestate["investment"][poke_name][stat]:
                 self.opp_gamestate["investment"][poke_name][stat] = \
                         generate_all_ev_combinations()[stat]
@@ -367,7 +367,7 @@ class PokemonAgent(BaseAgent):
                 if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
             ]
 
-        # Stop it from becoming nothing
+        # Stop it from becoming empty
         if not self.opp_gamestate["investment"][poke_name][stat]:
             self.opp_gamestate["investment"][poke_name][stat] = \
                     generate_all_ev_combinations()[stat]
