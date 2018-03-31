@@ -111,6 +111,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
                 elif o_opt[0] == "ATTACK":
                     dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
+                    print(dmg_range)
 
                 my_posn = calc_position_helper(my_gs)
                 opp_posn = calc_opp_position_helper(opp_gs)
@@ -131,6 +132,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         o_poke = POKEMON_DATA[o_poke_name]
         params = self.opp_gamestate["investment"][o_poke_name]
 
+        # We do not handle status moves at this point in time.
+        if p_move["category"] == "Status":
+            return [0, 0]
+
         dmg_range = None
         param_combs = atk_param_combinations(p_poke, params, p_move)
         for param_comb in param_combs:
@@ -149,7 +154,30 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
     def defending_dmg_range(self, my_gs, opp_gs, o_opt):
         """Calculate the (weighted) damage range when attacked."""
+        p_poke = my_gs["active"]
+        o_move = MOVE_DATA[o_opt[1]]
+        o_poke_name = opp_gs["data"]["active"]["name"]
+        o_poke = POKEMON_DATA[o_poke_name]
+        params = self.opp_gamestate["investment"][o_poke_name]
+
+        # We do not handle status moves at this point in time.
+        if o_move["category"] == "Status":
+            return [0, 0]
+
         dmg_range = None
+        param_combs = def_param_combinations(p_poke, params, o_move)
+
+        for param_comb in param_combs:
+            dmg_val = self.dmg_stat_calc.calculate_range(o_move, o_poke, p_poke, param_comb)
+            if not dmg_range:
+                dmg_range = [0, 0]
+
+            dmg_range[0] += dmg_val[0]
+            dmg_range[1] += dmg_val[1]
+
+        # Each combination is weighted equally
+        dmg_range[0] = dmg_range[0] / len(param_combs)
+        dmg_range[1] = dmg_range[1] / len(param_combs)
 
         return dmg_range
 
@@ -179,4 +207,36 @@ def atk_param_combinations(active_poke, opp_params, move):
             temp_results["def"] = def_params
             results.append(temp_results)
 
+    return results
+
+def def_param_combinations(active_poke, opp_params, move):
+    """Parameter combinations for when we're on the defensive."""
+    results = []
+
+    # Figure out which stat we should use
+    stat = "def"
+    opp_stat = "atk"
+    if move["category"] == "Special":
+        stat = "spd"
+        opp_stat = "spa"
+
+    result_dict = {}
+    result_dict["def"] = {}
+    result_dict["hp"] = {}
+
+    # Information for Defense Stat
+    if stat in active_poke.evs and active_poke.evs[stat] > 128:
+        result_dict["def"]["max_evs"] = True
+    if active_poke.increase_stat == stat:
+        result_dict["def"]["positive_nature"] = True
+
+    # Information for HP Stat
+    if "hp" in active_poke.evs and active_poke.evs["hp"] > 128:
+        result_dict["hp"]["max_evs"] = True
+
+    for atk_params in opp_params[opp_stat]:
+        temp_results = deepcopy(result_dict)
+        temp_results["atk"] = atk_params
+        results.append(temp_results)
+    
     return results
