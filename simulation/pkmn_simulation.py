@@ -44,6 +44,7 @@ class PokemonSimulation(BaseSimulation):
     def run(self):
         """Run this simulation."""
         for game_ind in range(self.num_games):
+            self.print_progress_bar(game_ind)
             outcome, player1, player2 = self.ladder.run_game()
             self.write_player_log(outcome, player1, player2)
 
