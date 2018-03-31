@@ -74,7 +74,14 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return player_opts, opp_opts
 
     def optimal_move(self, player_opts, opp_opts):
-        """Choose the optimal move given the options availible."""
+        """
+        Choose the optimal move given the options availible.
+
+        :param player_opts: list
+            All of the player's options for this turn.
+        :param opp_opts: list
+            All of the opponent's possible moves this turn.
+        """
         optimal_opt = None
         maximal_position = -1
         for p_opt in player_opts:
