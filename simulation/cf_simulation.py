@@ -25,6 +25,7 @@ class CFSimulation(BaseSimulation):
 
     def run(self):
         """Run the CF Simulation."""
-        for _ in range(self.num_games):
+        for game_ind in range(self.num_games):
             outcome, player1, player2 = self.ladder.run_game()
+            self.print_progress_bar(game_ind)
             self.write_player_log(outcome, player1, player2)

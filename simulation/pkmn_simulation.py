@@ -44,9 +44,10 @@ class PokemonSimulation(BaseSimulation):
     def run(self):
         """Run this simulation."""
         for game_ind in range(self.num_games):
-            self.print_progress_bar(game_ind)
             outcome, player1, player2 = self.ladder.run_game()
+
             self.write_player_log(outcome, player1, player2)
+            self.print_progress_bar(game_ind)
 
             if game_ind % self.data_delay == 0:
                 # Calculate the average ranking statistics
