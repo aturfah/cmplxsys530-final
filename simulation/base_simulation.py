@@ -68,6 +68,33 @@ class BaseSimulation():
 
         self.player_log_writer = LogWriter(header, prefix=log_prefix)
 
+    def print_progress_bar(self, iteration):
+        """
+        Call in a loop to create terminal progress bar
+        @params:
+            iteration   - Required  : current iteration (Int)
+            total       - Required  : total iterations (Int)
+            prefix      - Optional  : prefix string (Str)
+            suffix      - Optional  : suffix string (Str)
+            decimals    - Optional  : positive number of decimals in percent complete (Int)
+            length      - Optional  : character length of bar (Int)
+            fill        - Optional  : bar fill character (Str)
+        """
+        total = self.num_games
+        prefix = "Progress: "
+        suffix = "Complete"
+        decimals = 1
+        length = 50
+        fill = '█'
+        percent = ("{0:." + str(decimals) + "f}").format(100 *
+                                                         (iteration / float(total)))
+        filled_length = int(length * iteration // total)
+        bars = fill * filled_length + '-' * (length - filled_length)
+        print('\r%s |%s| %s%% %s' % (prefix, bars, percent, suffix), end='\r')
+        # Print New Line on Complete
+        if iteration == total:
+            print()
+
     def run(self):
         """Run this simulation."""
         raise NotImplementedError("Implement in inherited class")
