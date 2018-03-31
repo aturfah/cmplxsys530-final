@@ -94,11 +94,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 # Attacking
                 if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
                     # Figure out who is faster
-                    p_poke = my_gs["active"]
-                    o_poke_name = opp_gs["data"]["active"]["name"]
-                    min_opp_spe, max_opp_spe = self.opp_gamestate["investment"][o_poke_name]["spe"]
-
-                    if p_poke.speed > (min_opp_spe + max_opp_spe) / 2:
+                    if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
                         # We attack first, then opponent attacks
                         opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
@@ -202,6 +198,15 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         my_gs["active"].current_hp -= my_gs["active"].max_hp * \
                                         (dmg_range[0] + dmg_range[1]) / 200
         return my_gs
+
+    def determine_faster(self, my_gs, opp_gs, p_opt, o_opt):
+        """Determine who is faster."""
+        p_poke = my_gs["active"]
+        o_poke_name = opp_gs["data"]["active"]["name"]
+        min_opp_spe, max_opp_spe = self.opp_gamestate["investment"][o_poke_name]["spe"]
+
+        return p_poke.speed > (min_opp_spe + max_opp_spe) / 2
+
 
 def atk_param_combinations(active_poke, opp_params, move):
     """Calculate possible parameter combinations for when we're attacking."""
