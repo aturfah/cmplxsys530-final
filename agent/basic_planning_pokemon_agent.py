@@ -101,7 +101,30 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 dmg_range = None
                 if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
                     # Figure out who is faster
-                    dmg_range = None
+                    p_poke = my_gs["active"]
+                    o_poke_name = opp_gs["data"]["active"]["name"]
+                    min_opp_spe, max_opp_spe = self.opp_gamestate["investment"][o_poke_name]["spe"]
+
+                    if p_poke.speed > (min_opp_spe + max_opp_spe) / 2:
+                        # We attack first, then opponent attacks
+                        dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
+                        opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
+
+                        if opp_gs["data"]["active"]["pct_hp"] > 0:
+                            dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
+                            my_gs["active"].current_hp -= my_gs["active"].max_hp * \
+                                                        (dmg_range[0] + dmg_range[1]) / 200
+                    else:
+                        # Opponent attacks first, then us
+                        dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
+                        my_gs["active"].current_hp -= my_gs["active"].max_hp * \
+                                                        (dmg_range[0] + dmg_range[1]) / 200
+
+                        if my_gs["active"].current_hp > 0:
+                            dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
+                            avg_dmg_range = (dmg_range[0] + dmg_range[1]) / 200
+                            opp_gs["data"]["active"]["pct_hp"] -= avg_dmg_range
+
                 elif p_opt[0] == "ATTACK":
                     # Only we attack
                     dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
@@ -110,7 +133,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
 
                 elif o_opt[0] == "ATTACK":
+                    # Only opponent attacks
                     dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
+
                     # Average damage as portion of total HP
                     my_gs["active"].current_hp -= my_gs["active"].max_hp * \
                                                  (dmg_range[0] + dmg_range[1]) / 200
@@ -119,10 +144,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 opp_posn = calc_opp_position_helper(opp_gs)
                 total_position += my_posn / opp_posn
 
-            total_position = total_position / len(opp_opts)
-            if total_position > maximal_position:
+            avg_position = total_position / len(opp_opts)
+            if avg_position > maximal_position:
                 optimal_opt = p_opt
-                maximal_position = total_position
+                maximal_position = avg_position
 
         return optimal_opt
 
