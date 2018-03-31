@@ -51,7 +51,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         opp_moves = []
         if opp_active_poke in self.opp_gamestate["moves"]:
             for move in self.opp_gamestate["moves"][opp_active_poke]:
-                opp_moves.append(move["name"])
+                opp_moves.append(move["id"])
         if len(opp_moves) < 4:
             common_moves = USAGE_STATS[self.tier][opp_active_poke]["Moves"]
             common_moves = sorted(common_moves.items(),
