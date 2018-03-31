@@ -1,6 +1,6 @@
 """Unit tests for pokemon engine."""
 
-from agent.pokemon_agent import PokemonAgent
+from agent.basic_pokemon_agent import PokemonAgent
 from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
 

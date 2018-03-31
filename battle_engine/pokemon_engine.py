@@ -54,6 +54,11 @@ class PokemonEngine():
         player2.update_gamestate(
             self.game_state["player2"], self.anonymize_gamestate("player1"))
 
+        player1.init_opp_gamestate(self.game_state["player2"]["team"],
+                                   self.game_state["player2"]["active"])
+        player2.init_opp_gamestate(self.game_state["player1"]["team"],
+                                   self.game_state["player1"]["active"])
+
         # Initial setting of outcome variable
         outcome = self.win_condition_met()
         while not outcome["finished"]:

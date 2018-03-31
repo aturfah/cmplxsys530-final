@@ -33,6 +33,28 @@ class PokemonAgent(BaseAgent):
         self.opp_gamestate["moves"] = {}
         self.opp_gamestate["investment"] = {}
 
+    def init_opp_gamestate(self, opp_team, opp_active):
+        """Initialize the investment data for the opponent's team."""
+        possible_combs = generate_all_ev_combinations()
+        self.opp_gamestate["investment"][opp_active["name"]] = {}
+        self.opp_gamestate["investment"][opp_active["name"]]["hp"] = possible_combs["hp"]
+        self.opp_gamestate["investment"][opp_active["name"]]["atk"] = possible_combs["atk"]
+        self.opp_gamestate["investment"][opp_active["name"]]["def"] = possible_combs["def"]
+        self.opp_gamestate["investment"][opp_active["name"]]["spa"] = possible_combs["spa"]
+        self.opp_gamestate["investment"][opp_active["name"]]["spd"] = possible_combs["spd"]
+        self.opp_gamestate["investment"][opp_active["name"]]["spe"] = \
+            generate_spe_range(opp_active["name"])
+
+        for opp_poke in opp_team:
+            self.opp_gamestate["investment"][opp_poke["name"]] = {}
+            self.opp_gamestate["investment"][opp_poke["name"]]["hp"] = possible_combs["hp"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["atk"] = possible_combs["atk"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["def"] = possible_combs["def"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["spa"] = possible_combs["spa"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["spd"] = possible_combs["spd"]
+            self.opp_gamestate["investment"][opp_poke["name"]]["spe"] = \
+                generate_spe_range(opp_poke["name"])
+
     def update_gamestate(self, my_gamestate, opp_gamestate):
         """
         Update internal gamestate for self.
@@ -87,27 +109,11 @@ class PokemonAgent(BaseAgent):
 
     def calc_position(self):
         """Calculate the value for self's battle position."""
-        my_posn = 0
-        active_poke = self.gamestate["active"]
-        if active_poke is not None:
-            my_posn += active_poke.current_hp / active_poke.max_hp
-
-        for poke in self.gamestate["team"]:
-            my_posn += poke.current_hp / poke.max_hp
-
-        return my_posn
+        return calc_position_helper(self.gamestate)
 
     def calc_opp_position(self):
         """Calculate the opponent's battle position."""
-        opp_posn = 0
-        active_poke = self.opp_gamestate["data"]["active"]
-        if active_poke is not None:
-            opp_posn += active_poke["pct_hp"]
-
-        for poke in self.opp_gamestate["data"]["team"]:
-            opp_posn += poke["pct_hp"]
-
-        return opp_posn
+        return calc_opp_position_helper(self.opp_gamestate)
 
     def new_info(self, turn_info, my_id):
         """
@@ -333,6 +339,14 @@ class PokemonAgent(BaseAgent):
                 if result in self.opp_gamestate["investment"][poke_name]["hp"]
             ]
 
+            # Stop it from becoming empty
+            if not self.opp_gamestate["investment"][poke_name][stat]:
+                self.opp_gamestate["investment"][poke_name][stat] = \
+                        generate_all_ev_combinations()[stat]
+            if not self.opp_gamestate["investment"][poke_name]["hp"]:
+                self.opp_gamestate["investment"][poke_name]["hp"] = \
+                        generate_all_ev_combinations()["hp"]
+
     def update_def_inference(self, turn_info, results, combinations):
         """Update the opponent's attack investment information."""
         move = turn_info["move"]
@@ -351,3 +365,116 @@ class PokemonAgent(BaseAgent):
                 result for result in valid_results
                 if result in self.opp_gamestate["investment"][turn_info["atk_poke"]][stat]
             ]
+
+        # Stop it from becoming empty
+        if not self.opp_gamestate["investment"][poke_name][stat]:
+            self.opp_gamestate["investment"][poke_name][stat] = \
+                    generate_all_ev_combinations()[stat]
+
+
+def battle_position_helper(player_gs, opp_gs):
+    """Calculate the battle position for generic gamestates."""
+    self_component = calc_position_helper(player_gs)
+    opp_component = calc_opp_position_helper(opp_gs)
+
+    return (self_component+0.01) / (opp_component+0.01)
+
+
+def calc_position_helper(player_gs):
+    """
+    Calculate the player's gamestate value.
+
+    :param player_gs: dict
+        This player's gamestate (as a dictionary)
+    """
+    my_posn = 0
+    active_poke = player_gs["active"]
+    if active_poke is not None and active_poke.current_hp > 0:
+        my_posn += active_poke.current_hp / active_poke.max_hp
+
+    for poke in player_gs["team"]:
+        if poke.current_hp > 0:
+            my_posn += poke.current_hp / poke.max_hp
+
+    return my_posn
+
+
+def calc_opp_position_helper(opp_gs):
+    """
+    Calculate the player's opponent's gamestate value.
+
+    :param opp_gs: dict
+        Opponent's gamestate as a dictionary.
+    """
+    opp_posn = 0
+    active_poke = opp_gs["data"]["active"]
+    if active_poke is not None and active_poke["pct_hp"] > 0:
+        opp_posn += active_poke["pct_hp"]
+
+    for poke in opp_gs["data"]["team"]:
+        if poke["pct_hp"] > 0:
+            opp_posn += poke["pct_hp"]
+
+    return opp_posn
+
+
+def generate_all_ev_combinations():
+    """Generate all possible stat investment combinations."""
+    combinations = {}
+
+    combinations["atk"] = []
+    combinations["spa"] = []
+    atk_combinations = []
+    atk_combinations.append((False, False))
+    atk_combinations.append((True, False))
+    atk_combinations.append((False, True))
+    atk_combinations.append((True, True))
+    for combination in atk_combinations:
+        result_dict = {}
+        result_dict["max_evs"] = combination[0]
+        result_dict["positive_nature"] = combination[1]
+        combinations["atk"].append(result_dict)
+        combinations["spa"].append(result_dict)
+
+    combinations["hp"] = []
+    combinations["def"] = []
+    combinations["spd"] = []
+
+    def_combinations = []
+    def_combinations.append((False, False))
+    def_combinations.append((False, False))
+    def_combinations.append((True, False))
+    def_combinations.append((True, False))
+    def_combinations.append((False, True))
+    def_combinations.append((False, True))
+    def_combinations.append((True, True))
+    def_combinations.append((True, True))
+
+    for combination in def_combinations:
+        result_dict = {}
+        result_dict["max_evs"] = combination[0]
+        result_dict["positive_nature"] = combination[1]
+        combinations["def"].append(result_dict)
+        combinations["spd"].append(result_dict)
+
+    combinations["hp"].append({"max_evs": True})
+    combinations["hp"].append({"max_evs": False})
+
+    return combinations
+
+
+def generate_spe_range(pokemon_name):
+    """
+    Calculate the range for a pokemon's speed.
+
+    :param pokemon_name: str
+        The name of the pokemon for whom the range is being calculated.
+    """
+    # Slowest possible opponent's pokemon
+    min_speed = Pokemon(name=pokemon_name, moves=["tackle"], nature="brave").speed
+    # Fastest possible opponent's pokemon
+    max_speed = Pokemon(name=pokemon_name,
+                        moves=["tackle"],
+                        evs={"spe": 252},
+                        nature="jolly").speed
+    return [min_speed, max_speed]

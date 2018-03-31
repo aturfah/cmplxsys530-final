@@ -93,5 +93,228 @@
 		"type": "Ghost",
 		"zMovePower": 160,
 		"contestType": "Clever"
+	},
+	"superpower": {
+		"num": 276,
+		"accuracy": 100,
+		"basePower": 120,
+		"category": "Physical",
+		"desc": "Lowers the user's Attack and Defense by 1 stage.",
+		"shortDesc": "Lowers the user's Attack and Defense by 1.",
+		"id": "superpower",
+		"isViable": true,
+		"name": "Superpower",
+		"pp": 5,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"self": {
+			"boosts": {
+				"atk": -1,
+				"def": -1
+			}
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Fighting",
+		"zMovePower": 190,
+		"contestType": "Tough"
+	},
+	"frustration": {
+		"num": 218,
+		"accuracy": 100,
+		"basePower": 102,
+		"category": "Physical",
+		"desc": "Power is equal to the greater of ((255 - user's Happiness) * 2/5), rounded down, or 1.",
+		"shortDesc": "Max 102 power at minimum Happiness.",
+		"id": "frustration",
+		"isViable": true,
+		"name": "Frustration",
+		"pp": 20,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Normal",
+		"zMovePower": 160,
+		"contestType": "Cute"
+	},
+	"suckerpunch": {
+		"num": 389,
+		"accuracy": 100,
+		"basePower": 70,
+		"category": "Physical",
+		"desc": "Fails if the target did not select a physical attack, special attack, or Me First for use this turn, or if the target moves before the user.",
+		"shortDesc": "Usually goes first. Fails if target is not attacking.",
+		"id": "suckerpunch",
+		"isViable": true,
+		"name": "Sucker Punch",
+		"pp": 5,
+		"priority": 1,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Dark",
+		"zMovePower": 140,
+		"contestType": "Clever"
+	},
+	"trickroom": {
+		"num": 433,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "For 5 turns, all active Pokemon with lower Speed will move before those with higher Speed, within their priority brackets. If this move is used during the effect, the effect ends.",
+		"shortDesc": "For 5 turns, slower Pokemon move first.",
+		"id": "trickroom",
+		"name": "Trick Room",
+		"pp": 5,
+		"priority": -7,
+		"flags": {
+			"mirror": 1
+		},
+		"pseudoWeather": "trickroom",
+		"secondary": false,
+		"target": "all",
+		"type": "Psychic",
+		"zMoveBoost": {
+			"accuracy": 1
+		},
+		"contestType": "Clever"
+	},
+	"return": {
+		"num": 218,
+		"accuracy": 100,
+		"basePower": 102,
+		"category": "Physical",
+		"desc": "Power is equal to the greater of ((user's Happiness) * 2/5), rounded down, or 1.",
+		"shortDesc": "Max 102 power at maximum Happiness.",
+		"id": "return",
+		"isViable": true,
+		"name": "Return",
+		"pp": 20,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Normal",
+		"zMovePower": 160,
+		"contestType": "Cute"
+	},
+	"aquajet": {
+		"num": 453,
+		"accuracy": 100,
+		"basePower": 40,
+		"category": "Physical",
+		"desc": "No additional effect.",
+		"shortDesc": "Usually goes first.",
+		"id": "aquajet",
+		"isViable": true,
+		"name": "Aqua Jet",
+		"pp": 20,
+		"priority": 1,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Water",
+		"zMovePower": 100,
+		"contestType": "Cool"
+	},
+	"icepunch": {
+		"num": 8,
+		"accuracy": 100,
+		"basePower": 75,
+		"category": "Physical",
+		"desc": "Has a 10% chance to freeze the target.",
+		"shortDesc": "10% chance to freeze the target.",
+		"id": "icepunch",
+		"isViable": true,
+		"name": "Ice Punch",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1,
+			"punch": 1
+		},
+		"secondary": {
+			"chance": 10,
+			"status": "frz"
+		},
+		"target": "normal",
+		"type": "Ice",
+		"zMovePower": 140,
+		"contestType": "Beautiful"
+	},
+	"liquidation": {
+		"num": 710,
+		"accuracy": 100,
+		"basePower": 85,
+		"category": "Physical",
+		"desc": "Has a 20% chance to lower the target's Defense by 1 stage.",
+		"shortDesc": "20% chance to lower the target's Defense by 1.",
+		"id": "liquidation",
+		"isViable": true,
+		"name": "Liquidation",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 20,
+			"boosts": {
+				"def": -1
+			}
+		},
+		"target": "normal",
+		"type": "Water",
+		"zMovePower": 160,
+		"contestType": "Cool"
+	},
+	"icebeam": {
+		"num": 58,
+		"accuracy": 100,
+		"basePower": 90,
+		"category": "Special",
+		"desc": "Has a 10% chance to freeze the target.",
+		"shortDesc": "10% chance to freeze the target.",
+		"id": "icebeam",
+		"isViable": true,
+		"name": "Ice Beam",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"mirror": 1},
+		"secondary": {
+			"chance": 10,
+			"status": "frz"
+		},
+		"target": "normal",
+		"type": "Ice",
+		"zMovePower": 175,
+		"contestType": "Beautiful"
 	}
 }
