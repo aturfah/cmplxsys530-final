@@ -26,13 +26,7 @@ class PokemonSimulation(BaseSimulation):
     def add_agents(self):
         """Add the agents to this model."""
         for ind in range(self.num_players):
-            if ind % 3 == 0:
-                pkmn_agent = PokemonAgent(default_team_exploud())
-                if uniform() < 0.5:
-                    pkmn_agent.type = "random.exploud1"
-                else:
-                    pkmn_agent.type = "random.exploud2"
-            elif ind % 3 == 1:
+            if ind % 2 == 1:
                 pkmn_agent = PokemonAgent(default_team_floatzel())
                 pkmn_agent.type = "random.floatzel"
             else:
@@ -41,17 +35,11 @@ class PokemonSimulation(BaseSimulation):
             self.ladder.add_player(pkmn_agent)
 
         for ind in range(self.num_players):
-            if ind % 3 == 0:
-                pkmn_agent = BasicPlanningPokemonAgent(default_team_exploud())
-                if uniform() < 0.5:
-                    pkmn_agent.type = "planning.exploud1"
-                else:
-                    pkmn_agent.type = "planning.exploud2"
-            elif ind % 3 == 1:
-                pkmn_agent = BasicPlanningPokemonAgent(default_team_floatzel())
+            if ind % 2 == 1:
+                pkmn_agent = BasicPlanningPokemonAgent(tier="pu", team=default_team_floatzel())
                 pkmn_agent.type = "planning.floatzel"
             else:
-                pkmn_agent = BasicPlanningPokemonAgent(default_team_spinda())
+                pkmn_agent = BasicPlanningPokemonAgent(tier="pu", team=default_team_spinda())
                 pkmn_agent.type = "planning.spinda"
             self.ladder.add_player(pkmn_agent)
 
@@ -69,28 +57,19 @@ class PokemonSimulation(BaseSimulation):
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""
         header = []
-        header.append("random.exploud1")
-        header.append("random.exploud2")
         header.append("random.spinda")
         header.append("random.floatzel")
-        header.append("planning.exploud1")
-        header.append("planning.exploud2")
         header.append("planning.spinda")
         header.append("planning.floatzel")
 
         self.type_log_writer = LogWriter(header, prefix="PKMNTypes")
 
 
-def default_team_exploud():
-    """Generate an Exploud for these players."""
-    return [Pokemon(name="exploud", moves=["tackle", "shadowball"])]
-
-
 def default_team_spinda():
     """Generate a Spinda for these players."""
-    return [Pokemon(name="spinda", moves=["tackle"])]
+    return [Pokemon(name="spinda", moves=["return", "shadowball"])]
 
 
 def default_team_floatzel():
     """Generate a FLoatzel for the player."""
-    return [Pokemon(name="floatzel", moves=["watergun"])]
+    return [Pokemon(name="floatzel", moves=["watergun", "frustration"])]
