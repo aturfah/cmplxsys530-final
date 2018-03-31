@@ -264,5 +264,33 @@
 		"type": "Ice",
 		"zMovePower": 140,
 		"contestType": "Beautiful"
+	},
+	"liquidation": {
+		"num": 710,
+		"accuracy": 100,
+		"basePower": 85,
+		"category": "Physical",
+		"desc": "Has a 20% chance to lower the target's Defense by 1 stage.",
+		"shortDesc": "20% chance to lower the target's Defense by 1.",
+		"id": "liquidation",
+		"isViable": true,
+		"name": "Liquidation",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 20,
+			"boosts": {
+				"def": -1
+			}
+		},
+		"target": "normal",
+		"type": "Water",
+		"zMovePower": 160,
+		"contestType": "Cool"
 	}
 }
