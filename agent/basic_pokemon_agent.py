@@ -387,8 +387,9 @@ def calc_position_helper(player_gs):
     if active_poke is not None and active_poke.current_hp > 0:
         my_posn += active_poke.current_hp / active_poke.max_hp
 
-    for poke in player_gs["team"] and poke.current_hp > 0:
-        my_posn += poke.current_hp / poke.max_hp
+    for poke in player_gs["team"]:
+        if poke.current_hp > 0:
+            my_posn += poke.current_hp / poke.max_hp
 
     return my_posn
 
