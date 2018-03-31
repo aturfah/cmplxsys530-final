@@ -67,7 +67,7 @@ class PokemonSimulation(BaseSimulation):
 
 def default_team_spinda():
     """Generate a Spinda for these players."""
-    return [Pokemon(name="spinda", moves=["return", "shadowball"])]
+    return [Pokemon(name="spinda", moves=["return", "shadowball", "tackle"])]
 
 
 def default_team_floatzel():
