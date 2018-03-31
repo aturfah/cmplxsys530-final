@@ -106,12 +106,14 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     # Only we attack
                     dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
 
-                    # Average damage as percent
+                    # Average damage as decimal
                     opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
 
                 elif o_opt[0] == "ATTACK":
                     dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
-                    print(dmg_range)
+                    # Average damage as portion of total HP
+                    my_gs["active"].current_hp -= my_gs["active"].max_hp * \
+                                                 (dmg_range[0] + dmg_range[1]) / 200
 
                 my_posn = calc_position_helper(my_gs)
                 opp_posn = calc_opp_position_helper(opp_gs)
@@ -238,5 +240,5 @@ def def_param_combinations(active_poke, opp_params, move):
         temp_results = deepcopy(result_dict)
         temp_results["atk"] = atk_params
         results.append(temp_results)
-    
+
     return results
