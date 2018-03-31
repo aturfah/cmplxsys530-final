@@ -183,7 +183,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return dmg_range
 
     def update_opp_gs_atk(self, my_gs, opp_gs, p_opt):
-        """Updated opponent gamestate when we're attacking."""
+        """Update opponent gamestate when we're attacking."""
         dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
 
         # Average damage as decimal
@@ -196,7 +196,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Average damage as portion of total HP
         my_gs["active"].current_hp -= my_gs["active"].max_hp * \
-                                        (dmg_range[0] + dmg_range[1]) / 200
+            (dmg_range[0] + dmg_range[1]) / 200
         return my_gs
 
     def determine_faster(self, my_gs, opp_gs, p_opt, o_opt):
@@ -244,6 +244,7 @@ def atk_param_combinations(active_poke, opp_params, move):
 
     return results
 
+
 def def_param_combinations(active_poke, opp_params, move):
     """Parameter combinations for when we're on the defensive."""
     results = []
@@ -275,6 +276,7 @@ def def_param_combinations(active_poke, opp_params, move):
         results.append(temp_results)
 
     return results
+
 
 def update_gs_switch(gamestate, opt, my_gs=True):
     """Update the gamestate on switch."""
