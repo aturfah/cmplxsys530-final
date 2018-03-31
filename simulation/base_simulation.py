@@ -79,6 +79,9 @@ class BaseSimulation():
             decimals    - Optional  : positive number of decimals in percent complete (Int)
             length      - Optional  : character length of bar (Int)
             fill        - Optional  : bar fill character (Str)
+
+        Code borrowed from:
+        https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
         """
         total = self.num_games
         prefix = "Progress: "
