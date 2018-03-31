@@ -409,7 +409,7 @@ def calculate_modifier(move, attacker, defender):
             modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
 
     # Critical hit modifier
-    if uniform < 0.06:
+    if uniform < 0.0625:
         modifier = modifier * 1.5
 
     return modifier
