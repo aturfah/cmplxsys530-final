@@ -55,7 +55,6 @@ class PokemonAgent(BaseAgent):
             self.opp_gamestate["investment"][opp_poke["name"]]["spe"] = \
                 generate_spe_range(opp_poke["name"])
 
-
     def update_gamestate(self, my_gamestate, opp_gamestate):
         """
         Update internal gamestate for self.
@@ -380,6 +379,7 @@ def battle_position_helper(player_gs, opp_gs):
 
     return (self_component+0.01) / (opp_component+0.01)
 
+
 def calc_position_helper(player_gs):
     """Calculate the player's gamestate value."""
     my_posn = 0
@@ -393,6 +393,7 @@ def calc_position_helper(player_gs):
 
     return my_posn
 
+
 def calc_opp_position_helper(opp_gs):
     """Calculate the player's opponent's gamestate value."""
     opp_posn = 0
@@ -405,6 +406,7 @@ def calc_opp_position_helper(opp_gs):
             opp_posn += poke["pct_hp"]
 
     return opp_posn
+
 
 def generate_all_ev_combinations():
     """Generate all possible stat investment combinations."""
@@ -449,6 +451,7 @@ def generate_all_ev_combinations():
     combinations["hp"].append({"max_evs": False})
 
     return combinations
+
 
 def generate_spe_range(pokemon_name):
     """Calculate the range for a pokemon's speed."""
