@@ -23,6 +23,7 @@ def init_bppa():
     bppa.init_opp_gamestate(opp_gamestate["team"], opp_gamestate["active"])
     return bppa
 
+
 def test_generate_possibilities():
     """Test function to generate possible player and opponent moves."""
     bppa = init_bppa()
@@ -37,6 +38,7 @@ def test_generate_possibilities():
     assert ("SWITCH", 1) in opp_opts
     assert ("ATTACK", "return") in opp_opts
 
+
 def test_make_move():
     """Test the results of make_move()."""
     bppa = init_bppa()
@@ -45,6 +47,7 @@ def test_make_move():
     # We choose Frustration not Tackle
     assert move[0] == "ATTACK"
     assert move[1] == 1
+
 
 test_generate_possibilities()
 test_make_move()
