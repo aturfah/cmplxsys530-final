@@ -340,5 +340,101 @@
 		"type": "Grass",
 		"zMovePower": 160,
 		"contestType": "Tough"
+	}, 
+	"sludgebomb": {
+		"num": 188,
+		"accuracy": 100,
+		"basePower": 90,
+		"category": "Special",
+		"desc": "Has a 30% chance to poison the target.",
+		"shortDesc": "30% chance to poison the target.",
+		"id": "sludgebomb",
+		"isViable": true,
+		"name": "Sludge Bomb",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"bullet": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 30,
+			"status": "psn"
+		},
+		"target": "normal",
+		"type": "Poison",
+		"zMovePower": 175,
+		"contestType": "Tough"
+	},
+	"leechseed": {
+		"num": 73,
+		"accuracy": 90,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "The Pokemon at the user's position steals 1/8 of the target's maximum HP, rounded down, at the end of each turn. If Big Root is held by the recipient, the HP recovered is 1.3x normal, rounded half down. If the target uses Baton Pass, the replacement will continue being leeched. If the target switches out or uses Rapid Spin, the effect ends. Grass-type Pokemon are immune to this move on use, but not its effect.",
+		"shortDesc": "1/8 of target's HP is restored to user every turn.",
+		"id": "leechseed",
+		"isViable": true,
+		"name": "Leech Seed",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"reflectable": 1,
+			"mirror": 1
+		},
+		"volatileStatus": "leechseed",
+		"secondary": false,
+		"target": "normal",
+		"type": "Grass",
+		"zMoveEffect": "clearnegativeboost",
+		"contestType": "Clever"
+	},
+	"gigadrain": {
+		"num": 202,
+		"accuracy": 100,
+		"basePower": 75,
+		"category": "Special",
+		"desc": "The user recovers 1/2 the HP lost by the target, rounded half up. If Big Root is held by the user, the HP recovered is 1.3x normal, rounded half down.",
+		"shortDesc": "User recovers 50% of the damage dealt.",
+		"id": "gigadrain",
+		"isViable": true,
+		"name": "Giga Drain",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"mirror": 1,
+			"heal": 1
+		},
+		"drain": [1, 2],
+		"secondary": false,
+		"target": "normal",
+		"type": "Grass",
+		"zMovePower": 140,
+		"contestType": "Clever"
+	},
+	"synthesis": {
+		"num": 235,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "The user restores 1/2 of its maximum HP if no weather conditions are in effect, 2/3 of its maximum HP if the weather is Sunny Day, and 1/4 of its maximum HP if the weather is Hail, Rain Dance, or Sandstorm, all rounded half down.",
+		"shortDesc": "Heals the user by a weather-dependent amount.",
+		"id": "synthesis",
+		"isViable": true,
+		"name": "Synthesis",
+		"pp": 5,
+		"priority": 0,
+		"flags": {
+			"snatch": 1,
+			"heal": 1
+		},
+		"secondary": false,
+		"target": "self",
+		"type": "Grass",
+		"zMoveEffect": "clearnegativeboost",
+		"contestType": "Clever"
 	}
 }
