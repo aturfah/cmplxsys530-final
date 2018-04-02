@@ -87,7 +87,7 @@ class BaseSimulation():
                                                   (iteration / float(total)))
         exact_progress = "{}/{}".format(iteration, total)
         filled_length = int(length * iteration // total)
-        time_remaining = int((time() - start_time)*total/(iter_num+0.1))
+        time_remaining = str(int((time() - start_time)*total/(iter_num+0.1)))
         bars = fill * filled_length + '-' * (length - filled_length)
 
         print('\r%s |%s| (%s) %s%% %s | ETA: %ss' %
