@@ -47,5 +47,30 @@
 			"color": "Red",
 			"evos": ["gyarados"],
 			"eggGroups": ["Water 2", "Dragon"]
+	}, 
+	"ivysaur": {
+		"num": 2,
+		"species": "Ivysaur",
+		"types": ["Grass", "Poison"],
+		"genderRatio": {
+			"M": 0.875,
+			"F": 0.125},
+		"baseStats": {
+			"hp": 60,
+			"atk": 62,
+			"def": 63,
+			"spa": 80,
+			"spd": 80,
+			"spe": 60},
+		"abilities": {
+			"0": "Overgrow",
+			"H": "Chlorophyll"},
+		"heightm": 1,
+		"weightkg": 13,
+		"color": "Green",
+		"prevo": "bulbasaur",
+		"evos": ["venusaur"],
+		"evoLevel": 16,
+		"eggGroups": ["Monster", "Grass"]
 	}
 }
