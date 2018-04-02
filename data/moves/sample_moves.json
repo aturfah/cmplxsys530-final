@@ -307,7 +307,8 @@
 		"priority": 0,
 		"flags": {
 			"protect": 1,
-			"mirror": 1},
+			"mirror": 1
+		},
 		"secondary": {
 			"chance": 10,
 			"status": "frz"
@@ -316,5 +317,28 @@
 		"type": "Ice",
 		"zMovePower": 175,
 		"contestType": "Beautiful"
+	},
+	"seedbomb": {
+		"num": 402,
+		"accuracy": 100,
+		"basePower": 80,
+		"category": "Physical",
+		"desc": "No additional effect.",
+		"shortDesc": "No additional effect.",
+		"id": "seedbomb",
+		"isViable": true,
+		"name": "Seed Bomb",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"bullet": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Grass",
+		"zMovePower": 160,
+		"contestType": "Tough"
 	}
 }
