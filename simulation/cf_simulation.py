@@ -1,5 +1,7 @@
 """Script to run a ladder simulation for CoinFlipEngine."""
 
+from time import time
+
 from simulation.base_simulation import BaseSimulation
 from battle_engine.coinflip import CoinFlipEngine
 from agent.base_agent import BaseAgent
@@ -25,7 +27,8 @@ class CFSimulation(BaseSimulation):
 
     def run(self):
         """Run the CF Simulation."""
+        start_time = time()
         for game_ind in range(self.num_games):
             outcome, player1, player2 = self.ladder.run_game()
-            self.print_progress_bar(game_ind)
+            self.print_progress_bar(game_ind, start_time)
             self.write_player_log(outcome, player1, player2)

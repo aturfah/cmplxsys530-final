@@ -1,5 +1,7 @@
 """Script for running Pokemon Simulation."""
 
+from time import time
+
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
@@ -50,10 +52,11 @@ class PokemonSimulation(BaseSimulation):
 
     def run(self):
         """Run this simulation."""
+        start_time = time()
         for game_ind in range(self.num_games):
             outcome, player1, player2 = self.ladder.run_game()
 
-            self.print_progress_bar(game_ind)
+            self.print_progress_bar(game_ind, start_time)
             self.write_player_log(outcome, player1, player2)
 
             if game_ind % self.data_delay == 0:
