@@ -24,18 +24,25 @@ class PokemonSimulation(BaseSimulation):
     def add_agents(self):
         """Add the agents to this model."""
         for ind in range(self.num_players):
-            if ind % 2 == 1:
+            if ind % 3 == 1:
                 pkmn_agent = PokemonAgent(default_team_floatzel())
                 pkmn_agent.type = "random.floatzel"
+            elif ind % 3 == 2:
+                pkmn_agent = PokemonAgent(default_team_ivysaur())
+                pkmn_agent.type = "random.ivysaur"
             else:
                 pkmn_agent = PokemonAgent(default_team_spinda())
                 pkmn_agent.type = "random.spinda"
+
             self.ladder.add_player(pkmn_agent)
 
         for ind in range(self.num_players):
-            if ind % 2 == 1:
+            if ind % 3 == 1:
                 pkmn_agent = BasicPlanningPokemonAgent(tier="pu", team=default_team_floatzel())
                 pkmn_agent.type = "planning.floatzel"
+            elif ind % 3 == 2:
+                pkmn_agent = BasicPlanningPokemonAgent(tier="pu", team=default_team_ivysaur())
+                pkmn_agent.type = "planning.ivysaur"
             else:
                 pkmn_agent = BasicPlanningPokemonAgent(tier="pu", team=default_team_spinda())
                 pkmn_agent.type = "planning.spinda"
@@ -67,9 +74,13 @@ class PokemonSimulation(BaseSimulation):
 
 def default_team_spinda():
     """Generate a Spinda for these players."""
-    return [Pokemon(name="spinda", moves=["return", "shadowball", "tackle"])]
+    return [Pokemon(name="spinda", moves=["return", "shadowball", "tackle", "icebeam"])]
 
 
 def default_team_floatzel():
     """Generate a FLoatzel for the player."""
-    return [Pokemon(name="floatzel", moves=["watergun", "frustration"])]
+    return [Pokemon(name="floatzel", moves=["watergun", "tackle", "liquidation", "icebeam"])]
+
+def default_team_ivysaur():
+    """Generate an Ivysaur for these players."""
+    return [Pokemon(name="ivysaur", moves=["seedbomb", "tackle", "icebeam"])]
