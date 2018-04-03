@@ -73,7 +73,7 @@ class PokemonSimulation(BaseSimulation):
         header.append("planning.spinda")
         header.append("planning.ivysaur")
         header.append("planning.floatzel")
-        
+
         self.type_log_writer = LogWriter(header, prefix="PKMNTypes")
 
 
