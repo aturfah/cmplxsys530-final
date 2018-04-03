@@ -23,7 +23,7 @@ def run(**kwargs):
     Run the simulation.
 
     Arguments are as follows:\n
-    --file/-f:          Read arguments from file.
+    --file/-f:          Read arguments from file.\n
     --num_games/-ng:    Number of games to simulate.\n
                             Default is 5000\n
     --num_rounds/-nr:   Number of rounds ber game in Multi-Turn RPS.\n
