@@ -1,5 +1,7 @@
 """Class for simulation that everything inherits from."""
 
+from time import time
+
 from ladder.random_ladder import RandomLadder
 from ladder.weighted_ladder import WeightedLadder
 
@@ -68,7 +70,7 @@ class BaseSimulation():
 
         self.player_log_writer = LogWriter(header, prefix=log_prefix)
 
-    def print_progress_bar(self, iter_num):
+    def print_progress_bar(self, iter_num, start_time):
         """
         Call in a loop to create terminal progress bar.
 
@@ -79,15 +81,18 @@ class BaseSimulation():
         total = self.num_games
         prefix = "Progress: "
         suffix = "Complete"
-        decimals = 1
         length = 50
         fill = '█'
-        percent = ("{0:." + str(decimals) + "f}").format(100 *
-                                                         (iteration / float(total)))
+        percent = ("{0:." + str(1) + "f}").format(100 *
+                                                  (iteration / float(total)))
         exact_progress = "{}/{}".format(iteration, total)
         filled_length = int(length * iteration // total)
+        time_remaining = (time() - start_time)/(float(iter_num)+0.1)
+        time_remaining = str(int(time_remaining*(total-iter_num)))
         bars = fill * filled_length + '-' * (length - filled_length)
-        print('\r%s |%s| (%s) %s%% %s' % (prefix, bars, exact_progress, percent, suffix), end='\r')
+
+        print('\r%s |%s| (%s) %s%% %s | ETA: %ss' %
+              (prefix, bars, exact_progress, percent, suffix, time_remaining), end='\r')
 
         # Print New Line on Complete
         if iteration == total:

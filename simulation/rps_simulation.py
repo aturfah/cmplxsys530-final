@@ -1,6 +1,7 @@
 """Script to run a ladder simulation for Rock Paper Scissors."""
 
 from math import ceil
+from time import time
 
 from simulation.base_simulation import BaseSimulation
 from battle_engine.rockpaperscissors import RPSEngine
@@ -84,11 +85,12 @@ class RPSSimulation(BaseSimulation):
 
     def run(self):
         """Run Rock/Paper/Scissors simulation."""
+        start_time = time()
         for game_ind in range(self.num_games):
             outcome, player1, player2 = self.ladder.run_game()
 
             self.write_player_log(outcome, player1, player2)
-            self.print_progress_bar(game_ind)
+            self.print_progress_bar(game_ind, start_time)
 
             if game_ind % self.data_delay == 0:
                 # Calculate the average ranking statistics
