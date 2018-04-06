@@ -5,10 +5,10 @@ from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
 from log_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import Pokemon
-from simulation.base_type_logging_simulation import BaseLoggingSimualtion
+from simulation.base_type_logging_simulation import BaseLoggingSimulation
 
 
-class PokemonSimulation(BaseLoggingSimualtion):
+class PokemonSimulation(BaseLoggingSimulation):
     """Class for Pokemon Simulation."""
 
     def __init__(self, **kwargs):
