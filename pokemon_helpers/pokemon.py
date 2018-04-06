@@ -158,3 +158,19 @@ def calculate_hp_stat(base_hp, ev_val, level):
     hp_val = floor((2*base_hp + 31 + floor(ev_val/4))*level/100)
     hp_val += level + 10
     return hp_val
+
+def calculate_spe_range(pokemon_name):
+    """
+    Calculate the range for a pokemon's speed.
+
+    :param pokemon_name: str
+        The name of the pokemon for whom the range is being calculated.
+    """
+    # Slowest possible opponent's pokemon
+    min_speed = Pokemon(name=pokemon_name, moves=["tackle"], nature="brave").speed
+    # Fastest possible opponent's pokemon
+    max_speed = Pokemon(name=pokemon_name,
+                        moves=["tackle"],
+                        evs={"spe": 252},
+                        nature="jolly").speed
+    return [min_speed, max_speed]

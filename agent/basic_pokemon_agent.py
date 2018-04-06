@@ -4,6 +4,7 @@ from numpy.random import uniform
 from agent.base_agent import BaseAgent
 from pokemon_helpers.damage_stats import DamageStatCalc
 from pokemon_helpers.pokemon import Pokemon
+from pokemon_helpers.pokemon import calculate_spe_range
 
 from config import POKEMON_DATA
 
@@ -43,7 +44,7 @@ class PokemonAgent(BaseAgent):
         self.opp_gamestate["investment"][opp_active["name"]]["spa"] = possible_combs["spa"]
         self.opp_gamestate["investment"][opp_active["name"]]["spd"] = possible_combs["spd"]
         self.opp_gamestate["investment"][opp_active["name"]]["spe"] = \
-            generate_spe_range(opp_active["name"])
+            calculate_spe_range(opp_active["name"])
 
         for opp_poke in opp_team:
             self.opp_gamestate["investment"][opp_poke["name"]] = {}
@@ -53,7 +54,7 @@ class PokemonAgent(BaseAgent):
             self.opp_gamestate["investment"][opp_poke["name"]]["spa"] = possible_combs["spa"]
             self.opp_gamestate["investment"][opp_poke["name"]]["spd"] = possible_combs["spd"]
             self.opp_gamestate["investment"][opp_poke["name"]]["spe"] = \
-                generate_spe_range(opp_poke["name"])
+                calculate_spe_range(opp_poke["name"])
 
     def update_gamestate(self, my_gamestate, opp_gamestate):
         """
@@ -461,20 +462,3 @@ def generate_all_ev_combinations():
     combinations["hp"].append({"max_evs": False})
 
     return combinations
-
-
-def generate_spe_range(pokemon_name):
-    """
-    Calculate the range for a pokemon's speed.
-
-    :param pokemon_name: str
-        The name of the pokemon for whom the range is being calculated.
-    """
-    # Slowest possible opponent's pokemon
-    min_speed = Pokemon(name=pokemon_name, moves=["tackle"], nature="brave").speed
-    # Fastest possible opponent's pokemon
-    max_speed = Pokemon(name=pokemon_name,
-                        moves=["tackle"],
-                        evs={"spe": 252},
-                        nature="jolly").speed
-    return [min_speed, max_speed]
