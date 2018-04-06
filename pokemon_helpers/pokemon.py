@@ -6,6 +6,9 @@ from config import MOVE_DATA
 from config import POKEMON_DATA
 from config import NATURES
 
+from pokemon_helpers.calculate import calculate_hp_stat
+from pokemon_helpers.calculate import calculate_stat
+
 
 class Pokemon:
     """The pokemon class."""
@@ -120,41 +123,3 @@ class Pokemon:
         if key == "baseStats":
             key = "base_stats"
         return self.__getattribute__(key)
-
-
-def calculate_stat(base_val, ev_val, level):
-    """
-    Calculate the value for a given pokemon statistic.
-
-    Formula from
-        https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats
-
-    :param base_val: int
-        The pokemon's base statistic value in that statistic
-    :param ev_val: int
-        The pokemon's effort values in that statistic
-    :param level: int
-        The pokemon's level
-    """
-    stat_val = floor((2*(base_val) + 31 + floor(ev_val/4))*level/100)
-    stat_val += 5
-    return stat_val
-
-
-def calculate_hp_stat(base_hp, ev_val, level):
-    """
-    Calculate the value for a pokemon's Hit Points statistic.
-
-    Formula from
-        https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats
-
-    :param base_hp: int
-        The pokemon's base HP statistic
-    :param ev_val: int
-        The pokemon's effort values in hitpoints statistic
-    :param level: int
-        The pokemon's level
-    """
-    hp_val = floor((2*base_hp + 31 + floor(ev_val/4))*level/100)
-    hp_val += level + 10
-    return hp_val

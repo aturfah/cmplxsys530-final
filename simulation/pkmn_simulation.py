@@ -86,6 +86,7 @@ def default_team_floatzel():
     """Generate a FLoatzel for the player."""
     return [Pokemon(name="floatzel", moves=["watergun", "tackle", "liquidation", "icebeam"])]
 
+
 def default_team_ivysaur():
     """Generate an Ivysaur for these players."""
     return [Pokemon(name="ivysaur", moves=["seedbomb", "tackle", "icebeam"])]
