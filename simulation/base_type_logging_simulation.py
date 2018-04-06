@@ -6,7 +6,9 @@ from stats.calc import calculate_avg_elo
 
 class BaseLoggingSimulation(BaseSimulation):
     """Class for Simulations that log data."""
+
     def __init__(self, kwargs):
+        """Initialize this simulation."""
         super().__init__(kwargs)
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
