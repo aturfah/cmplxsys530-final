@@ -4,6 +4,7 @@ from time import time
 from simulation.base_simulation import BaseSimulation
 from stats.calc import calculate_avg_elo
 
+
 class BaseLoggingSimulation(BaseSimulation):
     """Class for Simulations that log data."""
 
