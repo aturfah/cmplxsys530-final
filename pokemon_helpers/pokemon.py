@@ -9,6 +9,7 @@ from config import NATURES
 from pokemon_helpers.calculate import calculate_hp_stat
 from pokemon_helpers.calculate import calculate_stat
 
+
 class Pokemon:
     """The pokemon class."""
 
