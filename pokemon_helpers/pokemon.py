@@ -6,6 +6,8 @@ from config import MOVE_DATA
 from config import POKEMON_DATA
 from config import NATURES
 
+from pokemon_helpers.calculate import calculate_hp_stat
+from pokemon_helpers.calculate import calculate_stat
 
 class Pokemon:
     """The pokemon class."""
@@ -120,101 +122,3 @@ class Pokemon:
         if key == "baseStats":
             key = "base_stats"
         return self.__getattribute__(key)
-
-
-def calculate_stat(base_val, ev_val, level):
-    """
-    Calculate the value for a given pokemon statistic.
-
-    Formula from
-        https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats
-
-    :param base_val: int
-        The pokemon's base statistic value in that statistic
-    :param ev_val: int
-        The pokemon's effort values in that statistic
-    :param level: int
-        The pokemon's level
-    """
-    stat_val = floor((2*(base_val) + 31 + floor(ev_val/4))*level/100)
-    stat_val += 5
-    return stat_val
-
-
-def calculate_hp_stat(base_hp, ev_val, level):
-    """
-    Calculate the value for a pokemon's Hit Points statistic.
-
-    Formula from
-        https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats
-
-    :param base_hp: int
-        The pokemon's base HP statistic
-    :param ev_val: int
-        The pokemon's effort values in hitpoints statistic
-    :param level: int
-        The pokemon's level
-    """
-    hp_val = floor((2*base_hp + 31 + floor(ev_val/4))*level/100)
-    hp_val += level + 10
-    return hp_val
-
-def calculate_spe_range(pokemon_name):
-    """
-    Calculate the range for a pokemon's speed.
-
-    :param pokemon_name: str
-        The name of the pokemon for whom the range is being calculated.
-    """
-    # Slowest possible opponent's pokemon
-    min_speed = Pokemon(name=pokemon_name, moves=["tackle"], nature="brave").speed
-    # Fastest possible opponent's pokemon
-    max_speed = Pokemon(name=pokemon_name,
-                        moves=["tackle"],
-                        evs={"spe": 252},
-                        nature="jolly").speed
-    return [min_speed, max_speed]
-
-def generate_all_ev_combinations():
-    """Generate all possible stat investment combinations."""
-    combinations = {}
-
-    combinations["atk"] = []
-    combinations["spa"] = []
-    atk_combinations = []
-    atk_combinations.append((False, False))
-    atk_combinations.append((True, False))
-    atk_combinations.append((False, True))
-    atk_combinations.append((True, True))
-    for combination in atk_combinations:
-        result_dict = {}
-        result_dict["max_evs"] = combination[0]
-        result_dict["positive_nature"] = combination[1]
-        combinations["atk"].append(result_dict)
-        combinations["spa"].append(result_dict)
-
-    combinations["hp"] = []
-    combinations["def"] = []
-    combinations["spd"] = []
-
-    def_combinations = []
-    def_combinations.append((False, False))
-    def_combinations.append((False, False))
-    def_combinations.append((True, False))
-    def_combinations.append((True, False))
-    def_combinations.append((False, True))
-    def_combinations.append((False, True))
-    def_combinations.append((True, True))
-    def_combinations.append((True, True))
-
-    for combination in def_combinations:
-        result_dict = {}
-        result_dict["max_evs"] = combination[0]
-        result_dict["positive_nature"] = combination[1]
-        combinations["def"].append(result_dict)
-        combinations["spd"].append(result_dict)
-
-    combinations["hp"].append({"max_evs": True})
-    combinations["hp"].append({"max_evs": False})
-
-    return combinations
