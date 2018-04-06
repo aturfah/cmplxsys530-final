@@ -1,17 +1,14 @@
 """Script for running Pokemon Simulation."""
 
-from time import time
-
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
 from log_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import Pokemon
-from simulation.base_simulation import BaseSimulation
-from stats.calc import calculate_avg_elo
+from simulation.base_type_logging_simulation import BaseLoggingSimulation
 
 
-class PokemonSimulation(BaseSimulation):
+class PokemonSimulation(BaseLoggingSimulation):
     """Class for Pokemon Simulation."""
 
     def __init__(self, **kwargs):
@@ -40,29 +37,18 @@ class PokemonSimulation(BaseSimulation):
 
         for ind in range(self.num_players):
             if ind % 3 == 1:
-                pkmn_agent = BasicPlanningPokemonAgent(tier="pu", team=default_team_floatzel())
+                pkmn_agent = BasicPlanningPokemonAgent(
+                    tier="pu", team=default_team_floatzel())
                 pkmn_agent.type = "planning.floatzel"
             elif ind % 3 == 2:
-                pkmn_agent = BasicPlanningPokemonAgent(tier="pu", team=default_team_ivysaur())
+                pkmn_agent = BasicPlanningPokemonAgent(
+                    tier="pu", team=default_team_ivysaur())
                 pkmn_agent.type = "planning.ivysaur"
             else:
-                pkmn_agent = BasicPlanningPokemonAgent(tier="pu", team=default_team_spinda())
+                pkmn_agent = BasicPlanningPokemonAgent(
+                    tier="pu", team=default_team_spinda())
                 pkmn_agent.type = "planning.spinda"
             self.ladder.add_player(pkmn_agent)
-
-    def run(self):
-        """Run this simulation."""
-        start_time = time()
-        for game_ind in range(self.num_games):
-            outcome, player1, player2 = self.ladder.run_game()
-
-            self.print_progress_bar(game_ind, start_time)
-            self.write_player_log(outcome, player1, player2)
-
-            if game_ind % self.data_delay == 0:
-                # Calculate the average ranking statistics
-                # every <data_delay> iterations
-                self.type_log_writer.write_line(calculate_avg_elo(self.ladder))
 
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""

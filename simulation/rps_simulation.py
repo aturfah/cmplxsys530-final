@@ -1,17 +1,15 @@
 """Script to run a ladder simulation for Rock Paper Scissors."""
 
 from math import ceil
-from time import time
 
-from simulation.base_simulation import BaseSimulation
+from simulation.base_type_logging_simulation import BaseLoggingSimulation
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
 from agent.counter_rps_agent import CounterRPSAgent
-from stats.calc import calculate_avg_elo
 from log_manager.log_writer import LogWriter
 
 
-class RPSSimulation(BaseSimulation):
+class RPSSimulation(BaseLoggingSimulation):
     """Class for running an RPS Simulation."""
 
     def __init__(self, **kwargs):
@@ -82,17 +80,3 @@ class RPSSimulation(BaseSimulation):
             header.append("counter")
 
         self.type_log_writer = LogWriter(header, prefix="RPSTypes")
-
-    def run(self):
-        """Run Rock/Paper/Scissors simulation."""
-        start_time = time()
-        for game_ind in range(self.num_games):
-            outcome, player1, player2 = self.ladder.run_game()
-
-            self.write_player_log(outcome, player1, player2)
-            self.print_progress_bar(game_ind, start_time)
-
-            if game_ind % self.data_delay == 0:
-                # Calculate the average ranking statistics
-                # every <data_delay> iterations
-                self.type_log_writer.write_line(calculate_avg_elo(self.ladder))
