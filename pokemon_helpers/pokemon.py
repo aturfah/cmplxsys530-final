@@ -174,3 +174,47 @@ def calculate_spe_range(pokemon_name):
                         evs={"spe": 252},
                         nature="jolly").speed
     return [min_speed, max_speed]
+
+def generate_all_ev_combinations():
+    """Generate all possible stat investment combinations."""
+    combinations = {}
+
+    combinations["atk"] = []
+    combinations["spa"] = []
+    atk_combinations = []
+    atk_combinations.append((False, False))
+    atk_combinations.append((True, False))
+    atk_combinations.append((False, True))
+    atk_combinations.append((True, True))
+    for combination in atk_combinations:
+        result_dict = {}
+        result_dict["max_evs"] = combination[0]
+        result_dict["positive_nature"] = combination[1]
+        combinations["atk"].append(result_dict)
+        combinations["spa"].append(result_dict)
+
+    combinations["hp"] = []
+    combinations["def"] = []
+    combinations["spd"] = []
+
+    def_combinations = []
+    def_combinations.append((False, False))
+    def_combinations.append((False, False))
+    def_combinations.append((True, False))
+    def_combinations.append((True, False))
+    def_combinations.append((False, True))
+    def_combinations.append((False, True))
+    def_combinations.append((True, True))
+    def_combinations.append((True, True))
+
+    for combination in def_combinations:
+        result_dict = {}
+        result_dict["max_evs"] = combination[0]
+        result_dict["positive_nature"] = combination[1]
+        combinations["def"].append(result_dict)
+        combinations["spd"].append(result_dict)
+
+    combinations["hp"].append({"max_evs": True})
+    combinations["hp"].append({"max_evs": False})
+
+    return combinations
