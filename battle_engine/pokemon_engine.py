@@ -79,6 +79,7 @@ class PokemonEngine():
             if self.game_state["player2"]["active"].current_hp < 0:
                 self.game_state["player2"]["active"] = None
 
+            # If battle is not over, switch in
             outcome = self.win_condition_met()
             if not outcome["finished"]:
                 if self.game_state["player1"]["active"] is None:
@@ -91,11 +92,11 @@ class PokemonEngine():
                     self.game_state["player2"]["active"] = \
                         self.game_state["player2"]["team"].pop(switchin_ind)
 
-                # Update their gamestates
-                player1.update_gamestate(
-                    self.game_state["player1"], self.anonymize_gamestate("player2"))
-                player2.update_gamestate(
-                    self.game_state["player2"], self.anonymize_gamestate("player1"))
+            # Update their gamestates
+            player1.update_gamestate(
+                self.game_state["player1"], self.anonymize_gamestate("player2"))
+            player2.update_gamestate(
+                self.game_state["player2"], self.anonymize_gamestate("player1"))
 
         if outcome["draw"]:
             # It was a draw, decide randomly
