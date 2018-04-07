@@ -1,11 +1,13 @@
 function submit_form() {
     var game_choice = document.getElementById("game_dropdown").value;
     var opp_choice = document.getElementById("opp_dropdown").value;
-    var team_choice = document.getElementById("team_dropdown").value;
+    var player_team_choice = document.getElementById("player_team_dropdown").value;
+    var opp_team_choice = document.getElementById("opp_team_dropdown").value;
     var data = {
         "game_choice": game_choice,
         "opp_choice": opp_choice,
-        "team_choice": team_choice
+        "player_team_choice": player_team_choice,
+        "opp_team_choice": player_team_choice
     };
 
     var xhr = new XMLHttpRequest();
@@ -63,14 +65,16 @@ function update_opp_choices(game_choice) {
     options.forEach(function (option) {
         opp_choices.add(option)
     });
-    update_opp_team(game_choice)
+    update_team(game_choice)
 }
 
-function update_opp_team(game_choice) {
-    var team_dropdown = document.getElementById("team_dropdown");
+function update_team(game_choice) {
+    var opp_team_dropdown = document.getElementById("opp_team_dropdown");
+    var player_team_dropdown = document.getElementById("player_team_dropdown");
 
     // Clear the list
-    team_dropdown.options.length = 0;
+    opp_team_dropdown.options.length = 0;
+    player_team_dropdown.options.length = 0;
 
     // REpopulate
     var options = []
@@ -94,6 +98,7 @@ function update_opp_team(game_choice) {
     }
 
     options.forEach(function (option) {
-        team_dropdown.add(option);
+        opp_team_dropdown.add(option.cloneNode(true));
+        player_team_dropdown.add(option.cloneNode(true));
     });
 }
