@@ -7,8 +7,20 @@ from flask import jsonify
 from flask import render_template
 from flask import request
 
+# Engine Imports
 from battle_engine.rockpaperscissors import RPSEngine
 from battle_engine.pokemon_engine import PokemonEngine
+
+# Pokemon Imports
+from agent.basic_pokemon_agent import PokemonAgent
+from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
+from pokemon_helpers.pokemon import default_team_floatzel
+from pokemon_helpers.pokemon import default_team_ivysaur
+from pokemon_helpers.pokemon import default_team_spinda
+
+# pylint: disable=W0603
+# I want to use global here.
+# Fight me.
 
 INTERFACE = Flask(__name__)
 
@@ -22,18 +34,19 @@ OPPONENT = None
 OPPONENT_DICT = {
     "random_rps": 1,
     "counter_rps": 2,
-    "random_pkmn": 3,
-    "basic_planning_pkmn": 4,
+    "random_pkmn": PokemonAgent,
+    "basic_planning_pkmn": BasicPlanningPokemonAgent,
     "rock_rps": 5,
     "paper_rps": 6,
     "scissors_rps": 7,
     "uniform_rps": 8
 }
 
-# pylint: disable=W0603
-# I want to use global here.
-# Fight me.
-
+TEAM_DICT = {
+    "floatzel": default_team_floatzel,
+    "ivysaur": default_team_ivysaur,
+    "spinda": default_team_spinda
+}
 
 @INTERFACE.route("/")
 def index():
@@ -53,9 +66,11 @@ def set_engine():
 
     game_choice = req_data["game_choice"]
     opp_choice = req_data["opp_choice"]
-    opp_team = req_data.get("team_choice", None)
 
     ENGINE = ENGINE_DICT[game_choice]()
-    OPPONENT = OPPONENT_DICT[opp_choice]
+
+    if game_choice == "pkmn":
+        opp_team = TEAM_DICT[req_data.get("team_choice", None)]
+        OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
 
     return jsonify({})
