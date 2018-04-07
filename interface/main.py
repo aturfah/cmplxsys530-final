@@ -23,12 +23,17 @@ OPPONENT_DICT = {
     "random_rps": 1,
     "counter_rps": 2,
     "random_pkmn": 3,
-    "basic_planning_pkmn": 4
+    "basic_planning_pkmn": 4,
+    "rock_rps": 5,
+    "paper_rps": 6,
+    "scissors_rps": 7,
+    "uniform_rps": 8
 }
 
 # pylint: disable=W0603
 # I want to use global here.
 # Fight me.
+
 
 @INTERFACE.route("/")
 def index():
