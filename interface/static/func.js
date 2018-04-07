@@ -45,4 +45,37 @@ function update_opp_choices(game_choice) {
     options.forEach(function(option){
         opp_choices.add(option)
     });
+    update_opp_team(game_choice)
+}
+
+function update_opp_team(game_choice){
+    var team_dropdown = document.getElementById("opp_team");
+
+    // Clear the list
+    team_dropdown.options.length = 0;
+
+    // REpopulate
+    var options = []
+    if (game_choice === "rps"){
+        var option1 = document.createElement("option");
+        option1.text = "N/A";
+        options.push(option1)
+    } else {
+        var option1 = document.createElement("option");
+        option1.text = "Spinda";
+        option1.value = "spinda"
+        var option2 = document.createElement("option");
+        option2.text = "Floatzel";
+        option2.value = "floatzel"
+        var option3 = document.createElement("option");
+        option3.text = "Ivysaur";
+        option3.value = "ivysaur"
+        options.push(option1)
+        options.push(option2)
+        options.push(option3)
+    }
+
+    options.forEach(function(option){
+        team_dropdown.add(option);
+    });
 }
