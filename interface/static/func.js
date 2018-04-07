@@ -1,9 +1,11 @@
 function submit_form() {
     var game_choice = document.getElementById("game_dropdown").value;
     var opp_choice = document.getElementById("opp_dropdown").value;
+    var team_choice = document.getElementById("team_dropdown").value;
     var data = {
         "game_choice": game_choice,
-        "opp_choice": opp_choice
+        "opp_choice": opp_choice,
+        "team_choice": team_choice
     };
 
     var xhr = new XMLHttpRequest();
@@ -65,7 +67,7 @@ function update_opp_choices(game_choice) {
 }
 
 function update_opp_team(game_choice) {
-    var team_dropdown = document.getElementById("opp_team");
+    var team_dropdown = document.getElementById("team_dropdown");
 
     // Clear the list
     team_dropdown.options.length = 0;
