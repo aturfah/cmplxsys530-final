@@ -5,7 +5,7 @@ function submit_form(){
     };
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/set_engine", true);
+    xhr.open("POST", "/set_parameters", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(data));
 }
