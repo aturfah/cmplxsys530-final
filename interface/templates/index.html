@@ -1,17 +1,24 @@
 <html>
-    <head>
 
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-        <p>This is the index page.</p>
-        <hr />
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='func.js') }}"></script>
+</head>
 
-        <form id="setup_form">
-            <select>
-                <option value="rps">Rock Paper Scissors</option>
-                <option value="pkmn">Pokemon</option>
-            </select>
-        </form>
-    </body>
+<body>
+    <h1>Hello World!</h1>
+    <p>This is the index page.</p>
+    <hr />
+
+    <div id="setup_form">
+        <label for="game_dropdown">Game Choice</label>
+        <select name="game_dropdown" id="game_dropdown">
+            <option value="rps">Rock Paper Scissors</option>
+            <option value="pkmn">Pokemon</option>
+        </select>
+        <br/>
+        <input type="button" value="Submit" onclick="submit_form()">
+    </div>
+</body>
+
 </html>
