@@ -31,6 +31,7 @@ ENGINE_DICT = {
 }
 
 OPPONENT = None
+PLAYER = None
 OPPONENT_DICT = {
     "random_rps": 1,
     "counter_rps": 2,
@@ -60,7 +61,7 @@ def index():
 @INTERFACE.route("/set_parameters", methods=["POST"])
 def set_engine():
     """Set the game for this interface."""
-    global ENGINE, OPPONENT
+    global ENGINE, OPPONENT, PLAYER
 
     req_data = json.loads(request.data)
 
@@ -70,7 +71,9 @@ def set_engine():
     ENGINE = ENGINE_DICT[game_choice]()
 
     if game_choice == "pkmn":
-        opp_team = TEAM_DICT[req_data.get("team_choice", None)]
+        player_team = TEAM_DICT[req_data.get("player_team_choice", None)]()
+        opp_team = TEAM_DICT[req_data.get("opp_team_choice", None)]()
+        PLAYER = OPPONENT_DICT["random_pkmn"](team=player_team)
         OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
 
     return jsonify({})
