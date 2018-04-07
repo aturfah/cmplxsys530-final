@@ -53,6 +53,7 @@ def set_engine():
 
     game_choice = req_data["game_choice"]
     opp_choice = req_data["opp_choice"]
+    opp_team = req_data.get("team_choice", None)
 
     ENGINE = ENGINE_DICT[game_choice]()
     OPPONENT = OPPONENT_DICT[opp_choice]
