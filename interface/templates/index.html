@@ -9,7 +9,7 @@
     <h1>Hello World!</h1>
     <p>This is the index page.</p>
     <hr />
-
+    <h2>Setup</h2>
     <div id="setup_form">
         <label for="game_dropdown">Game Choice</label>
         <select name="game_dropdown" id="game_dropdown" onchange="update_opp_choices(this.value);">
@@ -38,6 +38,10 @@
         </select>
         <br/>
         <input type="button" value="Submit" onclick="submit_form()">
+    </div>
+    <hr />
+    <div id="game_window">
+        <p>Game goes here</p>
     </div>
 </body>
 
