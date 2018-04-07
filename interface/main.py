@@ -20,12 +20,17 @@ ENGINE_DICT = {
 
 OPPONENT = None
 
+# pylint: disable=W0603
+# I want to use global here.
+
 @INTERFACE.route("/")
 def index():
     """Index page."""
-    global ENGINE
-    engine = None
+    global ENGINE, OPPONENT
+    ENGINE = None
+    OPPONENT = None
     return render_template('index.html')
+
 
 @INTERFACE.route("/set_parameters", methods=["POST"])
 def set_engine():
