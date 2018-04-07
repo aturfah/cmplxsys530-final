@@ -11,5 +11,36 @@ function submit_form(){
 }
 
 function update_opp_choices(game_choice) {
-    console.log(game_choice)
+    var opp_choices = document.getElementById("opp_dropdown");
+    
+    // Clear the list
+    opp_choices.options.length = 0;
+    
+    // Repopulate
+    options = []
+    if (game_choice == "rps") {
+        var option1 = document.createElement("option");
+        option1.text = "Random";
+        option1.value = "random_rps"
+        var option2 = document.createElement("option");
+        option2.text = "Counter";
+        option2.value = "counter_rps"
+
+        options.push(option1)
+        options.push(option2)
+    } else {
+        var option1 = document.createElement("option");
+        option1.text = "Random";
+        option1.value = "random_pkmn"
+        var option2 = document.createElement("option");
+        option2.text = "Basic Planning";
+        option2.value = "basic_planning_pkmn"
+
+        options.push(option1)
+        options.push(option2)
+    }
+
+    options.forEach(function(option){
+        opp_choices.add(option)
+    });
 }
