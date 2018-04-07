@@ -28,6 +28,7 @@ OPPONENT_DICT = {
 
 # pylint: disable=W0603
 # I want to use global here.
+# Fight me.
 
 @INTERFACE.route("/")
 def index():
