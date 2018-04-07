@@ -9,7 +9,7 @@ from flask import request
 
 # Engine Imports
 from battle_engine.rockpaperscissors import RPSEngine
-from battle_engine.pokemon_engine import PokemonEngine
+from battle_engine.interactive_pokemon_engine import InteractivePokemonEngine
 
 # Pokemon Imports
 from agent.basic_pokemon_agent import PokemonAgent
@@ -27,7 +27,7 @@ INTERFACE = Flask(__name__)
 ENGINE = None
 ENGINE_DICT = {
     "rps": RPSEngine,
-    "pkmn": PokemonEngine
+    "pkmn": InteractivePokemonEngine
 }
 
 OPPONENT = None
@@ -76,6 +76,7 @@ def set_engine():
         opp_team = TEAM_DICT[req_data.get("opp_team_choice", None)]()
         PLAYER = OPPONENT_DICT["basic_planning_pkmn"](team=player_team, tier="pu")
         OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
-        # response["player_opts"] = PLAYER.generate_possibilities()[0]
+        ENGINE.initialize_battle(PLAYER, OPPONENT)
+        response["player_opts"] = PLAYER.generate_possibilities()[0]
 
     return jsonify(response)
