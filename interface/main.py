@@ -62,6 +62,7 @@ def index():
 def set_engine():
     """Set the game for this interface."""
     global ENGINE, OPPONENT, PLAYER
+    response = {}
 
     req_data = json.loads(request.data)
 
@@ -73,7 +74,8 @@ def set_engine():
     if game_choice == "pkmn":
         player_team = TEAM_DICT[req_data.get("player_team_choice", None)]()
         opp_team = TEAM_DICT[req_data.get("opp_team_choice", None)]()
-        PLAYER = OPPONENT_DICT["random_pkmn"](team=player_team)
+        PLAYER = OPPONENT_DICT["basic_planning_pkmn"](team=player_team, tier="pu")
         OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
+        # response["player_opts"] = PLAYER.generate_possibilities()[0]
 
-    return jsonify({})
+    return jsonify(response)
