@@ -1,5 +1,7 @@
 """Main Flask App for Agent Interface"""
 
+import json
+
 from flask import Flask
 from flask import jsonify
 from flask import render_template
@@ -21,10 +23,11 @@ def index():
     """Index page."""
     return render_template('index.html')
 
-@INTERFACE.route("/set_engine", methods=["POST"])
+@INTERFACE.route("/set_parameters", methods=["POST"])
 def set_engine():
     """Set the game for this interface."""
-    choice = request.form.to_dict(flat=False)
-    print(choice)
+    req_data = json.loads(request.data)
+
+    game_choice = req_data["game_choice"]
 
     return jsonify({})
