@@ -12,7 +12,7 @@
 
     <div id="setup_form">
         <label for="game_dropdown">Game Choice</label>
-        <select name="game_dropdown" id="game_dropdown">
+        <select name="game_dropdown" id="game_dropdown" onchange="update_opp_choices(this.value);">
             <option value="rps">Rock Paper Scissors</option>
             <option value="pkmn">Pokemon</option>
         </select>

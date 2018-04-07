@@ -9,3 +9,7 @@ function submit_form(){
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(data));
 }
+
+function update_opp_choices(game_choice) {
+    console.log(game_choice)
+}
