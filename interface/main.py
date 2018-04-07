@@ -19,6 +19,12 @@ ENGINE_DICT = {
 }
 
 OPPONENT = None
+OPPONENT_DICT = {
+    "random_rps": 1,
+    "counter_rps": 2,
+    "random_pkmn": 3,
+    "basic_planning_pkmn": 4
+}
 
 # pylint: disable=W0603
 # I want to use global here.
@@ -35,11 +41,14 @@ def index():
 @INTERFACE.route("/set_parameters", methods=["POST"])
 def set_engine():
     """Set the game for this interface."""
-    global ENGINE
+    global ENGINE, OPPONENT
 
     req_data = json.loads(request.data)
 
     game_choice = req_data["game_choice"]
+    opp_choice = req_data["opp_choice"]
+
     ENGINE = ENGINE_DICT[game_choice]()
+    OPPONENT = OPPONENT_DICT[opp_choice]
 
     return jsonify({})
