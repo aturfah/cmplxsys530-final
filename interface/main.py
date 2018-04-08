@@ -95,9 +95,6 @@ def make_move():
     req_data = json.loads(request.data)
 
     player_move = (req_data["move_choice"][0], req_data["move_choice"][1])
-
-    print(player_move)
-
     turn_info, outcome = ENGINE.run_turn(player_move, PLAYER, OPPONENT)
     response["turn_info"] = turn_info
     response["outcome"] = outcome
