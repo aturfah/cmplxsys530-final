@@ -1,4 +1,4 @@
-"""Main Flask App for Agent Interface"""
+"""Main Flask App for Agent Interface."""
 
 import json
 
@@ -49,6 +49,7 @@ TEAM_DICT = {
     "spinda": default_team_spinda
 }
 
+
 @INTERFACE.route("/")
 def index():
     """Index page."""
@@ -71,9 +72,9 @@ def set_engine():
 
     ENGINE = ENGINE_DICT[game_choice]()
     if game_choice == "pkmn":
-        player_team = TEAM_DICT[req_data.get("player_team_choice", None)]()
+        team = TEAM_DICT[req_data.get("player_team_choice", None)]()
         opp_team = TEAM_DICT[req_data.get("opp_team_choice", None)]()
-        PLAYER = OPPONENT_DICT["basic_planning_pkmn"](team=player_team, tier="pu")
+        PLAYER = OPPONENT_DICT["basic_planning_pkmn"](team=team, tier="pu")
         if opp_choice == "random_pkmn":
             OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
         else:
@@ -85,9 +86,11 @@ def set_engine():
         response["outcome"] = ENGINE.win_condition_met()
         response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
         response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
-        response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
+        response["player_opts"] = process_opts(
+            PLAYER, PLAYER.generate_possibilities()[0])
 
     return jsonify(response)
+
 
 @INTERFACE.route("/make_move", methods=["POST"])
 def make_move():
@@ -105,9 +108,11 @@ def make_move():
     if not outcome["finished"]:
         response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
         response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
-        response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
+        response["player_opts"] = process_opts(
+            PLAYER, PLAYER.generate_possibilities()[0])
 
     return jsonify(response)
+
 
 def process_opts(player, player_opts):
     """Add data to the options to make them human readable."""
