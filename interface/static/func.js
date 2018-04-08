@@ -20,7 +20,7 @@ function submit_form() {
             document.getElementById("game_log").innerHTML = ""
             set_opts(JSON.parse(this.responseText));
         } else if (this.status == 500) {
-            alert("Something went wrong...");
+            console.log("Something went wrong...")
         }
     };
     // Send the request.
@@ -198,7 +198,7 @@ function submit_move(move_choice) {
             set_opts(JSON.parse(this.responseText));
             update_log(JSON.parse(this.responseText))
         } else if (this.status == 500 || this.status == 404) {
-            alert("Something went wrong...");
+            console.log("Something went wrong...");
         }
     };
     // Send the request.
