@@ -35,7 +35,6 @@ class PokemonEngine():
         :param player1/2: PokemonAgent
             Players 1 and 2 for this game.
         """
-        # print("##### BEGIN #####\n")
         self.reset_game_state()
 
         # Initialize the players' teams
@@ -152,11 +151,6 @@ class PokemonEngine():
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
         self.game_state[player]["active"] = new_active
-        # print("{} switched to {} ({}/{})"
-        #       .format(player,
-        #               new_active.name,
-        #               new_active.current_hp,
-        #               new_active.max_hp))
 
     def attack(self, attacker, move):
         """
@@ -178,9 +172,6 @@ class PokemonEngine():
 
         damage = calculate_damage(move, atk_poke, def_poke)
         def_poke.current_hp -= damage
-
-        # print("{}'s {} attacked with {}".format(
-        #     attacker, atk_poke.name, move["name"]))
 
         results = {}
         results["move"] = move
