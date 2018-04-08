@@ -85,6 +85,23 @@ def set_engine():
 
     return jsonify(response)
 
+@INTERFACE.route("/make_move", methods=["POST"])
+def make_move():
+    """Process a player's move."""
+    global ENGINE, OPPONENT, PLAYER
+    response = {}
+
+    req_data = json.loads(request.data)
+
+    player_move = (req_data["player_choice"][0], req_data["player_choice"][1])
+
+    response["turn_info"] = ENGINE.run_turn(player_move, OPPONENT)
+    response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
+    response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
+    response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
+
+    return jsonify(response)
+
 def process_opts(player, player_opts):
     """Add data to the options to make them human readable."""
     results = []
