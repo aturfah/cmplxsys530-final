@@ -93,7 +93,9 @@ def make_move():
 
     req_data = json.loads(request.data)
 
-    player_move = (req_data["player_choice"][0], req_data["player_choice"][1])
+    player_move = (req_data["move_choice"][0], req_data["move_choice"][1])
+
+    print(player_move)
 
     response["turn_info"] = ENGINE.run_turn(player_move, OPPONENT)
     response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
