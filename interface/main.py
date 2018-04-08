@@ -97,10 +97,14 @@ def make_move():
 
     print(player_move)
 
-    response["turn_info"] = ENGINE.run_turn(player_move, OPPONENT)
-    response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
-    response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
-    response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
+    turn_info, outcome = ENGINE.run_turn(player_move, PLAYER, OPPONENT)
+    response["turn_info"] = turn_info
+    response["outcome"] = outcome
+
+    if not outcome["finished"]:
+        response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
+        response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
+        response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
 
     return jsonify(response)
 
