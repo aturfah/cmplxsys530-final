@@ -70,12 +70,16 @@ def set_engine():
     opp_choice = req_data["opp_choice"]
 
     ENGINE = ENGINE_DICT[game_choice]()
-
+    print(opp_choice)
     if game_choice == "pkmn":
         player_team = TEAM_DICT[req_data.get("player_team_choice", None)]()
         opp_team = TEAM_DICT[req_data.get("opp_team_choice", None)]()
         PLAYER = OPPONENT_DICT["basic_planning_pkmn"](team=player_team, tier="pu")
-        OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
+        if opp_choice == "random_pkmn":
+            OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
+        else:
+            OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team, tier="pu")
+
         ENGINE.initialize_battle(PLAYER, OPPONENT)
 
         # Set the response data
