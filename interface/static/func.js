@@ -210,14 +210,34 @@ function update_log(data) {
     var outcome = data["outcome"]
     var turn_info = data["turn_info"]
 
+    turn_info.forEach(function (datum) {
+        console.log(datum)
+        var new_str = ""
+        var player_attacking = datum["attacker"] === "player1"
+        if(player_attacking) {
+            new_str = "Player's "
+        } else {
+            new_str = "Opponent's " 
+        }
+
+        new_str = new_str.concat(datum["atk_poke"], " attacked with ", datum["move"]["name"])
+        new_str = new_str.concat(". It did ", datum["pct_damage"], "%")
+
+        if (!player_attacking) {
+            new_str = new_str.concat(" (", datum["damage"], ")")
+        }
+        new_str = new_str.concat(" damage.")
+        new_entry.innerHTML += "".concat(new_str, "<br/>")
+    });
+
     if (outcome["finished"] === true) {
         if (outcome["winner"] === 1) {
-            new_entry.innerHTML = "PLAYER WINS!!"
+            new_entry.innerHTML += "PLAYER WINS!!"
         } else {
-            new_entry.innerHTML = "OPPONENT WINS!"
+            new_entry.innerHTML += "OPPONENT WINS!"
         }
-        game_log.appendChild(new_entry)
     }
+    game_log.appendChild(new_entry)
         
 }
 
