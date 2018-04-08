@@ -171,16 +171,34 @@ function create_poke_DOM(data, opponent){
 function create_move_DOM(moves) {
     var move_div = document.createElement("div")
     move_div.id = "moves"
+    var atk_div = document.createElement("div")
+    var switch_div = document.createElement("div")
+    var atk_btns = []
+    var switch_btns = []
     moves.forEach(function(move){
         var move_btn = document.createElement("input");
         move_btn.type = "button"
-        move_btn.value = move[2]
+        move_btn.value = "".concat(move[0], " ", move[2])
         move_btn.style.margin = "10px 10px 0px 0px";
         move_btn.onclick = function() {
             submit_move([move[0], move[1]])
         }
-        move_div.appendChild(move_btn)
+        if(move[0] === "ATTACK") {
+            atk_btns.push(move_btn)
+        } else {
+            switch_btns.push(move_btn)
+        }
     });
+
+    atk_btns.forEach(function(btn){
+        atk_div.appendChild(btn)
+    });
+    switch_btns.forEach(function(btn){
+        switch_div.appendChild(btn)
+    });
+
+    move_div.appendChild(atk_div);
+    move_div.appendChild(switch_div);
     return move_div
 }
 
