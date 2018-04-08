@@ -28,15 +28,8 @@ class PokemonEngine():
         self.game_state["player2"]["team"] = None
         self.game_state["num_turns"] = 0
 
-    def run(self, player1, player2):
-        """
-        Run a game of pokemon.
-
-        :param player1/2: PokemonAgent
-            Players 1 and 2 for this game.
-        """
-        self.reset_game_state()
-
+    def initialize_battle(self, player1, player2):
+        """Initialize this battle and set the players' gamestates."""
         # Initialize the players' teams
         self.game_state["player1"]["team"] = deepcopy(player1.team)
         self.game_state["player2"]["team"] = deepcopy(player2.team)
@@ -57,6 +50,16 @@ class PokemonEngine():
                                    self.game_state["player2"]["active"])
         player2.init_opp_gamestate(self.game_state["player1"]["team"],
                                    self.game_state["player1"]["active"])
+
+    def run(self, player1, player2):
+        """
+        Run a game of pokemon.
+
+        :param player1/2: PokemonAgent
+            Players 1 and 2 for this game.
+        """
+        self.reset_game_state()
+        self.initialize_battle(player1, player2)
 
         # Initial setting of outcome variable
         outcome = self.win_condition_met()
