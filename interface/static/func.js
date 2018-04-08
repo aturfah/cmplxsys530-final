@@ -11,8 +11,18 @@ function submit_form() {
     };
 
     var xhr = new XMLHttpRequest();
+    // Set properties of request
     xhr.open("POST", "/set_parameters", true);
     xhr.setRequestHeader("Content-Type", "application/json");
+    // On request competion
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            set_opts(JSON.parse(this.responseText));
+        } else if (this.status == 500) {
+            alert("Something went wrong...");
+        }
+    };
+    // Send the request.
     xhr.send(JSON.stringify(data));
 }
 
@@ -101,4 +111,8 @@ function update_team(game_choice) {
         opp_team_dropdown.add(option.cloneNode(true));
         player_team_dropdown.add(option.cloneNode(true));
     });
+}
+
+function set_opts(options) {
+    console.log(options)
 }
