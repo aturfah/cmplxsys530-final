@@ -10,6 +10,11 @@ function submit_form() {
         "opp_team_choice": opp_team_choice
     };
 
+    if (game_choice === "rps") {
+        alert("Rock/Paper/Scissors is not supported as of yet. This will not work.")
+        return
+    }
+
     var xhr = new XMLHttpRequest();
     // Set properties of request
     xhr.open("POST", "/set_parameters", true);
