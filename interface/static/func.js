@@ -167,6 +167,10 @@ function create_move_DOM(moves) {
         move_btn.type = "button"
         move_btn.value = move[2]
         move_btn.style.margin = "10px 10px 0px 0px";
+        move_btn.onclick = function() {
+            console.log(move[0]);
+            console.log(move[1]);
+        }
         move_div.appendChild(move_btn)
     });
     return move_div
