@@ -2,6 +2,7 @@
 
 from battle_engine.pokemon_engine import PokemonEngine
 
+
 class InteractivePokemonEngine(PokemonEngine):
     """The class itself."""
 
