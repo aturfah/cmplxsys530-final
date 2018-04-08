@@ -77,6 +77,21 @@ def set_engine():
         PLAYER = OPPONENT_DICT["basic_planning_pkmn"](team=player_team, tier="pu")
         OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
         ENGINE.initialize_battle(PLAYER, OPPONENT)
-        response["player_opts"] = PLAYER.generate_possibilities()[0]
+        response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
 
     return jsonify(response)
+
+def process_opts(player, player_opts):
+    """Add data to the options to make them human readable."""
+    results = []
+    for opt in player_opts:
+        res = list(opt)
+        if opt[0] == "ATTACK":
+            # Get move name
+            res.append(player.gamestate["active"].moves[opt[1]]["name"])
+        else:
+            # Get pokemon name
+            res.append(player.gamestate["team"][opt[1]].name)
+        results.append(res)
+
+    return results
