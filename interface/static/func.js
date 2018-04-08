@@ -128,13 +128,13 @@ function set_opts(options) {
     game_window.appendChild(create_move_DOM(options["player_opts"]))
 }
 
-function create_poke_DOM(data, opponent){
+function create_poke_DOM(data, opponent) {
     // Create the pokemon display from the data given.
     var url = "https://play.pokemonshowdown.com/sprites/afd/REPLACE.png".replace("REPLACE", data["name"]);
-    var hp_pct = " <span id='opp_pct_hp'>REPLACE%</span>".replace("REPLACE", data["current_hp"]*100/data["max_hp"]);
+    var hp_pct = " <span id='opp_pct_hp'>REPLACE%</span>".replace("REPLACE", data["current_hp"] * 100 / data["max_hp"]);
     var hp_raw = " (<span id='poke_raw_hp'>REPLACE1</span>/REPLACE2)".replace("REPLACE1", data["current_hp"])
-                                    .replace("REPLACE2", data["max_hp"]);
-    
+        .replace("REPLACE2", data["max_hp"]);
+
     var poke_div = document.createElement("div")
     poke_div.style.width = "40%"
     poke_div.style.display = "inline-block"
@@ -175,25 +175,25 @@ function create_move_DOM(moves) {
     var switch_div = document.createElement("div")
     var atk_btns = []
     var switch_btns = []
-    moves.forEach(function(move){
+    moves.forEach(function (move) {
         var move_btn = document.createElement("input");
         move_btn.type = "button"
         move_btn.value = "".concat(move[0], " ", move[2])
         move_btn.style.margin = "10px 10px 0px 0px";
-        move_btn.onclick = function() {
+        move_btn.onclick = function () {
             submit_move([move[0], move[1]])
         }
-        if(move[0] === "ATTACK") {
+        if (move[0] === "ATTACK") {
             atk_btns.push(move_btn)
         } else {
             switch_btns.push(move_btn)
         }
     });
 
-    atk_btns.forEach(function(btn){
+    atk_btns.forEach(function (btn) {
         atk_div.appendChild(btn)
     });
-    switch_btns.forEach(function(btn){
+    switch_btns.forEach(function (btn) {
         switch_div.appendChild(btn)
     });
 
@@ -229,13 +229,27 @@ function update_log(data) {
     var outcome = data["outcome"]
     var turn_info = data["turn_info"]
 
-    turn_info.forEach(function (datum) {
-        var new_str = ""
-        var player_attacking = datum["attacker"] === "player1"
-        if(player_attacking) {
-            new_str = "Player's "
+    // Switching
+    var new_str = "";
+    if (turn_info.length === 0 && !outcome["finished"]) {
+        new_str = new_str.concat("Player switched to ", data["player_active"]["name"], ".<br/>")
+        new_str = new_str.concat("Opponent switched to ", data["opp_active"]["name"], ".<br/>")
+    } else if (turn_info.length === 1 && !outcome["finished"]) {
+        if (turn_info[0]["attacker"] === "player1") {
+            //We attacked, opponent switched
+            new_str = new_str.concat("Opponent switched to ", data["opp_active"]["name"], ".<br/>")
         } else {
-            new_str = "Opponent's " 
+            // Opponent attacked, we switched.
+            new_str = new_str.concat("Player switched to ", data["player_active"]["name"], ".<br/>")
+        }
+    }
+    // Attacking
+    turn_info.forEach(function (datum) {
+        var player_attacking = datum["attacker"] === "player1"
+        if (player_attacking) {
+            new_str = new_str.concat("Player's ")
+        } else {
+            new_str = new_str.concat("Opponent's ")
         }
 
         new_str = new_str.concat(datum["atk_poke"], " attacked with ", datum["move"]["name"])
@@ -244,9 +258,9 @@ function update_log(data) {
         if (!player_attacking) {
             new_str = new_str.concat(" (", datum["damage"], ")")
         }
-        new_str = new_str.concat(" damage.")
-        new_entry.innerHTML += "".concat(new_str, "<br/>")
+        new_str = new_str.concat(" damage.<br/>")
     });
+    new_entry.innerHTML += "".concat(new_str, "<br/>")
 
     if (outcome["finished"] === true) {
         if (outcome["winner"] === 1) {
@@ -256,7 +270,7 @@ function update_log(data) {
         }
     }
     game_log.appendChild(new_entry)
-        
+
 }
 
 function update_battle_finished(data) {
