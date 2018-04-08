@@ -77,6 +77,10 @@ def set_engine():
         PLAYER = OPPONENT_DICT["basic_planning_pkmn"](team=player_team, tier="pu")
         OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
         ENGINE.initialize_battle(PLAYER, OPPONENT)
+
+        # Set the response data
+        response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
+        response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
         response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
 
     return jsonify(response)
