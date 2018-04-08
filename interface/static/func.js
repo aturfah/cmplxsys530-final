@@ -161,17 +161,40 @@ function create_poke_DOM(data, opponent){
 
 function create_move_DOM(moves) {
     var move_div = document.createElement("div")
-    console.log(moves)
     moves.forEach(function(move){
         var move_btn = document.createElement("input");
         move_btn.type = "button"
         move_btn.value = move[2]
         move_btn.style.margin = "10px 10px 0px 0px";
         move_btn.onclick = function() {
-            console.log(move[0]);
-            console.log(move[1]);
+            submit_move([move[0], move[1]])
         }
         move_div.appendChild(move_btn)
     });
     return move_div
+}
+
+function submit_move(move_choice) {
+    // Set properties of request
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/make_move", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    var data = {
+        "move_choice": move_choice
+    }
+    // On request competion
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            set_opts(JSON.parse(this.responseText));
+            update_log(JSON.parse(this.responseText))
+        } else if (this.status == 500 || this.status == 404) {
+            alert("Something went wrong...");
+        }
+    };
+    // Send the request.
+    xhr.send(JSON.stringify(data));
+}
+
+function update_log(data) {
+    console.log(data)
 }
