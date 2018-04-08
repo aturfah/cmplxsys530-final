@@ -115,6 +115,11 @@ function update_team(game_choice) {
 
 function set_opts(options) {
     // Set player's active Pokemon
+    if (options["outcome"]["finished"]) {
+        update_battle_finished(options)
+        return
+    }
+
     var game_window = document.getElementById("game_window")
     game_window.innerHTML = ""
     game_window.appendChild(create_poke_DOM(options["player_active"], false))
@@ -125,8 +130,8 @@ function set_opts(options) {
 function create_poke_DOM(data, opponent){
     // Create the pokemon display from the data given.
     var url = "https://play.pokemonshowdown.com/sprites/afd/REPLACE.png".replace("REPLACE", data["name"]);
-    var hp_pct = "REPLACE%".replace("REPLACE", data["current_hp"]*100/data["max_hp"]);
-    var hp_raw = "(REPLACE1/REPLACE2)".replace("REPLACE1", data["current_hp"])
+    var hp_pct = " <span id='opp_pct_hp'>REPLACE%</span>".replace("REPLACE", data["current_hp"]*100/data["max_hp"]);
+    var hp_raw = " (<span id='poke_raw_hp'>REPLACE1</span>/REPLACE2)".replace("REPLACE1", data["current_hp"])
                                     .replace("REPLACE2", data["max_hp"]);
     
     var poke_div = document.createElement("div")
@@ -136,19 +141,23 @@ function create_poke_DOM(data, opponent){
     var title = document.createElement("h5")
     if (opponent) {
         title.innerHTML = "".concat("Opponent's ", data["name"])
+        poke_div.id = "opponent_poke"
     } else {
         title.innerHTML = "".concat("Player's ", data["name"])
+        poke_div.id = "player_poke"
     }
     // Set image
     var poke_img = document.createElement("img")
     poke_img.src = url
     // Set HP String
-    poke_hp_text = "Current HP: "
+    poke_hp_text = "Current HP:"
     poke_hp_text = poke_hp_text.concat(hp_pct)
     if (!opponent) {
-        poke_hp_text = poke_hp_text.concat(" ", hp_raw)
+        poke_hp_text = poke_hp_text.concat(hp_raw)
+        poke_hp_text = poke_hp_text.replace('opp_pct_hp', 'poke_pct_hp')
     }
-    
+    console.log(poke_hp_text)
+
     var poke_hp = document.createElement("p")
     poke_hp.innerHTML = poke_hp_text
 
@@ -161,6 +170,7 @@ function create_poke_DOM(data, opponent){
 
 function create_move_DOM(moves) {
     var move_div = document.createElement("div")
+    move_div.id = "moves"
     moves.forEach(function(move){
         var move_btn = document.createElement("input");
         move_btn.type = "button"
@@ -197,4 +207,14 @@ function submit_move(move_choice) {
 
 function update_log(data) {
     console.log(data)
+}
+
+function update_battle_finished(data) {
+    document.getElementById("moves").innerHTML = ""
+    if (data["outcome"]["winner"] === 0) {
+        document.getElementById("poke_raw_hp").innerHTML = "0"
+        document.getElementById("poke_pct_hp").innerHTML = "0%"
+    } else {
+        document.getElementById("opp_pct_hp").innerHTML = "0%"
+    }
 }

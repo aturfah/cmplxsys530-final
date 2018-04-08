@@ -79,6 +79,7 @@ def set_engine():
         ENGINE.initialize_battle(PLAYER, OPPONENT)
 
         # Set the response data
+        response["outcome"] = ENGINE.win_condition_met()
         response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
         response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
         response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
