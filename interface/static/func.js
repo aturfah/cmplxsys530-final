@@ -256,20 +256,13 @@ function update_log(data) {
             new_str = new_str.concat("Opponent's ")
         }
 
-        new_str = new_str.concat(datum["atk_poke"], " attacked with ", datum["move"]["name"])
+        new_str = new_str.concat(datum["atk_poke"], " attacked ", datum["def_poke"], " with ", datum["move"]["name"])
         new_str = new_str.concat(". It did ", datum["pct_damage"], "%")
 
         if (!player_attacking) {
             new_str = new_str.concat(" (", datum["damage"], ")")
         }
         new_str = new_str.concat(" damage.<br/>")
-
-        // Fainted
-        if (player_attacking && turn_info[0]["def_poke"] !== data["opp_active"]["name"]) {
-            new_str = new_str.concat(turn_info[0]["def_poke"], " fainted. Opponent sent out ", data["opp_active"]["name"], ".<br/>")
-        } else if (!player_attacking && turn_info[0]["def_poke"] !== data["player_active"]["name"]) {
-            new_str = new_str.concat(turn_info[0]["def_poke"], " fainted. Player sent out ", data["player_active"]["name"], ".<br/>")
-        }
     });
     new_entry.innerHTML += "".concat(new_str, "<br/>")
 
