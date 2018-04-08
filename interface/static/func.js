@@ -156,7 +156,6 @@ function create_poke_DOM(data, opponent){
         poke_hp_text = poke_hp_text.concat(hp_raw)
         poke_hp_text = poke_hp_text.replace('opp_pct_hp', 'poke_pct_hp')
     }
-    console.log(poke_hp_text)
 
     var poke_hp = document.createElement("p")
     poke_hp.innerHTML = poke_hp_text
