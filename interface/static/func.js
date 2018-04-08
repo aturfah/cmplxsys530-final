@@ -114,12 +114,12 @@ function update_team(game_choice) {
 }
 
 function set_opts(options) {
-    console.log(options)
     // Set player's active Pokemon
     var game_window = document.getElementById("game_window")
-    typeof(create_poke_DOM(options["player_active"], false))
+    game_window.innerHTML = ""
     game_window.appendChild(create_poke_DOM(options["player_active"], false))
     game_window.appendChild(create_poke_DOM(options["opp_active"], true))
+    game_window.appendChild(create_move_DOM(options["player_opts"]))
 }
 
 function create_poke_DOM(data, opponent){
@@ -160,5 +160,14 @@ function create_poke_DOM(data, opponent){
 }
 
 function create_move_DOM(moves) {
+    var move_div = document.createElement("div")
     console.log(moves)
+    moves.forEach(function(move){
+        var move_btn = document.createElement("input");
+        move_btn.type = "button"
+        move_btn.value = move[2]
+        move_btn.style.margin = "10px 10px 0px 0px";
+        move_div.appendChild(move_btn)
+    });
+    return move_div
 }
