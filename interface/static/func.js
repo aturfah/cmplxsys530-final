@@ -212,7 +212,6 @@ function update_log(data) {
     var turn_info = data["turn_info"]
 
     turn_info.forEach(function (datum) {
-        console.log(datum)
         var new_str = ""
         var player_attacking = datum["attacker"] === "player1"
         if(player_attacking) {
