@@ -205,7 +205,20 @@ function submit_move(move_choice) {
 }
 
 function update_log(data) {
-    console.log(data)
+    var game_log = document.getElementById("game_log")
+    var new_entry = document.createElement("p")
+    var outcome = data["outcome"]
+    var turn_info = data["turn_info"]
+
+    if (outcome["finished"] === true) {
+        if (outcome["winner"] === 1) {
+            new_entry.innerHTML = "PLAYER WINS!!"
+        } else {
+            new_entry.innerHTML = "OPPONENT WINS!"
+        }
+        game_log.appendChild(new_entry)
+    }
+        
 }
 
 function update_battle_finished(data) {
