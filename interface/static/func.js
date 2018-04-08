@@ -236,11 +236,15 @@ function update_log(data) {
         new_str = new_str.concat("Opponent switched to ", data["opp_active"]["name"], ".<br/>")
     } else if (turn_info.length === 1 && !outcome["finished"]) {
         if (turn_info[0]["attacker"] === "player1") {
-            //We attacked, opponent switched
-            new_str = new_str.concat("Opponent switched to ", data["opp_active"]["name"], ".<br/>")
+            //We attacked, opponent either switched or fainted
+            if (turn_info[0]["def_poke"] == data["opp_active"]["name"]) { // Didn't faint
+                new_str = new_str.concat("Opponent switched to ", data["opp_active"]["name"], ".<br/>")
+            }
         } else {
             // Opponent attacked, we switched.
+            if (turn_info[0]["def_poke"] == data["player_active"]["name"]) { // Didn't faint
             new_str = new_str.concat("Player switched to ", data["player_active"]["name"], ".<br/>")
+            }
         }
     }
     // Attacking
@@ -259,6 +263,13 @@ function update_log(data) {
             new_str = new_str.concat(" (", datum["damage"], ")")
         }
         new_str = new_str.concat(" damage.<br/>")
+
+        // Fainted
+        if (player_attacking && turn_info[0]["def_poke"] !== data["opp_active"]["name"]) {
+            new_str = new_str.concat(turn_info[0]["def_poke"], " fainted. Opponent sent out ", data["opp_active"]["name"], ".<br/>")
+        } else if (!player_attacking && turn_info[0]["def_poke"] !== data["player_active"]["name"]) {
+            new_str = new_str.concat(turn_info[0]["def_poke"], " fainted. Player sent out ", data["player_active"]["name"], ".<br/>")
+        }
     });
     new_entry.innerHTML += "".concat(new_str, "<br/>")
 
