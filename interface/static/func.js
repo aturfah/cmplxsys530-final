@@ -7,7 +7,7 @@ function submit_form() {
         "game_choice": game_choice,
         "opp_choice": opp_choice,
         "player_team_choice": player_team_choice,
-        "opp_team_choice": player_team_choice
+        "opp_team_choice": opp_team_choice
     };
 
     var xhr = new XMLHttpRequest();
@@ -17,6 +17,7 @@ function submit_form() {
     // On request competion
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("game_log").innerHTML = ""
             set_opts(JSON.parse(this.responseText));
         } else if (this.status == 500) {
             alert("Something went wrong...");
