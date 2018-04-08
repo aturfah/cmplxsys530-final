@@ -70,7 +70,6 @@ def set_engine():
     opp_choice = req_data["opp_choice"]
 
     ENGINE = ENGINE_DICT[game_choice]()
-    print(opp_choice)
     if game_choice == "pkmn":
         player_team = TEAM_DICT[req_data.get("player_team_choice", None)]()
         opp_team = TEAM_DICT[req_data.get("opp_team_choice", None)]()
