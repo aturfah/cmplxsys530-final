@@ -103,16 +103,12 @@ class LogReader():
             for datum in self.data[colname]:
                 if datum != "NA":
                     # Valid Number
-                    print(datum, "Valid")
                     temp_col.append(float(datum))
                 elif temp_col:
                     # Invalid number, use the last value we read
-                    print(datum, "Invalid Repeat")
                     temp_col.append(temp_col[-1])
                 else:
                     # Invalid number with no previous value, assume 1000
-                    print(datum, "Invalid Empty")
                     temp_col.append(1000)
 
             self.data[colname] = temp_col
-            print(colname, len(self.data[colname]))
