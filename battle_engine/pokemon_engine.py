@@ -28,16 +28,8 @@ class PokemonEngine():
         self.game_state["player2"]["team"] = None
         self.game_state["num_turns"] = 0
 
-    def run(self, player1, player2):
-        """
-        Run a game of pokemon.
-
-        :param player1/2: PokemonAgent
-            Players 1 and 2 for this game.
-        """
-        # print("##### BEGIN #####\n")
-        self.reset_game_state()
-
+    def initialize_battle(self, player1, player2):
+        """Initialize this battle and set the players' gamestates."""
         # Initialize the players' teams
         self.game_state["player1"]["team"] = deepcopy(player1.team)
         self.game_state["player2"]["team"] = deepcopy(player2.team)
@@ -59,6 +51,16 @@ class PokemonEngine():
         player2.init_opp_gamestate(self.game_state["player1"]["team"],
                                    self.game_state["player1"]["active"])
 
+    def run(self, player1, player2):
+        """
+        Run a game of pokemon.
+
+        :param player1/2: PokemonAgent
+            Players 1 and 2 for this game.
+        """
+        self.reset_game_state()
+        self.initialize_battle(player1, player2)
+
         # Initial setting of outcome variable
         outcome = self.win_condition_met()
         while not outcome["finished"]:
@@ -68,43 +70,50 @@ class PokemonEngine():
             # Each player makes a move
             player1_move = player1.make_move()
             player2_move = player2.make_move()
-            turn_info = self.calculate_turn(player1_move, player2_move)
 
-            player1.new_info(turn_info, "player1")
-            player2.new_info(turn_info, "player2")
-
-            # Figure out who faints at the end of this turn.
-            if self.game_state["player1"]["active"].current_hp < 0:
-                self.game_state["player1"]["active"] = None
-            if self.game_state["player2"]["active"].current_hp < 0:
-                self.game_state["player2"]["active"] = None
-
-            self.update_gamestates(player1, player2)
-
-            # If battle is not over, switch in next pokemon.
-            outcome = self.win_condition_met()
-            if not outcome["finished"]:
-                update = False
-                if self.game_state["player1"]["active"] is None:
-                    switchin_ind = player1.switch_faint()
-                    self.game_state["player1"]["active"] = \
-                        self.game_state["player1"]["team"].pop(switchin_ind)
-                    update = True
-
-                if self.game_state["player2"]["active"] is None:
-                    switchin_ind = player2.switch_faint()
-                    self.game_state["player2"]["active"] = \
-                        self.game_state["player2"]["team"].pop(switchin_ind)
-                    update = True
-
-                if update:
-                    self.update_gamestates(player1, player2)
+            outcome = self.run_single_turn(player1_move, player2_move, player1, player2)[0]
 
         if outcome["draw"]:
             # It was a draw, decide randomly
             return int(uniform() < 0.5)
 
         return outcome["winner"]
+
+    def run_single_turn(self, player1_move, player2_move, player1, player2):
+        """Run the turn for these moves."""
+        turn_info = self.calculate_turn(player1_move, player2_move)
+
+        player1.new_info(turn_info, "player1")
+        player2.new_info(turn_info, "player2")
+
+        # Figure out who faints at the end of this turn.
+        if self.game_state["player1"]["active"].current_hp < 0:
+            self.game_state["player1"]["active"] = None
+        if self.game_state["player2"]["active"].current_hp < 0:
+            self.game_state["player2"]["active"] = None
+
+        self.update_gamestates(player1, player2)
+
+        # If battle is not over, switch in next pokemon.
+        outcome = self.win_condition_met()
+        if not outcome["finished"]:
+            update = False
+            if self.game_state["player1"]["active"] is None:
+                switchin_ind = player1.switch_faint()
+                self.game_state["player1"]["active"] = \
+                    self.game_state["player1"]["team"].pop(switchin_ind)
+                update = True
+
+            if self.game_state["player2"]["active"] is None:
+                switchin_ind = player2.switch_faint()
+                self.game_state["player2"]["active"] = \
+                    self.game_state["player2"]["team"].pop(switchin_ind)
+                update = True
+
+            if update:
+                self.update_gamestates(player1, player2)
+
+        return outcome, turn_info
 
     def calculate_turn(self, move1, move2):
         """
@@ -152,11 +161,6 @@ class PokemonEngine():
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
         self.game_state[player]["active"] = new_active
-        # print("{} switched to {} ({}/{})"
-        #       .format(player,
-        #               new_active.name,
-        #               new_active.current_hp,
-        #               new_active.max_hp))
 
     def attack(self, attacker, move):
         """
@@ -178,9 +182,6 @@ class PokemonEngine():
 
         damage = calculate_damage(move, atk_poke, def_poke)
         def_poke.current_hp -= damage
-
-        # print("{}'s {} attacked with {}".format(
-        #     attacker, atk_poke.name, move["name"]))
 
         results = {}
         results["move"] = move

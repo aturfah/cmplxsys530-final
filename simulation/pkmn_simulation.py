@@ -4,7 +4,9 @@ from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
 from log_manager.log_writer import LogWriter
-from pokemon_helpers.pokemon import Pokemon
+from pokemon_helpers.pokemon import default_team_floatzel
+from pokemon_helpers.pokemon import default_team_ivysaur
+from pokemon_helpers.pokemon import default_team_spinda
 from simulation.base_type_logging_simulation import BaseLoggingSimulation
 
 
@@ -61,18 +63,3 @@ class PokemonSimulation(BaseLoggingSimulation):
         header.append("planning.floatzel")
 
         self.type_log_writer = LogWriter(header, prefix="PKMNTypes")
-
-
-def default_team_spinda():
-    """Generate a Spinda for these players."""
-    return [Pokemon(name="spinda", moves=["return", "shadowball", "tackle", "icebeam"])]
-
-
-def default_team_floatzel():
-    """Generate a FLoatzel for the player."""
-    return [Pokemon(name="floatzel", moves=["watergun", "tackle", "liquidation", "icebeam"])]
-
-
-def default_team_ivysaur():
-    """Generate an Ivysaur for these players."""
-    return [Pokemon(name="ivysaur", moves=["seedbomb", "tackle", "icebeam"])]
