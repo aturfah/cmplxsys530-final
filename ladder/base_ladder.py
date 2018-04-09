@@ -47,7 +47,7 @@ class BaseLadder:
         if thread_lock:
             thread_lock.release()
 
-    def get_players(self, sort=False):
+    def get_players(self, sort=False, thread_lock=None):
         """
         Return the players currently in the pool.
 
@@ -55,8 +55,12 @@ class BaseLadder:
             Whether or not to sort the output by elo
         """
         output = []
+        if thread_lock:
+            thread_lock.acquire()
         for player, _ in self.player_pool:
             output.append(player)
+        if thread_lock:
+            thread_lock.release()
 
         if sort:
             output = sorted(output,

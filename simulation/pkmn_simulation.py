@@ -2,6 +2,7 @@
 
 from threading import Thread, Lock
 from queue import Queue
+from time import time
 
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
@@ -83,6 +84,7 @@ class PokemonSimulation(BaseLoggingSimulation):
 
         thread_lock = Lock()
 
+        start_time = time()
         for _ in range(4):
             battle_thread = Thread(target=battle, args=(self.ladder,
                                                         battle_queue,
@@ -91,6 +93,8 @@ class PokemonSimulation(BaseLoggingSimulation):
                                                         self.data_delay,
                                                         thread_lock))
             battle_thread.start()
+
+        print("FINISHED! Took {} seconds".format(time() - start_time))
 
         while not battle_results_queue.empty():
             output, player1, player2 = battle_results_queue.get()
@@ -112,4 +116,4 @@ def battle(ladder, battle_queue, output_queue, type_queue, data_delay, thread_lo
         print("\r{}   \r".format(battle_queue.qsize()), end="")
         battle_queue.task_done()
         if battle_queue.qsize() % data_delay == 0:
-            type_queue.put(calculate_avg_elo(ladder))
+            type_queue.put(calculate_avg_elo(ladder, thread_lock))

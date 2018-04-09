@@ -3,7 +3,7 @@
 import numpy as np
 
 
-def calculate_avg_elo(ladder, group_by="type"):
+def calculate_avg_elo(ladder, group_by="type", thread_lock=None):
     """
     Calculate the elo rankings on a ladder at a specific point in time.
 
@@ -11,7 +11,7 @@ def calculate_avg_elo(ladder, group_by="type"):
     :param group_strategy: Whether to group results by
         strategy or by individuals
     """
-    player_pool = ladder.get_players()
+    player_pool = ladder.get_players(thread_lock)
     output = {}
 
     for player in player_pool:
