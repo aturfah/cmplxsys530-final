@@ -95,10 +95,12 @@ class PokemonSimulation(BaseLoggingSimulation):
         while not battle_results_queue.empty():
             output, player1, player2 = battle_results_queue.get()
             self.write_player_log(output, player1, player2)
+            battle_results_queue.task_done()
 
         while not type_results_queue.empty():
             data_line = type_results_queue.get()
             self.type_log_writer.write_line(data_line)
+            type_results_queue.task_done()
 
 
 def battle(ladder, battle_queue, output_queue, type_queue, data_delay, thread_lock):
@@ -110,5 +112,4 @@ def battle(ladder, battle_queue, output_queue, type_queue, data_delay, thread_lo
         print("\r{}   \r".format(battle_queue.qsize()), end="")
         battle_queue.task_done()
         if battle_queue.qsize() % data_delay == 0:
-            print("CALCULATING GROUP ELO", battle_queue.qsize())
             type_queue.put(calculate_avg_elo(ladder))
