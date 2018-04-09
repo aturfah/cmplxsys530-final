@@ -1,5 +1,8 @@
 """Script for running Pokemon Simulation."""
 
+from threading import Thread
+from queue import Queue
+
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
@@ -8,9 +11,6 @@ from pokemon_helpers.pokemon import default_team_floatzel
 from pokemon_helpers.pokemon import default_team_ivysaur
 from pokemon_helpers.pokemon import default_team_spinda
 from simulation.base_type_logging_simulation import BaseLoggingSimulation
-
-from threading import Thread
-from queue import Queue
 
 class PokemonSimulation(BaseLoggingSimulation):
     """Class for Pokemon Simulation."""
@@ -80,10 +80,8 @@ class PokemonSimulation(BaseLoggingSimulation):
         for num in range(self.num_games):
             battle_queue.put(num)
 
-        num_battles = 0
-
         for _ in range(5):
-            battle_thread = Thread(target=battle, args=[self.ladder, results_queue, num_battles])
+            battle_thread = Thread(target=battle, args=[self.ladder, results_queue, battle_queue])
             battle_thread.setDaemon(True)
             battle_thread.start()
 
