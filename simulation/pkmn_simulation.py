@@ -20,6 +20,7 @@ class PokemonSimulation(BaseLoggingSimulation):
         pkmn_kwargs["prefix"] = "PKMN"
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
+        self.multithread = kwargs.get("multithread", False)
         super().__init__(pkmn_kwargs)
 
     def add_agents(self):
@@ -63,3 +64,7 @@ class PokemonSimulation(BaseLoggingSimulation):
         header.append("planning.floatzel")
 
         self.type_log_writer = LogWriter(header, prefix="PKMNTypes")
+
+    def run(self):
+        """Run this simulation."""
+        pass
