@@ -57,7 +57,7 @@ class BaseLadder:
                             key=lambda player: player.elo, reverse=True)
         return output
 
-    def match_players(self):
+    def match_players(self, thread_lock=None):
         """Return a pair of players to play."""
         # Select a random player
         player_ind = randint(low=0, high=len(self.player_pool))
@@ -71,11 +71,13 @@ class BaseLadder:
 
         # opponent_index = randint(len(candidate_opponents))
         # opponent_pair = candidate_opponents[opponent_index]
+        thread_lock.acquire()
         opponent_pair = sorted(self.player_pool,
                                key=lambda val: self.match_func(player, val),
                                reverse=True)[0]
         opponent = opponent_pair[0]
         opponent_ind = self.player_pool.index(opponent_pair)
+        thread_lock.release()
         del self.player_pool[opponent_ind]
 
         self.num_turns += 1
@@ -85,9 +87,9 @@ class BaseLadder:
         """IMPLEMENT IN CHILD CLASS."""
         raise NotImplementedError("Implement in child class")
 
-    def run_game(self):
+    def run_game(self, thread_lock=None):
         """Match players and run a game."""
-        player, opp = self.match_players()
+        player, opp = self.match_players(thread_lock)
         player_copy = deepcopy(player)
         opp_copy = deepcopy(opp)
 

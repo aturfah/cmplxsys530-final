@@ -1,6 +1,6 @@
 """Script for running Pokemon Simulation."""
 
-from threading import Thread
+from threading import Thread, Lock
 from queue import Queue
 
 from agent.basic_pokemon_agent import PokemonAgent
@@ -81,12 +81,15 @@ class PokemonSimulation(BaseLoggingSimulation):
         for num in range(self.num_games):
             battle_queue.put(num)
 
+        thread_lock = Lock()
+
         for _ in range(4):
             battle_thread = Thread(target=battle, args=(self.ladder,
                                                         battle_queue,
                                                         battle_results_queue,
                                                         type_results_queue,
-                                                        self.data_delay))
+                                                        self.data_delay,
+                                                        thread_lock))
             battle_thread.start()
 
         while not battle_results_queue.empty():
@@ -98,11 +101,11 @@ class PokemonSimulation(BaseLoggingSimulation):
             self.type_log_writer.write_line(data_line)
 
 
-def battle(ladder, battle_queue, output_queue, type_queue, data_delay):
+def battle(ladder, battle_queue, output_queue, type_queue, data_delay, thread_lock):
     """Simulation code for a thread to run."""
     while not battle_queue.empty():
         battle_queue.get()
-        results = ladder.run_game()
+        results = ladder.run_game(thread_lock)
         output_queue.put(results)
         print("\r{}   \r".format(battle_queue.qsize()), end="")
         battle_queue.task_done()
