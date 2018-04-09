@@ -30,6 +30,10 @@ class PokemonEngine():
 
     def initialize_battle(self, player1, player2):
         """Initialize this battle and set the players' gamestates."""
+        # Reset internal gamestates
+        player1.reset_gamestates()
+        player2.reset_gamestates()
+
         # Initialize the players' teams
         self.game_state["player1"]["team"] = deepcopy(player1.team)
         self.game_state["player2"]["team"] = deepcopy(player2.team)
@@ -372,7 +376,7 @@ def calculate_damage(move, attacker, defender):
 
     # Random modifier
     modifier = calculate_modifier(move, attacker, defender)
-    modifier = modifier * uniform(0.85, 1.00)
+    modifier = modifier * uniform(0.85, 1)
 
     damage = floor(damage*modifier)
 
