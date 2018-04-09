@@ -23,7 +23,7 @@ class BaseLadder:
         self.num_turns = 0
         self.k_value = K_in
 
-    def add_player(self, player):
+    def add_player(self, player, thread_lock=None):
         """
         Add a player to the waiting pool.
 
@@ -31,6 +31,9 @@ class BaseLadder:
             Player to be added to the ladder pool
         """
         # Check that player is not already in the pool
+        if thread_lock:
+            thread_lock.acquire()
+
         for player_, _ in self.player_pool:
             if player_.id == player.id:
                 raise ValueError("Player already in pool")
@@ -40,6 +43,9 @@ class BaseLadder:
             player,
             self.num_turns
         ))
+
+        if thread_lock:
+            thread_lock.release()
 
     def get_players(self, sort=False):
         """
@@ -59,6 +65,10 @@ class BaseLadder:
 
     def match_players(self, thread_lock=None):
         """Return a pair of players to play."""
+        # Acquire Lock
+        if thread_lock:
+            thread_lock.acquire()
+
         # Select a random player
         player_ind = randint(low=0, high=len(self.player_pool))
         player = self.player_pool[player_ind][0]
@@ -71,14 +81,16 @@ class BaseLadder:
 
         # opponent_index = randint(len(candidate_opponents))
         # opponent_pair = candidate_opponents[opponent_index]
-        thread_lock.acquire()
         opponent_pair = sorted(self.player_pool,
                                key=lambda val: self.match_func(player, val),
                                reverse=True)[0]
         opponent = opponent_pair[0]
         opponent_ind = self.player_pool.index(opponent_pair)
-        thread_lock.release()
         del self.player_pool[opponent_ind]
+
+        # Free lock
+        if thread_lock:
+            thread_lock.release()
 
         self.num_turns += 1
         return (player, opponent)
@@ -102,8 +114,8 @@ class BaseLadder:
         else:
             self.update_players(opp, player)
 
-        self.add_player(player)
-        self.add_player(opp)
+        self.add_player(player, thread_lock)
+        self.add_player(opp, thread_lock)
 
         return (outcome, player_copy, opp_copy)
 
