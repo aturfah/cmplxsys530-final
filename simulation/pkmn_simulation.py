@@ -93,7 +93,6 @@ class PokemonSimulation(BaseLoggingSimulation):
             battle_thread.start()
 
         battle_queue.join()
-        print("FINISHED! Took {} seconds".format(time() - start_time))
 
         while not battle_results_queue.empty():
             output, player1, player2 = battle_results_queue.get()
