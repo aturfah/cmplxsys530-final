@@ -11,6 +11,8 @@ from pokemon_helpers.pokemon import default_team_floatzel
 from pokemon_helpers.pokemon import default_team_ivysaur
 from pokemon_helpers.pokemon import default_team_spinda
 from simulation.base_type_logging_simulation import BaseLoggingSimulation
+from stats.calc import calculate_avg_elo
+
 
 class PokemonSimulation(BaseLoggingSimulation):
     """Class for Pokemon Simulation."""
@@ -74,20 +76,29 @@ class PokemonSimulation(BaseLoggingSimulation):
             return
 
         battle_queue = Queue()
-        results_queue = Queue()
+        battle_results_queue = Queue()
+        type_results_queue = Queue()
         for num in range(self.num_games):
             battle_queue.put(num)
 
         for _ in range(4):
-            battle_thread = Thread(target=battle, args=(self.ladder, battle_queue, results_queue))
+            battle_thread = Thread(target=battle, args=(self.ladder,
+                                                        battle_queue,
+                                                        battle_results_queue,
+                                                        type_results_queue,
+                                                        self.data_delay))
             battle_thread.start()
-        battle_queue.join()
 
-        while not results_queue.empty():
-            output, player1, player2 = results_queue.get()
+        while not battle_results_queue.empty():
+            output, player1, player2 = battle_results_queue.get()
             self.write_player_log(output, player1, player2)
 
-def battle(ladder, battle_queue, output_queue):
+        while not type_results_queue.empty():
+            data_line = type_results_queue.get()
+            self.type_log_writer.write_line(data_line)
+
+
+def battle(ladder, battle_queue, output_queue, type_queue, data_delay):
     """Simulation code for a thread to run."""
     while not battle_queue.empty():
         battle_queue.get()
@@ -95,3 +106,6 @@ def battle(ladder, battle_queue, output_queue):
         output_queue.put(results)
         print("\r{}   \r".format(battle_queue.qsize()), end="")
         battle_queue.task_done()
+        if battle_queue.qsize() % data_delay == 0:
+            print("CALCULATING GROUP ELO", battle_queue.qsize())
+            type_queue.put(calculate_avg_elo(ladder))
