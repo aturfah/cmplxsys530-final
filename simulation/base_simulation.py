@@ -79,7 +79,6 @@ class BaseSimulation():
         """
         iteration = iter_num + 1
         prefix = "Progress: "
-        suffix = "Complete"
         length = 50
         fill = '█'
         percent = ("{0:." + str(1) + "f}").format(100 *
@@ -91,9 +90,9 @@ class BaseSimulation():
         time_remaining = str(int(time_remaining*(self.num_games-iter_num)))
         bars = fill * filled_length + '-' * (length - filled_length)
 
-        print('\r%s |%s| (%s) %s%% %s | ETA: %ss (%ss)\t' %
+        print('\r%s |%s| (%s) %s%% | ETA: %ss (%ss)\t' %
               (prefix, bars, exact_progress,
-               percent, suffix, time_remaining,
+               percent, time_remaining,
                total_time), end='\r')
 
         # Print New Line on Complete
