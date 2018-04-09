@@ -106,7 +106,7 @@ class PokemonSimulation(BaseLoggingSimulation):
 
 
 def battle(ladder, battle_queue, output_queue, type_queue, data_delay):
-    """Simulation code for a thread to run."""
+    """Code for a single thread to run."""
     while not battle_queue.empty():
         battle_queue.get()
         results = ladder.run_game()
