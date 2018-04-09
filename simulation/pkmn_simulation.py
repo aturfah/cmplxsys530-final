@@ -84,12 +84,12 @@ class PokemonSimulation(BaseLoggingSimulation):
 
         start_time = time()
         # Threads to run the battles
-        for _ in range(7):
-            battle_thread = Thread(target=battle, args=(self.ladder,
+        for _ in range(8):
+            battle_thread = Thread(target=battle, args=(self,
                                                         battle_queue,
                                                         battle_results_queue,
                                                         type_results_queue,
-                                                        self.data_delay))
+                                                        start_time))
             battle_thread.start()
 
         battle_queue.join()
@@ -105,14 +105,13 @@ class PokemonSimulation(BaseLoggingSimulation):
             self.type_log_writer.write_line(data_line)
             type_results_queue.task_done()
 
-
-def battle(ladder, battle_queue, output_queue, type_queue, data_delay):
+def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
     """Code for a single battle thread to run."""
     while not battle_queue.empty():
         battle_queue.get()
-        results = ladder.run_game()
+        results = main_sim.ladder.run_game()
         output_queue.put(results)
-        print("\r{}   \r".format(battle_queue.qsize()), end="")
-        if battle_queue.qsize() % data_delay == 0:
-            type_queue.put(calculate_avg_elo(ladder))
+        if battle_queue.qsize() % main_sim.data_delay == 0:
+            type_queue.put(calculate_avg_elo(main_sim.ladder))
+        main_sim.print_progress_bar(main_sim.num_games - battle_queue.qsize(), start_time)
         battle_queue.task_done()
