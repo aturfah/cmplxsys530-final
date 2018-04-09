@@ -99,4 +99,14 @@ class LogReader():
         for colname in colnames:
             if colname not in self.data_keys:
                 raise AttributeError("Invalid column name: {}".format(colname))
-            self.data[colname] = [float(datum) for datum in self.data[colname]]
+            self.data[colname] = []
+            for datum in self.data[colname]:
+                if datum != "NA":
+                    # Valid Number
+                    self.data[colname].append(float(datum))
+                elif self.data[colname]:
+                    # Invalid number, use the last value we read
+                    self.data[colname].append(self.data[colname][-1])
+                else:
+                    # Invalid number with no previous value, assume 1000
+                    self.data[colname].append(1000)
