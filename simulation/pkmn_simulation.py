@@ -2,7 +2,6 @@
 
 from threading import Thread
 from queue import Queue
-import sys, os
 
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
@@ -74,22 +73,19 @@ class PokemonSimulation(BaseLoggingSimulation):
             super().run()
             return
 
-        print("MULTITHREADING!!!")
-
-        results_queue = Queue()
         battle_queue = Queue()
+        results_queue = Queue()
         for num in range(self.num_games):
             battle_queue.put(num)
 
         for _ in range(4):
             battle_thread = Thread(target=battle, args=(self.ladder, battle_queue, results_queue))
-            # battle_thread.setDaemon(True)
             battle_thread.start()
+        battle_queue.join()
 
-        #logging_thread = Thread(target=output, args=[self.player_log_writer, results_queue])
-        #logging_thread.start()
-
-
+        while not results_queue.empty():
+            output, player1, player2 = results_queue.get()
+            self.write_player_log(output, player1, player2)
 
 def battle(ladder, battle_queue, output_queue):
     """Simulation code for a thread to run."""
@@ -97,9 +93,5 @@ def battle(ladder, battle_queue, output_queue):
         battle_queue.get()
         results = ladder.run_game()
         output_queue.put(results)
-        print(battle_queue.qsize())
+        print("\r{}   \r".format(battle_queue.qsize()), end="")
         battle_queue.task_done()
-
-def output(printer, results_queue):
-    """Thread that is outputting results to file."""
-    pass
