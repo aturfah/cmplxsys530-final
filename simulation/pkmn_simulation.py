@@ -25,7 +25,7 @@ class PokemonSimulation(BaseLoggingSimulation):
         pkmn_kwargs["prefix"] = "PKMN"
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
-        self.multithread = kwargs.get("multithread", True)
+        self.multithread = kwargs.get("multithread", False)
         super().__init__(pkmn_kwargs)
 
     def add_agents(self):
@@ -87,15 +87,10 @@ class PokemonSimulation(BaseLoggingSimulation):
         for _ in range(7):
             battle_thread = Thread(target=battle, args=(self.ladder,
                                                         battle_queue,
-                                                        battle_results_queue))
+                                                        battle_results_queue,
+                                                        type_results_queue,
+                                                        self.data_delay))
             battle_thread.start()
-
-        # Thread to log the average Elo rankings
-        log_type_thread = Thread(target=log_type_data, args=(self.ladder,
-                                                             battle_queue,
-                                                             type_results_queue,
-                                                             self.data_delay))
-        log_type_thread.start()
 
         battle_queue.join()
         print("FINISHED! Took {} seconds".format(time() - start_time))
@@ -111,21 +106,13 @@ class PokemonSimulation(BaseLoggingSimulation):
             type_results_queue.task_done()
 
 
-def battle(ladder, battle_queue, output_queue):
+def battle(ladder, battle_queue, output_queue, type_queue, data_delay):
     """Code for a single battle thread to run."""
     while not battle_queue.empty():
         battle_queue.get()
         results = ladder.run_game()
         output_queue.put(results)
         print("\r{}   \r".format(battle_queue.qsize()), end="")
-        battle_queue.task_done()
-
-
-def log_type_data(ladder, battle_queue, type_queue, data_delay):
-    """Code for the thread that logs type data to run."""
-    while True:
         if battle_queue.qsize() % data_delay == 0:
             type_queue.put(calculate_avg_elo(ladder))
-
-        if battle_queue.empty():
-            break
+        battle_queue.task_done()
