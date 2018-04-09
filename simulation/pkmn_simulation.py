@@ -115,4 +115,3 @@ def battle(ladder, battle_queue, output_queue, type_queue, data_delay):
         if battle_queue.qsize() % data_delay == 0:
             type_queue.put(calculate_avg_elo(ladder))
         battle_queue.task_done()
-        
