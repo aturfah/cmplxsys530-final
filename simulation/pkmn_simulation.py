@@ -94,6 +94,7 @@ class PokemonSimulation(BaseLoggingSimulation):
                                                         thread_lock))
             battle_thread.start()
 
+        battle_queue.join()
         print("FINISHED! Took {} seconds".format(time() - start_time))
 
         while not battle_results_queue.empty():
@@ -116,4 +117,4 @@ def battle(ladder, battle_queue, output_queue, type_queue, data_delay, thread_lo
         print("\r{}   \r".format(battle_queue.qsize()), end="")
         battle_queue.task_done()
         if battle_queue.qsize() % data_delay == 0:
-            type_queue.put(calculate_avg_elo(ladder, thread_lock))
+            type_queue.put(calculate_avg_elo(ladder, thread_lock=thread_lock))
