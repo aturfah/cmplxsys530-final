@@ -1,5 +1,6 @@
 """Base Class for ladders to inherit from."""
 from copy import deepcopy
+from threading import Lock
 
 from numpy.random import randint
 from ladder.elo import elo
@@ -22,18 +23,18 @@ class BaseLadder:
         self.game_engine = game
         self.num_turns = 0
         self.k_value = K_in
+        self.thread_lock = Lock()
 
-    def add_player(self, player, thread_lock=None):
+    def add_player(self, player):
         """
         Add a player to the waiting pool.
 
         :param player: BaseAgent
             Player to be added to the ladder pool
         """
-        # Check that player is not already in the pool
-        if thread_lock:
-            thread_lock.acquire()
+        self.thread_lock.acquire()
 
+        # Check that player is not already in the pool
         for player_, _ in self.player_pool:
             if player_.id == player.id:
                 raise ValueError("Player already in pool")
@@ -44,10 +45,9 @@ class BaseLadder:
             self.num_turns
         ))
 
-        if thread_lock:
-            thread_lock.release()
+        self.thread_lock.release()
 
-    def get_players(self, sort=False, thread_lock=None):
+    def get_players(self, sort=False):
         """
         Return the players currently in the pool.
 
@@ -55,23 +55,19 @@ class BaseLadder:
             Whether or not to sort the output by elo
         """
         output = []
-        if thread_lock:
-            thread_lock.acquire()
+        self.thread_lock.acquire()
         for player, _ in self.player_pool:
             output.append(player)
-        if thread_lock:
-            thread_lock.release()
+        self.thread_lock.release()
 
         if sort:
             output = sorted(output,
                             key=lambda player: player.elo, reverse=True)
         return output
 
-    def match_players(self, thread_lock=None):
+    def match_players(self):
         """Return a pair of players to play."""
-        # Acquire Lock
-        if thread_lock:
-            thread_lock.acquire()
+        self.thread_lock.acquire()
 
         # Select a random player
         player_ind = randint(low=0, high=len(self.player_pool))
@@ -92,9 +88,7 @@ class BaseLadder:
         opponent_ind = self.player_pool.index(opponent_pair)
         del self.player_pool[opponent_ind]
 
-        # Free lock
-        if thread_lock:
-            thread_lock.release()
+        self.thread_lock.release()
 
         self.num_turns += 1
         return (player, opponent)
@@ -103,9 +97,9 @@ class BaseLadder:
         """IMPLEMENT IN CHILD CLASS."""
         raise NotImplementedError("Implement in child class")
 
-    def run_game(self, thread_lock=None):
+    def run_game(self):
         """Match players and run a game."""
-        player, opp = self.match_players(thread_lock)
+        player, opp = self.match_players()
         player_copy = deepcopy(player)
         opp_copy = deepcopy(opp)
 
@@ -118,8 +112,8 @@ class BaseLadder:
         else:
             self.update_players(opp, player)
 
-        self.add_player(player, thread_lock)
-        self.add_player(opp, thread_lock)
+        self.add_player(player)
+        self.add_player(opp)
 
         return (outcome, player_copy, opp_copy)
 

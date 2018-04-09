@@ -1,6 +1,6 @@
 """Script for running Pokemon Simulation."""
 
-from threading import Thread, Lock
+from threading import Thread
 from queue import Queue
 from time import time
 
@@ -82,16 +82,13 @@ class PokemonSimulation(BaseLoggingSimulation):
         for num in range(self.num_games):
             battle_queue.put(num)
 
-        thread_lock = Lock()
-
         start_time = time()
-        for _ in range(4):
+        for _ in range(8):
             battle_thread = Thread(target=battle, args=(self.ladder,
                                                         battle_queue,
                                                         battle_results_queue,
                                                         type_results_queue,
-                                                        self.data_delay,
-                                                        thread_lock))
+                                                        self.data_delay))
             battle_thread.start()
 
         battle_queue.join()
@@ -108,13 +105,14 @@ class PokemonSimulation(BaseLoggingSimulation):
             type_results_queue.task_done()
 
 
-def battle(ladder, battle_queue, output_queue, type_queue, data_delay, thread_lock):
+def battle(ladder, battle_queue, output_queue, type_queue, data_delay):
     """Simulation code for a thread to run."""
     while not battle_queue.empty():
         battle_queue.get()
-        results = ladder.run_game(thread_lock)
+        results = ladder.run_game()
         output_queue.put(results)
         print("\r{}   \r".format(battle_queue.qsize()), end="")
-        battle_queue.task_done()
         if battle_queue.qsize() % data_delay == 0:
-            type_queue.put(calculate_avg_elo(ladder, thread_lock=thread_lock))
+            type_queue.put(calculate_avg_elo(ladder))
+        battle_queue.task_done()
+        
