@@ -22,7 +22,7 @@ class PokemonSimulation(BaseLoggingSimulation):
         pkmn_kwargs["prefix"] = "PKMN"
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
-        self.multithread = kwargs.get("multithread", False)
+        self.multithread = kwargs.get("multithread", True)
         super().__init__(pkmn_kwargs)
 
     def add_agents(self):
@@ -75,10 +75,29 @@ class PokemonSimulation(BaseLoggingSimulation):
 
         print("MULTITHREADING!!!")
 
-def battle(ladder, results_queue, num_battles):
+        results_queue = Queue()
+        battle_queue = Queue()
+        for num in range(self.num_games):
+            battle_queue.put(num)
+
+        num_battles = 0
+
+        for _ in range(5):
+            battle_thread = Thread(target=battle, args=[self.ladder, results_queue, num_battles])
+            battle_thread.setDaemon(True)
+            battle_thread.start()
+
+        #logging_thread = Thread(target=output, args=[self.player_log_writer, results_queue])
+        #logging_thread.start()
+
+        battle_queue.join()
+
+def battle(ladder, results_queue, battle_queue):
     """Simulation code for a thread to run."""
-    results_queue.put(ladder.run_game())
-    num_battles += 1
+    while not battle_queue.empty():
+        battle_queue.get()
+        results_queue.put(ladder.run_game())
+        battle_queue.task_done()
 
 def output(printer, results_queue):
     """Thread that is outputting results to file."""
