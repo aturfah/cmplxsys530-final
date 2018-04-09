@@ -9,6 +9,8 @@ from pokemon_helpers.pokemon import default_team_ivysaur
 from pokemon_helpers.pokemon import default_team_spinda
 from simulation.base_type_logging_simulation import BaseLoggingSimulation
 
+from threading import Thread
+from queue import Queue
 
 class PokemonSimulation(BaseLoggingSimulation):
     """Class for Pokemon Simulation."""
@@ -67,4 +69,17 @@ class PokemonSimulation(BaseLoggingSimulation):
 
     def run(self):
         """Run this simulation."""
-        pass
+        if not self.multithread:
+            super().run()
+            return
+
+        print("MULTITHREADING!!!")
+
+def battle(ladder, results_queue, num_battles):
+    """Simulation code for a thread to run."""
+    results_queue.put(ladder.run_game())
+    num_battles += 1
+
+def output(printer, results_queue):
+    """Thread that is outputting results to file."""
+    pass
