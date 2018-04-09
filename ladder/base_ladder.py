@@ -1,7 +1,7 @@
 """Base Class for ladders to inherit from."""
 from copy import deepcopy
 
-from numpy.random import randint, shuffle
+from numpy.random import randint
 from ladder.elo import elo
 
 
@@ -40,7 +40,6 @@ class BaseLadder:
             player,
             self.num_turns
         ))
-        shuffle(self.player_pool)
 
     def get_players(self, sort=False):
         """
@@ -92,7 +91,9 @@ class BaseLadder:
         player_copy = deepcopy(player)
         opp_copy = deepcopy(opp)
 
-        outcome = self.game_engine.run(player, opp)
+        # Make a copy to be thread safe(?)
+        temp_engine = deepcopy(self.game_engine)
+        outcome = temp_engine.run(player, opp)
 
         if outcome == 1:
             self.update_players(player, opp)
