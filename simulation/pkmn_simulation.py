@@ -2,6 +2,7 @@
 
 from threading import Thread
 from queue import Queue
+import sys, os
 
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
@@ -80,21 +81,23 @@ class PokemonSimulation(BaseLoggingSimulation):
         for num in range(self.num_games):
             battle_queue.put(num)
 
-        for _ in range(5):
-            battle_thread = Thread(target=battle, args=[self.ladder, results_queue, battle_queue])
-            battle_thread.setDaemon(True)
+        for _ in range(4):
+            battle_thread = Thread(target=battle, args=(self.ladder, battle_queue, results_queue))
+            # battle_thread.setDaemon(True)
             battle_thread.start()
 
         #logging_thread = Thread(target=output, args=[self.player_log_writer, results_queue])
         #logging_thread.start()
 
-        battle_queue.join()
 
-def battle(ladder, results_queue, battle_queue):
+
+def battle(ladder, battle_queue, output_queue):
     """Simulation code for a thread to run."""
     while not battle_queue.empty():
         battle_queue.get()
-        results_queue.put(ladder.run_game())
+        results = ladder.run_game()
+        output_queue.put(results)
+        print(battle_queue.qsize())
         battle_queue.task_done()
 
 def output(printer, results_queue):
