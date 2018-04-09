@@ -91,8 +91,10 @@ class BaseSimulation():
         time_remaining = str(int(time_remaining*(total-iter_num)))
         bars = fill * filled_length + '-' * (length - filled_length)
 
-        print('\r%s |%s| (%s) %s%% %s | ETA: %ss' %
-              (prefix, bars, exact_progress, percent, suffix, time_remaining), end='\r')
+        print('\r%s |%s| (%s) %s%% %s | ETA: %ss (%s)\t' %
+              (prefix, bars, exact_progress,
+               percent, suffix, time_remaining,
+               time()-start_time), end='\r')
 
         # Print New Line on Complete
         if iteration == total:
