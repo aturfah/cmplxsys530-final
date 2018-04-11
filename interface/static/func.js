@@ -166,6 +166,20 @@ function create_poke_DOM(data, opponent) {
     var poke_hp = document.createElement("p")
     poke_hp.innerHTML = poke_hp_text
 
+    var boost_txt = "<br/><b>Boosts</b><br/>"
+    ["atk", "def", "spa", "spd", "spe"].forEach(function(stat_name){
+        if (data["boosts"][stat_name] !== 0) {
+            new_str = stat_name.concat(": ")
+            if (data["boosts"][stat_name] > 0) {
+                new_str = new_str.concat("+", data["boosts"][stat_name])
+            } else {
+                new_str = new_str.concat(data["boosts"][stat_name])
+            }
+            boost_txt = boost_txt.concat(new_str, "<br/>")
+        }
+    });
+    poke_hp.innerHTML += boost_txt
+
     poke_div.appendChild(title)
     poke_div.appendChild(poke_img)
     poke_div.appendChild(poke_hp)
