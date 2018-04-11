@@ -391,10 +391,12 @@ def calculate_damage(move, attacker, defender):
         damage = floor(damage * attacker.effective_stat("spa"))/defender.effective_stat("spd")
     damage = floor(damage/50) + 2
 
+    # Damage Modifier
     modifier = calculate_modifier(move, attacker, defender)
     # Critical Hit
     if uniform() < 0.0625:
         modifier = modifier * 1.5
+    
     # Random Damage range
     modifier = modifier * uniform(0.85, 1.00)
     damage = floor(damage*modifier)
