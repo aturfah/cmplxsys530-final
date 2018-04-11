@@ -151,11 +151,11 @@ class Pokemon:
 def default_boosts():
     """Generate dictionary with default boost levels."""
     boost_dict = {}
-    boost_dict["atk"] = {}
-    boost_dict["def"] = {}
-    boost_dict["spa"] = {}
-    boost_dict["spd"] = {}
-    boost_dict["spe"] = {}
+    boost_dict["atk"] = 0
+    boost_dict["def"] = 0
+    boost_dict["spa"] = 0
+    boost_dict["spd"] = 0
+    boost_dict["spe"] = 0
 
     return boost_dict
 
