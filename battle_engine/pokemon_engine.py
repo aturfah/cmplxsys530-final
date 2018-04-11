@@ -6,7 +6,7 @@ from copy import deepcopy
 from numpy.random import uniform
 
 from config import WEAKNESS_CHART
-
+from pokemon_helpers.pokemon import default_boosts
 
 class PokemonEngine():
     """Class to run a pokemon game."""
@@ -157,6 +157,10 @@ class PokemonEngine():
             The position in the team that this player
             is switching out to.
         """
+        # Reset boosts
+        self.game_state[player]["active"].boosts = default_boosts()
+
+        # Switch
         cur_active = self.game_state[player]["active"]
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
