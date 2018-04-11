@@ -5,7 +5,8 @@ Based on https://www.smogon.com/smog/issue4/damage_stats
 """
 
 from math import inf
-from math import ceil, floor
+from math import ceil
+from math import floor
 
 from battle_engine.pokemon_engine import calculate_modifier
 
@@ -42,6 +43,8 @@ class DamageStatCalc():
         def_params = params["def"]
 
         modifier = calculate_modifier(move, attacker, defender)
+        modifier = modifier *boost_modifier(move, attacker, defender)
+
         d_atk = self.estimate_dmg_val(attacker["baseStats"][move_cat[0]], is_atk=True, **atk_params)
         d_hp = self.estimate_dmg_val(defender["baseStats"]["hp"], is_hp=True, **hp_params)
         d_def = self.estimate_dmg_val(defender["baseStats"][move_cat[1]], **def_params)
@@ -170,3 +173,14 @@ class DamageStatCalc():
         self.damage_stats[230] = 23.62
         self.damage_stats[250] = 25.52
         self.damage_stats[255] = 260
+
+def boost_modifier(move, attacker, defender):
+    """Calcualte the boost modifier for an attack."""
+    stats = ("atk", "def")
+    if move["category"] == "Special":
+        stats = ("spa", "spd")
+
+    atk_boost = max(2, 2+attacker.boosts[stats[0]]) / max(2, 2 - attacker.boosts[stats[0]])
+    def_boost = max(2, 2+defender.boosts[stats[1]]) / max(2, 2 - defender.boosts[stats[1]])
+
+    return atk_boost/def_boost
