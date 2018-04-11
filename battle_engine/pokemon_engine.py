@@ -180,8 +180,20 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
-        damage = calculate_damage(move, atk_poke, def_poke)
+        # Do Damage
+        damage = calculate_damage(move, atk_poke, def_poke)        
         def_poke.current_hp -= damage
+
+        # Move boosts
+        if "boosts" in move:
+            if move["target"] == "self":
+                for stat in move["boosts"]:
+                    atk_poke.boosts[stat] += move["boosts"][stat]
+                    atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
+            else:
+                for stat in move["boosts"]:
+                    def_poke.boosts[stat] += move["boosts"][stat]
+                    def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
 
         results = {}
         results["move"] = move
