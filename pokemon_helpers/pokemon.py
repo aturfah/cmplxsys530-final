@@ -134,6 +134,9 @@ class Pokemon:
         elif boost < 0:
             val = val*(2/(2-boost))
 
+        # Round down
+        val = floor(val)
+
         return val
 
     def __getitem__(self, key):
