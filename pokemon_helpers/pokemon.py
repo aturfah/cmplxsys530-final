@@ -150,6 +150,19 @@ class Pokemon:
             key = "base_stats"
         return self.__getattribute__(key)
 
+    def __contains__(self, key):
+        """
+        Define 'in' operator on this object.
+
+        :param key: str
+            Attribute to check this object for.
+        """
+        try:
+            self.__getattribute__(key)
+        except AttributeError:
+            return False
+
+        return True
 
 def default_boosts():
     """Generate dictionary with default boost levels."""
