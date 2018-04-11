@@ -160,12 +160,20 @@ def range_boosts():
 
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
-    attacker.boosts["atk"] = 1
     defender = Pokemon(name="spinda", moves=["tackle"])
 
+    # With attacking boosts
+    attacker.boosts["atk"] = 1
     dmg_range = dsc.calculate_range(move, attacker, defender, params)
-    assert dmg_range[0] == 16*1.5
-    assert dmg_range[1] == 20*1.5
+
+    assert dmg_range[0] == 24
+    assert dmg_range[1] == 29
+
+    defender.boosts["def"] = -1
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 36
+    assert dmg_range[1] == 44
+
 test_init()
 test_nearest_num()
 test_estimate_dmg_val()
