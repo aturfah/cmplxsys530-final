@@ -168,7 +168,7 @@ function create_poke_DOM(data, opponent) {
 
     var boost_txt = "<br/><b>Boosts</b><br/>";
     var stats = ["atk", "def", "spa", "spd", "spe"];
-    stats.forEach(function(stat_name){
+    stats.forEach(function (stat_name) {
         if (data["boosts"][stat_name] !== 0) {
             new_str = stat_name.concat(": ")
             if (data["boosts"][stat_name] > 0) {
@@ -263,7 +263,7 @@ function update_log(data) {
         } else {
             // Opponent attacked, we switched.
             if (turn_info[0]["def_poke"] == data["player_active"]["name"]) { // Didn't faint
-            new_str = new_str.concat("Player switched to ", data["player_active"]["name"], ".<br/>")
+                new_str = new_str.concat("Player switched to ", data["player_active"]["name"], ".<br/>")
             }
         }
     }
