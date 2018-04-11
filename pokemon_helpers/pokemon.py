@@ -116,7 +116,18 @@ class Pokemon:
 
     def effective_stat(self, stat):
         """Calculate this pokemon's effective stat after boosts."""
-        val = self.__getattribute__(stat)
+        if stat == "atk":
+            stat_name = "attack"
+        elif stat == "def":
+            stat_name = "defense"
+        elif stat == "spa":
+            stat_name = "sp_attack"
+        elif stat == "spd":
+            stat_name = "sp_defense"
+        elif stat == "spe":
+            stat_name = "speed"
+
+        val = self[stat_name]
         boost = self.boosts[stat]
         if boost > 0:
             val = val*(2+boost)/2
@@ -140,11 +151,11 @@ class Pokemon:
 def default_boosts():
     """Generate dictionary with default boost levels."""
     boost_dict = {}
-    boost_dict["attack"] = {}
-    boost_dict["defense"] = {}
-    boost_dict["sp_attack"] = {}
-    boost_dict["sp_defense"] = {}
-    boost_dict["speed"] = {}
+    boost_dict["atk"] = {}
+    boost_dict["def"] = {}
+    boost_dict["spa"] = {}
+    boost_dict["spd"] = {}
+    boost_dict["spe"] = {}
 
     return boost_dict
 
