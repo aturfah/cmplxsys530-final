@@ -96,7 +96,7 @@ class BaseSimulation():
                total_time), end='\r')
 
         # Print New Line on Complete
-        if iteration == self.num_games:
+        if iteration >= self.num_games:
             print("\r\n\r\n")
 
     def run(self):
