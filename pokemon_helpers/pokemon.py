@@ -175,6 +175,7 @@ def default_boosts():
 
     return boost_dict
 
+
 def default_team_spinda():
     """Generate a Spinda for these players."""
     return [Pokemon(name="spinda", moves=["return", "shadowball", "tackle", "icebeam"])]
