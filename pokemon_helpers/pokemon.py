@@ -114,6 +114,17 @@ class Pokemon:
             self.__setattr__(increase_stat, mod_inc)
             self.__setattr__(decrease_stat, mod_dec)
 
+    def effective_stat(self, stat):
+        """Calculate this pokemon's effective stat after boosts."""
+        val = self.__getattribute__(stat)
+        boost = self.boosts[stat]
+        if boost > 0:
+            val = val*(2+boost)/2
+        elif boost < 0:
+            val = val*(2/(2-boost))
+
+        return val
+
     def __getitem__(self, key):
         """
         Define [] operating on this object.
@@ -129,11 +140,11 @@ class Pokemon:
 def default_boosts():
     """Generate dictionary with default boost levels."""
     boost_dict = {}
-    boost_dict["atk"] = {}
-    boost_dict["def"] = {}
-    boost_dict["spa"] = {}
-    boost_dict["spd"] = {}
-    boost_dict["spe"] = {}
+    boost_dict["attack"] = {}
+    boost_dict["defense"] = {}
+    boost_dict["sp_attack"] = {}
+    boost_dict["sp_defense"] = {}
+    boost_dict["speed"] = {}
 
     return boost_dict
 
