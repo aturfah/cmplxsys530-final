@@ -149,6 +149,22 @@ def test_getitem_validation():
     assert pkmn1.base_stats["atk"] == pkmn1["base_stats"]["atk"]
 
 
+def test_effective_stats():
+    """Test that stat boosts are calculated effectively."""
+    pkmn1 = Pokemon(name="spinda", moves=["tackle"], level=50)
+
+    # Positive boosts
+    pkmn1.boosts["atk"] = 1
+    assert pkmn1.effective_stat("atk") == 80*1.5
+    pkmn1.boosts["atk"] = 6
+    assert pkmn1.effective_stat("atk") == 80*4
+
+    pkmn1.boosts["atk"] = -1
+    assert pkmn1.effective_stat("atk") == int(80*2/3)
+    pkmn1.boosts["atk"] = -6
+    assert pkmn1.effective_stat("atk") == 80*2/8
+
+
 test_init()
 test_param_validation()
 test_stats_calculation()
