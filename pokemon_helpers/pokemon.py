@@ -78,6 +78,7 @@ class Pokemon:
         self.evs = evs
         self.increase_stat = None
         self.set_stats(nature, evs)
+        self.boosts = {}
 
     def set_stats(self, nature, evs):
         """
