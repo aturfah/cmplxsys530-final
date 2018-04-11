@@ -181,7 +181,7 @@ class PokemonEngine():
         def_poke = self.game_state[defender]["active"]
 
         # Do Damage
-        damage = calculate_damage(move, atk_poke, def_poke)        
+        damage = calculate_damage(move, atk_poke, def_poke)
         def_poke.current_hp -= damage
 
         # Move boosts
