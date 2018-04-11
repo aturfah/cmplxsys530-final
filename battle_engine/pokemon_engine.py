@@ -342,7 +342,8 @@ def anonymize_gamestate_helper(data):
     if data["active"] is not None:
         anon_data["active"] = {
             "name": data["active"].name,
-            "pct_hp": data["active"].current_hp/data["active"].max_hp
+            "pct_hp": data["active"].current_hp/data["active"].max_hp,
+            "boosts": data["active"].boosts
         }
     else:
         anon_data["active"] = None
