@@ -179,8 +179,13 @@ def boost_modifier(move, attacker, defender):
     stats = ("atk", "def")
     if move["category"] == "Special":
         stats = ("spa", "spd")
-
-    atk_boost = max(2, 2+attacker.boosts[stats[0]]) / max(2, 2 - attacker.boosts[stats[0]])
-    def_boost = max(2, 2+defender.boosts[stats[1]]) / max(2, 2 - defender.boosts[stats[1]])
+    atk_boost = 1
+    def_boost = 1
+    if "boosts" in attacker:
+        atk_boost = max(2, 2 + attacker["boosts"][stats[0]]) / \
+            max(2, 2 - attacker["boosts"][stats[0]])
+    if "boosts" in defender:
+        def_boost = max(2, 2 + defender["boosts"][stats[1]]) / \
+            max(2, 2 - defender["boosts"][stats[1]])
 
     return atk_boost/def_boost
