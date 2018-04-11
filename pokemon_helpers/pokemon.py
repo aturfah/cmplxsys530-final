@@ -78,7 +78,7 @@ class Pokemon:
         self.evs = evs
         self.increase_stat = None
         self.set_stats(nature, evs)
-        self.boosts = {}
+        self.boosts = default_boosts()
 
     def set_stats(self, nature, evs):
         """
@@ -125,6 +125,17 @@ class Pokemon:
             key = "base_stats"
         return self.__getattribute__(key)
 
+
+def default_boosts():
+    """Generate dictionary with default boost levels."""
+    boost_dict = {}
+    boost_dict["atk"] = {}
+    boost_dict["def"] = {}
+    boost_dict["spa"] = {}
+    boost_dict["spd"] = {}
+    boost_dict["spe"] = {}
+
+    return boost_dict
 
 def default_team_spinda():
     """Generate a Spinda for these players."""
