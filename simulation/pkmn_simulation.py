@@ -84,7 +84,7 @@ class PokemonSimulation(BaseLoggingSimulation):
 
         start_time = time()
         # Threads to run the battles
-        for _ in range(8):
+        for _ in range(4):
             battle_thread = Thread(target=battle, args=(self,
                                                         battle_queue,
                                                         battle_results_queue,
@@ -93,8 +93,6 @@ class PokemonSimulation(BaseLoggingSimulation):
             battle_thread.start()
 
         battle_queue.join()
-        # Move lines down
-        print("\r\n\r\n")
 
         while not battle_results_queue.empty():
             output, player1, player2 = battle_results_queue.get()
