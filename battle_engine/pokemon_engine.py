@@ -371,10 +371,12 @@ def calculate_damage(move, attacker, defender):
         damage = floor(damage * attacker.effective_stat("spa"))/defender.effective_stat("spd")
     damage = floor(damage/50) + 2
 
-    # Random modifier
     modifier = calculate_modifier(move, attacker, defender)
+    # Critical Hit
+    if uniform() < 0.0625:
+        modifier = modifier * 1.5
+    # Random Damage range
     modifier = modifier * uniform(0.85, 1.00)
-
     damage = floor(damage*modifier)
 
     return damage
@@ -392,9 +394,5 @@ def calculate_modifier(move, attacker, defender):
     for def_type in defender["types"]:
         if move["type"] in WEAKNESS_CHART[def_type]:
             modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
-
-    # Critical hit modifier
-    if uniform() < 0.0625:
-        modifier = modifier * 1.5
 
     return modifier
