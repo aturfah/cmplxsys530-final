@@ -148,6 +148,7 @@ def range_hp_params():
     assert dmg_range[0] == 13
     assert dmg_range[1] == 16
 
+
 def range_boosts():
     """Make sure that boosts impact the range."""
     # Setup
@@ -157,7 +158,6 @@ def range_boosts():
     params["def"] = {}
     params["hp"] = {}
     move = MOVE_DATA["tackle"]
-
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
     defender = Pokemon(name="spinda", moves=["tackle"])
@@ -173,6 +173,7 @@ def range_boosts():
     dmg_range = dsc.calculate_range(move, attacker, defender, params)
     assert dmg_range[0] == 36
     assert dmg_range[1] == 44
+
 
 test_init()
 test_nearest_num()
