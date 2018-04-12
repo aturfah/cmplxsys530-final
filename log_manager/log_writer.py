@@ -53,7 +53,10 @@ class LogWriter():
         line = []
 
         for col_name in self.header:
-            line.append(dict_to_write[col_name])
+            if col_name in dict_to_write:
+                line.append(dict_to_write[col_name])
+            else:
+                line.append("NA")
 
         self.output_csv.writerow(line)
 

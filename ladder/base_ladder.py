@@ -1,7 +1,8 @@
 """Base Class for ladders to inherit from."""
 from copy import deepcopy
+from threading import Lock
 
-from numpy.random import randint, shuffle
+from numpy.random import randint
 from ladder.elo import elo
 
 
@@ -22,6 +23,7 @@ class BaseLadder:
         self.game_engine = game
         self.num_turns = 0
         self.k_value = K_in
+        self.thread_lock = Lock()
 
     def add_player(self, player):
         """
@@ -30,6 +32,8 @@ class BaseLadder:
         :param player: BaseAgent
             Player to be added to the ladder pool
         """
+        self.thread_lock.acquire()
+
         # Check that player is not already in the pool
         for player_, _ in self.player_pool:
             if player_.id == player.id:
@@ -40,7 +44,8 @@ class BaseLadder:
             player,
             self.num_turns
         ))
-        shuffle(self.player_pool)
+
+        self.thread_lock.release()
 
     def get_players(self, sort=False):
         """
@@ -50,8 +55,10 @@ class BaseLadder:
             Whether or not to sort the output by elo
         """
         output = []
+        self.thread_lock.acquire()
         for player, _ in self.player_pool:
             output.append(player)
+        self.thread_lock.release()
 
         if sort:
             output = sorted(output,
@@ -60,6 +67,8 @@ class BaseLadder:
 
     def match_players(self):
         """Return a pair of players to play."""
+        self.thread_lock.acquire()
+
         # Select a random player
         player_ind = randint(low=0, high=len(self.player_pool))
         player = self.player_pool[player_ind][0]
@@ -79,6 +88,8 @@ class BaseLadder:
         opponent_ind = self.player_pool.index(opponent_pair)
         del self.player_pool[opponent_ind]
 
+        self.thread_lock.release()
+
         self.num_turns += 1
         return (player, opponent)
 
@@ -92,7 +103,9 @@ class BaseLadder:
         player_copy = deepcopy(player)
         opp_copy = deepcopy(opp)
 
-        outcome = self.game_engine.run(player, opp)
+        # Make a copy to be thread safe(?)
+        temp_engine = deepcopy(self.game_engine)
+        outcome = temp_engine.run(player, opp)
 
         if outcome == 1:
             self.update_players(player, opp)

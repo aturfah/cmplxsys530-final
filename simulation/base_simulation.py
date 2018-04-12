@@ -78,24 +78,25 @@ class BaseSimulation():
         https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
         """
         iteration = iter_num + 1
-        total = self.num_games
         prefix = "Progress: "
-        suffix = "Complete"
         length = 50
         fill = '█'
         percent = ("{0:." + str(1) + "f}").format(100 *
-                                                  (iteration / float(total)))
-        exact_progress = "{}/{}".format(iteration, total)
-        filled_length = int(length * iteration // total)
+                                                  (iteration / float(self.num_games)))
+        exact_progress = "{}/{}".format(iteration, self.num_games)
+        filled_length = int(length * iteration // self.num_games)
+        total_time = int(time()-start_time)
         time_remaining = (time() - start_time)/(float(iter_num)+0.1)
-        time_remaining = str(int(time_remaining*(total-iter_num)))
+        time_remaining = str(int(time_remaining*(self.num_games-iter_num)))
         bars = fill * filled_length + '-' * (length - filled_length)
 
-        print('\r%s |%s| (%s) %s%% %s | ETA: %ss' %
-              (prefix, bars, exact_progress, percent, suffix, time_remaining), end='\r')
+        print('\r%s |%s| (%s) %s%% | ETA: %ss (%ss)\t' %
+              (prefix, bars, exact_progress,
+               percent, time_remaining,
+               total_time), end='\r')
 
         # Print New Line on Complete
-        if iteration == total:
+        if iteration >= self.num_games:
             print("\r\n\r\n")
 
     def run(self):

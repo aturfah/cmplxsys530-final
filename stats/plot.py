@@ -24,7 +24,7 @@ def plot_log_reader_data(log_reader):
                 data_label = header_group
                 break
 
-        line_i, = plt.plot(log_reader.data[group], label=data_label)
+        line_i, = plt.plot(log_reader.data[group], label=data_label, linewidth=0.75)
         graph_dict[group] = line_i
 
     plt.legend(legend_info, loc="upper left")

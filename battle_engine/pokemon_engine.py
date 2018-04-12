@@ -33,6 +33,10 @@ class PokemonEngine():
 
     def initialize_battle(self, player1, player2):
         """Initialize this battle and set the players' gamestates."""
+        # Reset internal gamestates
+        player1.reset_gamestates()
+        player2.reset_gamestates()
+
         # Initialize the players' teams
         self.game_state["player1"]["team"] = deepcopy(player1.team)
         self.game_state["player2"]["team"] = deepcopy(player2.team)
@@ -417,6 +421,7 @@ def calculate_damage(move, attacker, defender):
 
     # Damage Modifier
     modifier = calculate_modifier(move, attacker, defender)
+
     # Critical Hit
     if uniform() < 0.0625:
         modifier = modifier * 1.5

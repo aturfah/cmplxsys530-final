@@ -63,6 +63,7 @@ def run(**kwargs):
     data_delay = int(params.get("data_delay", None))
     ladder_choice = int(params.get("ladder", None))
     num_rounds = int(params.get("num_rounds", None))
+    multithread = int(params.get("multithread"), 0)
 
     if not proportions and (game_choice == 2 or game_choice == 3):
         raise RuntimeError("No proportions specified.")
@@ -106,7 +107,8 @@ def run(**kwargs):
         pkmn_sim = PokemonSimulation(num_games=num_games,
                                      num_players=num_players,
                                      ladder_choice=ladder_choice,
-                                     data_delay=data_delay)
+                                     data_delay=data_delay,
+                                     multithread=multithread)
         pkmn_sim.add_agents()
         pkmn_sim.init_type_log_writer()
         pkmn_sim.run()
