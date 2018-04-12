@@ -2,11 +2,14 @@
 
 from math import floor
 from copy import deepcopy
+from uuid import uuid4
 
 from numpy.random import uniform
 
 from config import WEAKNESS_CHART
+from log_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
+
 
 class PokemonEngine():
     """Class to run a pokemon game."""
@@ -61,6 +64,9 @@ class PokemonEngine():
         self.reset_game_state()
         self.initialize_battle(player1, player2)
 
+        # Initialize Log Writer to write turn info
+        turn_logwriter = init_player_logwriter(player1, player2)
+
         # Initial setting of outcome variable
         outcome = self.win_condition_met()
         while not outcome["finished"]:
@@ -71,7 +77,8 @@ class PokemonEngine():
             player1_move = player1.make_move()
             player2_move = player2.make_move()
 
-            outcome = self.run_single_turn(player1_move, player2_move, player1, player2)[0]
+            outcome = self.run_single_turn(
+                player1_move, player2_move, player1, player2)[0]
 
         if outcome["draw"]:
             # It was a draw, decide randomly
@@ -386,9 +393,11 @@ def calculate_damage(move, attacker, defender):
     damage = floor(2*attacker["level"]/5 + 2)
     damage = damage * move["basePower"]
     if move["category"] == "Physical":
-        damage = floor(damage * attacker.effective_stat("atk"))/defender.effective_stat("def")
+        damage = floor(damage * attacker.effective_stat("atk")) / \
+            defender.effective_stat("def")
     elif move["category"] == "Special":
-        damage = floor(damage * attacker.effective_stat("spa"))/defender.effective_stat("spd")
+        damage = floor(damage * attacker.effective_stat("spa")) / \
+            defender.effective_stat("spd")
     damage = floor(damage/50) + 2
 
     # Damage Modifier
@@ -418,3 +427,14 @@ def calculate_modifier(move, attacker, defender):
             modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
 
     return modifier
+
+
+def init_player_logwriter(player1, player2):
+    """Initialize the log writer to write the turns of this game."""
+    header = ["turn_num", "player_id", "active", "move"]
+    turn_logwriter = LogWriter(header, prefix="PKMNGame_{}_{}_{}".format(
+        player1.id,
+        player2.id,
+        uuid4()))
+
+    return turn_logwriter
