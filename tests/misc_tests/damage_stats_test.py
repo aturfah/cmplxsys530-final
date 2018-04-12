@@ -43,6 +43,7 @@ def test_dmg_range():
     range_atk_params()
     range_def_params()
     range_hp_params()
+    range_boosts()
 
 
 def range_no_params():
@@ -147,6 +148,31 @@ def range_hp_params():
     assert dmg_range[0] == 13
     assert dmg_range[1] == 16
 
+def range_boosts():
+    """Make sure that boosts impact the range."""
+    # Setup
+    dsc = DamageStatCalc()
+    params = {}
+    params["atk"] = {}
+    params["def"] = {}
+    params["hp"] = {}
+    move = MOVE_DATA["tackle"]
+
+
+    attacker = Pokemon(name="spinda", moves=["tackle"])
+    defender = Pokemon(name="spinda", moves=["tackle"])
+
+    # With attacking boosts
+    attacker.boosts["atk"] = 1
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+
+    assert dmg_range[0] == 24
+    assert dmg_range[1] == 29
+
+    defender.boosts["def"] = -1
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 36
+    assert dmg_range[1] == 44
 
 test_init()
 test_nearest_num()

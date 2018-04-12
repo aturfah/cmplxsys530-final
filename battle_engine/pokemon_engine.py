@@ -6,7 +6,7 @@ from copy import deepcopy
 from numpy.random import uniform
 
 from config import WEAKNESS_CHART
-
+from pokemon_helpers.pokemon import default_boosts
 
 class PokemonEngine():
     """Class to run a pokemon game."""
@@ -157,6 +157,10 @@ class PokemonEngine():
             The position in the team that this player
             is switching out to.
         """
+        # Reset boosts
+        self.game_state[player]["active"].boosts = default_boosts()
+
+        # Switch
         cur_active = self.game_state[player]["active"]
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
@@ -180,8 +184,24 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
-        damage = calculate_damage(move, atk_poke, def_poke)
+        # Do Damage
+        if move["category"] != "Status":
+            damage = calculate_damage(move, atk_poke, def_poke)
+        else:
+            damage = 0
+
         def_poke.current_hp -= damage
+
+        # Move boosts
+        if "boosts" in move:
+            if move["target"] == "self":
+                for stat in move["boosts"]:
+                    atk_poke.boosts[stat] += move["boosts"][stat]
+                    atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
+            else:
+                for stat in move["boosts"]:
+                    def_poke.boosts[stat] += move["boosts"][stat]
+                    def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
 
         results = {}
         results["move"] = move
@@ -342,7 +362,8 @@ def anonymize_gamestate_helper(data):
     if data["active"] is not None:
         anon_data["active"] = {
             "name": data["active"].name,
-            "pct_hp": data["active"].current_hp/data["active"].max_hp
+            "pct_hp": data["active"].current_hp/data["active"].max_hp,
+            "boosts": data["active"].boosts
         }
     else:
         anon_data["active"] = None
@@ -365,15 +386,19 @@ def calculate_damage(move, attacker, defender):
     damage = floor(2*attacker["level"]/5 + 2)
     damage = damage * move["basePower"]
     if move["category"] == "Physical":
-        damage = floor(damage * attacker["attack"])/defender["defense"]
+        damage = floor(damage * attacker.effective_stat("atk"))/defender.effective_stat("def")
     elif move["category"] == "Special":
-        damage = floor(damage * attacker["sp_attack"])/defender["sp_defense"]
+        damage = floor(damage * attacker.effective_stat("spa"))/defender.effective_stat("spd")
     damage = floor(damage/50) + 2
 
-    # Random modifier
+    # Damage Modifier
     modifier = calculate_modifier(move, attacker, defender)
-    modifier = modifier * uniform(0.85, 1.00)
+    # Critical Hit
+    if uniform() < 0.0625:
+        modifier = modifier * 1.5
 
+    # Random Damage range
+    modifier = modifier * uniform(0.85, 1.00)
     damage = floor(damage*modifier)
 
     return damage
@@ -391,9 +416,5 @@ def calculate_modifier(move, attacker, defender):
     for def_type in defender["types"]:
         if move["type"] in WEAKNESS_CHART[def_type]:
             modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
-
-    # Critical hit modifier
-    if uniform() < 0.0625:
-        modifier = modifier * 1.5
 
     return modifier

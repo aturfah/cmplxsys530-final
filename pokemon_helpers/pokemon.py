@@ -78,6 +78,7 @@ class Pokemon:
         self.evs = evs
         self.increase_stat = None
         self.set_stats(nature, evs)
+        self.boosts = default_boosts()
 
     def set_stats(self, nature, evs):
         """
@@ -113,6 +114,31 @@ class Pokemon:
             self.__setattr__(increase_stat, mod_inc)
             self.__setattr__(decrease_stat, mod_dec)
 
+    def effective_stat(self, stat):
+        """Calculate this pokemon's effective stat after boosts."""
+        if stat == "atk":
+            stat_name = "attack"
+        elif stat == "def":
+            stat_name = "defense"
+        elif stat == "spa":
+            stat_name = "sp_attack"
+        elif stat == "spd":
+            stat_name = "sp_defense"
+        elif stat == "spe":
+            stat_name = "speed"
+
+        val = self[stat_name]
+        boost = self.boosts[stat]
+        if boost > 0:
+            val = val*(2+boost)/2
+        elif boost < 0:
+            val = val*(2/(2-boost))
+
+        # Round down
+        val = floor(val)
+
+        return val
+
     def __getitem__(self, key):
         """
         Define [] operating on this object.
@@ -123,6 +149,31 @@ class Pokemon:
         if key == "baseStats":
             key = "base_stats"
         return self.__getattribute__(key)
+
+    def __contains__(self, key):
+        """
+        Define 'in' operator on this object.
+
+        :param key: str
+            Attribute to check this object for.
+        """
+        try:
+            self.__getattribute__(key)
+        except AttributeError:
+            return False
+
+        return True
+
+def default_boosts():
+    """Generate dictionary with default boost levels."""
+    boost_dict = {}
+    boost_dict["atk"] = 0
+    boost_dict["def"] = 0
+    boost_dict["spa"] = 0
+    boost_dict["spd"] = 0
+    boost_dict["spe"] = 0
+
+    return boost_dict
 
 
 def default_team_spinda():
@@ -137,4 +188,4 @@ def default_team_floatzel():
 
 def default_team_ivysaur():
     """Generate an Ivysaur for these players."""
-    return [Pokemon(name="ivysaur", moves=["seedbomb", "tackle", "icebeam"])]
+    return [Pokemon(name="ivysaur", moves=["seedbomb", "tackle", "icebeam", "swordsdance"])]

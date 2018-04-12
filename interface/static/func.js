@@ -163,12 +163,27 @@ function create_poke_DOM(data, opponent) {
         poke_hp_text = poke_hp_text.replace('opp_pct_hp', 'poke_pct_hp')
     }
 
-    var poke_hp = document.createElement("p")
-    poke_hp.innerHTML = poke_hp_text
+    var poke_info = document.createElement("p")
+    poke_info.innerHTML = poke_hp_text
+
+    var boost_txt = "<br/><b>Boosts</b><br/>";
+    var stats = ["atk", "def", "spa", "spd", "spe"];
+    stats.forEach(function (stat_name) {
+        if (data["boosts"][stat_name] !== 0) {
+            new_str = stat_name.concat(": ")
+            if (data["boosts"][stat_name] > 0) {
+                new_str = new_str.concat("+", data["boosts"][stat_name])
+            } else {
+                new_str = new_str.concat(data["boosts"][stat_name])
+            }
+            boost_txt = boost_txt.concat(new_str, "<br/>")
+        }
+    });
+    poke_info.innerHTML += boost_txt
 
     poke_div.appendChild(title)
     poke_div.appendChild(poke_img)
-    poke_div.appendChild(poke_hp)
+    poke_div.appendChild(poke_info)
 
     return poke_div
 }
@@ -248,7 +263,7 @@ function update_log(data) {
         } else {
             // Opponent attacked, we switched.
             if (turn_info[0]["def_poke"] == data["player_active"]["name"]) { // Didn't faint
-            new_str = new_str.concat("Player switched to ", data["player_active"]["name"], ".<br/>")
+                new_str = new_str.concat("Player switched to ", data["player_active"]["name"], ".<br/>")
             }
         }
     }

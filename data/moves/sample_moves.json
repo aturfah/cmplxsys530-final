@@ -340,7 +340,7 @@
 		"type": "Grass",
 		"zMovePower": 160,
 		"contestType": "Tough"
-	}, 
+	},
 	"sludgebomb": {
 		"num": 188,
 		"accuracy": 100,
@@ -408,7 +408,10 @@
 			"mirror": 1,
 			"heal": 1
 		},
-		"drain": [1, 2],
+		"drain": [
+			1,
+			2
+		],
 		"secondary": false,
 		"target": "normal",
 		"type": "Grass",
@@ -436,5 +439,30 @@
 		"type": "Grass",
 		"zMoveEffect": "clearnegativeboost",
 		"contestType": "Clever"
+	},
+	"swordsdance": {
+		"num": 14,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "Raises the user's Attack by 2 stages.",
+		"shortDesc": "Raises the user's Attack by 2.",
+		"id": "swordsdance",
+		"isViable": true,
+		"name": "Swords Dance",
+		"pp": 20,
+		"priority": 0,
+		"flags": {
+			"snatch": 1,
+			"dance": 1
+		},
+		"boosts": {
+			"atk": 2
+		},
+		"secondary": false,
+		"target": "self",
+		"type": "Normal",
+		"zMoveEffect": "clearnegativeboost",
+		"contestType": "Beautiful"
 	}
 }
