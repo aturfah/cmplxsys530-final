@@ -448,8 +448,8 @@ def init_player_logwriter(player1, player2):
     """Initialize the log writer to write the turns of this game."""
     header = ["turn_num", "player_id", "active", "target", "move", "damage"]
     turn_logwriter = LogWriter(header, prefix="PKMNGame_{}_{}_{}".format(
-        player1.id,
-        player2.id,
+        player1.type,
+        player2.type,
         uuid4()))
 
     return turn_logwriter
