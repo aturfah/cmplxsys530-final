@@ -164,6 +164,7 @@ class Pokemon:
 
         return True
 
+
 def default_boosts():
     """Generate dictionary with default boost levels."""
     boost_dict = {}

@@ -43,7 +43,7 @@ class DamageStatCalc():
         def_params = params["def"]
 
         modifier = calculate_modifier(move, attacker, defender)
-        modifier = modifier *boost_modifier(move, attacker, defender)
+        modifier = modifier * boost_modifier(move, attacker, defender)
 
         d_atk = self.estimate_dmg_val(attacker["baseStats"][move_cat[0]], is_atk=True, **atk_params)
         d_hp = self.estimate_dmg_val(defender["baseStats"]["hp"], is_hp=True, **hp_params)
@@ -173,6 +173,7 @@ class DamageStatCalc():
         self.damage_stats[230] = 23.62
         self.damage_stats[250] = 25.52
         self.damage_stats[255] = 260
+
 
 def boost_modifier(move, attacker, defender):
     """Calcualte the boost modifier for an attack."""
