@@ -2,11 +2,14 @@
 
 from math import floor
 from copy import deepcopy
+from uuid import uuid4
 
 from numpy.random import uniform
 
 from config import WEAKNESS_CHART
+from log_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
+
 
 class PokemonEngine():
     """Class to run a pokemon game."""
@@ -65,6 +68,9 @@ class PokemonEngine():
         self.reset_game_state()
         self.initialize_battle(player1, player2)
 
+        # Initialize Log Writer to write turn info
+        turn_logwriter = init_player_logwriter(player1, player2)
+
         # Initial setting of outcome variable
         outcome = self.win_condition_met()
         while not outcome["finished"]:
@@ -75,7 +81,11 @@ class PokemonEngine():
             player1_move = player1.make_move()
             player2_move = player2.make_move()
 
-            outcome = self.run_single_turn(player1_move, player2_move, player1, player2)[0]
+            outcome, turn_info = self.run_single_turn(player1_move,
+                                                      player2_move,
+                                                      player1,
+                                                      player2)
+            self.log_turn(turn_logwriter, turn_info)
 
         if outcome["draw"]:
             # It was a draw, decide randomly
@@ -349,6 +359,18 @@ class PokemonEngine():
         player2.update_gamestate(
             self.game_state["player2"], self.anonymize_gamestate("player1"))
 
+    def log_turn(self, turn_logwriter, turn_info):
+        """Log the information from this turn."""
+        for turn in turn_info:
+            new_line = {}
+            new_line["turn_num"] = self.game_state["num_turns"]
+            new_line["player_id"] = turn["attacker"]
+            new_line["active"] = self.game_state[turn["attacker"]]["active"].name
+            new_line["target"] = self.game_state[turn["defender"]]["active"].name
+            new_line["move"] = turn["move"]["id"]
+            new_line["damage"] = turn["damage"]
+            turn_logwriter.write_line(new_line)
+
 
 def anonymize_gamestate_helper(data):
     """Anonymize some gamestate data."""
@@ -390,9 +412,11 @@ def calculate_damage(move, attacker, defender):
     damage = floor(2*attacker["level"]/5 + 2)
     damage = damage * move["basePower"]
     if move["category"] == "Physical":
-        damage = floor(damage * attacker.effective_stat("atk"))/defender.effective_stat("def")
+        damage = floor(damage * attacker.effective_stat("atk")) / \
+            defender.effective_stat("def")
     elif move["category"] == "Special":
-        damage = floor(damage * attacker.effective_stat("spa"))/defender.effective_stat("spd")
+        damage = floor(damage * attacker.effective_stat("spa")) / \
+            defender.effective_stat("spd")
     damage = floor(damage/50) + 2
 
     # Damage Modifier
@@ -423,3 +447,14 @@ def calculate_modifier(move, attacker, defender):
             modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
 
     return modifier
+
+
+def init_player_logwriter(player1, player2):
+    """Initialize the log writer to write the turns of this game."""
+    header = ["turn_num", "player_id", "active", "target", "move", "damage"]
+    turn_logwriter = LogWriter(header, prefix="PKMNGame_{}_{}_{}".format(
+        player1.type,
+        player2.type,
+        uuid4()))
+
+    return turn_logwriter
