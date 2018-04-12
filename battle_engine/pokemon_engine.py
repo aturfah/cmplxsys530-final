@@ -81,7 +81,7 @@ class PokemonEngine():
                                                       player2_move,
                                                       player1,
                                                       player2)
-            log_turn(turn_logwriter, turn_info)
+            self.log_turn(turn_logwriter, turn_info)
 
         if outcome["draw"]:
             # It was a draw, decide randomly
@@ -355,6 +355,18 @@ class PokemonEngine():
         player2.update_gamestate(
             self.game_state["player2"], self.anonymize_gamestate("player1"))
 
+    def log_turn(self, turn_logwriter, turn_info):
+        """Log the information from this turn."""
+        for turn in turn_info:
+            new_row = []
+            new_row.append(self.game_state["num_turns"])
+            new_row.append(turn["attacker"])
+            new_row.append(self.game_state[turn["attacker"]]["active"])
+            new_row.append(self.game_state[turn["defender"]]["active"])
+            new_row.append(turn["move"]["name"])
+            new_row.append(turn["damage"])
+            turn_logwriter.write_line(new_row)
+
 
 def anonymize_gamestate_helper(data):
     """Anonymize some gamestate data."""
@@ -434,14 +446,10 @@ def calculate_modifier(move, attacker, defender):
 
 def init_player_logwriter(player1, player2):
     """Initialize the log writer to write the turns of this game."""
-    header = ["turn_num", "player_id", "active", "move"]
+    header = ["turn_num", "player_id", "active", "target", "move", "damage"]
     turn_logwriter = LogWriter(header, prefix="PKMNGame_{}_{}_{}".format(
         player1.id,
         player2.id,
         uuid4()))
 
     return turn_logwriter
-
-def log_turn(turn_logwriter, turn_info):
-    """Log the information from this turn."""
-    pass
