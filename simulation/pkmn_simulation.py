@@ -61,12 +61,12 @@ class PokemonSimulation(BaseLoggingSimulation):
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""
         header = []
-        header.append("random.spinda")
-        header.append("random.ivysaur")
-        header.append("random.floatzel")
-        header.append("planning.spinda")
-        header.append("planning.ivysaur")
-        header.append("planning.floatzel")
+        header.append("RandomSpinda")
+        header.append("RandomIvysaur")
+        header.append("RandomFloatzel")
+        header.append("PlanningSpinda")
+        header.append("PlanningIvysaur")
+        header.append("PlanningFloatzel")
 
         self.type_log_writer = LogWriter(header, prefix="PKMNTypes")
 
