@@ -5,14 +5,6 @@ from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
 
 
-def suppress_print():
-    """Suppress print from PokemonEngine."""
-    import os
-    import sys
-    pew = open(os.devnull, 'w')
-    sys.stdout = pew
-
-
 def test_run():
     """Test running of a pokemon game."""
     exploud = Pokemon(name="exploud", moves=["tackle"])
@@ -80,7 +72,6 @@ def test_run_infinite():
     assert p_eng.game_state["num_turns"] > p_eng.turn_limit
 
 
-suppress_print()
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
