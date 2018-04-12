@@ -77,8 +77,11 @@ class PokemonEngine():
             player1_move = player1.make_move()
             player2_move = player2.make_move()
 
-            outcome = self.run_single_turn(
-                player1_move, player2_move, player1, player2)[0]
+            outcome, turn_info = self.run_single_turn(player1_move,
+                                                      player2_move,
+                                                      player1,
+                                                      player2)
+            log_turn(turn_logwriter, turn_info)
 
         if outcome["draw"]:
             # It was a draw, decide randomly
@@ -438,3 +441,7 @@ def init_player_logwriter(player1, player2):
         uuid4()))
 
     return turn_logwriter
+
+def log_turn(turn_logwriter, turn_info):
+    """Log the information from this turn."""
+    pass
