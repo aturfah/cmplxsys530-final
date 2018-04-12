@@ -358,14 +358,14 @@ class PokemonEngine():
     def log_turn(self, turn_logwriter, turn_info):
         """Log the information from this turn."""
         for turn in turn_info:
-            new_row = []
-            new_row.append(self.game_state["num_turns"])
-            new_row.append(turn["attacker"])
-            new_row.append(self.game_state[turn["attacker"]]["active"])
-            new_row.append(self.game_state[turn["defender"]]["active"])
-            new_row.append(turn["move"]["name"])
-            new_row.append(turn["damage"])
-            turn_logwriter.write_line(new_row)
+            new_line = {}
+            new_line["turn_num"] = self.game_state["num_turns"]
+            new_line["player_id"] = turn["attacker"]
+            new_line["active"] = self.game_state[turn["attacker"]]["active"].name
+            new_line["target"] = self.game_state[turn["defender"]]["active"].name
+            new_line["move"] = turn["move"]["id"]
+            new_line["damage"] = turn["damage"]
+            turn_logwriter.write_line(new_line)
 
 
 def anonymize_gamestate_helper(data):
