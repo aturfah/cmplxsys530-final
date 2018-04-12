@@ -27,13 +27,13 @@ class PokemonSimulation(BaseLoggingSimulation):
         for ind in range(self.num_players):
             if ind % 3 == 1:
                 pkmn_agent = PokemonAgent(default_team_floatzel())
-                pkmn_agent.type = "random.floatzel"
+                pkmn_agent.type = "RandomFloatzel"
             elif ind % 3 == 2:
                 pkmn_agent = PokemonAgent(default_team_ivysaur())
-                pkmn_agent.type = "random.ivysaur"
+                pkmn_agent.type = "RandomIvysaur"
             else:
                 pkmn_agent = PokemonAgent(default_team_spinda())
-                pkmn_agent.type = "random.spinda"
+                pkmn_agent.type = "RandomSpinda"
 
             self.ladder.add_player(pkmn_agent)
 
@@ -41,15 +41,15 @@ class PokemonSimulation(BaseLoggingSimulation):
             if ind % 3 == 1:
                 pkmn_agent = BasicPlanningPokemonAgent(
                     tier="pu", team=default_team_floatzel())
-                pkmn_agent.type = "planning.floatzel"
+                pkmn_agent.type = "PlanningFloatzel"
             elif ind % 3 == 2:
                 pkmn_agent = BasicPlanningPokemonAgent(
                     tier="pu", team=default_team_ivysaur())
-                pkmn_agent.type = "planning.ivysaur"
+                pkmn_agent.type = "PlanningIvysaur"
             else:
                 pkmn_agent = BasicPlanningPokemonAgent(
                     tier="pu", team=default_team_spinda())
-                pkmn_agent.type = "planning.spinda"
+                pkmn_agent.type = "PlanningSpinda"
             self.ladder.add_player(pkmn_agent)
 
     def init_type_log_writer(self):
