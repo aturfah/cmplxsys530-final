@@ -128,7 +128,7 @@ class Pokemon:
             stat_name = "sp_defense"
         elif stat == "spe":
             stat_name = "speed"
-            if self.status == "prz":
+            if self.status == "par":
                 status_modifier = 0.5
 
         # Apply boosts
