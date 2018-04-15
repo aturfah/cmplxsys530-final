@@ -75,6 +75,7 @@ class Pokemon:
             self.moves.append(MOVE_DATA[move])
         self.types = POKEMON_DATA[self.name]["types"]
         self.base_stats = POKEMON_DATA[self.name]["baseStats"]
+        self.status = None
         self.evs = evs
         self.increase_stat = None
         self.set_stats(nature, evs)
