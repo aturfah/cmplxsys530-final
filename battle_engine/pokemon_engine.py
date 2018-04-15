@@ -390,16 +390,19 @@ def anonymize_gamestate_helper(data):
     for pokemon in data["team"]:
         pct_hp = pokemon.current_hp/pokemon.max_hp
         name = pokemon.name
+        status = pokemon.status
         anon_data["team"].append({
             "name": name,
-            "pct_hp": pct_hp
+            "pct_hp": pct_hp,
+            "status": status
         })
 
     if data["active"] is not None:
         anon_data["active"] = {
             "name": data["active"].name,
             "pct_hp": data["active"].current_hp/data["active"].max_hp,
-            "boosts": data["active"].boosts
+            "boosts": data["active"].boosts,
+            "status": data["active"].status
         }
     else:
         anon_data["active"] = None
