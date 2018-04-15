@@ -149,11 +149,15 @@ class PokemonEngine():
         elif p1_switch:
             self.switch_pokemon("player1", move1[1])
             attack = self.game_state["player2"]["active"].moves[move2[1]]
-            turn_info = self.attack("player2", attack)
+            result = self.attack("player2", attack)
+            if result is not None:
+                turn_info = result
         elif p2_switch:
             self.switch_pokemon("player2", move2[1])
             attack = self.game_state["player1"]["active"].moves[move1[1]]
-            turn_info = self.attack("player1", attack)
+            result = self.attack("player1", attack)
+            if result is not None:
+                turn_info = result
         else:
             self.switch_pokemon("player1", move1[1])
             self.switch_pokemon("player2", move2[1])
@@ -262,10 +266,12 @@ class PokemonEngine():
         # it attacks as well.
         results = []
         new_data = self.attack(faster_player, move_dict[faster_player])
-        results.extend(new_data)
+        if new_data is not None:
+            results.extend(new_data)
         if self.game_state[slower_player]["active"].current_hp > 0:
             new_data = self.attack(slower_player, move_dict[slower_player])
-            results.extend(new_data)
+            if new_data is not None:
+                results.extend(new_data)
 
         return results
 
