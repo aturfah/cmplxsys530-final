@@ -198,6 +198,10 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
+        # Check for paralysis
+        if atk_poke.status == "par" and uniform() < 0.25:
+            return None
+
         # Do Damage
         if move["category"] != "Status":
             damage = calculate_damage(move, atk_poke, def_poke)
