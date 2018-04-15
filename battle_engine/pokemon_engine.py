@@ -97,6 +97,9 @@ class PokemonEngine():
         """Run the turn for these moves."""
         turn_info = self.calculate_turn(player1_move, player2_move)
 
+        apply_status_damage(self.game_state["player1"]["active"])
+        apply_status_damage(self.game_state["player2"]["active"])
+
         player1.new_info(turn_info, "player1")
         player2.new_info(turn_info, "player2")
 
