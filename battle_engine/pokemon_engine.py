@@ -203,10 +203,7 @@ class PokemonEngine():
             return None
 
         # Do Damage
-        if move["category"] != "Status":
-            damage = calculate_damage(move, atk_poke, def_poke)
-        else:
-            damage = 0
+        damage = calculate_damage(move, atk_poke, def_poke)
 
         def_poke.current_hp -= damage
 
@@ -425,6 +422,10 @@ def calculate_damage(move, attacker, defender):
     :param defender: dict or Pokemon
         Data of the defending Pokemon. Must support the [] operator.
     """
+    # Status moves do no damage
+    if move["category"] != "Status":
+        return 0
+
     # Calculate actual damage
     damage = floor(2*attacker["level"]/5 + 2)
     damage = damage * move["basePower"]
