@@ -170,6 +170,7 @@ def test_effective_stats():
 def test_status():
     """Test that the pokemon does status moves properly"""
     test_speed_paralyze()
+    test_attack_burn()
 
 
 def test_speed_paralyze():
