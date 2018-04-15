@@ -72,7 +72,26 @@ def test_run_infinite():
     assert p_eng.game_state["num_turns"] > p_eng.turn_limit
 
 
+def test_heal():
+    """Test that healing works properly."""
+    ivysaur = Pokemon(name="ivysaur", moves=["synthesis"])
+    floatzel = Pokemon(name="floatzel", moves=["watergun"])
+    player1 = PokemonAgent([ivysaur])
+    player1_move = ("ATTACK", 0)
+    player2 = PokemonAgent([floatzel])
+    player2_move = ("ATTACK", 0)
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    p_eng.run_single_turn(player1_move, player2_move, player1, player2)
+
+    # Healed
+    assert p_eng.game_state["player1"]["active"].current_hp == \
+        p_eng.game_state["player1"]["active"].max_hp
+
+
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
 test_run_infinite()
+test_heal()
