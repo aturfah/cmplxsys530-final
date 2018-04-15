@@ -388,6 +388,9 @@ class PokemonEngine():
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
 
+    def post_turn_status_dmg(self, pokemon):
+        """Apply damage for status conditions when appropriate."""
+        pass
 
 def anonymize_gamestate_helper(data):
     """Anonymize some gamestate data."""
