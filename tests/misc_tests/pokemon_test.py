@@ -191,7 +191,12 @@ def test_attack_burn():
 
     Burned attack = 1/2 * normal attack
     """
-    pass
+    exploud = Pokemon(name="exploud", moves=["tackle"])
+    exploud_brn = Pokemon(name="exploud", moves=["tackle"])
+    exploud_brn.status = "brn"
+
+    assert exploud.attack == exploud_brn.attack
+    assert floor(exploud.effective_stat("atk")/2) == exploud_brn.effective_stat("atk")
 
 test_init()
 test_param_validation()
