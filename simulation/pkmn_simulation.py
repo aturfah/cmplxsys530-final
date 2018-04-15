@@ -104,6 +104,7 @@ class PokemonSimulation(BaseLoggingSimulation):
             self.type_log_writer.write_line(data_line)
             type_results_queue.task_done()
 
+
 def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
     """Code for a single battle thread to run."""
     while not battle_queue.empty():

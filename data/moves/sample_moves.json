@@ -464,5 +464,28 @@
 		"type": "Normal",
 		"zMoveEffect": "clearnegativeboost",
 		"contestType": "Beautiful"
+	},
+	"slackoff": {
+		"num": 303,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "The user restores 1/2 of its maximum HP, rounded half up.",
+		"shortDesc": "Heals the user by 50% of its max HP.",
+		"id": "slackoff",
+		"isViable": true,
+		"name": "Slack Off",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"snatch": 1,
+			"heal": 1
+		},
+		"heal": [1, 2],
+		"secondary": false,
+		"target": "self",
+		"type": "Normal",
+		"zMoveEffect": "clearnegativeboost",
+		"contestType": "Cute"
 	}
 }
