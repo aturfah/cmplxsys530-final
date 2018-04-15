@@ -179,7 +179,6 @@ def test_speed_paralyze():
     Paralyzed speed = 1/2 * normal speed
     """
     exploud = Pokemon(name="exploud", moves=["tackle"])
-    exploud.status = "par"
     exploud_par = Pokemon(name="exploud", moves=["tackle"])
     exploud_par.status = "par"
 
