@@ -117,6 +117,7 @@ class Pokemon:
 
     def effective_stat(self, stat):
         """Calculate this pokemon's effective stat after boosts."""
+        status_modifier = 1
         if stat == "atk":
             stat_name = "attack"
         elif stat == "def":
@@ -127,13 +128,19 @@ class Pokemon:
             stat_name = "sp_defense"
         elif stat == "spe":
             stat_name = "speed"
+            if self.status == "prz":
+                status_modifier = 0.5
 
+        # Apply boosts
         val = self[stat_name]
         boost = self.boosts[stat]
         if boost > 0:
             val = val*(2+boost)/2
         elif boost < 0:
             val = val*(2/(2-boost))
+
+        # Apply status modifier
+        val = val * status_modifier
 
         # Round down
         val = floor(val)
