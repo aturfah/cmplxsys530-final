@@ -96,8 +96,26 @@ def test_status():
 
 
 def test_speed_paralyze():
-    """Test paralysis speed drop."""
-    pass
+    """
+    Test paralysis speed drop.
+    
+    Spinda should outspeed exploud and kill it.
+    """
+    spinda = Pokemon(name="spinda", moves=["tackle"])
+    exploud = Pokemon(name="exploud", moves=["tackle"])
+    spinda.current_hp = 1
+    exploud.current_hp = 1
+    exploud.status = "par"
+
+    player1 = PokemonAgent([spinda])
+    player2 = PokemonAgent([exploud])
+
+    p_eng = PokemonEngine()
+    p_eng.run(player1, player2)
+    outcome = p_eng.win_condition_met()
+
+    assert outcome["finished"]
+    assert outcome["winner"] == 1
 
 
 test_run()
