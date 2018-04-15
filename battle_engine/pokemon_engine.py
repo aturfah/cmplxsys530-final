@@ -340,8 +340,8 @@ class PokemonEngine():
                 faster_player = "player2"
                 slower_player = "player1"
         else:
-            p1_speed = self.game_state["player1"]["active"].speed
-            p2_speed = self.game_state["player2"]["active"].speed
+            p1_speed = self.game_state["player1"]["active"].effective_stat("spe")
+            p2_speed = self.game_state["player2"]["active"].effective_stat("spe")
 
             if p1_speed == p2_speed:
                 # Speed tie, coin flip
