@@ -388,21 +388,23 @@ class PokemonEngine():
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
 
-    def apply_status_damage(self, pokemon):
-        """Apply damage for status conditions when appropriate."""
-        if pokemon.status is None:
-            return
+def apply_status_damage(pokemon):
+    """Apply damage for status conditions when appropriate."""
+    if pokemon.status is None:
+        return
 
-        dmg_pct = 0
-        if pokemon.status == "brn":
-            # Burns do 1/16 of hp
-            dmg_pct = 1.0/16
-        elif pokemon.status == "psn":
-            dmg_pct = 1.0/8
-        elif pokemon.status == "tox":
-            dmg_pct = 1.0/16
+    dmg_pct = 0
+    if pokemon.status == "brn":
+        # Burns do 1/16 of hp
+        dmg_pct = 1.0/16
+    elif pokemon.status == "psn":
+        # Poison does 1/16 of hp
+        dmg_pct = 1.0/8
+    elif pokemon.status == "tox":
+        # TODO: Toxic does variable damage
+        dmg_pct = 1.0/16
 
-        pokemon.current_hp -= pokemon.max_hp*dmg_pct
+    pokemon.current_hp -= pokemon.max_hp*dmg_pct
 
 def anonymize_gamestate_helper(data):
     """Anonymize some gamestate data."""
