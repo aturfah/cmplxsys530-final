@@ -176,7 +176,7 @@ def test_speed_paralyze():
     """
     Test paralysis speed drop.
 
-    Spinda should outspeed exploud and kill it.
+    Paralyzed speed = 1/2 * normal speed
     """
     exploud = Pokemon(name="exploud", moves=["tackle"])
     exploud.status = "par"
@@ -186,6 +186,13 @@ def test_speed_paralyze():
     assert exploud.speed == exploud_par.speed
     assert floor(exploud.effective_stat("spe")/2) == exploud_par.effective_stat("spe")
 
+def test_attack_burn():
+    """
+    Test that the attack drop happens on burn.
+
+    Burned attack = 1/2 * normal attack
+    """
+    pass
 
 test_init()
 test_param_validation()
