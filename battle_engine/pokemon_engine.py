@@ -391,6 +391,7 @@ class PokemonEngine():
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
 
+
 def apply_status_damage(pokemon):
     """Apply damage for status conditions when appropriate."""
     if pokemon.status is None:
@@ -408,6 +409,7 @@ def apply_status_damage(pokemon):
         dmg_pct = 1.0/16
 
     pokemon.current_hp -= pokemon.max_hp*dmg_pct
+
 
 def anonymize_gamestate_helper(data):
     """Anonymize some gamestate data."""
