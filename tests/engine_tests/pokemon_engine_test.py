@@ -90,8 +90,19 @@ def test_heal():
         p_eng.game_state["player1"]["active"].max_hp
 
 
+def test_status():
+    """Test that the engine does status moves properly"""
+    test_speed_paralyze()
+
+
+def test_speed_paralyze():
+    """Test paralysis speed drop."""
+    pass
+
+
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
 test_run_infinite()
 test_heal()
+test_status()
