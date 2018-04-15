@@ -120,6 +120,8 @@ class Pokemon:
         status_modifier = 1
         if stat == "atk":
             stat_name = "attack"
+            if self.status == "brn":
+                status_modifier = 0.5
         elif stat == "def":
             stat_name = "defense"
         elif stat == "spa":
