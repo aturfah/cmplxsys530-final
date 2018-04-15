@@ -207,13 +207,16 @@ class PokemonEngine():
         def_poke.current_hp -= damage
 
         # Healing
-        if "healing" in move["flags"]:
+        if "heal" in move["flags"]:
             if "heal" in move:
                 heal_factor = move["heal"][0]/move["heal"][1]
             else:
                 heal_factor = 0.5
-            atk_poke.cur_hp = floor(min(atk_poke.max_hp,
-                                        atk_poke.cur_hp + heal_factor*atk_poke.max_hp))
+            # No overheal
+            atk_poke.current_hp = floor(
+                min(atk_poke.current_hp + heal_factor*atk_poke.max_hp,
+                    atk_poke.max_hp)
+            )
 
         # Move boosts
         if "boosts" in move:
