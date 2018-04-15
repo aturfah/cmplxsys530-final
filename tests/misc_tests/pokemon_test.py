@@ -1,5 +1,7 @@
 """Test for pokemon module."""
 
+from math import floor
+
 from pokemon_helpers.pokemon import Pokemon
 
 
@@ -165,8 +167,29 @@ def test_effective_stats():
     assert pkmn1.effective_stat("atk") == 80*2/8
 
 
+def test_status():
+    """Test that the pokemon does status moves properly"""
+    test_speed_paralyze()
+
+
+def test_speed_paralyze():
+    """
+    Test paralysis speed drop.
+
+    Spinda should outspeed exploud and kill it.
+    """
+    exploud = Pokemon(name="exploud", moves=["tackle"])
+    exploud.status = "par"
+    exploud_par = Pokemon(name="exploud", moves=["tackle"])
+    exploud_par.status = "par"
+
+    assert exploud.speed == exploud_par.speed
+    assert floor(exploud.effective_stat("spe")/2) == exploud_par.effective_stat("spe")
+
+
 test_init()
 test_param_validation()
 test_stats_calculation()
 test_getitem_validation()
 test_effective_stats()
+test_status()
