@@ -97,11 +97,17 @@ class PokemonEngine():
         """Run the turn for these moves."""
         turn_info = self.calculate_turn(player1_move, player2_move)
 
+        print(self.game_state["num_turns"], self.game_state["player1"]["active"].name, self.game_state["player1"]["active"].current_hp)
+        print(self.game_state["num_turns"], self.game_state["player2"]["active"].name, self.game_state["player2"]["active"].current_hp)
+
         apply_status_damage(self.game_state["player1"]["active"])
         apply_status_damage(self.game_state["player2"]["active"])
 
         player1.new_info(turn_info, "player1")
         player2.new_info(turn_info, "player2")
+
+        print(self.game_state["num_turns"], self.game_state["player1"]["active"].name, self.game_state["player1"]["active"].current_hp)
+        print(self.game_state["num_turns"], self.game_state["player2"]["active"].name, self.game_state["player2"]["active"].current_hp)
 
         # Figure out who faints at the end of this turn.
         if self.game_state["player1"]["active"].current_hp <= 0:
@@ -451,7 +457,7 @@ def calculate_damage(move, attacker, defender):
         Data of the defending Pokemon. Must support the [] operator.
     """
     # Status moves do no damage
-    if move["category"] != "Status":
+    if move["category"] == "Status":
         return 0
 
     # Calculate actual damage
