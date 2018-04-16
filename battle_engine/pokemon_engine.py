@@ -408,7 +408,7 @@ def apply_status_damage(pokemon):
         # TODO: Toxic does variable damage
         dmg_pct = 1.0/16
 
-    pokemon.current_hp -= pokemon.max_hp*dmg_pct
+    pokemon.current_hp -= floor(pokemon.max_hp*dmg_pct)
 
 
 def anonymize_gamestate_helper(data):
