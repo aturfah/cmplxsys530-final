@@ -7,8 +7,8 @@ from battle_engine.pokemon_engine import PokemonEngine
 
 def test_run():
     """Test running of a pokemon game."""
-    exploud = Pokemon(name="exploud", moves=["tackle"])
-    floatzel = Pokemon(name="floatzel", moves=["watergun"])
+    exploud = Pokemon(name="exploud", moves=["return"])
+    floatzel = Pokemon(name="floatzel", moves=["shadowball"])
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([floatzel])
@@ -95,7 +95,21 @@ def test_status_dmg():
 
 def test_burn_dmg():
     """Test that burn damage is applied."""
-    pass
+    exploud = Pokemon(name="exploud", moves=["synthesis"])
+    exploud_brn = Pokemon(name="exploud", moves=["synthesis"])
+    exploud_brn.status = "brn"
+
+    player_move = ("ATTACK", 0)
+    player1 = PokemonAgent([exploud])
+    player2 = PokemonAgent([exploud_brn])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    assert p_eng.game_state["player2"]["active"].current_hp == \
+            int(1+15*p_eng.game_state["player2"]["active"].max_hp/16)
+
 
 test_run()
 test_run_multiple_moves()
