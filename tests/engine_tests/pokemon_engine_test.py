@@ -89,9 +89,11 @@ def test_heal():
     assert p_eng.game_state["player1"]["active"].current_hp == \
         p_eng.game_state["player1"]["active"].max_hp
 
+
 def test_status_dmg():
     """Test that status_damage works properly."""
     test_burn_dmg()
+
 
 def test_burn_dmg():
     """Test that burn damage is applied."""
@@ -108,7 +110,7 @@ def test_burn_dmg():
     p_eng.run_single_turn(player_move, player_move, player1, player2)
 
     assert p_eng.game_state["player2"]["active"].current_hp == \
-            int(1+15*p_eng.game_state["player2"]["active"].max_hp/16)
+        int(1+15*p_eng.game_state["player2"]["active"].max_hp/16)
 
 
 test_run()
