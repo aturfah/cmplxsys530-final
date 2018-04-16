@@ -104,9 +104,9 @@ class PokemonEngine():
         player2.new_info(turn_info, "player2")
 
         # Figure out who faints at the end of this turn.
-        if self.game_state["player1"]["active"].current_hp < 0:
+        if self.game_state["player1"]["active"].current_hp <= 0:
             self.game_state["player1"]["active"] = None
-        if self.game_state["player2"]["active"].current_hp < 0:
+        if self.game_state["player2"]["active"].current_hp <= 0:
             self.game_state["player2"]["active"] = None
 
         self.update_gamestates(player1, player2)
