@@ -251,26 +251,11 @@ function update_log(data) {
 
     // Switching
     var new_str = "";
-    if (turn_info.length === 0 && !outcome["finished"]) {
-        new_str = new_str.concat("Player switched to ", data["player_active"]["name"], ".<br/>")
-        new_str = new_str.concat("Opponent switched to ", data["opp_active"]["name"], ".<br/>")
-    } else if (turn_info.length === 1 && !outcome["finished"]) {
-        if (turn_info[0]["attacker"] === "player1") {
-            //We attacked, opponent either switched or fainted
-            if (turn_info[0]["def_poke"] == data["opp_active"]["name"]) { // Didn't faint
-                new_str = new_str.concat("Opponent switched to ", data["opp_active"]["name"], ".<br/>")
-            }
-        } else {
-            // Opponent attacked, we switched.
-            if (turn_info[0]["def_poke"] == data["player_active"]["name"]) { // Didn't faint
-                new_str = new_str.concat("Player switched to ", data["player_active"]["name"], ".<br/>")
-            }
-        }
-    }
-    // Attacking
+
+    // Attacking/Switching
     turn_info.forEach(function (datum) {
         if (datum["type"] === "SWITCH"){
-            continue;
+            print(datum);
         } else {
             var player_attacking = datum["attacker"] === "player1"
             if (player_attacking) {
