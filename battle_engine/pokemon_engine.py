@@ -190,6 +190,12 @@ class PokemonEngine():
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
         self.game_state[player]["active"] = new_active
+        
+        # New Data
+        results = {}
+        results["type"] = "SWITCH"
+        results["old_active"] = cur_active.name
+        results["new_active"] = new_active.name
 
     def attack(self, attacker, move):
         """
