@@ -66,7 +66,7 @@ def test_run_infinite():
     player1 = PokemonAgent([exploud1])
     player2 = PokemonAgent([exploud2])
 
-    p_eng = PokemonEngine()
+    p_eng = PokemonEngine(turn_limit=500)
     p_eng.run(player1, player2)
     # We got to the turn limit
     assert p_eng.game_state["num_turns"] > p_eng.turn_limit
