@@ -184,7 +184,9 @@ def test_speed_paralyze():
     exploud_par.status = "par"
 
     assert exploud.speed == exploud_par.speed
-    assert floor(exploud.effective_stat("spe")/2) == exploud_par.effective_stat("spe")
+    assert floor(exploud.effective_stat("spe") / 2) ==\
+        exploud_par.effective_stat("spe")
+
 
 def test_attack_burn():
     """
@@ -197,7 +199,9 @@ def test_attack_burn():
     exploud_brn.status = "brn"
 
     assert exploud.attack == exploud_brn.attack
-    assert floor(exploud.effective_stat("atk")/2) == exploud_brn.effective_stat("atk")
+    assert floor(exploud.effective_stat("atk") / 2) ==\
+        exploud_brn.effective_stat("atk")
+
 
 test_init()
 test_param_validation()
