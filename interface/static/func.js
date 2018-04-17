@@ -255,7 +255,12 @@ function update_log(data) {
     // Attacking/Switching
     turn_info.forEach(function (datum) {
         if (datum["type"] === "SWITCH"){
-            print(datum);
+            if(datum["player"] === "player1") {
+                new_str = new_str.concat("Player switched to ");
+            } else {
+                new_str = new_str.concat("Opponent switched to ");
+            }
+            new_str = new_str.concat(datum["new_active"], ".<br/>");
         } else {
             var player_attacking = datum["attacker"] === "player1"
             if (player_attacking) {
