@@ -402,7 +402,7 @@ def apply_status_damage(pokemon):
         # Burns do 1/16 of hp
         dmg_pct = 1.0/16
     elif pokemon.status == "psn":
-        # Poison does 1/16 of hp
+        # Poison does 1/8 of hp
         dmg_pct = 1.0/8
     elif pokemon.status == "tox":
         # Toxic does variable damage
