@@ -142,14 +142,17 @@ def test_toxic_dmg():
 
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player2)
-    p_eng.run_single_turn(player_move, player_move, player1, player2)
 
     # First turn is 15/16
-    assert p_eng.game_state["player2"]["active"].current_hp == \
-        int(1+15*p_eng.game_state["player2"]["active"].max_hp/16)
     p_eng.run_single_turn(player_move, player_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].current_hp == \
-        int(1+13*p_eng.game_state["player2"]["active"].max_hp/16)
+        int(1+15*p_eng.game_state["player2"]["active"].max_hp/16)
+    prev_hp = p_eng.game_state["player2"]["active"].current_hp
+
+    # Second turn is ~13/16
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert p_eng.game_state["player2"]["active"].current_hp == \
+        int(1 + prev_hp - 2*p_eng.game_state["player2"]["active"].max_hp/16)
 
 
 test_run()
