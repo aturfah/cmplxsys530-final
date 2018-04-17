@@ -150,20 +150,20 @@ class PokemonEngine():
         if not p1_switch and not p2_switch:
             turn_info = self.turn_both_attack(move1, move2)
         elif p1_switch:
-            self.switch_pokemon("player1", move1[1])
+            turn_info.extend(self.switch_pokemon("player1", move1[1]))
             attack = self.game_state["player2"]["active"].moves[move2[1]]
             result = self.attack("player2", attack)
             if result is not None:
-                turn_info = result
+                turn_info.extend(result)
         elif p2_switch:
-            self.switch_pokemon("player2", move2[1])
+            turn_info.extend(self.switch_pokemon("player2", move2[1]))
             attack = self.game_state["player1"]["active"].moves[move1[1]]
             result = self.attack("player1", attack)
             if result is not None:
-                turn_info = result
+                turn_info.extend(result)
         else:
-            self.switch_pokemon("player1", move1[1])
-            self.switch_pokemon("player2", move2[1])
+            turn_info.extend(self.switch_pokemon("player1", move1[1]))
+            turn_info.extend(self.switch_pokemon("player2", move2[1]))
 
         return turn_info
 
@@ -196,6 +196,7 @@ class PokemonEngine():
         results["type"] = "SWITCH"
         results["old_active"] = cur_active.name
         results["new_active"] = new_active.name
+        return [results]
 
     def attack(self, attacker, move):
         """
