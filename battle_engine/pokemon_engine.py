@@ -14,10 +14,11 @@ from pokemon_helpers.pokemon import default_boosts
 class PokemonEngine():
     """Class to run a pokemon game."""
 
-    def __init__(self, generation="gen7", turn_limit=2000):
+    def __init__(self, generation="gen7", turn_limit=2000, log_turns=False):
         """Initialize a new PokemonEngine."""
         self.generation = generation
         self.turn_limit = turn_limit
+        self.log_turn_flag = log_turns
         self.reset_game_state()
 
     def reset_game_state(self):
@@ -69,7 +70,9 @@ class PokemonEngine():
         self.initialize_battle(player1, player2)
 
         # Initialize Log Writer to write turn info
-        turn_logwriter = init_player_logwriter(player1, player2)
+        turn_logwriter = None
+        if self.log_turn_flag:
+            turn_logwriter = init_player_logwriter(player1, player2)
 
         # Initial setting of outcome variable
         outcome = self.win_condition_met()
@@ -417,6 +420,9 @@ class PokemonEngine():
 
     def log_turn(self, turn_logwriter, turn_info):
         """Log the information from this turn."""
+        if not self.log_turn_flag:
+            return
+
         for turn in turn_info:
             if turn["type"] == "SWITCH":
                 continue
