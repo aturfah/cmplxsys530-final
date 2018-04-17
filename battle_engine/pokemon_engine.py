@@ -211,15 +211,18 @@ class PokemonEngine():
         # Check for freeze
         elif atk_poke.status == "frz":
             # Check for player thaw
-            if uniform() < 0.2 or move["type"] == "fire":
+            if uniform() < 0.2 or move["type"] == "fire" or move["id"] == "scald":
                 atk_poke.status = None
             else:
                 return None
 
         # Do Damage
         damage = calculate_damage(move, atk_poke, def_poke)
-
         def_poke.current_hp -= damage
+
+        # Thaw opponent if applicable
+        if def_poke.status == "frz" and (move["type"] == "fire" or move["id"] == "scald"):
+            def_poke.status = None
 
         # Healing
         if "heal" in move["flags"]:
