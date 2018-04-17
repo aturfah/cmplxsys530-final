@@ -181,6 +181,10 @@ class PokemonEngine():
         # Reset boosts
         self.game_state[player]["active"].boosts = default_boosts()
 
+        # If toxic-ed, reset the turn counter
+        if self.game_state[player]["active"].status == "tox":
+            self.game_state[player]["active"].status_turns = 0
+
         # Switch
         cur_active = self.game_state[player]["active"]
         self.game_state[player]["team"].append(cur_active)
