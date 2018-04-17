@@ -91,6 +91,7 @@ def test_status_dmg():
     """Test that status_damage works properly."""
     test_burn_dmg()
     test_poison_dmg()
+    test_toxic_dmg()
 
 
 def test_burn_dmg():
@@ -127,6 +128,29 @@ def test_poison_dmg():
 
     assert p_eng.game_state["player2"]["active"].current_hp == \
         int(1+7*p_eng.game_state["player2"]["active"].max_hp/8)
+
+
+def test_toxic_dmg():
+    """Toxic damage applied correctly."""
+    exploud = Pokemon(name="exploud", moves=["synthesis"])
+    exploud_tox = Pokemon(name="exploud", moves=["shadowball"])
+    exploud_tox.status = "tox"
+
+    player1 = PokemonAgent([exploud])
+    player2 = PokemonAgent([exploud_tox])
+    player_move = ("ATTACK", 0)
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    # First turn is 15/16
+    assert p_eng.game_state["player2"]["active"].current_hp == \
+        int(1+15*p_eng.game_state["player2"]["active"].max_hp/16)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert p_eng.game_state["player2"]["active"].current_hp == \
+        int(1+13*p_eng.game_state["player2"]["active"].max_hp/16)
+
 
 test_run()
 test_run_multiple_moves()
