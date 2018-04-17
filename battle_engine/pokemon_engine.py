@@ -219,6 +219,15 @@ class PokemonEngine():
                 atk_poke.status = None
             else:
                 return None
+        elif atk_poke.status == "slp":
+            # Check for player wake up
+            if uniform() < 1.0/3 or atk_poke.status_counter == 3:
+                atk_poke.status = None
+                atk_poke.status_counter = 0
+            # Increment sleep counter
+            else:
+                atk_poke.status_counter += 1
+                return None
 
         # Do Damage
         damage = calculate_damage(move, atk_poke, def_poke)
