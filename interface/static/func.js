@@ -271,22 +271,22 @@ function update_log(data) {
     turn_info.forEach(function (datum) {
         if (datum["type"] === "SWITCH"){
             continue;
-        }
-
-        var player_attacking = datum["attacker"] === "player1"
-        if (player_attacking) {
-            new_str = new_str.concat("Player's ")
         } else {
-            new_str = new_str.concat("Opponent's ")
+            var player_attacking = datum["attacker"] === "player1"
+            if (player_attacking) {
+                new_str = new_str.concat("Player's ")
+            } else {
+                new_str = new_str.concat("Opponent's ")
+            }
+    
+            new_str = new_str.concat(datum["atk_poke"], " attacked ", datum["def_poke"], " with ", datum["move"]["name"])
+            new_str = new_str.concat(". It did ", datum["pct_damage"], "%")
+    
+            if (!player_attacking) {
+                new_str = new_str.concat(" (", datum["damage"], ")")
+            }
+            new_str = new_str.concat(" damage.<br/>")
         }
-
-        new_str = new_str.concat(datum["atk_poke"], " attacked ", datum["def_poke"], " with ", datum["move"]["name"])
-        new_str = new_str.concat(". It did ", datum["pct_damage"], "%")
-
-        if (!player_attacking) {
-            new_str = new_str.concat(" (", datum["damage"], ")")
-        }
-        new_str = new_str.concat(" damage.<br/>")
     });
     new_entry.innerHTML += "".concat(new_str, "<br/>")
 
