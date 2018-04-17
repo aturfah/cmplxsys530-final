@@ -117,7 +117,7 @@ class PokemonAgent(BaseAgent):
         """Calculate the opponent's battle position."""
         return calc_opp_position_helper(self.opp_gamestate)
 
-    def new_info(self, turn_info, my_id):
+    def new_info(self, raw_turn_info, my_id):
         """
         Get new info for opponent's game_state.
 
@@ -131,6 +131,8 @@ class PokemonAgent(BaseAgent):
             values of this dict. To know which values the method
             should be looking at in turn_info.
         """
+        turn_info = [turn for turn in raw_turn_info if turn["type"] == "ATTACK"]
+
         for info in turn_info:
             if info["attacker"] == my_id:
                 # We attacked, infer data about defending pokemon
