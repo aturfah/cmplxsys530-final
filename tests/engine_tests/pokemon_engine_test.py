@@ -116,7 +116,20 @@ def test_burn_dmg():
 
 def test_poison_dmg():
     """Test that poison damage is applied."""
-    pass
+    exploud = Pokemon(name="exploud", moves=["synthesis"])
+    exploud_psn = Pokemon(name="exploud", moves=["synthesis"])
+    exploud_psn.status = "psn"
+
+    player1 = PokemonAgent([exploud])
+    player2 = PokemonAgent([exploud_psn])
+    player_move = ("ATTACK", 0)
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    assert p_eng.game_state["player2"]["active"].current_hp == \
+        int(1+7*p_eng.game_state["player2"]["active"].max_hp/8)
 
 test_run()
 test_run_multiple_moves()
