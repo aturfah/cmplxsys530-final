@@ -434,6 +434,7 @@ def apply_status_damage(pokemon):
     elif pokemon.status == "tox":
         # Toxic does variable damage
         dmg_pct = (pokemon.status_turns+1)*1.0/16
+        pokemon.status_turns += 1
 
     pokemon.current_hp -= floor(pokemon.max_hp*dmg_pct)
 
