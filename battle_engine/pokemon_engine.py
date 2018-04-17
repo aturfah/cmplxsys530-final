@@ -269,6 +269,7 @@ class PokemonEngine():
                     def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
 
         results = {}
+        results["type"] = "ATTACK"
         results["move"] = move
         results["damage"] = damage
         results["pct_damage"] = 100*damage/def_poke.max_hp
