@@ -197,6 +197,10 @@ class PokemonEngine():
         :param move: dict
             The data for the move that is being done.
         """
+        # pylint: disable=R0912
+        # Disable too many branches
+        # I don't think there's a better way to do this
+
         if attacker == "player1":
             defender = "player2"
         else:
