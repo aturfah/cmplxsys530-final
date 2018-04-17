@@ -249,12 +249,12 @@ function update_log(data) {
     var outcome = data["outcome"]
     var turn_info = data["turn_info"]
 
-    // Switching
     var new_str = "";
 
-    // Attacking/Switching
+    // Log the info
     turn_info.forEach(function (datum) {
         if (datum["type"] === "SWITCH"){
+            // Switching
             if(datum["player"] === "player1") {
                 new_str = new_str.concat("Player switched to ");
             } else {
@@ -262,6 +262,7 @@ function update_log(data) {
             }
             new_str = new_str.concat(datum["new_active"], ".<br/>");
         } else {
+            // Attacking
             var player_attacking = datum["attacker"] === "player1"
             if (player_attacking) {
                 new_str = new_str.concat("Player's ")
@@ -282,9 +283,9 @@ function update_log(data) {
 
     if (outcome["finished"] === true) {
         if (outcome["winner"] === 1) {
-            new_entry.innerHTML += "PLAYER WINS!!"
+            new_entry.innerHTML += "You win! :D"
         } else {
-            new_entry.innerHTML += "OPPONENT WINS!"
+            new_entry.innerHTML += "Opponent wins... :("
         }
     }
     game_log.appendChild(new_entry)
