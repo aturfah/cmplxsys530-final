@@ -417,6 +417,9 @@ class PokemonEngine():
     def log_turn(self, turn_logwriter, turn_info):
         """Log the information from this turn."""
         for turn in turn_info:
+            if turn["type"] == "SWITCH":
+                continue
+
             new_line = {}
             new_line["turn_num"] = self.game_state["num_turns"]
             new_line["player_id"] = turn["attacker"]
