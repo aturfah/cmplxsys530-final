@@ -33,7 +33,7 @@ def test_run_multiple_pokemon():
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([spinda1, spinda2, magikarp])
 
-    p_eng = PokemonEngine()
+    p_eng = PokemonEngine(turn_limit=500)
 
     p_eng.run(player1, player2)
 
