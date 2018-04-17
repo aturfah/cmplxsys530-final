@@ -208,6 +208,13 @@ class PokemonEngine():
         # Check for paralysis
         if atk_poke.status == "par" and uniform() < 0.25:
             return None
+        # Check for freeze
+        elif atk_poke.status == "frz":
+            # Check for player thaw
+            if uniform() < 0.2 or move["type"] == "fire":
+                atk_poke.status = None
+            else:
+                return None
 
         # Do Damage
         damage = calculate_damage(move, atk_poke, def_poke)
