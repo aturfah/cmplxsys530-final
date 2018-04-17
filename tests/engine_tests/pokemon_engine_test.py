@@ -93,6 +93,7 @@ def test_heal():
 def test_status_dmg():
     """Test that status_damage works properly."""
     test_burn_dmg()
+    test_poison_dmg()
 
 
 def test_burn_dmg():
@@ -112,6 +113,10 @@ def test_burn_dmg():
     assert p_eng.game_state["player2"]["active"].current_hp == \
         int(1+15*p_eng.game_state["player2"]["active"].max_hp/16)
 
+
+def test_poison_dmg():
+    """Test that poison damage is applied."""
+    pass
 
 test_run()
 test_run_multiple_moves()
