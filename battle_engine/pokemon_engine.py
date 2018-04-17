@@ -497,9 +497,11 @@ def calculate_damage(move, attacker, defender):
     :param defender: dict or Pokemon
         Data of the defending Pokemon. Must support the [] operator.
     """
+    damage = 0
+    critical_hit = False
     # Status moves do no damage
     if move["category"] == "Status":
-        return 0
+        return damage, critical_hit
 
     # Calculate actual damage
     damage = floor(2*attacker["level"]/5 + 2)
@@ -516,7 +518,6 @@ def calculate_damage(move, attacker, defender):
     modifier = calculate_modifier(move, attacker, defender)
 
     # Critical Hit
-    critical_hit = False
     if uniform() < 0.0625:
         critical_hit = True
         modifier = modifier * 1.5
@@ -525,7 +526,7 @@ def calculate_damage(move, attacker, defender):
     modifier = modifier * uniform(0.85, 1.00)
     damage = floor(damage*modifier)
 
-    return damage, critical_hit
+    return (damage, critical_hit)
 
 
 def calculate_modifier(move, attacker, defender):
