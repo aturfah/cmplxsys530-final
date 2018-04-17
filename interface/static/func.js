@@ -269,6 +269,10 @@ function update_log(data) {
     }
     // Attacking
     turn_info.forEach(function (datum) {
+        if (datum["type"] === "SWITCH"){
+            continue;
+        }
+
         var player_attacking = datum["attacker"] === "player1"
         if (player_attacking) {
             new_str = new_str.concat("Player's ")
