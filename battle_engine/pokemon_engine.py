@@ -14,10 +14,11 @@ from pokemon_helpers.pokemon import default_boosts
 class PokemonEngine():
     """Class to run a pokemon game."""
 
-    def __init__(self, generation="gen7", turn_limit=2000):
+    def __init__(self, generation="gen7", turn_limit=2000, log_turns=False):
         """Initialize a new PokemonEngine."""
         self.generation = generation
         self.turn_limit = turn_limit
+        self.log_turn_flag = log_turns
         self.reset_game_state()
 
     def reset_game_state(self):
@@ -69,7 +70,9 @@ class PokemonEngine():
         self.initialize_battle(player1, player2)
 
         # Initialize Log Writer to write turn info
-        turn_logwriter = init_player_logwriter(player1, player2)
+        turn_logwriter = None
+        if self.log_turn_flag:
+            turn_logwriter = init_player_logwriter(player1, player2)
 
         # Initial setting of outcome variable
         outcome = self.win_condition_met()
@@ -150,20 +153,20 @@ class PokemonEngine():
         if not p1_switch and not p2_switch:
             turn_info = self.turn_both_attack(move1, move2)
         elif p1_switch:
-            self.switch_pokemon("player1", move1[1])
+            turn_info.extend(self.switch_pokemon("player1", move1[1]))
             attack = self.game_state["player2"]["active"].moves[move2[1]]
             result = self.attack("player2", attack)
             if result is not None:
-                turn_info = result
+                turn_info.extend(result)
         elif p2_switch:
-            self.switch_pokemon("player2", move2[1])
+            turn_info.extend(self.switch_pokemon("player2", move2[1]))
             attack = self.game_state["player1"]["active"].moves[move1[1]]
             result = self.attack("player1", attack)
             if result is not None:
-                turn_info = result
+                turn_info.extend(result)
         else:
-            self.switch_pokemon("player1", move1[1])
-            self.switch_pokemon("player2", move2[1])
+            turn_info.extend(self.switch_pokemon("player1", move1[1]))
+            turn_info.extend(self.switch_pokemon("player2", move2[1]))
 
         return turn_info
 
@@ -190,6 +193,14 @@ class PokemonEngine():
         self.game_state[player]["team"].append(cur_active)
         new_active = self.game_state[player]["team"].pop(position)
         self.game_state[player]["active"] = new_active
+
+        # New Data
+        results = {}
+        results["type"] = "SWITCH"
+        results["player"] = player
+        results["old_active"] = cur_active.name
+        results["new_active"] = new_active.name
+        return [results]
 
     def attack(self, attacker, move):
         """
@@ -263,6 +274,7 @@ class PokemonEngine():
                     def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
 
         results = {}
+        results["type"] = "ATTACK"
         results["move"] = move
         results["damage"] = damage
         results["pct_damage"] = 100*damage/def_poke.max_hp
@@ -408,7 +420,13 @@ class PokemonEngine():
 
     def log_turn(self, turn_logwriter, turn_info):
         """Log the information from this turn."""
+        if not self.log_turn_flag:
+            return
+
         for turn in turn_info:
+            if turn["type"] == "SWITCH":
+                continue
+
             new_line = {}
             new_line["turn_num"] = self.game_state["num_turns"]
             new_line["player_id"] = turn["attacker"]

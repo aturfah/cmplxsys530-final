@@ -54,6 +54,7 @@ def test_opp_gamestate():
     assert pa1.opp_gamestate["data"]["active"]["name"] == "spinda"
 
     turn_info = {}
+    turn_info["type"] = "ATTACK"
     turn_info["attacker"] = "player2"
     turn_info["move"] = spinda.moves[0]
     turn_info["pct_damage"] = 28
@@ -193,6 +194,7 @@ def test_infer_investment():
 
     # Set the new info
     new_info = {}
+    new_info["type"] = "ATTACK"
     new_info["move"] = MOVE_DATA["tackle"]
     new_info["attacker"] = "player1"
     new_info["defender"] = "player2"
@@ -274,7 +276,7 @@ def test_infer_speed_investment():
                          anonymize_gamestate_helper(gamestate))
 
     new_info = {}
-    new_info = {}
+    new_info["type"] = "ATTACK"
     new_info["move"] = MOVE_DATA["tackle"]
     new_info["attacker"] = "player2"
     new_info["defender"] = "player1"
