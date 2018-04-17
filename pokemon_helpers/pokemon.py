@@ -75,6 +75,8 @@ class Pokemon:
             self.moves.append(MOVE_DATA[move])
         self.types = POKEMON_DATA[self.name]["types"]
         self.base_stats = POKEMON_DATA[self.name]["baseStats"]
+        self.status = None
+        self.status_turns = 0
         self.evs = evs
         self.increase_stat = None
         self.set_stats(nature, evs)
@@ -116,8 +118,11 @@ class Pokemon:
 
     def effective_stat(self, stat):
         """Calculate this pokemon's effective stat after boosts."""
+        status_modifier = 1
         if stat == "atk":
             stat_name = "attack"
+            if self.status == "brn":
+                status_modifier = 0.5
         elif stat == "def":
             stat_name = "defense"
         elif stat == "spa":
@@ -126,13 +131,19 @@ class Pokemon:
             stat_name = "sp_defense"
         elif stat == "spe":
             stat_name = "speed"
+            if self.status == "par":
+                status_modifier = 0.5
 
+        # Apply boosts
         val = self[stat_name]
         boost = self.boosts[stat]
         if boost > 0:
             val = val*(2+boost)/2
         elif boost < 0:
             val = val*(2/(2-boost))
+
+        # Apply status modifier
+        val = val * status_modifier
 
         # Round down
         val = floor(val)

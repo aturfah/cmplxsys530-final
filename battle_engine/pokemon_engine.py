@@ -97,13 +97,16 @@ class PokemonEngine():
         """Run the turn for these moves."""
         turn_info = self.calculate_turn(player1_move, player2_move)
 
+        apply_status_damage(self.game_state["player1"]["active"])
+        apply_status_damage(self.game_state["player2"]["active"])
+
         player1.new_info(turn_info, "player1")
         player2.new_info(turn_info, "player2")
 
         # Figure out who faints at the end of this turn.
-        if self.game_state["player1"]["active"].current_hp < 0:
+        if self.game_state["player1"]["active"].current_hp <= 0:
             self.game_state["player1"]["active"] = None
-        if self.game_state["player2"]["active"].current_hp < 0:
+        if self.game_state["player2"]["active"].current_hp <= 0:
             self.game_state["player2"]["active"] = None
 
         self.update_gamestates(player1, player2)
@@ -149,11 +152,15 @@ class PokemonEngine():
         elif p1_switch:
             self.switch_pokemon("player1", move1[1])
             attack = self.game_state["player2"]["active"].moves[move2[1]]
-            turn_info = self.attack("player2", attack)
+            result = self.attack("player2", attack)
+            if result is not None:
+                turn_info = result
         elif p2_switch:
             self.switch_pokemon("player2", move2[1])
             attack = self.game_state["player1"]["active"].moves[move1[1]]
-            turn_info = self.attack("player1", attack)
+            result = self.attack("player1", attack)
+            if result is not None:
+                turn_info = result
         else:
             self.switch_pokemon("player1", move1[1])
             self.switch_pokemon("player2", move2[1])
@@ -174,6 +181,10 @@ class PokemonEngine():
         # Reset boosts
         self.game_state[player]["active"].boosts = default_boosts()
 
+        # If toxic-ed, reset the turn counter
+        if self.game_state[player]["active"].status == "tox":
+            self.game_state[player]["active"].status_turns = 0
+
         # Switch
         cur_active = self.game_state[player]["active"]
         self.game_state[player]["team"].append(cur_active)
@@ -190,6 +201,10 @@ class PokemonEngine():
         :param move: dict
             The data for the move that is being done.
         """
+        # pylint: disable=R0912
+        # Disable too many branches
+        # I don't think there's a better way to do this
+
         if attacker == "player1":
             defender = "player2"
         else:
@@ -198,13 +213,33 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
-        # Do Damage
-        if move["category"] != "Status":
-            damage = calculate_damage(move, atk_poke, def_poke)
-        else:
-            damage = 0
+        # Check for paralysis
+        if atk_poke.status == "par" and uniform() < 0.25:
+            return None
+        # Check for freeze
+        elif atk_poke.status == "frz":
+            # Check for player thaw
+            if uniform() < 0.2 or move["type"] == "fire" or move["id"] == "scald":
+                atk_poke.status = None
+            else:
+                return None
+        elif atk_poke.status == "slp":
+            # Check for player wake up
+            if uniform() < 1.0/3 or atk_poke.status_counter == 3:
+                atk_poke.status = None
+                atk_poke.status_counter = 0
+            # Increment sleep counter
+            else:
+                atk_poke.status_counter += 1
+                return None
 
+        # Do Damage
+        damage = calculate_damage(move, atk_poke, def_poke)
         def_poke.current_hp -= damage
+
+        # Thaw opponent if applicable
+        if def_poke.status == "frz" and (move["type"] == "fire" or move["id"] == "scald"):
+            def_poke.status = None
 
         # Healing
         if "heal" in move["flags"]:
@@ -261,10 +296,12 @@ class PokemonEngine():
         # it attacks as well.
         results = []
         new_data = self.attack(faster_player, move_dict[faster_player])
-        results.extend(new_data)
+        if new_data is not None:
+            results.extend(new_data)
         if self.game_state[slower_player]["active"].current_hp > 0:
             new_data = self.attack(slower_player, move_dict[slower_player])
-            results.extend(new_data)
+            if new_data is not None:
+                results.extend(new_data)
 
         return results
 
@@ -340,8 +377,8 @@ class PokemonEngine():
                 faster_player = "player2"
                 slower_player = "player1"
         else:
-            p1_speed = self.game_state["player1"]["active"].speed
-            p2_speed = self.game_state["player2"]["active"].speed
+            p1_speed = self.game_state["player1"]["active"].effective_stat("spe")
+            p2_speed = self.game_state["player2"]["active"].effective_stat("spe")
 
             if p1_speed == p2_speed:
                 # Speed tie, coin flip
@@ -382,6 +419,26 @@ class PokemonEngine():
             turn_logwriter.write_line(new_line)
 
 
+def apply_status_damage(pokemon):
+    """Apply damage for status conditions when appropriate."""
+    if pokemon.status is None:
+        return
+
+    dmg_pct = 0
+    if pokemon.status == "brn":
+        # Burns do 1/16 of hp
+        dmg_pct = 1.0/16
+    elif pokemon.status == "psn":
+        # Poison does 1/8 of hp
+        dmg_pct = 1.0/8
+    elif pokemon.status == "tox":
+        # Toxic does variable damage
+        dmg_pct = (pokemon.status_turns+1)*1.0/16
+        pokemon.status_turns += 1
+
+    pokemon.current_hp -= floor(pokemon.max_hp*dmg_pct)
+
+
 def anonymize_gamestate_helper(data):
     """Anonymize some gamestate data."""
     anon_data = {}
@@ -390,16 +447,19 @@ def anonymize_gamestate_helper(data):
     for pokemon in data["team"]:
         pct_hp = pokemon.current_hp/pokemon.max_hp
         name = pokemon.name
+        status = pokemon.status
         anon_data["team"].append({
             "name": name,
-            "pct_hp": pct_hp
+            "pct_hp": pct_hp,
+            "status": status
         })
 
     if data["active"] is not None:
         anon_data["active"] = {
             "name": data["active"].name,
             "pct_hp": data["active"].current_hp/data["active"].max_hp,
-            "boosts": data["active"].boosts
+            "boosts": data["active"].boosts,
+            "status": data["active"].status
         }
     else:
         anon_data["active"] = None
@@ -418,6 +478,10 @@ def calculate_damage(move, attacker, defender):
     :param defender: dict or Pokemon
         Data of the defending Pokemon. Must support the [] operator.
     """
+    # Status moves do no damage
+    if move["category"] == "Status":
+        return 0
+
     # Calculate actual damage
     damage = floor(2*attacker["level"]/5 + 2)
     damage = damage * move["basePower"]

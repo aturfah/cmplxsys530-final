@@ -1,5 +1,7 @@
 """Test for pokemon module."""
 
+from math import floor
+
 from pokemon_helpers.pokemon import Pokemon
 
 
@@ -165,8 +167,45 @@ def test_effective_stats():
     assert pkmn1.effective_stat("atk") == 80*2/8
 
 
+def test_status():
+    """Test that the pokemon's stats are affected by stats."""
+    test_speed_paralyze()
+    test_attack_burn()
+
+
+def test_speed_paralyze():
+    """
+    Test paralysis speed drop.
+
+    Paralyzed speed = 1/2 * normal speed
+    """
+    exploud = Pokemon(name="exploud", moves=["tackle"])
+    exploud_par = Pokemon(name="exploud", moves=["tackle"])
+    exploud_par.status = "par"
+
+    assert exploud.speed == exploud_par.speed
+    assert floor(exploud.effective_stat("spe") / 2) ==\
+        exploud_par.effective_stat("spe")
+
+
+def test_attack_burn():
+    """
+    Test that the attack drop happens on burn.
+
+    Burned attack = 1/2 * normal attack
+    """
+    exploud = Pokemon(name="exploud", moves=["tackle"])
+    exploud_brn = Pokemon(name="exploud", moves=["tackle"])
+    exploud_brn.status = "brn"
+
+    assert exploud.attack == exploud_brn.attack
+    assert floor(exploud.effective_stat("atk") / 2) ==\
+        exploud_brn.effective_stat("atk")
+
+
 test_init()
 test_param_validation()
 test_stats_calculation()
 test_getitem_validation()
 test_effective_stats()
+test_status()
