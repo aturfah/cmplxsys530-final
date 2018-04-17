@@ -76,6 +76,7 @@ class Pokemon:
         self.types = POKEMON_DATA[self.name]["types"]
         self.base_stats = POKEMON_DATA[self.name]["baseStats"]
         self.status = None
+        self.status_turns = 0
         self.evs = evs
         self.increase_stat = None
         self.set_stats(nature, evs)
