@@ -194,6 +194,7 @@ class PokemonEngine():
         # New Data
         results = {}
         results["type"] = "SWITCH"
+        results["player"] = player
         results["old_active"] = cur_active.name
         results["new_active"] = new_active.name
         return [results]
