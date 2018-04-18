@@ -156,7 +156,7 @@ class PokemonAgent(BaseAgent):
                 if info["move"] not in self.opp_gamestate["moves"][opp_name]:
                     self.opp_gamestate["moves"][opp_name].append(info["move"])
 
-        if len(turn_info) == 2:
+        if len(turn_info) == 2 and contains_switch(turn_info):
             self.update_speed_inference(turn_info, my_id)
 
     def update_speed_inference(self, turn_info, my_id):
@@ -425,3 +425,12 @@ def calc_opp_position_helper(opp_gs):
             opp_posn += poke["pct_hp"]
 
     return opp_posn
+
+
+def contains_switch(turn_info):
+    """Determine if switching info contains Switch information."""
+    for info in turn_info:
+        if info["type"] == "SWITCH":
+            return True
+
+    return False
