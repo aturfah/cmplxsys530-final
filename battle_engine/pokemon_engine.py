@@ -245,7 +245,7 @@ class PokemonEngine():
                 return None
 
         # Do Damage
-        damage = calculate_damage(move, atk_poke, def_poke)
+        damage, critical_hit = calculate_damage(move, atk_poke, def_poke)
         def_poke.current_hp -= damage
 
         # Thaw opponent if applicable
@@ -276,6 +276,7 @@ class PokemonEngine():
         results = {}
         results["type"] = "ATTACK"
         results["move"] = move
+        results["critical_hit"] = critical_hit
         results["damage"] = damage
         results["pct_damage"] = 100*damage/def_poke.max_hp
         results["attacker"] = attacker
@@ -496,9 +497,11 @@ def calculate_damage(move, attacker, defender):
     :param defender: dict or Pokemon
         Data of the defending Pokemon. Must support the [] operator.
     """
+    damage = 0
+    critical_hit = False
     # Status moves do no damage
     if move["category"] == "Status":
-        return 0
+        return damage, critical_hit
 
     # Calculate actual damage
     damage = floor(2*attacker["level"]/5 + 2)
@@ -516,13 +519,14 @@ def calculate_damage(move, attacker, defender):
 
     # Critical Hit
     if uniform() < 0.0625:
+        critical_hit = True
         modifier = modifier * 1.5
 
     # Random Damage range
     modifier = modifier * uniform(0.85, 1.00)
     damage = floor(damage*modifier)
 
-    return damage
+    return (damage, critical_hit)
 
 
 def calculate_modifier(move, attacker, defender):
