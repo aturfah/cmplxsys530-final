@@ -1,5 +1,6 @@
 """Package to calculate interesting ladder metrics."""
 
+from math import sqrt
 import numpy as np
 
 
@@ -110,9 +111,20 @@ def calc_ratios(results):
             num_wins = results[p1_type][p2_type]["wins"]
             num_total = results[p1_type][p2_type]["total"]
             if num_total != 0:
-                results[p1_type][p2_type]["ratio"] = num_wins/num_total
+                ratio = num_wins/num_total
+                margin_of_error = sqrt(ratio*(1-ratio)/num_total)
+
+                # TODO: Put this in its own function/method
+                print("{} vs {}: {} ± {}".format(p1_type,
+                                                 p2_type,
+                                                 round(ratio, 2),
+                                                 round(margin_of_error*2.58, 2)))
+
+                results[p1_type][p2_type]["ratio"] = ratio
+                results[p1_type][p2_type]["moe"] = margin_of_error
             else:
                 results[p1_type][p2_type]["ratio"] = None
+                results[p1_type][p2_type]["moe"] = None
 
     return results
 
