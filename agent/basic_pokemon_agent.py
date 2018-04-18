@@ -134,6 +134,11 @@ class PokemonAgent(BaseAgent):
         turn_info = [turn for turn in raw_turn_info if turn["type"] == "ATTACK"]
 
         for info in turn_info:
+            if info["critical_hit"]:
+                # Modify damage for critical hits
+                info["damage"] = info["damage"]*2/3
+                info["pct_damage"] = info["pct_damage"]*2/3
+
             if info["attacker"] == my_id:
                 # We attacked, infer data about defending pokemon
                 results, combinations = self.results_attacking(info)
