@@ -134,7 +134,7 @@ class PokemonAgent(BaseAgent):
         turn_info = [turn for turn in raw_turn_info if turn["type"] == "ATTACK"]
 
         for info in turn_info:
-            if info["critical_hit"]:
+            if "critical_hit" in info and info["critical_hit"]:
                 # Modify damage for critical hits
                 info["damage"] = info["damage"]*2/3
                 info["pct_damage"] = info["pct_damage"]*2/3
@@ -156,7 +156,7 @@ class PokemonAgent(BaseAgent):
                 if info["move"] not in self.opp_gamestate["moves"][opp_name]:
                     self.opp_gamestate["moves"][opp_name].append(info["move"])
 
-        if len(turn_info) == 2 and contains_switch(turn_info):
+        if len(turn_info) == 2 and not contains_switch(turn_info):
             self.update_speed_inference(turn_info, my_id)
 
     def update_speed_inference(self, turn_info, my_id):
