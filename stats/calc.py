@@ -113,6 +113,13 @@ def calc_ratios(results):
             if num_total != 0:
                 ratio = num_wins/num_total
                 margin_of_error = sqrt(ratio*(1-ratio)/num_total)
+
+                # TODO: Put this in its own function/method
+                print("{} vs {}: {} ± {}".format(p1_type,
+                                                 p2_type,
+                                                 round(ratio, 2),
+                                                 round(margin_of_error*2.58, 2)))
+
                 results[p1_type][p2_type]["ratio"] = ratio
                 results[p1_type][p2_type]["moe"] = margin_of_error
             else:
