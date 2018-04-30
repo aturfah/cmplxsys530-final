@@ -140,11 +140,23 @@ class PokemonAgent(BaseAgent):
         return self_component / opp_component
 
     def calc_position(self):
-        """Calculate the value for self's battle position."""
+        """
+        Calculate the value for self's battle position.
+
+        Returns:
+            This player's remaining % HP.
+
+        """
         return calc_position_helper(self.gamestate)
 
     def calc_opp_position(self):
-        """Calculate the opponent's battle position."""
+        """
+        Calculate the opponent's battle position.
+
+        Returns:
+            The opponent's remaining % HP.
+
+        """
         return calc_opp_position_helper(self.opp_gamestate)
 
     def new_info(self, raw_turn_info, my_id):
