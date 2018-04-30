@@ -251,12 +251,13 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Update my_gs variable when on defense.
 
-        :param my_gs: dict
-            This player's gamestate as a dictionary.
-        :param opp_gs: dict
-            The opponent's gamestate as a dictionary.
-        :param o_opt: tuple
-            The opponent's choice for a move this turn.
+        Args:
+            my_gs (dict): This player's game state as a dictionary.
+            opp_gs (dict): The opponent's game state as a dictionary.
+            o_opt (tuple): The opponent's choice for this turn.
+
+        Returns:
+            Updated player gamestate given the opponent's attack.
         """
         dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
 
