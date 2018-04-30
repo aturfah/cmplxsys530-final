@@ -253,6 +253,9 @@ class PokemonAgent(BaseAgent):
         Args:
             turn_info (dict): Information on a single event of that turn.
 
+        Returns:
+            Two lists contianing T/F values of opponent's defense investment.
+
         """
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
@@ -297,6 +300,9 @@ class PokemonAgent(BaseAgent):
         Args:
             turn_info (dict): Information on a single event of that turn.
 
+        Returns:
+            Two lists contianing T/F values of opponent's defense investment.
+
         """
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
@@ -333,7 +339,16 @@ class PokemonAgent(BaseAgent):
         return results, combinations
 
     def valid_results_atk(self, poke_name, stat, dmg_pct, results, combinations):
-        """Decide which of potential the potential results are valid given damage dealt."""
+        """
+        Decide which of potential the potential results are valid given damage dealt.
+        
+        Args:
+            poke_name (str): Name of the pokemon in question.
+            stat (str): Name of the statistic that this move's damage is
+                calculated from, defense or special defense.
+            dmg_pct (float): How much % damage was done this turn.
+            results (list): 
+        """
         valid_results = []
         num_results = len(results)
 
