@@ -34,6 +34,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         Returns:
             Tuple of move type (SWITCH or ATTACK) and position.
+
         """
         player_opts, opp_opts = self.generate_possibilities()
         move_choice = self.optimal_move(player_opts, opp_opts)
@@ -45,6 +46,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         Returns:
             Lists of possible player and opponent moves, given the gamestate.
+
         """
         player_opts = []
         opp_opts = []
@@ -99,6 +101,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         Returns:
             Player move that optimizes the battle_position function for this agent.
+
         """
         optimal_opt = None
         maximal_position = -1
@@ -163,6 +166,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         Returns:
             Expected damage range for an attack.
                 Damage is calculated with each possible investment as equally likely.
+
         """
         p_poke = my_gs["active"]
         p_move = p_poke.moves[p_opt[1]]
@@ -202,6 +206,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         Returns:
             Expected damage range for an opponent's attack.
                 Damage is calculated with each possible investment as equally likely.
+
         """
         p_poke = my_gs["active"]
         o_move = MOVE_DATA[o_opt[1]]
@@ -240,6 +245,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         Returns:
             Updated opponent's game state for the attack.
+
         """
         dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
 
@@ -258,6 +264,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         Returns:
             Updated player gamestate given the opponent's attack.
+
         """
         dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
 
@@ -278,6 +285,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         Returns:
             Boolean whether or not this player is faster than the opponent.
+
         """
         p_poke = my_gs["active"]
         o_poke_name = opp_gs["data"]["active"]["name"]
@@ -305,6 +313,7 @@ def atk_param_combinations(active_poke, opp_params, move):
 
     Returns:
         List of possible investment combinations when attacking.
+
     """
     results = []
 
@@ -344,6 +353,7 @@ def def_param_combinations(active_poke, opp_params, move):
 
     Returns:
         List of possible investment combinations when on the defensive.
+
     """
     results = []
 
