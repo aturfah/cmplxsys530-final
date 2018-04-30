@@ -380,12 +380,10 @@ def update_gs_switch(gamestate, opt, my_gs=True):
     """
     Update the gamestate on switch.
 
-    :param gamestate: dict
-        The gamestate to be updated.
-    :param opt: tuple
-        The move that was made by whoever's gamestate that was.
-    :param my_gs: bool
-        Whether or not this is this player's gamestate.
+    Args:
+        gamestate (dict): The gamestate to be updated
+        opt (tuple): The move that was made by the player
+        my_gs (bool): Flag whether or not this is the player's gamestate to be updated.
     """
     if my_gs:
         temp = gamestate["active"]
