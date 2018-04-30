@@ -29,7 +29,12 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         self.tier = tier
 
     def make_move(self):
-        """Choose the move to make."""
+        """
+        Choose the move to make.
+
+        Returns:
+            Tuple of move type (SWITCH or ATTACK) and position.
+        """
         player_opts, opp_opts = self.generate_possibilities()
         move_choice = self.optimal_move(player_opts, opp_opts)
         return move_choice
