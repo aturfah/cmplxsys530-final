@@ -92,6 +92,10 @@ class PokemonAgent(BaseAgent):
         Make a move.
 
         Either use random move or switch to random pokemon.
+
+        Returns:
+            Tuple with move type (ATTACK or SWITCH and the position.
+
         """
         response = ()
         can_switch = len(self.gamestate["team"]) > 0
