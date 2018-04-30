@@ -298,12 +298,13 @@ def atk_param_combinations(active_poke, opp_params, move):
     """
     Calculate possible parameter combinations for when we're attacking.
 
-    :param active_poke: Pokemon (dict-like)
-        This player's active (attacking) pokemon.
-    :param opp_params: dict
-        The opponent's investment inferences.
-    :param move: dict
-        The move that we are attacking with.
+    Args:
+        active_poke (Pokemon): This player's active (attacking) Pokemon.
+        opp_params (dict): The opponent's investment inference.
+        move (dict): The move that is being attacked with.
+
+    Returns:
+        List of possible investment combinations.
     """
     results = []
 
