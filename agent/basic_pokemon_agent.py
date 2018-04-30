@@ -116,6 +116,10 @@ class PokemonAgent(BaseAgent):
         Choose switch-in after pokemon has fainted.
 
         For now pick a random pokemon.
+
+        Returns:
+            Position of the next pokemon to switch to.
+
         """
         choice = uniform(0, len(self.gamestate["team"]))
         choice = int(choice)
