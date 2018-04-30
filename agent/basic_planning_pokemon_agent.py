@@ -14,15 +14,15 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
     This agent will maximize the game_position given the opponent's moves are all
     equally likely.
+
+    Attributes:
+        tier (str): Tier to look at usage stats for.
+
     """
 
     def __init__(self, tier, **kwargs):
         """
         Initialize a player with a specific tier.
-
-        Args:
-            team (list): Team of pokemon to use.
-            tier (str): Tier to look at usage stats for.
         """
         team = kwargs["team"]
         super().__init__(team)
