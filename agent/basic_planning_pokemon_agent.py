@@ -93,10 +93,12 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Choose the optimal move given the options availible.
 
-        :param player_opts: list
-            All of the player's options for this turn.
-        :param opp_opts: list
-            All of the opponent's possible moves this turn.
+        Args:
+            player_opts (list): List of the player's moves for this turn.
+            opp_opts (list): List of the opponent's moves for this turn.
+
+        Returns:
+            Player move that optimizes the battle_position function for this agent.
         """
         optimal_opt = None
         maximal_position = -1
