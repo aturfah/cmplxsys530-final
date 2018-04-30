@@ -200,7 +200,15 @@ class PokemonAgent(BaseAgent):
             self.update_speed_inference(turn_info, my_id)
 
     def update_speed_inference(self, turn_info, my_id):
-        """Infer speed information from the turn info."""
+        """
+        Infer speed information from the turn info.
+
+        Args:
+            turn_info (dict): Information on a single happening of that turn.
+            my_id (str): Name corresponding to the "attacker" or "defender"
+                values of this dict.
+
+        """
         # Moves are different priority, no inference can be made
         if turn_info[0]["move"]["priority"] != turn_info[1]["move"]["priority"]:
             return
