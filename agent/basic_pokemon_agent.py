@@ -11,7 +11,16 @@ from pokemon_helpers.pokemon import Pokemon
 
 
 class PokemonAgent(BaseAgent):
-    """Class for a pokemon player."""
+    """
+    Class for a pokemon player.
+
+    Attributes:
+        team (list): The team of pokemon this agent uses.
+        gamestate (dict): This player's internal representation of a game.
+        opp_gamestate (dict): This player's knowledge about the opponent's team in this game.
+        dmg_stat_calc (DamageStatCalc): The class to do estimate damage using Damage Stats.
+
+    """
 
     def __init__(self, team):
         """Initialize the agent."""
