@@ -270,14 +270,14 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Determine whether this player is faster.
 
-        :param my_gs: dict
-            This player's gamestate as a dictionary.
-        :param opp_gs: dict
-            The opponent's gamestate as a dictionary.
-        :param p_opt: tuple
-            This player's choice for a move this turn.
-        :param o_opt: tuple
-            The opponent's choice for a move this turn.
+        Args:
+            my_gs (dict): This player's game state as a dictionary.
+            opp_gs (dict): The opponent's game state as a dictionary.
+            p_opt (tuple): The player's choice for this turn.
+            o_opt (tuple): The opponent's choice for this turn.
+
+        Returns:
+            Boolean whether or not this player is faster than the opponent.
         """
         p_poke = my_gs["active"]
         o_poke_name = opp_gs["data"]["active"]["name"]
