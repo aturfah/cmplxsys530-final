@@ -126,7 +126,14 @@ class PokemonAgent(BaseAgent):
         return choice
 
     def battle_position(self):
-        """Calculate the battle position function."""
+        """
+        Calculate the battle position function.
+
+        Returns:
+            This player's current % HP divided by the
+                Opponent's current % HP.
+
+        """
         self_component = self.calc_position()
         opp_component = self.calc_opp_position()
 
