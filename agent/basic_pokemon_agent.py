@@ -204,7 +204,7 @@ class PokemonAgent(BaseAgent):
         Infer speed information from the turn info.
 
         Args:
-            turn_info (dict): Information on a single happening of that turn.
+            turn_info (dict): Information on a single event of that turn.
             my_id (str): Name corresponding to the "attacker" or "defender"
                 values of this dict.
 
@@ -247,7 +247,13 @@ class PokemonAgent(BaseAgent):
                     self.gamestate["active"].speed
 
     def results_attacking(self, turn_info):
-        """Generate possible results for when we are attacking."""
+        """
+        Generate possible results for when we are attacking.
+
+        Args:
+            turn_info (dict): Information on a single event of that turn.
+
+        """
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
         opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
