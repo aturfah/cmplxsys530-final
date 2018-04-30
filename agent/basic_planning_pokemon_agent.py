@@ -155,12 +155,14 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Calculate the (weighted) damage range for an attack.
 
-        :param my_gs: dict
-            This player's gamestate as a dictionary.
-        :param opp_gs: dict
-            The opponent's gamestate as a dictionary.
-        :param p_opt: tuple
-            This player's choice at this turn.
+        Args:
+            my_gs (dict): This player's game state as a dictionary.
+            opp_gs (dict): The opponent's game state as a dictionary.
+            p_opt (tuple): The player's choice for this turn.
+
+        Returns:
+            Expected damage range for an attack.
+                Damage is calculated with each possible investment as equally likely.
         """
         p_poke = my_gs["active"]
         p_move = p_poke.moves[p_opt[1]]
