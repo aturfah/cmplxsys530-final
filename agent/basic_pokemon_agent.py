@@ -77,13 +77,12 @@ class PokemonAgent(BaseAgent):
         """
         Update internal gamestate for self.
 
-        :param my_gamestate: dict
-            PokemonEngine representation of player's position.
-            Should have "active" and "team" keys.
-        :param opp_gamestate: dict
-            PokemonEngine representation of opponent's position.
-            Only % HP should be viewable, and has "active" and
-            "team" keys.
+        Args:
+            my_gamestate (dict): PokemonEngine representation of player's position.
+                Should have "active" and "team" keys.
+            opp_gamestate (dict): PokemonEngine representation of opponent's position.
+                Only % HP should be viewable, and has "active" and "team" keys.
+
         """
         self.gamestate = my_gamestate
         self.opp_gamestate["data"] = opp_gamestate
