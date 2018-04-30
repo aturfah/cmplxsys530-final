@@ -304,7 +304,7 @@ def atk_param_combinations(active_poke, opp_params, move):
         move (dict): The move that is being attacked with.
 
     Returns:
-        List of possible investment combinations.
+        List of possible investment combinations when attacking.
     """
     results = []
 
@@ -337,12 +337,13 @@ def def_param_combinations(active_poke, opp_params, move):
     """
     Parameter combinations for when we're on the defensive.
 
-    :param active_poke: Pokemon (dict-like)
-        This player's active (defending) pokemon.
-    :param opp_params:
-        The investment inferences of the opponent's pokemon.
-    :param move:
-        The move that our opponent used.
+    Args:
+        active_poke (Pokemon): This player's active (attacking) Pokemon.
+        opp_params (dict): The opponent's investment inference.
+        move (dict): The move that is being attacked with.
+
+    Returns:
+        List of possible investment combinations when on the defensive.
     """
     results = []
 
