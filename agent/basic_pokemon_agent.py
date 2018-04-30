@@ -45,7 +45,14 @@ class PokemonAgent(BaseAgent):
         self.opp_gamestate["investment"] = {}
 
     def init_opp_gamestate(self, opp_team, opp_active):
-        """Initialize the investment data for the opponent's team."""
+        """
+        Initialize the investment data for the opponent's team.
+
+        Args:
+            opp_team (list): List with the opponent's Pokemon.
+            opp_active (Pokemon): Opponent's active Pokemon.
+
+        """
         possible_combs = generate_all_ev_combinations()
         self.opp_gamestate["investment"][opp_active["name"]] = {}
         self.opp_gamestate["investment"][opp_active["name"]]["hp"] = possible_combs["hp"]
