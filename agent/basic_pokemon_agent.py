@@ -165,13 +165,11 @@ class PokemonAgent(BaseAgent):
 
         Assumes Species Clause is in effect.
 
-        :param turn_info: list
-            What happened on that turn, who took what damage.
-            Each element should be a dict.
-        :param my_id: str
-            Name corresponding to the "attacker" or "defender"
-            values of this dict. To know which values the method
-            should be looking at in turn_info.
+        Args:
+            turn_info (list): What happened on that turn, who took what damage.
+            my_id (str): Name corresponding to the "attacker" or "defender"
+                values of this dict. To know which values the method
+                should be looking at in turn_info.
         """
         turn_info = [turn for turn in raw_turn_info if turn["type"] == "ATTACK"]
 
