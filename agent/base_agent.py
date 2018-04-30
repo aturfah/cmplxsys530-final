@@ -5,13 +5,14 @@ from uuid import uuid4
 class BaseAgent():
     """
     The Base Agent Class.
-    
+
     Attributes:
         id (str): Some unique identifier for this agent.
         type (str): Classification for this agent.
         elo (int): Elo ranking for this agent.
         num_wins (int): Number of games won.
         num_losses (int): Number of games lost.
+
     """
 
     def __init__(self, **kwargs):
@@ -47,6 +48,7 @@ class BaseAgent():
 
         Returns:
             Win/Loss ratio (# Wins/# Losses).
+
         """
         if self.num_losses == 0:
             return None
@@ -59,6 +61,7 @@ class BaseAgent():
         Returns:
             Total number of games this agent has played
                 (# Wins + # Losses).
+
         """
         return self.num_wins + self.num_losses
 
