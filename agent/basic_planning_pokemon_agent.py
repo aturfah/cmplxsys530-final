@@ -21,9 +21,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
     """
 
     def __init__(self, tier, **kwargs):
-        """
-        Initialize a player with a specific tier.
-        """
+        """Initialize a player with a specific tier."""
         team = kwargs["team"]
         super().__init__(team)
         self.tier = tier
