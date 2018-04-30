@@ -40,7 +40,12 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return move_choice
 
     def generate_possibilities(self):
-        """Generate a two lists of possible player and opponent moves."""
+        """
+        Generate a two lists of possible player and opponent moves.
+
+        Returns:
+            Lists of possible player and opponent moves, given the gamestate.
+        """
         player_opts = []
         opp_opts = []
 
