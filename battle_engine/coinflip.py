@@ -9,8 +9,10 @@ class CoinFlipEngine:
         """
         Initialize a random Coin Flip Engine, winner decided by a coin flip.
 
-        :param prob_win: float, Optional
-            Probability player1 wins (between 0 and 1)
+        Args:
+            prob_win (float): Probability player1 wins (between 0 and 1).
+                Default is 0.5.
+
         """
         if prob_win > 1 or prob_win < 0:
             raise AttributeError("prob_win must be between 0 and 1")
