@@ -56,8 +56,10 @@ class LogWriter():
     def write_line(self, dict_to_write):
         """Write line to this output.
 
-        :param dict_to_write: dict
-            Dict to write to file. Keys should be column names
+        Args:
+            dict_to_write (dict): Information to write to file.
+                Keys should be column names.
+
         """
         line = []
 
