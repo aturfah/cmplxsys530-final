@@ -63,7 +63,7 @@ def run(**kwargs):
     params["data_delay"] = int(params.get("data_delay", None))
     params["ladder_choice"] = int(params.get("ladder", None))
     params["num_rounds"] = int(params.get("num_rounds", None))
-    params["multithread"] = int(params.get("multithread"), 0)
+    params["multithread"] = int(params.get("multithread", 0))
 
     if not params["proportions"] and (game_choice == 2 or game_choice == 3):
         raise RuntimeError("No proportions specified.")
