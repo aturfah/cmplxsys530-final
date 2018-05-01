@@ -117,7 +117,20 @@ class PokemonEngine():
         return outcome["winner"]
 
     def run_single_turn(self, player1_move, player2_move, player1, player2):
-        """Run the turn for these moves."""
+        """
+        Run the turn for these moves.
+
+        Args:
+            player1_move (tuple): Move chosen by player1.
+            player2_move (tuple): Move chosen by player2.
+            player1 (PokemonAgent): The object that is the first player.
+            player2 (PokemonAgent): The object that is the second player.
+
+        Returns:
+            Information about the turn, as well as a dictionary with informaton on whether
+                or not the game has ended.
+
+        """
         turn_info = self.calculate_turn(player1_move, player2_move)
 
         apply_status_damage(self.game_state["player1"]["active"])
