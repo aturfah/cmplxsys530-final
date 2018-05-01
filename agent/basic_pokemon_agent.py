@@ -341,13 +341,18 @@ class PokemonAgent(BaseAgent):
     def valid_results_atk(self, poke_name, stat, dmg_pct, results, combinations):
         """
         Decide which of potential the potential results are valid given damage dealt.
-        
+
         Args:
             poke_name (str): Name of the pokemon in question.
             stat (str): Name of the statistic that this move's damage is
                 calculated from, defense or special defense.
             dmg_pct (float): How much % damage was done this turn.
-            results (list): 
+            results (list): Possible defense investment combinations.
+            combinations (list): T/F values corresponding to the defense investment combinations.
+
+        Returns:
+            Subset of the results that are possible given the damage dealt.
+
         """
         valid_results = []
         num_results = len(results)
