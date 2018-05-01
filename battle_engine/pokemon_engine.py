@@ -585,12 +585,15 @@ def calculate_damage(move, attacker, defender):
     """
     Calculate damage of a move.
 
-    :param move: dict
-        Data of the attacking move.
-    :param attacker: dict or Pokemon
-        Data of the attacking Pokemon. Must support the [] operator.
-    :param defender: dict or Pokemon
-        Data of the defending Pokemon. Must support the [] operator.
+    Args:
+        move (dict): Information on the move being used.
+        attacker (Pokemon): The pokemon using the attack.
+        defender (Pokemon): The pokemon that is recieving the attack.
+
+    Returns:
+        The damage dealt by this move, as well as a flag whether or not
+            the attack resulted in a critical hit.
+
     """
     damage = 0
     critical_hit = False
