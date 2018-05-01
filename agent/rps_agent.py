@@ -17,6 +17,7 @@ class RPSAgent(BaseAgent):
 
     Attributes:
         strategy (list): Probability with which it plays one of R, P, or S.
+
     """
 
     def __init__(self, id_in=None, strategy_in="uniform"):

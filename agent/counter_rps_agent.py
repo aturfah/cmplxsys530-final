@@ -32,6 +32,7 @@ class CounterRPSAgent(RPSAgent):
 
         Returns:
             Move corresponding to Rock, Paper, or Scissors, defined by strategy above.
+
         """
         if self.last_move is None:
             return super().make_move()
