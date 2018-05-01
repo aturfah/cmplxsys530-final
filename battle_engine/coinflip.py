@@ -23,10 +23,13 @@ class CoinFlipEngine:
 
         Victory determined if u > prob_win, where u ~ U(0,1)
 
-        :param player1: BaseAgent
-            First agent that will participate in the game
-        :param player2: BaseAgent
-            The other agent that will participate in the game
+        Args:
+            player1 (BaseAgent): First agent that will participate in the game
+            player2 (BaseAgent): The other agent that will participate in the game
+
+        Returns:
+            1 if player1 wins, or 0 if player2 wins.
+
         """
         draw = uniform()
 
