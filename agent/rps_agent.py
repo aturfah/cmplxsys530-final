@@ -53,7 +53,13 @@ class RPSAgent(BaseAgent):
         super().__init__(id_in=id_in, type=type_)
 
     def make_move(self):
-        """Play one of rock, paper, scissors defined by strategy."""
+        """
+        Play one of rock, paper, scissors defined by strategy.
+
+        Returns:
+            Move corresponding to R, P, or S as defined by the strategy.
+
+        """
         num = uniform()
         for i in range(3):
             if num < sum(self.strategy[:i + 1]):
