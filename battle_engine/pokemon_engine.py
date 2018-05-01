@@ -628,7 +628,20 @@ def calculate_damage(move, attacker, defender):
 
 
 def calculate_modifier(move, attacker, defender):
-    """Calculate the damage modifier for an attack."""
+    """
+    Calculate the damage modifier for an attack.
+
+    Factors in STAB, and type effectiveness.
+
+    Args:
+        move (dict): Information on the move being used.
+        attacker (Pokemon): The pokemon using the attack.
+        defender (Pokemon): The pokemon that is recieving the attack.
+
+    Returns:
+        The multipler to apply to the damage.
+
+    """
     modifier = 1
 
     # STAB Modifier
