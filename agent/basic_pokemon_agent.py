@@ -459,7 +459,15 @@ class PokemonAgent(BaseAgent):
                         generate_all_ev_combinations()["hp"]
 
     def update_def_inference(self, turn_info, results, combinations):
-        """Update the opponent's attack investment information."""
+        """
+        Update the opponent's attack investment information.
+        
+        Args:
+            turn_info (dict): Information on damage dealt this turn.
+            results (list): Possible defense investment combinations.
+            combinations (list): T/F values corresponding to the defense investment combinations.
+
+        """
         move = turn_info["move"]
         dmg_pct = turn_info["pct_damage"]
 
