@@ -179,6 +179,9 @@ class PokemonEngine():
                 switched to.
             move2 (tuple): Player 2's move. See move1.
 
+        Returns:
+            List of the events that happened that turn.
+
         """
         p1_switch = move1[0] == "SWITCH"
         p2_switch = move2[0] == "SWITCH"
