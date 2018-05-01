@@ -657,7 +657,17 @@ def calculate_modifier(move, attacker, defender):
 
 
 def init_player_logwriter(player1, player2):
-    """Initialize the log writer to write the turns of this game."""
+    """
+    Initialize the log writer to write the turns of this game.
+
+    Args:
+        player1 (PokemonAgent): The object that is Player 1.
+        player2 (PokemonAgent): The object that is Player 2.
+
+    Returns:
+        The log writer for a battle between player1 and player2.
+
+    """
     header = ["turn_num", "player_id", "active", "target", "move", "damage"]
     turn_logwriter = LogWriter(header, prefix="PKMNGame_{}_{}_{}".format(
         player1.type,
