@@ -150,10 +150,10 @@ class BaseLadder:
         """
         Update values for winner and loser.
 
-        :param winner: BaseAgent
-            Player who won
-        :param loser: BaseAgent
-            Player who lost
+        Args:
+            winner (BaseAgent): The player who won.
+            loser (BaseAgent): The player who lost.
+
         """
         new_winner_elo = elo(winner, loser, 1, self.k_value)
         new_loser_elo = elo(loser, winner, 0, self.k_value)
