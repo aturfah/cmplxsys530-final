@@ -23,11 +23,11 @@ class LogWriter():
     def __init__(self, header, prefix=None):
         """Initialize LogWriter for a simulation.
 
-        :param prefix: str, optional
-            Optional prefix to lead filename with.
-        :param header: List
-            List with column names. Also defines first
-            row in the output file.
+        Args:
+            prefix (str): Optional prefix to lead filename with.
+            header (list): List with column names. Also defines first
+                row in the output file.
+
         """
         # Invalid prefix name check
         if prefix is not None:
