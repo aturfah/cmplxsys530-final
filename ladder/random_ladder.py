@@ -32,6 +32,6 @@ class RandomLadder(BaseLadder):
 
         Returns:
             The score for a match; in this case a random number.
-        
+
         """
         return rand()
