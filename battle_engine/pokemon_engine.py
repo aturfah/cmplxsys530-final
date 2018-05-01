@@ -78,8 +78,13 @@ class PokemonEngine():
         """
         Run a game of pokemon.
 
-        :param player1/2: PokemonAgent
-            Players 1 and 2 for this game.
+        Args:
+            player1 (PokemonAgent): Object corresponding to first player.
+            player2 (PokemonAgent): Object corresponding to second palyer.
+
+        Returns:
+            Boolean whether or not player1 won the game.
+
         """
         self.reset_game_state()
         self.initialize_battle(player1, player2)
