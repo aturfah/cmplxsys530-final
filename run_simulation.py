@@ -57,58 +57,39 @@ def run(**kwargs):
         raise RuntimeError("No Game Selected")
     game_choice = int(game_choice)
 
-    num_games = int(params.get("num_games", None))
-    num_players = int(params.get("num_players", None))
-    proportions = params.get("proportions", None)
-    data_delay = int(params.get("data_delay", None))
-    ladder_choice = int(params.get("ladder", None))
-    num_rounds = int(params.get("num_rounds", None))
-    multithread = int(params.get("multithread"), 0)
+    params["num_games"] = int(params.get("num_games", None))
+    params["num_players"] = int(params.get("num_players", None))
+    params["proportions"] = params.get("proportions", None)
+    params["data_delay"] = int(params.get("data_delay", None))
+    params["ladder_choice"] = int(params.get("ladder", None))
+    params["num_rounds"] = int(params.get("num_rounds", None))
+    params["multithread"] = int(params.get("multithread", 0))
 
-    if not proportions and (game_choice == 2 or game_choice == 3):
+    if not params["proportions"] and (game_choice == 2 or game_choice == 3):
         raise RuntimeError("No proportions specified.")
 
     if game_choice == 0:
-        cf_sim = CFSimulation(num_games=num_games,
-                              num_players=num_players,
-                              ladder_choice=ladder_choice)
+        cf_sim = CFSimulation(**params)
         cf_sim.run()
     elif game_choice == 1:
-        rps_sim = RPSSimulation(num_games=num_games,
-                                num_rounds=1,
-                                num_players=num_players,
-                                proportions=(0.25, 0.25, 0.25, 0.25, 0),
-                                data_delay=data_delay,
-                                ladder_choice=ladder_choice)
+        params["proportions"] = (0.25, 0.25, 0.25, 0.25, 0)
+        rps_sim = RPSSimulation(**params)
         rps_sim.add_agents()
         rps_sim.init_type_log_writer()
         rps_sim.run()
     elif game_choice == 2:
-        rps_sim = RPSSimulation(num_games=num_games,
-                                num_rounds=1,
-                                num_players=num_players,
-                                proportions=proportions,
-                                data_delay=data_delay,
-                                ladder_choice=ladder_choice)
+        params["num_rounds"] = 1
+        rps_sim = RPSSimulation(**params)
         rps_sim.add_agents()
         rps_sim.init_type_log_writer()
         rps_sim.run()
     elif game_choice == 3:
-        mtrps_sim = RPSSimulation(num_games=num_games,
-                                  num_rounds=num_rounds,
-                                  proportions=proportions,
-                                  num_players=num_players,
-                                  ladder_choice=ladder_choice,
-                                  data_delay=data_delay)
+        mtrps_sim = RPSSimulation(**params)
         mtrps_sim.add_agents()
         mtrps_sim.init_type_log_writer()
         mtrps_sim.run()
     elif game_choice == 4:
-        pkmn_sim = PokemonSimulation(num_games=num_games,
-                                     num_players=num_players,
-                                     ladder_choice=ladder_choice,
-                                     data_delay=data_delay,
-                                     multithread=multithread)
+        pkmn_sim = PokemonSimulation(**params)
         pkmn_sim.add_agents()
         pkmn_sim.init_type_log_writer()
         pkmn_sim.run()
