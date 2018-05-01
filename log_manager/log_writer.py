@@ -9,7 +9,16 @@ import config
 
 
 class LogWriter():
-    """Class for class that generates log files."""
+    """
+    Class for class that generates log files.
+    
+    Attributes:
+        filename (str): Name of the log file.
+        output_file (file): File stream of the log file.
+        output_csv (writer): CSV writer for the log file.
+        header (list): List of columns in this csv file.
+
+    """
 
     def __init__(self, header, prefix=None):
         """Initialize LogWriter for a simulation.
