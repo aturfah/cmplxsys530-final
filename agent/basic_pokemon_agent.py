@@ -461,7 +461,7 @@ class PokemonAgent(BaseAgent):
     def update_def_inference(self, turn_info, results, combinations):
         """
         Update the opponent's attack investment information.
-        
+
         Args:
             turn_info (dict): Information on damage dealt this turn.
             results (list): Possible defense investment combinations.
@@ -492,7 +492,17 @@ class PokemonAgent(BaseAgent):
 
 
 def battle_position_helper(player_gs, opp_gs):
-    """Calculate the battle position for generic gamestates."""
+    """
+    Calculate the battle position for generic gamestates.
+
+    Args:
+        player_gs (dict): Dictionary representation of player gamestate.
+        opp_gs (dict): Dictionary representation of opponent's gamestate.
+
+    Returns:
+        Player's battle position divided by opponent's battle position.
+
+    """
     self_component = calc_position_helper(player_gs)
     opp_component = calc_opp_position_helper(opp_gs)
 
