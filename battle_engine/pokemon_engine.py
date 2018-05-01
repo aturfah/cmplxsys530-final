@@ -374,6 +374,11 @@ class PokemonEngine():
         Either all of one player's pokemon have fainted (in which
         case it is a victory), or maximum number of turns allowed
         have passed.
+
+        Returns:
+            Dict with information whether or not the game is over, and
+                (if applicable) who won the game.
+
         """
         p1_state = self.game_state["player1"]
         p2_state = self.game_state["player2"]
