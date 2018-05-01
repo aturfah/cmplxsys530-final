@@ -542,7 +542,19 @@ def apply_status_damage(pokemon):
 
 
 def anonymize_gamestate_helper(data):
-    """Anonymize some gamestate data."""
+    """
+    Anonymize some gamestate data.
+
+    Raw HP should be converted to percents. EV/Nature info is hidden,
+    otherwise all info is preserved.
+
+    Args:
+        data (dict): The player's game state to be anonymized.
+
+    Returns:
+        Anonimyzed representation of the game state.
+
+    """
     anon_data = {}
 
     anon_data["team"] = []
