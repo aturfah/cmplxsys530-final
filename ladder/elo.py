@@ -6,10 +6,13 @@ def expected(player1, player2):
     """
     Calculate expected score of player1 vs player2 given elo rankings.
 
-    :param player1: BaseAgent
-        Agent for whom the score is being calculated
-    :param player2: BaseAgent
-        Agent against whom player1 played
+    Args:
+        player1 (BaseAgent): Agent for whom the score is being calculated.
+        player2 (BaseAgent): Agent against whom player1 played.
+
+    Returns:
+        The expected score of the matchup.
+
     """
     return 1 / (1 + 10 ** ((player2.elo - player1.elo) / 400))
 
