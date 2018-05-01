@@ -172,11 +172,13 @@ class PokemonEngine():
         """
         Calculate results of a turn of a pokemon game.
 
-        :param move1/move2: tuple
-            Player 1/2's move respectively. Tuple of size 2. First
-            value is the type of move (either SWITCH or ATTACK),
-            followed by the index of the attack or pokemon to be
-            switched to.
+        Args:
+            move1 (tuple): Player 1's move. Tuple of size 2. First
+                value is the type of move (either SWITCH or ATTACK),
+                followed by the index of the attack or pokemon to be
+                switched to.
+            move2 (tuple): Player 2's move. See move1.
+
         """
         p1_switch = move1[0] == "SWITCH"
         p2_switch = move2[0] == "SWITCH"
