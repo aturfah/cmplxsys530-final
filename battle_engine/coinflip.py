@@ -3,7 +3,13 @@ from numpy.random import uniform
 
 
 class CoinFlipEngine:
-    """Engine to run coin flip game."""
+    """
+    Engine to run coin flip game.
+
+    Attributes:
+        prob_win (float): Probability player1 wins (between 0 and 1).
+
+    """
 
     def __init__(self, prob_win=0.5):
         """
