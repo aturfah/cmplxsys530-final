@@ -489,7 +489,15 @@ class PokemonEngine():
             self.game_state["player2"], self.anonymize_gamestate("player1"))
 
     def log_turn(self, turn_logwriter, turn_info):
-        """Log the information from this turn."""
+        """
+        Log the information from this turn.
+        
+        Args:
+            turn_logwriter (LogWriter): The LogWriter responsible for logging this
+                battle's information.
+            turn_info (list): The events that happened this turn.
+
+        """
         if not self.log_turn_flag:
             return
 
