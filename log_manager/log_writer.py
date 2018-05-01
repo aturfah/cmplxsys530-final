@@ -73,7 +73,13 @@ class LogWriter():
 
 
 def generate_filename(prefix):
-    """Generate file for use in this LogWriter."""
+    """
+    Generate file for use in this LogWriter.
+
+    Args:
+        prefix (str): Prefix for the file name.
+
+    """
     if not prefix:
         prefix_str = ""
     else:
