@@ -110,7 +110,13 @@ class LogReader():
         return keys
 
     def to_numeric(self, colnames):
-        """Make the columns in colnames numeric data."""
+        """
+        Make the columns in colnames numeric data.
+
+        Args:
+            colnames (list): List of columns to convert to numeric data.
+
+        """
         for colname in colnames:
             if colname not in self.data_keys:
                 raise AttributeError("Invalid column name: {}".format(colname))
