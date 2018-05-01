@@ -566,6 +566,7 @@ def contains_switch(turn_info):
 
     Returns:
         Boolean whether or not a switch happened that turn.
+
     """
     for info in turn_info:
         if info["type"] == "SWITCH":
