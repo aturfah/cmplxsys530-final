@@ -100,6 +100,15 @@ def generate_filename(prefix):
 
 
 def generate_file(filename):
-    """Generate the file that will be used."""
+    """
+    Generate the file that will be used.
+
+    Args:
+        filename (str): Name of the file to be created.
+
+    Returns:
+        File object with the name <filename>.
+
+    """
     file_ = join(config.LOG_DIR, filename)
     return open(file_, mode="w", newline="")
