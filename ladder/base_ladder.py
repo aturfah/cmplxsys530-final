@@ -7,7 +7,18 @@ from ladder.elo import elo
 
 
 class BaseLadder:
-    """The class for the ladder."""
+    """
+    The class for the ladder.
+
+    Attributes:
+        player_pool (list): List of players in the pool.
+        game_engine (battle_engine): Engine to run the game.
+        num_turns (int): Number of games that have been played.
+        k_value (int): K value to be used for calculating elo changes
+            on this ladder.
+        thread_lock (Lock): Lock used in multithreaded simulations.
+
+    """
 
     def __init__(self, game=None, K_in=32):
         """
