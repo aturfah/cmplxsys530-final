@@ -14,6 +14,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
     This agent will maximize the game_position given the opponent's moves are all
     equally likely.
+
+    Attributes:
+        tier (str): Tier to look at usage stats for.
+
     """
 
     def __init__(self, tier, **kwargs):
@@ -23,13 +27,25 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         self.tier = tier
 
     def make_move(self):
-        """Choose the move to make."""
+        """
+        Choose the move to make.
+
+        Returns:
+            Tuple of move type (SWITCH or ATTACK) and position.
+
+        """
         player_opts, opp_opts = self.generate_possibilities()
         move_choice = self.optimal_move(player_opts, opp_opts)
         return move_choice
 
     def generate_possibilities(self):
-        """Generate a two lists of possible player and opponent moves."""
+        """
+        Generate a two lists of possible player and opponent moves.
+
+        Returns:
+            Lists of possible player and opponent moves, given the gamestate.
+
+        """
         player_opts = []
         opp_opts = []
 
@@ -77,10 +93,13 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Choose the optimal move given the options availible.
 
-        :param player_opts: list
-            All of the player's options for this turn.
-        :param opp_opts: list
-            All of the opponent's possible moves this turn.
+        Args:
+            player_opts (list): List of the player's moves for this turn.
+            opp_opts (list): List of the opponent's moves for this turn.
+
+        Returns:
+            Player move that optimizes the battle_position function for this agent.
+
         """
         optimal_opt = None
         maximal_position = -1
@@ -137,12 +156,15 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Calculate the (weighted) damage range for an attack.
 
-        :param my_gs: dict
-            This player's gamestate as a dictionary.
-        :param opp_gs: dict
-            The opponent's gamestate as a dictionary.
-        :param p_opt: tuple
-            This player's choice at this turn.
+        Args:
+            my_gs (dict): This player's game state as a dictionary.
+            opp_gs (dict): The opponent's game state as a dictionary.
+            p_opt (tuple): The player's choice for this turn.
+
+        Returns:
+            Expected damage range for an attack.
+                Damage is calculated with each possible investment as equally likely.
+
         """
         p_poke = my_gs["active"]
         p_move = p_poke.moves[p_opt[1]]
@@ -174,12 +196,15 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Calculate the (weighted) damage range when attacked.
 
-        :param my_gs: dict
-            This player's gamestate as a dictionary.
-        :param opp_gs: dict
-            The opponent's gamestate as a dictionary.
-        :param o_opt: tuple
-            The opponent's move choice at this turn.
+        Args:
+            my_gs (dict): This player's (potential) game state.
+            opp_gs (dict): The opponent's game state as a dictionary.
+            o_opt (tuple): The opponent's choice for this turn.
+
+        Returns:
+            Expected damage range for an opponent's attack.
+                Damage is calculated with each possible investment as equally likely.
+
         """
         p_poke = my_gs["active"]
         o_move = MOVE_DATA[o_opt[1]]
@@ -211,12 +236,14 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Update opponent gamestate when we're attacking.
 
-        :param my_gs: dict
-            This player's gamestate as a dictionary.
-        :param opp_gs: dict
-            The opponent's gamestate as a dictionary.
-        :param p_opt: tuple
-            This player's choice for a move this turn.
+        Args:
+            my_gs (dict): This player's game state as a dictionary.
+            opp_gs (dict): The opponent's game state as a dictionary.
+            p_opt (tuple): The player's choice for this turn.
+
+        Returns:
+            Updated opponent's game state for the attack.
+
         """
         dmg_range = self.attacking_dmg_range(my_gs, opp_gs, p_opt)
 
@@ -228,12 +255,14 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Update my_gs variable when on defense.
 
-        :param my_gs: dict
-            This player's gamestate as a dictionary.
-        :param opp_gs: dict
-            The opponent's gamestate as a dictionary.
-        :param o_opt: tuple
-            The opponent's choice for a move this turn.
+        Args:
+            my_gs (dict): This player's game state as a dictionary.
+            opp_gs (dict): The opponent's game state as a dictionary.
+            o_opt (tuple): The opponent's choice for this turn.
+
+        Returns:
+            Updated player gamestate given the opponent's attack.
+
         """
         dmg_range = self.defending_dmg_range(my_gs, opp_gs, o_opt)
 
@@ -246,14 +275,15 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         Determine whether this player is faster.
 
-        :param my_gs: dict
-            This player's gamestate as a dictionary.
-        :param opp_gs: dict
-            The opponent's gamestate as a dictionary.
-        :param p_opt: tuple
-            This player's choice for a move this turn.
-        :param o_opt: tuple
-            The opponent's choice for a move this turn.
+        Args:
+            my_gs (dict): This player's game state as a dictionary.
+            opp_gs (dict): The opponent's game state as a dictionary.
+            p_opt (tuple): The player's choice for this turn.
+            o_opt (tuple): The opponent's choice for this turn.
+
+        Returns:
+            Boolean whether or not this player is faster than the opponent.
+
         """
         p_poke = my_gs["active"]
         o_poke_name = opp_gs["data"]["active"]["name"]
@@ -274,12 +304,14 @@ def atk_param_combinations(active_poke, opp_params, move):
     """
     Calculate possible parameter combinations for when we're attacking.
 
-    :param active_poke: Pokemon (dict-like)
-        This player's active (attacking) pokemon.
-    :param opp_params: dict
-        The opponent's investment inferences.
-    :param move: dict
-        The move that we are attacking with.
+    Args:
+        active_poke (Pokemon): This player's active (attacking) Pokemon.
+        opp_params (dict): The opponent's investment inference.
+        move (dict): The move that is being attacked with.
+
+    Returns:
+        List of possible investment combinations when attacking.
+
     """
     results = []
 
@@ -312,12 +344,14 @@ def def_param_combinations(active_poke, opp_params, move):
     """
     Parameter combinations for when we're on the defensive.
 
-    :param active_poke: Pokemon (dict-like)
-        This player's active (defending) pokemon.
-    :param opp_params:
-        The investment inferences of the opponent's pokemon.
-    :param move:
-        The move that our opponent used.
+    Args:
+        active_poke (Pokemon): This player's active (attacking) Pokemon.
+        opp_params (dict): The opponent's investment inference.
+        move (dict): The move that is being attacked with.
+
+    Returns:
+        List of possible investment combinations when on the defensive.
+
     """
     results = []
 
@@ -354,12 +388,10 @@ def update_gs_switch(gamestate, opt, my_gs=True):
     """
     Update the gamestate on switch.
 
-    :param gamestate: dict
-        The gamestate to be updated.
-    :param opt: tuple
-        The move that was made by whoever's gamestate that was.
-    :param my_gs: bool
-        Whether or not this is this player's gamestate.
+    Args:
+        gamestate (dict): The gamestate to be updated
+        opt (tuple): The move that was made by the player
+        my_gs (bool): Flag whether or not this is the player's gamestate to be updated.
     """
     if my_gs:
         temp = gamestate["active"]

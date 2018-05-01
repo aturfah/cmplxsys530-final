@@ -12,7 +12,15 @@ from pokemon_helpers.pokemon import default_boosts
 
 
 class PokemonEngine():
-    """Class to run a pokemon game."""
+    """
+    Class to run a pokemon game.
+
+    Attributes:
+        generation (str): Generation of Pokemon's mechanic to use.
+        turn_limit (int): Maximum number of turns to play for.
+        log_turn_flag (bool): Flag whether or not to log each game.
+
+    """
 
     def __init__(self, generation="gen7", turn_limit=2000, log_turns=False):
         """Initialize a new PokemonEngine."""
@@ -33,7 +41,14 @@ class PokemonEngine():
         self.game_state["num_turns"] = 0
 
     def initialize_battle(self, player1, player2):
-        """Initialize this battle and set the players' gamestates."""
+        """
+        Initialize this battle and set the players' gamestates.
+
+        Args:
+            player1 (PokemonAgent): Object corresponding to first player.
+            player2 (PokemonAgent): object corresponding to second player.
+
+        """
         # Reset internal gamestates
         player1.reset_gamestates()
         player2.reset_gamestates()
@@ -63,8 +78,13 @@ class PokemonEngine():
         """
         Run a game of pokemon.
 
-        :param player1/2: PokemonAgent
-            Players 1 and 2 for this game.
+        Args:
+            player1 (PokemonAgent): Object corresponding to first player.
+            player2 (PokemonAgent): Object corresponding to second palyer.
+
+        Returns:
+            Boolean whether or not player1 won the game.
+
         """
         self.reset_game_state()
         self.initialize_battle(player1, player2)
@@ -97,7 +117,20 @@ class PokemonEngine():
         return outcome["winner"]
 
     def run_single_turn(self, player1_move, player2_move, player1, player2):
-        """Run the turn for these moves."""
+        """
+        Run the turn for these moves.
+
+        Args:
+            player1_move (tuple): Move chosen by player1.
+            player2_move (tuple): Move chosen by player2.
+            player1 (PokemonAgent): The object that is the first player.
+            player2 (PokemonAgent): The object that is the second player.
+
+        Returns:
+            Information about the turn, as well as a dictionary with informaton on whether
+                or not the game has ended.
+
+        """
         turn_info = self.calculate_turn(player1_move, player2_move)
 
         apply_status_damage(self.game_state["player1"]["active"])
@@ -139,11 +172,16 @@ class PokemonEngine():
         """
         Calculate results of a turn of a pokemon game.
 
-        :param move1/move2: tuple
-            Player 1/2's move respectively. Tuple of size 2. First
-            value is the type of move (either SWITCH or ATTACK),
-            followed by the index of the attack or pokemon to be
-            switched to.
+        Args:
+            move1 (tuple): Player 1's move. Tuple of size 2. First
+                value is the type of move (either SWITCH or ATTACK),
+                followed by the index of the attack or pokemon to be
+                switched to.
+            move2 (tuple): Player 2's move. See move1.
+
+        Returns:
+            List of the events that happened that turn.
+
         """
         p1_switch = move1[0] == "SWITCH"
         p2_switch = move2[0] == "SWITCH"
@@ -174,12 +212,15 @@ class PokemonEngine():
         """
         Switch a player's pokemon out.
 
-        :param player: str
-            The player ("player1" or "player2") who is
-            doing the switching.
-        :param position: int
-            The position in the team that this player
-            is switching out to.
+        Args:
+            player (str):  The player ("player1" or "player2") who is
+                doing the switching.
+            position (int): The position in the team that this player is
+                switching out to.
+
+        Returns:
+            The information about the switch that was just performed.
+
         """
         # Reset boosts
         self.game_state[player]["active"].boosts = default_boosts()
@@ -206,11 +247,14 @@ class PokemonEngine():
         """
         Attack opposing pokemon with the move.
 
-        :param player: str
-            The player ("player1" or "player2")
-            who is attacking.
-        :param move: dict
-            The data for the move that is being done.
+        Args:
+            attacker (str): The player ("player1" or "player2")
+                who is attacking.
+            move (dict): The data for the move that is being done.
+
+        Returns:
+            List of the information on the attack that was just done.
+
         """
         # pylint: disable=R0912
         # Disable too many branches
@@ -289,8 +333,13 @@ class PokemonEngine():
         """
         Run a turn where both players attack.
 
-        :param move1/2: dict
-            The data for player1/2's moves.
+        Args:
+            move1 (dict): Player 1's attack.
+            move2 (dict): Player 2's attack.
+
+        Returns:
+            List of the events that happened that turn.
+
         """
         move_dict = {}
         p1_active = self.game_state["player1"]["active"]
@@ -325,6 +374,11 @@ class PokemonEngine():
         Either all of one player's pokemon have fainted (in which
         case it is a victory), or maximum number of turns allowed
         have passed.
+
+        Returns:
+            Dict with information whether or not the game is over, and
+                (if applicable) who won the game.
+
         """
         p1_state = self.game_state["player1"]
         p2_state = self.game_state["player2"]
@@ -366,9 +420,13 @@ class PokemonEngine():
         """
         Anonymize the internal gamestate for consumption by opponent.
 
-        :param player_id: str
-            The player whose data needs to be anonymized.
-            Either "player1" or "player2"
+        Args:
+            player_id (str): The player whose data needs to be anonymized.
+                Either "player1" or "player2".
+
+        Returns:
+            The anonymized game state for that player.
+
         """
         data = deepcopy(self.game_state[player_id])
         return anonymize_gamestate_helper(data)
@@ -377,10 +435,14 @@ class PokemonEngine():
         """
         Calculate turn order for when players move.
 
-        :param p1_move: Pokemon
-            Player1's move.
-        :param p2_active: Pokemon
-            Player2's move.
+        Args:
+            p1_move (dict): Player 1's move for this turn.
+            p2_move (dict): Player 2's move for this turn.
+
+        Returns:
+            Tuple of 'player1', 'player2' in the order their moves
+                will be made.
+
         """
         if p1_move["priority"] != p2_move["priority"]:
             if p1_move["priority"] > p2_move["priority"]:
@@ -413,14 +475,29 @@ class PokemonEngine():
         return faster_player, slower_player
 
     def update_gamestates(self, player1, player2):
-        """Update the player's gamestates to reflect the engine's gamestate."""
+        """
+        Update the player's gamestates to reflect the engine's gamestate.
+
+        Args:
+            player1 (PokemonAgent): The object that is the first player.
+            player2 (PokemonAgent): The object that is the second player.
+
+        """
         player1.update_gamestate(
             self.game_state["player1"], self.anonymize_gamestate("player2"))
         player2.update_gamestate(
             self.game_state["player2"], self.anonymize_gamestate("player1"))
 
     def log_turn(self, turn_logwriter, turn_info):
-        """Log the information from this turn."""
+        """
+        Log the information from this turn.
+
+        Args:
+            turn_logwriter (LogWriter): The LogWriter responsible for logging this
+                battle's information.
+            turn_info (list): The events that happened this turn.
+
+        """
         if not self.log_turn_flag:
             return
 
@@ -439,7 +516,13 @@ class PokemonEngine():
 
 
 def apply_status_damage(pokemon):
-    """Apply damage for status conditions when appropriate."""
+    """
+    Apply damage for status conditions when appropriate.
+
+    Args:
+        pokemon (Pokemon): The pokemon that this damage is calculated for.
+
+    """
     if pokemon.status is None:
         return
 
@@ -459,7 +542,19 @@ def apply_status_damage(pokemon):
 
 
 def anonymize_gamestate_helper(data):
-    """Anonymize some gamestate data."""
+    """
+    Anonymize some gamestate data.
+
+    Raw HP should be converted to percents. EV/Nature info is hidden,
+    otherwise all info is preserved.
+
+    Args:
+        data (dict): The player's game state to be anonymized.
+
+    Returns:
+        Anonimyzed representation of the game state.
+
+    """
     anon_data = {}
 
     anon_data["team"] = []
@@ -490,12 +585,15 @@ def calculate_damage(move, attacker, defender):
     """
     Calculate damage of a move.
 
-    :param move: dict
-        Data of the attacking move.
-    :param attacker: dict or Pokemon
-        Data of the attacking Pokemon. Must support the [] operator.
-    :param defender: dict or Pokemon
-        Data of the defending Pokemon. Must support the [] operator.
+    Args:
+        move (dict): Information on the move being used.
+        attacker (Pokemon): The pokemon using the attack.
+        defender (Pokemon): The pokemon that is recieving the attack.
+
+    Returns:
+        The damage dealt by this move, as well as a flag whether or not
+            the attack resulted in a critical hit.
+
     """
     damage = 0
     critical_hit = False
@@ -530,7 +628,20 @@ def calculate_damage(move, attacker, defender):
 
 
 def calculate_modifier(move, attacker, defender):
-    """Calculate the damage modifier for an attack."""
+    """
+    Calculate the damage modifier for an attack.
+
+    Factors in STAB, and type effectiveness.
+
+    Args:
+        move (dict): Information on the move being used.
+        attacker (Pokemon): The pokemon using the attack.
+        defender (Pokemon): The pokemon that is recieving the attack.
+
+    Returns:
+        The multipler to apply to the damage.
+
+    """
     modifier = 1
 
     # STAB Modifier
@@ -546,7 +657,17 @@ def calculate_modifier(move, attacker, defender):
 
 
 def init_player_logwriter(player1, player2):
-    """Initialize the log writer to write the turns of this game."""
+    """
+    Initialize the log writer to write the turns of this game.
+
+    Args:
+        player1 (PokemonAgent): The object that is Player 1.
+        player2 (PokemonAgent): The object that is Player 2.
+
+    Returns:
+        The log writer for a battle between player1 and player2.
+
+    """
     header = ["turn_num", "player_id", "active", "target", "move", "damage"]
     turn_logwriter = LogWriter(header, prefix="PKMNGame_{}_{}_{}".format(
         player1.type,

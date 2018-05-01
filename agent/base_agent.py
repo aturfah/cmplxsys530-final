@@ -3,16 +3,26 @@ from uuid import uuid4
 
 
 class BaseAgent():
-    """The Base Agent Class."""
+    """
+    The Base Agent Class.
+
+    Attributes:
+        id (str): Some unique identifier for this agent.
+        type (str): Classification for this agent.
+        elo (int): Elo ranking for this agent.
+        num_wins (int): Number of games won.
+        num_losses (int): Number of games lost.
+
+    """
 
     def __init__(self, **kwargs):
         """Initialize a new agent.
 
-        :param id: str
-            Some identifier for this agent
-        :param type: str
-            "Type" for this agent, has meaning in
-            agent subclasses
+        Args:
+            id (str): Some identifier for this agent.
+                Default is random uuid4.
+            type (str): "Type" for this agent, has meaning in
+                identifying agent subclasses
         """
         if "id_in" not in kwargs:
             self.id = uuid4()  # pylint: disable=C0103
@@ -33,13 +43,26 @@ class BaseAgent():
         print("Hello from BaseAgent {}".format(self.id))
 
     def win_loss_ratio(self):
-        """Get W/L Ratio for Agent."""
+        """
+        Get W/L Ratio for Agent.
+
+        Returns:
+            Win/Loss ratio (# Wins/# Losses).
+
+        """
         if self.num_losses == 0:
             return None
         return self.num_wins / self.num_losses
 
     def total_games(self):
-        """Total games agent has played."""
+        """
+        Total games agent has played.
+
+        Returns:
+            Total number of games this agent has played
+                (# Wins + # Losses).
+
+        """
         return self.num_wins + self.num_losses
 
     def print_info(self):

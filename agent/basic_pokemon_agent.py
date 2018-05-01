@@ -11,7 +11,16 @@ from pokemon_helpers.pokemon import Pokemon
 
 
 class PokemonAgent(BaseAgent):
-    """Class for a pokemon player."""
+    """
+    Class for a pokemon player.
+
+    Attributes:
+        team (list): The team of pokemon this agent uses.
+        gamestate (dict): This player's internal representation of a game.
+        opp_gamestate (dict): This player's knowledge about the opponent's team in this game.
+        dmg_stat_calc (DamageStatCalc): The class to do estimate damage using Damage Stats.
+
+    """
 
     def __init__(self, team):
         """Initialize the agent."""
@@ -36,7 +45,14 @@ class PokemonAgent(BaseAgent):
         self.opp_gamestate["investment"] = {}
 
     def init_opp_gamestate(self, opp_team, opp_active):
-        """Initialize the investment data for the opponent's team."""
+        """
+        Initialize the investment data for the opponent's team.
+
+        Args:
+            opp_team (list): List with the opponent's Pokemon.
+            opp_active (Pokemon): Opponent's active Pokemon.
+
+        """
         possible_combs = generate_all_ev_combinations()
         self.opp_gamestate["investment"][opp_active["name"]] = {}
         self.opp_gamestate["investment"][opp_active["name"]]["hp"] = possible_combs["hp"]
@@ -61,13 +77,12 @@ class PokemonAgent(BaseAgent):
         """
         Update internal gamestate for self.
 
-        :param my_gamestate: dict
-            PokemonEngine representation of player's position.
-            Should have "active" and "team" keys.
-        :param opp_gamestate: dict
-            PokemonEngine representation of opponent's position.
-            Only % HP should be viewable, and has "active" and
-            "team" keys.
+        Args:
+            my_gamestate (dict): PokemonEngine representation of player's position.
+                Should have "active" and "team" keys.
+            opp_gamestate (dict): PokemonEngine representation of opponent's position.
+                Only % HP should be viewable, and has "active" and "team" keys.
+
         """
         self.gamestate = my_gamestate
         self.opp_gamestate["data"] = opp_gamestate
@@ -77,6 +92,10 @@ class PokemonAgent(BaseAgent):
         Make a move.
 
         Either use random move or switch to random pokemon.
+
+        Returns:
+            Tuple with move type (ATTACK or SWITCH and the position.
+
         """
         response = ()
         can_switch = len(self.gamestate["team"]) > 0
@@ -97,24 +116,47 @@ class PokemonAgent(BaseAgent):
         Choose switch-in after pokemon has fainted.
 
         For now pick a random pokemon.
+
+        Returns:
+            Position of the next pokemon to switch to.
+
         """
         choice = uniform(0, len(self.gamestate["team"]))
         choice = int(choice)
         return choice
 
     def battle_position(self):
-        """Calculate the battle position function."""
+        """
+        Calculate the battle position function.
+
+        Returns:
+            This player's current % HP divided by the
+                Opponent's current % HP.
+
+        """
         self_component = self.calc_position()
         opp_component = self.calc_opp_position()
 
         return self_component / opp_component
 
     def calc_position(self):
-        """Calculate the value for self's battle position."""
+        """
+        Calculate the value for self's battle position.
+
+        Returns:
+            This player's remaining % HP.
+
+        """
         return calc_position_helper(self.gamestate)
 
     def calc_opp_position(self):
-        """Calculate the opponent's battle position."""
+        """
+        Calculate the opponent's battle position.
+
+        Returns:
+            The opponent's remaining % HP.
+
+        """
         return calc_opp_position_helper(self.opp_gamestate)
 
     def new_info(self, raw_turn_info, my_id):
@@ -123,13 +165,11 @@ class PokemonAgent(BaseAgent):
 
         Assumes Species Clause is in effect.
 
-        :param turn_info: list
-            What happened on that turn, who took what damage.
-            Each element should be a dict.
-        :param my_id: str
-            Name corresponding to the "attacker" or "defender"
-            values of this dict. To know which values the method
-            should be looking at in turn_info.
+        Args:
+            turn_info (list): What happened on that turn, who took what damage.
+            my_id (str): Name corresponding to the "attacker" or "defender"
+                values of this dict. To know which values the method
+                should be looking at in turn_info.
         """
         turn_info = [turn for turn in raw_turn_info if turn["type"] == "ATTACK"]
 
@@ -160,7 +200,15 @@ class PokemonAgent(BaseAgent):
             self.update_speed_inference(turn_info, my_id)
 
     def update_speed_inference(self, turn_info, my_id):
-        """Infer speed information from the turn info."""
+        """
+        Infer speed information from the turn info.
+
+        Args:
+            turn_info (dict): Information on a single event of that turn.
+            my_id (str): Name corresponding to the "attacker" or "defender"
+                values of this dict.
+
+        """
         # Moves are different priority, no inference can be made
         if turn_info[0]["move"]["priority"] != turn_info[1]["move"]["priority"]:
             return
@@ -199,7 +247,16 @@ class PokemonAgent(BaseAgent):
                     self.gamestate["active"].speed
 
     def results_attacking(self, turn_info):
-        """Generate possible results for when we are attacking."""
+        """
+        Generate possible results for when we are attacking.
+
+        Args:
+            turn_info (dict): Information on a single event of that turn.
+
+        Returns:
+            Two lists contianing T/F values of opponent's defense investment.
+
+        """
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
         opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
@@ -237,7 +294,16 @@ class PokemonAgent(BaseAgent):
         return results, combinations
 
     def results_defending(self, turn_info):
-        """Generate possible results for when we are defending."""
+        """
+        Generate possible results for when we are defending.
+
+        Args:
+            turn_info (dict): Information on a single event of that turn.
+
+        Returns:
+            Two lists contianing T/F values of opponent's defense investment.
+
+        """
         move = turn_info["move"]
         my_poke = POKEMON_DATA[turn_info["def_poke"]]
         opp_poke = POKEMON_DATA[turn_info["atk_poke"]]
@@ -273,7 +339,21 @@ class PokemonAgent(BaseAgent):
         return results, combinations
 
     def valid_results_atk(self, poke_name, stat, dmg_pct, results, combinations):
-        """Decide which of potential the potential results are valid given damage dealt."""
+        """
+        Decide which of potential the potential results are valid given damage dealt.
+
+        Args:
+            poke_name (str): Name of the pokemon in question.
+            stat (str): Name of the statistic that this move's damage is
+                calculated from, defense or special defense.
+            dmg_pct (float): How much % damage was done this turn.
+            results (list): Possible defense investment combinations.
+            combinations (list): T/F values corresponding to the defense investment combinations.
+
+        Returns:
+            Subset of the results that are possible given the damage dealt.
+
+        """
         valid_results = []
         num_results = len(results)
 
@@ -299,7 +379,21 @@ class PokemonAgent(BaseAgent):
         return valid_results
 
     def valid_results_def(self, poke_name, stat, dmg_pct, results, combinations):
-        """Decide which of potential the potential results are valid given damage dealt."""
+        """
+        Decide which of potential the potential results are valid given damage dealt.
+
+        Args:
+            poke_name (str): Name of the pokemon in question.
+            stat (str): Name of the statistic that this move's damage is
+                calculated from, defense or special defense.
+            dmg_pct (float): How much % damage was done this turn.
+            results (list): Possible defense investment combinations.
+            combinations (list): T/F values corresponding to the defense investment combinations.
+
+        Returns:
+            Subset of the results that are possible given the damage dealt.
+
+        """
         valid_results = []
         num_results = len(results)
 
@@ -320,7 +414,15 @@ class PokemonAgent(BaseAgent):
         return valid_results
 
     def update_atk_inference(self, turn_info, results, combinations):
-        """Update the opponent's defense investment information."""
+        """
+        Update the opponent's defense investment information.
+
+        Args:
+            turn_info (dict): Information on damage dealt this turn.
+            results (list): Possible defense investment combinations.
+            combinations (list): T/F values corresponding to the defense investment combinations.
+
+        """
         move = turn_info["move"]
         dmg_pct = turn_info["pct_damage"]
 
@@ -357,7 +459,15 @@ class PokemonAgent(BaseAgent):
                         generate_all_ev_combinations()["hp"]
 
     def update_def_inference(self, turn_info, results, combinations):
-        """Update the opponent's attack investment information."""
+        """
+        Update the opponent's attack investment information.
+
+        Args:
+            turn_info (dict): Information on damage dealt this turn.
+            results (list): Possible defense investment combinations.
+            combinations (list): T/F values corresponding to the defense investment combinations.
+
+        """
         move = turn_info["move"]
         dmg_pct = turn_info["pct_damage"]
 
@@ -382,7 +492,17 @@ class PokemonAgent(BaseAgent):
 
 
 def battle_position_helper(player_gs, opp_gs):
-    """Calculate the battle position for generic gamestates."""
+    """
+    Calculate the battle position for generic gamestates.
+
+    Args:
+        player_gs (dict): Dictionary representation of player gamestate.
+        opp_gs (dict): Dictionary representation of opponent's gamestate.
+
+    Returns:
+        Player's battle position divided by opponent's battle position.
+
+    """
     self_component = calc_position_helper(player_gs)
     opp_component = calc_opp_position_helper(opp_gs)
 
@@ -393,8 +513,13 @@ def calc_position_helper(player_gs):
     """
     Calculate the player's gamestate value.
 
-    :param player_gs: dict
-        This player's gamestate (as a dictionary)
+    Args:
+        player_gs (dict): Dictionary representation of player gamestate.
+
+    Returns:
+        The player's battle position value.
+            Calculated as percent remaining hit points.
+
     """
     my_posn = 0
     active_poke = player_gs["active"]
@@ -412,8 +537,13 @@ def calc_opp_position_helper(opp_gs):
     """
     Calculate the player's opponent's gamestate value.
 
-    :param opp_gs: dict
-        Opponent's gamestate as a dictionary.
+    Args:
+        opp_gs (dict): Dictionary representation of the opponent's gamestate.
+
+    Returns:
+        The opponent's battle position value.
+            Calculated as percent remaining hit points.
+
     """
     opp_posn = 0
     active_poke = opp_gs["data"]["active"]
@@ -428,7 +558,16 @@ def calc_opp_position_helper(opp_gs):
 
 
 def contains_switch(turn_info):
-    """Determine if switching info contains Switch information."""
+    """
+    Determine if switching info contains Switch information.
+
+    Args:
+        turn_info (list): List of event that happened that turn.
+
+    Returns:
+        Boolean whether or not a switch happened that turn.
+
+    """
     for info in turn_info:
         if info["type"] == "SWITCH":
             return True

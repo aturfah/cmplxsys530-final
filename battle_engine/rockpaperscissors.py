@@ -11,8 +11,9 @@ class RPSEngine:
         """
         Init method for this class.
 
-        :param num_games: int
-            Number of games to play (Default 1).
+        Args:
+            num_games (int): Number of games to play (Default 1).
+
         """
         if num_games % 2 == 0:
             raise AttributeError("num_games must be odd.")

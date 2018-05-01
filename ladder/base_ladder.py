@@ -7,17 +7,28 @@ from ladder.elo import elo
 
 
 class BaseLadder:
-    """The class for the ladder."""
+    """
+    The class for the ladder.
+
+    Attributes:
+        player_pool (list): List of players in the pool.
+        game_engine (battle_engine): Engine to run the game.
+        num_turns (int): Number of games that have been played.
+        k_value (int): K value to be used for calculating elo changes
+            on this ladder.
+        thread_lock (Lock): Lock used in multithreaded simulations.
+
+    """
 
     def __init__(self, game=None, K_in=32):
         """
         Initialize a ladder for a specific game.
 
-        :param game: GameEngine
-            Game to be played on this ladder
-        :param K_in: int
-            K value to be used for calculating elo changes
-            on this ladder
+        Args:
+            game (battle_engine): Game to be played on this ladder.
+            K_in (int): K value to be used for calculating elo changes
+                on this ladder.
+
         """
         self.player_pool = []
         self.game_engine = game
@@ -29,8 +40,9 @@ class BaseLadder:
         """
         Add a player to the waiting pool.
 
-        :param player: BaseAgent
-            Player to be added to the ladder pool
+        Args:
+            player (BaseAgent): Player to be added to the ladder pool
+
         """
         self.thread_lock.acquire()
 
@@ -51,8 +63,12 @@ class BaseLadder:
         """
         Return the players currently in the pool.
 
-        :param sort: bool
-            Whether or not to sort the output by elo
+        Args:
+            sort (bool): Whether or not to sort the output by Elo raking.
+
+        Returns:
+            List of players, either sorted or not sorted.
+
         """
         output = []
         self.thread_lock.acquire()
@@ -66,7 +82,13 @@ class BaseLadder:
         return output
 
     def match_players(self):
-        """Return a pair of players to play."""
+        """
+        Return a pair of players to play.
+
+        Returns:
+            A pair of players matched by the ladder's match_func.
+
+        """
         self.thread_lock.acquire()
 
         # Select a random player
@@ -98,7 +120,14 @@ class BaseLadder:
         raise NotImplementedError("Implement in child class")
 
     def run_game(self):
-        """Match players and run a game."""
+        """
+        Match players and run a game.
+
+        Returns:
+            Tuple with the winner of the game, as well as data on the
+                players involved in the game.
+
+        """
         player, opp = self.match_players()
         player_copy = deepcopy(player)
         opp_copy = deepcopy(opp)
@@ -121,10 +150,10 @@ class BaseLadder:
         """
         Update values for winner and loser.
 
-        :param winner: BaseAgent
-            Player who won
-        :param loser: BaseAgent
-            Player who lost
+        Args:
+            winner (BaseAgent): The player who won.
+            loser (BaseAgent): The player who lost.
+
         """
         new_winner_elo = elo(winner, loser, 1, self.k_value)
         new_loser_elo = elo(loser, winner, 0, self.k_value)

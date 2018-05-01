@@ -23,7 +23,17 @@ class CounterRPSAgent(RPSAgent):
         self.last_move = None
 
     def make_move(self):
-        """Counter opponent's last move."""
+        """
+        Counter opponent's last move.
+
+        On the first turn, it will play one of R, P, S with probability 1/3. On
+        all subsequent turns, it will play the move that beats the opponent's last
+        move.
+
+        Returns:
+            Move corresponding to Rock, Paper, or Scissors, defined by strategy above.
+
+        """
         if self.last_move is None:
             return super().make_move()
 

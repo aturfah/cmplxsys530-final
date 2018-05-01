@@ -12,7 +12,13 @@ STRATEGIES = {
 
 
 class RPSAgent(BaseAgent):
-    """The agent class for Rock/Paper/Scissors."""
+    """
+    The agent class for Rock/Paper/Scissors.
+
+    Attributes:
+        strategy (list): Probability with which it plays one of R, P, or S.
+
+    """
 
     def __init__(self, id_in=None, strategy_in="uniform"):
         """
@@ -21,10 +27,11 @@ class RPSAgent(BaseAgent):
         The player plays Rock, Paper, or Scissors
         according to probabilities defined in strategy.
 
-        :param strategy: str OR list, optional
-            Either a string corresponding to a strategy,
-            or a vector of probabilities to play Rock, Paper,
-            or Scissors respectively
+        Args:
+            strategy (str OR list): Either a string corresponding to a strategy,
+                or a vector of probabilities to play Rock, Paper,
+                or Scissors respectively. Optional parameter.
+
         """
         if isinstance(strategy_in, list):
             strategy = strategy_in
@@ -47,7 +54,13 @@ class RPSAgent(BaseAgent):
         super().__init__(id_in=id_in, type=type_)
 
     def make_move(self):
-        """Play one of rock, paper, scissors defined by strategy."""
+        """
+        Play one of rock, paper, scissors defined by strategy.
+
+        Returns:
+            Move corresponding to R, P, or S as defined by the strategy.
+
+        """
         num = uniform()
         for i in range(3):
             if num < sum(self.strategy[:i + 1]):

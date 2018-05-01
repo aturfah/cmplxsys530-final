@@ -9,16 +9,26 @@ import config
 
 
 class LogWriter():
-    """Class for class that generates log files."""
+    """
+    Class for class that generates log files.
+
+    Attributes:
+        filename (str): Name of the log file.
+        output_file (file): File stream of the log file.
+        output_csv (writer): CSV writer for the log file.
+        header (list): List of columns in this csv file.
+
+    """
 
     def __init__(self, header, prefix=None):
-        """Initialize LogWriter for a simulation.
+        """
+        Initialize LogWriter for a simulation.
 
-        :param prefix: str, optional
-            Optional prefix to lead filename with.
-        :param header: List
-            List with column names. Also defines first
-            row in the output file.
+        Args:
+            prefix (str): Optional prefix to lead filename with.
+            header (list): List with column names. Also defines first
+                row in the output file.
+
         """
         # Invalid prefix name check
         if prefix is not None:
@@ -47,8 +57,10 @@ class LogWriter():
     def write_line(self, dict_to_write):
         """Write line to this output.
 
-        :param dict_to_write: dict
-            Dict to write to file. Keys should be column names
+        Args:
+            dict_to_write (dict): Information to write to file.
+                Keys should be column names.
+
         """
         line = []
 
@@ -62,7 +74,13 @@ class LogWriter():
 
 
 def generate_filename(prefix):
-    """Generate file for use in this LogWriter."""
+    """
+    Generate file for use in this LogWriter.
+
+    Args:
+        prefix (str): Prefix for the file name.
+
+    """
     if not prefix:
         prefix_str = ""
     else:
@@ -83,6 +101,15 @@ def generate_filename(prefix):
 
 
 def generate_file(filename):
-    """Generate the file that will be used."""
+    """
+    Generate the file that will be used.
+
+    Args:
+        filename (str): Name of the file to be created.
+
+    Returns:
+        File object with the name <filename>.
+
+    """
     file_ = join(config.LOG_DIR, filename)
     return open(file_, mode="w", newline="")

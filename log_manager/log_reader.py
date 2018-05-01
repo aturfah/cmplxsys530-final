@@ -9,7 +9,16 @@ import config
 
 
 class LogReader():
-    """Log reader class."""
+    """
+    Log reader class.
+
+    Attributes:
+        files (list): List of files this reader uses.
+        header (list): List of columns in this file.
+        data (dict): Column/Data key/value pairs.
+        data_keys (list): Columns corresponding to the file they represent.
+
+    """
 
     def __init__(self, filenames=None, prefix=None):
         """
@@ -86,7 +95,13 @@ class LogReader():
             file_.close()
 
     def to_data_key(self, colnames):
-        """Convert list of column names into data_keys representation."""
+        """
+        Convert list of column names into data_keys representation.
+
+        Returns:
+            List of column names as they correspond to the keys of data.
+
+        """
         keys = []
         for index in range(len(self.files)):
             file_columns = ["{}{}".format(colname, index)
@@ -95,7 +110,13 @@ class LogReader():
         return keys
 
     def to_numeric(self, colnames):
-        """Make the columns in colnames numeric data."""
+        """
+        Make the columns in colnames numeric data.
+
+        Args:
+            colnames (list): List of columns to convert to numeric data.
+
+        """
         for colname in colnames:
             if colname not in self.data_keys:
                 raise AttributeError("Invalid column name: {}".format(colname))
