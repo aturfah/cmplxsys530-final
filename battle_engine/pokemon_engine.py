@@ -475,7 +475,14 @@ class PokemonEngine():
         return faster_player, slower_player
 
     def update_gamestates(self, player1, player2):
-        """Update the player's gamestates to reflect the engine's gamestate."""
+        """
+        Update the player's gamestates to reflect the engine's gamestate.
+
+        Args:
+            player1 (PokemonAgent): The object that is the first player.
+            player2 (PokemonAgent): The object that is the second player.
+
+        """
         player1.update_gamestate(
             self.game_state["player1"], self.anonymize_gamestate("player2"))
         player2.update_gamestate(
