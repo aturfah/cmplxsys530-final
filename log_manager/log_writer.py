@@ -11,7 +11,7 @@ import config
 class LogWriter():
     """
     Class for class that generates log files.
-    
+
     Attributes:
         filename (str): Name of the log file.
         output_file (file): File stream of the log file.
