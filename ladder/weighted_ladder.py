@@ -27,10 +27,13 @@ class WeightedLadder(BaseLadder):
 
         Functional form is <Turns_waiting>/abs(<Difference in Elo scores>)
 
-        :param player1: BaseAgent
-            The player who is being matched
-        :param player2: (BaseAgent, int)
-            The candidate player & turns waiting pair for a  match
+        Args:
+            player1 (BaseAgent): The player who is being matched.
+            player2_pair (tuple): The candidate player & turns waiting pair for a match.
+
+        Returns:
+            The score for a match; in this case a the function defined above.
+
         """
         elo_factor = 1/max(abs(player1.elo - player2_pair[0].elo), 1)
         turn_factor = max((self.num_turns - player2_pair[1]), 1)
