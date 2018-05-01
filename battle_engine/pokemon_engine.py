@@ -212,12 +212,15 @@ class PokemonEngine():
         """
         Switch a player's pokemon out.
 
-        :param player: str
-            The player ("player1" or "player2") who is
-            doing the switching.
-        :param position: int
-            The position in the team that this player
-            is switching out to.
+        Args:
+            player (str):  The player ("player1" or "player2") who is
+                doing the switching.
+            position (int): The position in the team that this player is
+                switching out to.
+
+        Returns:
+            The information about the switch that was just performed.
+
         """
         # Reset boosts
         self.game_state[player]["active"].boosts = default_boosts()
