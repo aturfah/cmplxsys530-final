@@ -3735,13 +3735,6 @@
 			1,
 			2
 		],
-		"onTryHit": function (target) {
-			if (target.status !== 'slp' && !target.hasAbility('comatose')) {
-				this.add('-immune', target, '[msg
-				]');
-				return null;
-			}
-		},
 		"secondary": false,
 		"target": "normal",
 		"type": "Psychic",
@@ -3900,12 +3893,6 @@
 		"num": 497,
 		"accuracy": 100,
 		"basePower": 40,
-		"basePowerCallback": function () {
-			if (this.pseudoWeather.echoedvoice) {
-				return 40 * this.pseudoWeather.echoedvoice.multiplier;
-			}
-			return 40;
-		},
 		"category": "Special",
 		"desc": "For every consecutive turn that this move is used by at least one Pokemon, this move's power is multiplied by the number of turns to pass, but not more than 5.",
 		"shortDesc": "Power increases when used on consecutive turns.",
@@ -3919,22 +3906,8 @@
 			"sound": 1,
 			"authentic": 1
 		},
-		"onTry": function () {
-			this.addPseudoWeather('echoedvoice');
-		},
 		"effect": {
-			"duration": 2,
-			"onStart": function () {
-				this.effectData.multiplier = 1;
-			},
-			"onRestart": function () {
-				if (this.effectData.duration !== 2) {
-					this.effectData.duration = 2;
-					if (this.effectData.multiplier < 5) {
-						this.effectData.multiplier++;
-					}
-				}
-			}
+			"duration": 2
 		},
 		"secondary": false,
 		"target": "normal",
@@ -3997,7 +3970,7 @@
 		"basePower": 0,
 		"category": "Status",
 		"desc": "For 5 turns, the terrain becomes Electric Terrain. During the effect, the power of Electric-type attacks made by grounded Pokemon is multiplied by 1.5 and grounded Pokemon cannot fall asleep; Pokemon already asleep do not wake up. Camouflage transforms the user into an Electric type, Nature Power becomes Thunderbolt, and Secret Power has a 30% chance to cause paralysis. Fails if the current terrain is Electric Terrain.",
-		"shortDesc": "5 turns. "Grounded": +Electric power, can't sleep.",
+		"shortDesc": "5 turns. 'Grounded': +Electric power, can't sleep.",
 		"id": "electricterrain",
 		"name": "Electric Terrain",
 		"pp": 10,
@@ -4109,13 +4082,7 @@
 		"volatileStatus": "embargo",
 		"effect": {
 			"duration": 5,
-			"onStart": function (pokemon) {
-				this.add('-start', pokemon, 'Embargo');
-			},
-			"onResidualOrder": 18,
-			"onEnd": function (pokemon) {
-				this.add('-end', pokemon, 'Embargo');
-			}
+			"onResidualOrder": 18
 		},
 		"secondary": false,
 		"target": "normal",
@@ -4170,7 +4137,7 @@
 		"volatileStatus": "encore",
 		"effect": {
 			"duration": 3,
-			"noCopy": true,
+			"noCopy": true
 		},
 		"secondary": false,
 		"target": "normal",
@@ -4184,9 +4151,6 @@
 		"num": 283,
 		"accuracy": 100,
 		"basePower": 0,
-		"damageCallback": function (pokemon, target) {
-			return target.hp - pokemon.hp;
-		},
 		"category": "Physical",
 		"desc": "Deals damage to the target equal to (target's current HP - user's current HP). The target is unaffected if its current HP is less than or equal to the user's current HP.",
 		"shortDesc": "Lowers the target's HP to the user's HP.",
@@ -4271,24 +4235,6 @@
 			"mirror": 1,
 			"mystery": 1
 		},
-		"onTryHit": function (target, source) {
-			if (target === source) return false;
-			let bannedTargetAbilities = ['battlebond', 'comatose', 'disguise', 'multitype', 'powerconstruct', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange', 'truant'
-			];
-			let bannedSourceAbilities = ['battlebond', 'comatose', 'disguise', 'flowergift', 'forecast', 'illusion', 'imposter', 'multitype', 'powerconstruct', 'powerofalchemy', 'receiver', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange', 'trace', 'zenmode'
-			];
-			if (bannedTargetAbilities.includes(target.ability) || bannedSourceAbilities.includes(source.ability) || target.ability === source.ability) {
-				return false;
-			}
-		},
-		"onHit": function (target, source) {
-			let oldAbility = target.setAbility(source.ability);
-			if (oldAbility) {
-				"this.add('-ability', target, this.getAbility(target.ability).name, '[from] move": Entrainment');
-				return;
-			}
-			return false;
-		},
 		"secondary": false,
 		"target": "normal",
 		"type": "Normal",
@@ -4301,9 +4247,6 @@
 		"num": 284,
 		"accuracy": 100,
 		"basePower": 150,
-		"basePowerCallback": function (pokemon, target, move) {
-			return move.basePower * pokemon.hp / pokemon.maxhp;
-		},
 		"category": "Special",
 		"desc": "Power is equal to (user's current HP * 150 / user's maximum HP), rounded down, but not less than 1.",
 		"shortDesc": "Less power as user's HP decreases. Hits foe(s).",
@@ -4437,11 +4380,6 @@
 			"mirror": 1
 		},
 		"onBasePowerPriority": 4,
-		"onBasePower": function (basePower, pokemon) {
-			if (pokemon.status && pokemon.status !== 'slp') {
-				return this.chainModify(2);
-			}
-		},
 		"secondary": false,
 		"target": "normal",
 		"type": "Normal",
@@ -4487,13 +4425,7 @@
 		},
 		"pseudoWeather": "fairylock",
 		"effect": {
-			"duration": 2,
-			"onStart": function (target) {
-				"this.add('-activate', target, 'move": Fairy Lock');
-			},
-			"onTrapPokemon": function (pokemon) {
-				pokemon.tryTrap();
-			}
+			"duration": 2
 		},
 		"secondary": false,
 		"target": "all",
@@ -4540,16 +4472,6 @@
 			"contact": 1,
 			"protect": 1,
 			"mirror": 1
-		},
-		"onTry": function (pokemon, target) {
-			if (pokemon.activeTurns > 1) {
-				this.attrLastMove('[still
-				]');
-				this.add('-fail', pokemon);
-				this.add('-hint',
-				"Fake Out only works on your first turn out.");
-				return null;
-			}
 		},
 		"secondary": {
 			"chance": 100,
@@ -4786,7 +4708,7 @@
 			{
 				"chance": 10,
 				"volatileStatus": "flinch"
-			},
+			}
 		],
 		"target": "normal",
 		"type": "Fire",
@@ -4825,14 +4747,6 @@
 		"num": 519,
 		"accuracy": 100,
 		"basePower": 80,
-		"basePowerCallback": function (target, source, move) {
-			if (['grasspledge', 'waterpledge'
-			].includes(move.sourceEffect)) {
-				this.add('-combine');
-				return 150;
-			}
-			return 80;
-		},
 		"category": "Special",
 		"desc": "If one of the user's allies chose to use Grass Pledge or Water Pledge this turn and has not moved yet, it takes its turn immediately after the user and the user's move does nothing. If combined with Grass Pledge, the ally uses Fire Pledge with 150 Base Power and a sea of fire appears on the target's side for 4 turns, which causes damage to non-Fire types equal to 1/8 of their maximum HP, rounded down, at the end of each turn during effect. If combined with Water Pledge, the ally uses Water Pledge with 150 Base Power and a rainbow appears on the user's side for 4 turns, which doubles secondary effect chances but does not stack with the Ability Serene Grace. When used as a combined move, this move gains STAB no matter what the user's type is. This move does not consume the user's Fire Gem.",
 		"shortDesc": "Use with Grass or Water Pledge for added effect.",
