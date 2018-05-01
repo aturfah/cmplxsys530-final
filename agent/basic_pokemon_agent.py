@@ -513,8 +513,13 @@ def calc_position_helper(player_gs):
     """
     Calculate the player's gamestate value.
 
-    :param player_gs: dict
-        This player's gamestate (as a dictionary)
+    Args:
+        player_gs (dict): Dictionary representation of player gamestate.
+
+    Returns:
+        The player's battle position value.
+            Calculated as percent remaining hit points.
+
     """
     my_posn = 0
     active_poke = player_gs["active"]
@@ -532,8 +537,13 @@ def calc_opp_position_helper(opp_gs):
     """
     Calculate the player's opponent's gamestate value.
 
-    :param opp_gs: dict
-        Opponent's gamestate as a dictionary.
+    Args:
+        opp_gs (dict): Dictionary representation of the opponent's gamestate.
+
+    Returns:
+        The opponent's battle position value.
+            Calculated as percent remaining hit points.
+
     """
     opp_posn = 0
     active_poke = opp_gs["data"]["active"]
