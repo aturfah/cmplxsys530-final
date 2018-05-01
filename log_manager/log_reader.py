@@ -9,7 +9,16 @@ import config
 
 
 class LogReader():
-    """Log reader class."""
+    """
+    Log reader class.
+
+    Attributes:
+        files (list): List of files this reader uses.
+        header (list): List of columns in this file.
+        data (dict): Column/Data key/value pairs.
+        data_keys (list): Columns corresponding to the file they represent.
+
+    """
 
     def __init__(self, filenames=None, prefix=None):
         """
