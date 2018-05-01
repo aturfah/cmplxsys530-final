@@ -247,11 +247,14 @@ class PokemonEngine():
         """
         Attack opposing pokemon with the move.
 
-        :param player: str
-            The player ("player1" or "player2")
-            who is attacking.
-        :param move: dict
-            The data for the move that is being done.
+        Args:
+            attacker (str): The player ("player1" or "player2")
+                who is attacking.
+            move (dict): The data for the move that is being done.
+
+        Returns:
+            List of the information on the attack that was just done.
+
         """
         # pylint: disable=R0912
         # Disable too many branches
