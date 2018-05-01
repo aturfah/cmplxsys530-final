@@ -558,7 +558,15 @@ def calc_opp_position_helper(opp_gs):
 
 
 def contains_switch(turn_info):
-    """Determine if switching info contains Switch information."""
+    """
+    Determine if switching info contains Switch information.
+
+    Args:
+        turn_info (list): List of event that happened that turn.
+
+    Returns:
+        Boolean whether or not a switch happened that turn.
+    """
     for info in turn_info:
         if info["type"] == "SWITCH":
             return True
