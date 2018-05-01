@@ -21,7 +21,8 @@ class LogWriter():
     """
 
     def __init__(self, header, prefix=None):
-        """Initialize LogWriter for a simulation.
+        """
+        Initialize LogWriter for a simulation.
 
         Args:
             prefix (str): Optional prefix to lead filename with.
