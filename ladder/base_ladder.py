@@ -25,9 +25,9 @@ class BaseLadder:
         Initialize a ladder for a specific game.
 
         Args:
-            game (battle_engine): Game to be played on this ladder
+            game (battle_engine): Game to be played on this ladder.
             K_in (int): K value to be used for calculating elo changes
-                on this ladder
+                on this ladder.
 
         """
         self.player_pool = []
