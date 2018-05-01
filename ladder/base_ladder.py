@@ -82,7 +82,13 @@ class BaseLadder:
         return output
 
     def match_players(self):
-        """Return a pair of players to play."""
+        """
+        Return a pair of players to play.
+
+        Returns:
+            A pair of players matched by the ladder's match_func.
+
+        """
         self.thread_lock.acquire()
 
         # Select a random player
