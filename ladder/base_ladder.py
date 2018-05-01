@@ -63,8 +63,12 @@ class BaseLadder:
         """
         Return the players currently in the pool.
 
-        :param sort: bool
-            Whether or not to sort the output by elo
+        Args:
+            sort (bool): Whether or not to sort the output by Elo raking.
+
+        Returns:
+            List of players, either sorted or not sorted.
+
         """
         output = []
         self.thread_lock.acquire()
