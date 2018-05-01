@@ -24,11 +24,11 @@ class BaseLadder:
         """
         Initialize a ladder for a specific game.
 
-        :param game: GameEngine
-            Game to be played on this ladder
-        :param K_in: int
-            K value to be used for calculating elo changes
-            on this ladder
+        Args:
+            game (battle_engine): Game to be played on this ladder
+            K_in (int): K value to be used for calculating elo changes
+                on this ladder
+
         """
         self.player_pool = []
         self.game_engine = game
