@@ -40,8 +40,9 @@ class BaseLadder:
         """
         Add a player to the waiting pool.
 
-        :param player: BaseAgent
-            Player to be added to the ladder pool
+        Args:
+            player (BaseAgent): Player to be added to the ladder pool
+
         """
         self.thread_lock.acquire()
 
