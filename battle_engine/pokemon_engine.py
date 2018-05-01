@@ -420,9 +420,13 @@ class PokemonEngine():
         """
         Anonymize the internal gamestate for consumption by opponent.
 
-        :param player_id: str
-            The player whose data needs to be anonymized.
-            Either "player1" or "player2"
+        Args:
+            player_id (str): The player whose data needs to be anonymized.
+                Either "player1" or "player2".
+
+        Returns:
+            The anonymized game state for that player.
+
         """
         data = deepcopy(self.game_state[player_id])
         return anonymize_gamestate_helper(data)
