@@ -491,7 +491,7 @@ class PokemonEngine():
     def log_turn(self, turn_logwriter, turn_info):
         """
         Log the information from this turn.
-        
+
         Args:
             turn_logwriter (LogWriter): The LogWriter responsible for logging this
                 battle's information.
@@ -516,7 +516,13 @@ class PokemonEngine():
 
 
 def apply_status_damage(pokemon):
-    """Apply damage for status conditions when appropriate."""
+    """
+    Apply damage for status conditions when appropriate.
+
+    Args:
+        pokemon (Pokemon): The pokemon that this damage is calculated for.
+
+    """
     if pokemon.status is None:
         return
 
