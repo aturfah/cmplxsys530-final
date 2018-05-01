@@ -26,9 +26,12 @@ class RandomLadder(BaseLadder):
         Since players will be sorted this random value, it is
         equivalent to randomly choosing an opponent.
 
-        :param player1: BaseAgent
-            The player who is being matched
-        :param player2: (BaseAgent, int)
-            The candidate player & turns waiting pair for a  match
+        Args:
+            player1 (BaseAgent): The player who is being matched.
+            player2_pair (tuple): The candidate player & turns waiting pair for a match.
+
+        Returns:
+            The score for a match; in this case a random number.
+        
         """
         return rand()
