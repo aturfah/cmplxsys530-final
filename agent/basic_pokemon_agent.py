@@ -414,7 +414,15 @@ class PokemonAgent(BaseAgent):
         return valid_results
 
     def update_atk_inference(self, turn_info, results, combinations):
-        """Update the opponent's defense investment information."""
+        """
+        Update the opponent's defense investment information.
+
+        Args:
+            turn_info (dict): Information on damage dealt this turn.
+            results (list): Possible defense investment combinations.
+            combinations (list): T/F values corresponding to the defense investment combinations.
+
+        """
         move = turn_info["move"]
         dmg_pct = turn_info["pct_damage"]
 
