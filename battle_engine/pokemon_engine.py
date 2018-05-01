@@ -12,7 +12,15 @@ from pokemon_helpers.pokemon import default_boosts
 
 
 class PokemonEngine():
-    """Class to run a pokemon game."""
+    """
+    Class to run a pokemon game.
+
+    Attributes:
+        generation (str): Generation of Pokemon's mechanic to use.
+        turn_limit (int): Maximum number of turns to play for.
+        log_turn_flag (bool): Flag whether or not to log each game.
+
+    """
 
     def __init__(self, generation="gen7", turn_limit=2000, log_turns=False):
         """Initialize a new PokemonEngine."""
@@ -33,7 +41,14 @@ class PokemonEngine():
         self.game_state["num_turns"] = 0
 
     def initialize_battle(self, player1, player2):
-        """Initialize this battle and set the players' gamestates."""
+        """
+        Initialize this battle and set the players' gamestates.
+
+        Args:
+            player1 (PokemonAgent): Object corresponding to first player.
+            player2 (PokemonAgent): object corresponding to second player.
+
+        """
         # Reset internal gamestates
         player1.reset_gamestates()
         player2.reset_gamestates()
