@@ -333,8 +333,13 @@ class PokemonEngine():
         """
         Run a turn where both players attack.
 
-        :param move1/2: dict
-            The data for player1/2's moves.
+        Args:
+            move1 (dict): Player 1's attack.
+            move2 (dict): Player 2's attack.
+
+        Returns:
+            List of the events that happened that turn.
+
         """
         move_dict = {}
         p1_active = self.game_state["player1"]["active"]
