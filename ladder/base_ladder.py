@@ -120,7 +120,14 @@ class BaseLadder:
         raise NotImplementedError("Implement in child class")
 
     def run_game(self):
-        """Match players and run a game."""
+        """
+        Match players and run a game.
+
+        Returns:
+            Tuple with the winner of the game, as well as data on the
+                players involved in the game.
+
+        """
         player, opp = self.match_players()
         player_copy = deepcopy(player)
         opp_copy = deepcopy(opp)
