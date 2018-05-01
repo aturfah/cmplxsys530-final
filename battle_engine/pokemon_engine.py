@@ -435,10 +435,14 @@ class PokemonEngine():
         """
         Calculate turn order for when players move.
 
-        :param p1_move: Pokemon
-            Player1's move.
-        :param p2_active: Pokemon
-            Player2's move.
+        Args:
+            p1_move (dict): Player 1's move for this turn.
+            p2_move (dict): Player 2's move for this turn.
+
+        Returns:
+            Tuple of 'player1', 'player2' in the order their moves
+                will be made.
+
         """
         if p1_move["priority"] != p2_move["priority"]:
             if p1_move["priority"] > p2_move["priority"]:
