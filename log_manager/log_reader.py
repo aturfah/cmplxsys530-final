@@ -95,7 +95,13 @@ class LogReader():
             file_.close()
 
     def to_data_key(self, colnames):
-        """Convert list of column names into data_keys representation."""
+        """
+        Convert list of column names into data_keys representation.
+
+        Returns:
+            List of column names as they correspond to the keys of data.
+
+        """
         keys = []
         for index in range(len(self.files)):
             file_columns = ["{}{}".format(colname, index)
