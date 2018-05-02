@@ -16164,22 +16164,6 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"onAfterHit": function (target, source) {
-			if (source.item || source.volatiles['gem'
-			]) {
-				return;
-			}
-			let yourItem = target.takeItem(source);
-			if (!yourItem) {
-				return;
-			}
-			if (!source.setItem(yourItem)) {
-				target.item = yourItem.id; 
-				return;
-			}
-			"this.add('-item', source, yourItem, '[from] move": Thief', '[of
-			] ' + target);
-		},
 		"secondary": false,
 		"target": "normal",
 		"type": "Dark",
@@ -16202,16 +16186,6 @@
 			"protect": 1,
 			"mirror": 1,
 			"nonsky": 1
-		},
-		"onEffectiveness": function (typeMod, type, move) {
-			
-			if (move.type !== 'Ground') return;
-			let target = this.activeTarget;
-			if (!target) return; 
-			
-			if (!target.runImmunity('Ground')) {
-				if (target.hasType('Flying')) return 0;
-			}
 		},
 		"volatileStatus": "smackdown",
 		"ignoreImmunity": {
@@ -16239,9 +16213,6 @@
 			"mirror": 1,
 			"nonsky": 1
 		},
-		"onHit": function (target, source, move) {
-			if (source.isActive) target.addVolatile('trapped', source, move, 'trapper');
-		},
 		"secondary": false,
 		"target": "allAdjacentFoes",
 		"type": "Ground",
@@ -16267,13 +16238,6 @@
 		"self": {
 			"volatileStatus": "lockedmove"
 		},
-		"onAfterMove": function (pokemon) {
-			if (pokemon.volatiles['lockedmove'
-			] && pokemon.volatiles['lockedmove'
-			].duration === 1) {
-				pokemon.removeVolatile('lockedmove');
-			}
-		},
 		"secondary": false,
 		"target": "randomNormal",
 		"type": "Normal",
@@ -16298,37 +16262,11 @@
 		},
 		"effect": {
 			"duration": 2,
-			"onStart": function (target) {
-				this.add('-start', target, 'Throat Chop', '[silent
-				]');
-			},
-			"onDisableMove": function (pokemon) {
-				for (const moveSlot of pokemon.moveSlots) {
-					if (this.getMove(moveSlot.id).flags['sound'
-					]) {
-						pokemon.disableMove(moveSlot.id);
-					}
-				}
-			},
 			"onBeforeMovePriority": 6,
-			"onBeforeMove": function (pokemon, target, move) {
-				if (!move.isZ && move.flags['sound'
-				]) {
-					"this.add('cant', pokemon, 'move": Throat Chop');
-					return false;
-				}
-			},
-			"onResidualOrder": 22,
-			"onEnd": function (target) {
-				this.add('-end', target, 'Throat Chop', '[silent
-				]');
-			}
+			"onResidualOrder": 22
 		},
 		"secondary": {
-			"chance": 100,
-			"onHit": function (target) {
-				target.addVolatile('throatchop');
-			}
+			"chance": 100
 		},
 		"target": "normal",
 		"type": "Dark",
@@ -16350,15 +16288,6 @@
 		"flags": {
 			"protect": 1,
 			"mirror": 1
-		},
-		"onModifyMove": function (move) {
-			if (this.isWeather(['raindance', 'primordialsea'
-			])) {
-				move.accuracy = true;
-			} else if (this.isWeather(['sunnyday', 'desolateland'
-			])) {
-				move.accuracy = 50;
-			}
 		},
 		"secondary": {
 			"chance": 30,
@@ -16394,7 +16323,7 @@
 			{
 				"chance": 10,
 				"volatileStatus": "flinch"
-			},
+			}
 		],
 		"target": "normal",
 		"type": "Electric",
@@ -16550,19 +16479,6 @@
 			"mirror": 1,
 			"mystery": 1
 		},
-		"onHit": function (target) {
-			let success = false;
-			for (let i in target.boosts) {
-				if (target.boosts[i
-				] === 0) continue;
-				target.boosts[i
-				] = -target.boosts[i
-				];
-				success = true;
-			}
-			if (!success) return false;
-			"this.add('-invertboost', target, '[from] move": Topsy-Turvy');
-		},
 		"secondary": false,
 		"target": "normal",
 		"type": "Dark",
@@ -16590,16 +16506,7 @@
 		},
 		"volatileStatus": "torment",
 		"effect": {
-			"noCopy": true,
-			"onStart": function (pokemon) {
-				this.add('-start', pokemon, 'Torment');
-			},
-			"onEnd": function (pokemon) {
-				this.add('-end', pokemon, 'Torment');
-			},
-			"onDisableMove": function (pokemon) {
-				if (pokemon.lastMove && pokemon.lastMove.id !== 'struggle') pokemon.disableMove(pokemon.lastMove.id);
-			}
+			"noCopy": true
 		},
 		"secondary": false,
 		"target": "normal",
@@ -16652,34 +16559,6 @@
 			"nonsky": 1
 		},
 		"sideCondition": "toxicspikes",
-		"effect": {
-			"onStart": function (side) {
-				"this.add('-sidestart', side, 'move": Toxic Spikes');
-				this.effectData.layers = 1;
-			},
-			"onRestart": function (side) {
-				if (this.effectData.layers >= 2) return false;
-				"this.add('-sidestart', side, 'move": Toxic Spikes');
-				this.effectData.layers++;
-			},
-			"onSwitchIn": function (pokemon) {
-				if (!pokemon.isGrounded()) return;
-				if (!pokemon.runImmunity('Poison')) return;
-				if (pokemon.hasType('Poison')) {
-					"this.add('-sideend', pokemon.side, 'move": Toxic Spikes', '[of
-					] ' + pokemon);
-					pokemon.side.removeSideCondition('toxicspikes');
-				} else if (this.effectData.layers >= 2) {
-					pokemon.trySetStatus('tox', pokemon.side.foe.active[
-						0
-					]);
-				} else {
-					pokemon.trySetStatus('psn', pokemon.side.foe.active[
-						0
-					]);
-				}
-			}
-		},
 		"secondary": false,
 		"target": "foeSide",
 		"type": "Poison",
@@ -16731,11 +16610,6 @@
 		"flags": {
 			"mystery": 1
 		},
-		"onHit": function (target, pokemon) {
-			if (!pokemon.transformInto(target, pokemon)) {
-				return false;
-			}
-		},
 		"secondary": false,
 		"target": "normal",
 		"type": "Normal",
@@ -16759,17 +16633,7 @@
 			"mirror": 1
 		},
 		"secondary": {
-			"chance": 20,
-			"onHit": function (target, source) {
-				let result = this.random(3);
-				if (result === 0) {
-					target.trySetStatus('brn', source);
-				} else if (result === 1) {
-					target.trySetStatus('par', source);
-				} else {
-					target.trySetStatus('frz', source);
-				}
-			}
+			"chance": 20
 		},
 		"target": "normal",
 		"type": "Normal",
@@ -16792,41 +16656,6 @@
 			"protect": 1,
 			"mirror": 1,
 			"mystery": 1
-		},
-		"onTryHit": function (target) {
-			if (target.hasAbility('stickyhold')) {
-				this.add('-immune', target, '[msg
-				]');
-				return null;
-			}
-		},
-		"onHit": function (target, source, move) {
-			let yourItem = target.takeItem(source);
-			let myItem = source.takeItem();
-			if (target.item || source.item || (!yourItem && !myItem)) {
-				if (yourItem) target.item = yourItem.id;
-				if (myItem) source.item = myItem.id;
-				return false;
-			}
-			if ((myItem && !this.singleEvent('TakeItem', myItem, source.itemData, target, source, move, myItem)) || (yourItem && !this.singleEvent('TakeItem', yourItem, target.itemData, source, target, move, yourItem))) {
-				if (yourItem) target.item = yourItem.id;
-				if (myItem) source.item = myItem.id;
-				return false;
-			}
-			"this.add('-activate', source, 'move": Trick', '[of
-			] ' + target);
-			if (myItem) {
-				target.setItem(myItem);
-				"this.add('-item', target, myItem, '[from] move": Trick');
-			} else {
-				"this.add('-enditem', target, yourItem, '[silent]', '[from] move": Trick');
-			}
-			if (yourItem) {
-				source.setItem(yourItem);
-				"this.add('-item', source, yourItem, '[from] move": Trick');
-			} else {
-				"this.add('-enditem', source, myItem, '[silent]', '[from] move": Trick');
-			}
 		},
 		"secondary": false,
 		"target": "normal",
@@ -16852,19 +16681,6 @@
 			"reflectable": 1,
 			"mirror": 1,
 			"mystery": 1
-		},
-		"onHit": function (target) {
-			if (target.hasType('Ghost')) return false;
-			if (!target.addType('Ghost')) return false;
-			"this.add('-start', target, 'typeadd', 'Ghost', '[from] move": Trick-or-Treat');
-
-			if (target.side.active.length === 2 && target.position === 1) {
-				
-				const action = this.willMove(target);
-				if (action && action.move.id === 'curse') {
-					action.targetLoc = -1;
-				}
-			}
 		},
 		"secondary": false,
 		"target": "normal",
@@ -16894,24 +16710,7 @@
 		},
 		"pseudoWeather": "trickroom",
 		"effect": {
-			"duration": 5,
-			"durationCallback": function (source, effect) {
-				if (source && source.hasAbility('persistent')) {
-					return 7;
-				}
-				return 5;
-			},
-			"onStart": function (target, source) {
-				"this.add('-fieldstart', 'move": Trick Room', '[of
-				] ' + source);
-			},
-			"onRestart": function (target, source) {
-				this.removePseudoWeather('trickroom');
-			},
-			"onResidualOrder": 23,
-			"onEnd": function () {
-				"this.add('-fieldend', 'move": Trick Room');
-			}
+			"duration": 5
 		},
 		"secondary": false,
 		"target": "all",
@@ -16925,14 +16724,6 @@
 		"num": 167,
 		"accuracy": 90,
 		"basePower": 10,
-		"basePowerCallback": function (pokemon, target, move) {
-			if (move.hit) {
-				move.hit++;
-			} else {
-				move.hit = 1;
-			}
-			return 10 * move.hit;
-		},
 		"category": "Physical",
 		"desc": "Hits three times. Power increases to 20 for the second hit and 30 for the third. This move checks accuracy for each hit, and the attack ends if the target avoids any of the hits. If one of the hits breaks the target's substitute, it will take damage for the remaining hits. If the user has the Ability Skill Link, this move will always hit three times.",
 		"shortDesc": "Hits 3 times. Each hit can miss, but power rises.",
@@ -16984,23 +16775,6 @@
 		"num": 376,
 		"accuracy": true,
 		"basePower": 0,
-		"basePowerCallback": function (source, target, move) {
-			const callerMoveId = move.sourceEffect || move.id;
-			const moveSlot = source.getMoveData(callerMoveId);
-			
-			switch (moveSlot.pp) {
-				"case 0":
-				return 200;
-			"case 1":
-				return 80;
-			"case 2":
-				return 60;
-			"case 3":
-				return 50;
-			"default":
-				return 40;
-			}
-		},
 		"category": "Special",
 		"desc": "This move does not check accuracy. The power of this move is based on the amount of PP remaining after normal PP reduction and the Ability Pressure resolve. 200 power for 0 PP, 80 power for 1 PP, 60 power for 2 PP, 50 power for 3 PP, and 40 power for 4 or more PP.",
 		"shortDesc": "More power the fewer PP this move has left.",
@@ -17131,46 +16905,9 @@
 		"self": {
 			"volatileStatus": "uproar"
 		},
-		"onTryHit": function (target) {
-			for (const [i, allyActive
-			] of target.side.active.entries()) {
-				if (allyActive && allyActive.status === 'slp') allyActive.cureStatus();
-				let foeActive = target.side.foe.active[i
-				];
-				if (foeActive && foeActive.status === 'slp') foeActive.cureStatus();
-			}
-		},
 		"effect": {
 			"duration": 3,
-			"onStart": function (target) {
-				this.add('-start', target, 'Uproar');
-			},
-			"onResidual": function (target) {
-				if (target.lastMove && target.lastMove.id === 'struggle') {
-					
-					delete target.volatiles['uproar'
-					];
-				}
-				this.add('-start', target, 'Uproar', '[upkeep
-				]');
-			},
-			"onEnd": function (target) {
-				this.add('-end', target, 'Uproar');
-			},
-			"onLockMove": "uproar",
-			"onAnySetStatus": function (status, pokemon) {
-				if (status.id === 'slp') {
-					if (pokemon === this.effectData.target) {
-						this.add('-fail', pokemon, 'slp', '[from
-						] Uproar', '[msg
-						]');
-					} else {
-						this.add('-fail', pokemon, 'slp', '[from
-						] Uproar');
-					}
-					return null;
-				}
-			}
+			"onLockMove": "uproar"
 		},
 		"secondary": false,
 		"target": "randomNormal",
@@ -17245,1183 +16982,950 @@
 			"reflectable": 1,
 			"mirror": 1
 		},
-		"onHit": function (target, source, move) {
-			if (target.status === 'psn' || target.status === 'tox') {
-				"return this.boost({atk": -1,
-				"spa": -1,
-				"spe": -1
-			}, target, source, move);
-		}
-			return false;
-	},
-	"secondary": false,
-	"target": "allAdjacentFoes",
-	"type": "Poison",
-	"zMoveBoost": {
-		"def": 1
-	},
-	"contestType": "Clever"
-},
-"venoshock": {
-	"num": 474,
-	"accuracy": 100,
-	"basePower": 65,
-	"category": "Special",
-	"desc": "Power doubles if the target is poisoned.",
-	"shortDesc": "Power doubles if the target is poisoned.",
-	"id": "venoshock",
-	"name": "Venoshock",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"mirror": 1
-	},
-	"onBasePowerPriority": 4,
-	"onBasePower": function (basePower, pokemon, target) {
-			if (target.status === 'psn' || target.status === 'tox') {
-				return this.chainModify(2);
-		}
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Poison",
-	"zMovePower": 120,
-	"contestType": "Beautiful"
-},
-"vicegrip": {
-	"num": 11,
-	"accuracy": 100,
-	"basePower": 55,
-	"category": "Physical",
-	"desc": "No additional effect.",
-	"shortDesc": "No additional effect.",
-	"id": "vicegrip",
-	"name": "Vice Grip",
-	"pp": 30,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Normal",
-	"zMovePower": 100,
-	"contestType": "Tough"
-},
-"vinewhip": {
-	"num": 22,
-	"accuracy": 100,
-	"basePower": 45,
-	"category": "Physical",
-	"desc": "No additional effect.",
-	"shortDesc": "No additional effect.",
-	"id": "vinewhip",
-	"name": "Vine Whip",
-	"pp": 25,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Grass",
-	"zMovePower": 100,
-	"contestType": "Cool"
-},
-"vitalthrow": {
-	"num": 233,
-	"accuracy": true,
-	"basePower": 70,
-	"category": "Physical",
-	"desc": "This move does not check accuracy.",
-	"shortDesc": "This move does not check accuracy. Goes last.",
-	"id": "vitalthrow",
-	"name": "Vital Throw",
-	"pp": 10,
-	"priority": -1,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Fighting",
-	"zMovePower": 140,
-	"contestType": "Cool"
-},
-"voltswitch": {
-	"num": 521,
-	"accuracy": 100,
-	"basePower": 70,
-	"category": "Special",
-	"desc": "If this move is successful and the user has not fainted, the user switches out even if it is trapped and is replaced immediately by a selected party member. The user does not switch out if there are no unfainted party members, or if the target switched out using an Eject Button.",
-	"shortDesc": "User switches out after damaging the target.",
-	"id": "voltswitch",
-	"isViable": true,
-	"name": "Volt Switch",
-	"pp": 20,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"mirror": 1
-	},
-	"selfSwitch": true,
-	"secondary": false,
-	"target": "normal",
-	"type": "Electric",
-	"zMovePower": 140,
-	"contestType": "Cool"
-},
-"volttackle": {
-	"num": 344,
-	"accuracy": 100,
-	"basePower": 120,
-	"category": "Physical",
-	"desc": "Has a 10% chance to paralyze the target. If the target lost HP, the user takes recoil damage equal to 33% the HP lost by the target, rounded half up, but not less than 1 HP.",
-	"shortDesc": "Has 33% recoil. 10% chance to paralyze target.",
-	"id": "volttackle",
-	"isViable": true,
-	"name": "Volt Tackle",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"recoil": [
-		33,
-		100
-	],
-	"secondary": {
-		"chance": 10,
-		"status": "par"
-	},
-	"target": "normal",
-	"type": "Electric",
-	"zMovePower": 190,
-	"contestType": "Cool"
-},
-"wakeupslap": {
-	"num": 358,
-	"accuracy": 100,
-	"basePower": 70,
-	"basePowerCallback": function (pokemon, target, move) {
-			if (target.status === 'slp' || target.hasAbility('comatose')) return move.basePower * 2;
-			return move.basePower;
-	},
-	"category": "Physical",
-	"desc": "Power doubles if the target is asleep. If the user has not fainted, the target wakes up.",
-	"shortDesc": "Power doubles if target is asleep, and wakes it.",
-	"id": "wakeupslap",
-	"name": "Wake-Up Slap",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"onHit": function (target) {
-			if (target.status === 'slp') target.cureStatus();
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Fighting",
-	"zMovePower": 140,
-	"contestType": "Tough"
-},
-"watergun": {
-	"num": 55,
-	"accuracy": 100,
-	"basePower": 40,
-	"category": "Special",
-	"desc": "No additional effect.",
-	"shortDesc": "No additional effect.",
-	"id": "watergun",
-	"name": "Water Gun",
-	"pp": 25,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"mirror": 1
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Water",
-	"zMovePower": 100,
-	"contestType": "Cute"
-},
-"waterpledge": {
-	"num": 518,
-	"accuracy": 100,
-	"basePower": 80,
-	"basePowerCallback": function (target, source, move) {
-			if (['firepledge', 'grasspledge'
-		].includes(move.sourceEffect)) {
-				this.add('-combine');
-				return 150;
-		}
-			return 80;
-	},
-	"category": "Special",
-	"desc": "If one of the user's allies chose to use Fire Pledge or Grass Pledge this turn and has not moved yet, it takes its turn immediately after the user and the user's move does nothing. If combined with Fire Pledge, the ally uses Water Pledge with 150 Base Power and a rainbow appears on the user's side for 4 turns, which doubles secondary effect chances but does not stack with the Ability Serene Grace. If combined with Grass Pledge, the ally uses Grass Pledge with 150 Base Power and a swamp appears on the target's side for 4 turns, which quarters the Speed of each Pokemon on that side. When used as a combined move, this move gains STAB no matter what the user's type is. This move does not consume the user's Water Gem, and cannot be redirected by the Ability Storm Drain.",
-	"shortDesc": "Use with Grass or Fire Pledge for added effect.",
-	"id": "waterpledge",
-	"name": "Water Pledge",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"mirror": 1,
-		"nonsky": 1
-	},
-	"onPrepareHit": function (target, source, move) {
-			for (const action of this.queue) {
-				
-				if (!action.move || !action.pokemon || !action.pokemon.isActive || action.pokemon.fainted) continue;
-				
-				if (action.pokemon.side === source.side && ['firepledge', 'grasspledge'
-			].includes(action.move.id)) {
-					
-					this.prioritizeAction(action);
-					this.add('-waiting', source, action.pokemon);
-					return null;
-			}
-		}
-	},
-	"onModifyMove": function (move) {
-			if (move.sourceEffect === 'grasspledge') {
-				move.type = 'Grass';
-				move.hasSTAB = true;
-		}
-			if (move.sourceEffect === 'firepledge') {
-				move.type = 'Water';
-				move.hasSTAB = true;
-		}
-	},
-	"onHit": function (target, source, move) {
-			if (move.sourceEffect === 'firepledge') {
-				source.side.addSideCondition('waterpledge');
-		}
-			if (move.sourceEffect === 'grasspledge') {
-				target.side.addSideCondition('grasspledge');
-		}
-	},
-	"effect": {
-		"duration": 4,
-		"onStart": function (targetSide) {
-				this.add('-sidestart', targetSide, 'Water Pledge');
+		"secondary": false,
+		"target": "allAdjacentFoes",
+		"type": "Poison",
+		"zMoveBoost": {
+			"def": 1
 		},
-		"onEnd": function (targetSide) {
-				this.add('-sideend', targetSide, 'Water Pledge');
+		"contestType": "Clever"
+	},
+	"venoshock": {
+		"num": 474,
+		"accuracy": 100,
+		"basePower": 65,
+		"category": "Special",
+		"desc": "Power doubles if the target is poisoned.",
+		"shortDesc": "Power doubles if the target is poisoned.",
+		"id": "venoshock",
+		"name": "Venoshock",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"mirror": 1
 		},
-		"onModifyMove": function (move) {
-				if (move.secondaries && move.id !== 'secretpower') {
-					this.debug('doubling secondary chance');
-					for (const secondary of move.secondaries) {
-						
-						secondary.chance *= 2;
-				}
-			}
-		}
+		"onBasePowerPriority": 4,
+		"secondary": false,
+		"target": "normal",
+		"type": "Poison",
+		"zMovePower": 120,
+		"contestType": "Beautiful"
 	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Water",
-	"zMovePower": 160,
-	"contestType": "Beautiful"
-},
-"waterpulse": {
-	"num": 352,
-	"accuracy": 100,
-	"basePower": 60,
-	"category": "Special",
-	"desc": "Has a 20% chance to confuse the target.",
-	"shortDesc": "20% chance to confuse the target.",
-	"id": "waterpulse",
-	"name": "Water Pulse",
-	"pp": 20,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"pulse": 1,
-		"mirror": 1,
-		"distance": 1
-	},
-	"secondary": {
-		"chance": 20,
-		"volatileStatus": "confusion"
-	},
-	"target": "any",
-	"type": "Water",
-	"zMovePower": 120,
-	"contestType": "Beautiful"
-},
-"watersport": {
-	"num": 346,
-	"accuracy": true,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "For 5 turns, all Fire-type attacks used by any active Pokemon have their power reduced to 0.33x. Fails if this move is already in effect.",
-	"shortDesc": "For 5 turns, Fire-type attacks have 1/3 power.",
-	"id": "watersport",
-	"name": "Water Sport",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"nonsky": 1
-	},
-	"pseudoWeather": "watersport",
-	"effect": {
-		"duration": 5,
-		"onStart": function (side, source) {
-			"this.add('-fieldstart', 'move": Water Sport', '[of
-			] ' + source);
+	"vicegrip": {
+		"num": 11,
+		"accuracy": 100,
+		"basePower": 55,
+		"category": "Physical",
+		"desc": "No additional effect.",
+		"shortDesc": "No additional effect.",
+		"id": "vicegrip",
+		"name": "Vice Grip",
+		"pp": 30,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
 		},
-		"onBasePowerPriority": 1,
-		"onBasePower": function (basePower, attacker, defender, move) {
-				if (move.type === 'Fire') {
-					this.debug('water sport weaken');
-					return this.chainModify([
-					0x548,
-					0x1000
-				]);
-			}
+		"secondary": false,
+		"target": "normal",
+		"type": "Normal",
+		"zMovePower": 100,
+		"contestType": "Tough"
+	},
+	"vinewhip": {
+		"num": 22,
+		"accuracy": 100,
+		"basePower": 45,
+		"category": "Physical",
+		"desc": "No additional effect.",
+		"shortDesc": "No additional effect.",
+		"id": "vinewhip",
+		"name": "Vine Whip",
+		"pp": 25,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
 		},
-		"onResidualOrder": 21,
-		"onEnd": function () {
-			"this.add('-fieldend', 'move": Water Sport');
-		}
+		"secondary": false,
+		"target": "normal",
+		"type": "Grass",
+		"zMovePower": 100,
+		"contestType": "Cool"
 	},
-	"secondary": false,
-	"target": "all",
-	"type": "Water",
-	"zMoveBoost": {
-		"spd": 1
-	},
-	"contestType": "Cute"
-},
-"waterspout": {
-	"num": 323,
-	"accuracy": 100,
-	"basePower": 150,
-	"basePowerCallback": function (pokemon, target, move) {
-			return move.basePower * pokemon.hp / pokemon.maxhp;
-	},
-	"category": "Special",
-	"desc": "Power is equal to (user's current HP * 150 / user's maximum HP), rounded down, but not less than 1.",
-	"shortDesc": "Less power as user's HP decreases. Hits foe(s).",
-	"id": "waterspout",
-	"isViable": true,
-	"name": "Water Spout",
-	"pp": 5,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"mirror": 1
-	},
-	"secondary": false,
-	"target": "allAdjacentFoes",
-	"type": "Water",
-	"zMovePower": 200,
-	"contestType": "Beautiful"
-},
-"waterfall": {
-	"num": 127,
-	"accuracy": 100,
-	"basePower": 80,
-	"category": "Physical",
-	"desc": "Has a 20% chance to flinch the target.",
-	"shortDesc": "20% chance to flinch the target.",
-	"id": "waterfall",
-	"isViable": true,
-	"name": "Waterfall",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"secondary": {
-		"chance": 20,
-		"volatileStatus": "flinch"
-	},
-	"target": "normal",
-	"type": "Water",
-	"zMovePower": 160,
-	"contestType": "Tough"
-},
-"watershuriken": {
-	"num": 594,
-	"accuracy": 100,
-	"basePower": 15,
-	"basePowerCallback": function (pokemon, target, move) {
-			if (pokemon.template.species === 'Greninja-Ash' && pokemon.hasAbility('battlebond')) {
-				return move.basePower + 5;
-		}
-			return move.basePower;
-	},
-	"category": "Special",
-	"desc": "Hits two to five times. Has a 1/3 chance to hit two or three times, and a 1/6 chance to hit four or five times. If one of the hits breaks the target's substitute, it will take damage for the remaining hits. If the user has the Ability Skill Link, this move will always hit five times. Base power is 20 if the user is Ash-Greninja.",
-	"shortDesc": "Hits 2-5 times in one turn.",
-	"id": "watershuriken",
-	"isViable": true,
-	"name": "Water Shuriken",
-	"pp": 20,
-	"priority": 1,
-	"flags": {
-		"protect": 1,
-		"mirror": 1
-	},
-	"multihit": [
-		2,
-		5
-	],
-	"secondary": false,
-	"target": "normal",
-	"type": "Water",
-	"zMovePower": 100,
-	"contestType": "Cool"
-},
-"weatherball": {
-	"num": 311,
-	"accuracy": 100,
-	"basePower": 50,
-	"category": "Special",
-	"desc": "Power doubles during weather effects (except strong winds) and this move's type changes to match; Ice type during Hail, Water type during Rain Dance, Rock type during Sandstorm, and Fire type during Sunny Day.",
-	"shortDesc": "Power doubles and type varies in each weather.",
-	"id": "weatherball",
-	"name": "Weather Ball",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"bullet": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"onModifyMove": function (move) {
-			switch (this.effectiveWeather()) {
-			"case 'sunnyday'": "case 'desolateland'":
-				move.type = 'Fire';
-				move.basePower *= 2;
-				break;
-			"case 'raindance'": "case 'primordialsea'":
-				move.type = 'Water';
-				move.basePower *= 2;
-				break;
-			"case 'sandstorm'":
-				move.type = 'Rock';
-				move.basePower *= 2;
-				break;
-			"case 'hail'":
-				move.type = 'Ice';
-				move.basePower *= 2;
-				break;
-		}
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Normal",
-	"zMovePower": 160,
-	"contestType": "Beautiful"
-},
-"whirlpool": {
-	"num": 250,
-	"accuracy": 85,
-	"basePower": 35,
-	"category": "Special",
-	"desc": "Prevents the target from switching for four or five turns; seven turns if the user is holding Grip Claw. Causes damage to the target equal to 1/8 of its maximum HP (1/6 if the user is holding Binding Band), rounded down, at the end of each turn during effect. The target can still switch out if it is holding Shed Shell or uses Baton Pass, Parting Shot, U-turn, or Volt Switch. The effect ends if either the user or the target leaves the field, or if the target uses Rapid Spin or Substitute. This effect is not stackable or reset by using this or another partial-trapping move.",
-	"shortDesc": "Traps and damages the target for 4-5 turns.",
-	"id": "whirlpool",
-	"name": "Whirlpool",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"mirror": 1
-	},
-	"volatileStatus": "partiallytrapped",
-	"secondary": false,
-	"target": "normal",
-	"type": "Water",
-	"zMovePower": 100,
-	"contestType": "Beautiful"
-},
-"whirlwind": {
-	"num": 18,
-	"accuracy": true,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "The target is forced to switch out and be replaced with a random unfainted ally. Fails if the target used Ingrain previously or has the Ability Suction Cups.",
-	"shortDesc": "Forces the target to switch to a random ally.",
-	"id": "whirlwind",
-	"isViable": true,
-	"name": "Whirlwind",
-	"pp": 20,
-	"priority": -6,
-	"flags": {
-		"reflectable": 1,
-		"mirror": 1,
-		"authentic": 1,
-		"mystery": 1
-	},
-	"forceSwitch": true,
-	"secondary": false,
-	"target": "normal",
-	"type": "Normal",
-	"zMoveBoost": {
-		"spd": 1
-	},
-	"contestType": "Clever"
-},
-"wideguard": {
-	"num": 469,
-	"accuracy": true,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "The user and its party members are protected from moves made by other Pokemon, including allies, during this turn that target all adjacent foes or all adjacent Pokemon. This move modifies the same 1/X chance of being successful used by other protection moves, where X starts at 1 and triples each time this move is successfully used, but does not use the chance to check for failure. X resets to 1 if this move fails or if the user's last move used is not Baneful Bunker, Detect, Endure, King's Shield, Protect, Quick Guard, Spiky Shield, or Wide Guard. Fails if the user moves last this turn or if this move is already in effect for the user's side.",
-	"shortDesc": "Protects allies from multi-target moves this turn.",
-	"id": "wideguard",
-	"name": "Wide Guard",
-	"pp": 10,
-	"priority": 3,
-	"flags": {
-		"snatch": 1
-	},
-	"sideCondition": "wideguard",
-	"onTryHitSide": function (side, source) {
-			return this.willAct();
-	},
-	"onHitSide": function (side, source) {
-			source.addVolatile('stall');
-	},
-	"effect": {
-		"duration": 1,
-		"onStart": function (target, source) {
-				this.add('-singleturn', source, 'Wide Guard');
+	"vitalthrow": {
+		"num": 233,
+		"accuracy": true,
+		"basePower": 70,
+		"category": "Physical",
+		"desc": "This move does not check accuracy.",
+		"shortDesc": "This move does not check accuracy. Goes last.",
+		"id": "vitalthrow",
+		"name": "Vital Throw",
+		"pp": 10,
+		"priority": -1,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
 		},
-		"onTryHitPriority": 4,
-		"onTryHit": function (target, source, move) {
-				
-				if (move && move.target !== 'allAdjacent' && move.target !== 'allAdjacentFoes') {
-					return;
-			}
-				if (move.isZ) {
-					move.zBrokeProtect = true;
-					return;
-			}
-				"this.add('-activate', target, 'move": Wide Guard');
-				source.moveThisTurnResult = true;
-				let lockedmove = source.getVolatile('lockedmove');
-				if (lockedmove) {
-					
-					if (source.volatiles['lockedmove'
-				].duration === 2) {
-						delete source.volatiles['lockedmove'
-					];
-				}
-			}
-				return null;
-		}
+		"secondary": false,
+		"target": "normal",
+		"type": "Fighting",
+		"zMovePower": 140,
+		"contestType": "Cool"
 	},
-	"secondary": false,
-	"target": "allySide",
-	"type": "Rock",
-	"zMoveBoost": {
-		"def": 1
-	},
-	"contestType": "Tough"
-},
-"wildcharge": {
-	"num": 528,
-	"accuracy": 100,
-	"basePower": 90,
-	"category": "Physical",
-	"desc": "If the target lost HP, the user takes recoil damage equal to 1/4 the HP lost by the target, rounded half up, but not less than 1 HP.",
-	"shortDesc": "Has 1/4 recoil.",
-	"id": "wildcharge",
-	"isViable": true,
-	"name": "Wild Charge",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"recoil": [
-		1,
-		4
-	],
-	"secondary": false,
-	"target": "normal",
-	"type": "Electric",
-	"zMovePower": 175,
-	"contestType": "Tough"
-},
-"willowisp": {
-	"num": 261,
-	"accuracy": 85,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "Burns the target.",
-	"shortDesc": "Burns the target.",
-	"id": "willowisp",
-	"isViable": true,
-	"name": "Will-O-Wisp",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"reflectable": 1,
-		"mirror": 1
-	},
-	"status": "brn",
-	"secondary": false,
-	"target": "normal",
-	"type": "Fire",
-	"zMoveBoost": {
-		"atk": 1
-	},
-	"contestType": "Beautiful"
-},
-"wingattack": {
-	"num": 17,
-	"accuracy": 100,
-	"basePower": 60,
-	"category": "Physical",
-	"desc": "No additional effect.",
-	"shortDesc": "No additional effect.",
-	"id": "wingattack",
-	"name": "Wing Attack",
-	"pp": 35,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1,
-		"distance": 1
-	},
-	"secondary": false,
-	"target": "any",
-	"type": "Flying",
-	"zMovePower": 120,
-	"contestType": "Cool"
-},
-"wish": {
-	"num": 273,
-	"accuracy": true,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "At the end of the next turn, the Pokemon at the user's position has 1/2 of the user's maximum HP restored to it, rounded half up. Fails if this move is already in effect for the user's position.",
-	"shortDesc": "Next turn, 50% of the user's max HP is restored.",
-	"id": "wish",
-	"isViable": true,
-	"name": "Wish",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"snatch": 1,
-		"heal": 1
-	},
-	"sideCondition": "Wish",
-	"effect": {
-		"duration": 2,
-		"onStart": function (side, source) {
-				this.effectData.hp = source.maxhp / 2;
+	"voltswitch": {
+		"num": 521,
+		"accuracy": 100,
+		"basePower": 70,
+		"category": "Special",
+		"desc": "If this move is successful and the user has not fainted, the user switches out even if it is trapped and is replaced immediately by a selected party member. The user does not switch out if there are no unfainted party members, or if the target switched out using an Eject Button.",
+		"shortDesc": "User switches out after damaging the target.",
+		"id": "voltswitch",
+		"isViable": true,
+		"name": "Volt Switch",
+		"pp": 20,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"mirror": 1
 		},
-		"onResidualOrder": 4,
-		"onEnd": function (side) {
-				
-				let target = side.active[this.effectData.sourcePosition
-			];
-				if (target && !target.fainted) {
-					let source = this.effectData.source;
-					let damage = this.heal(this.effectData.hp, target, target);
-					"if (damage) this.add('-heal', target, target.getHealth, '[from] move": Wish', '[wisher
-				] ' + source.name);
-			}
-		}
+		"selfSwitch": true,
+		"secondary": false,
+		"target": "normal",
+		"type": "Electric",
+		"zMovePower": 140,
+		"contestType": "Cool"
 	},
-	"secondary": false,
-	"target": "self",
-	"type": "Normal",
-	"zMoveBoost": {
-		"spd": 1
-	},
-	"contestType": "Cute"
-},
-"withdraw": {
-	"num": 110,
-	"accuracy": true,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "Raises the user's Defense by 1 stage.",
-	"shortDesc": "Raises the user's Defense by 1.",
-	"id": "withdraw",
-	"name": "Withdraw",
-	"pp": 40,
-	"priority": 0,
-	"flags": {
-		"snatch": 1
-	},
-	"boosts": {
-		"def": 1
-	},
-	"secondary": false,
-	"target": "self",
-	"type": "Water",
-	"zMoveBoost": {
-		"def": 1
-	},
-	"contestType": "Cute"
-},
-"wonderroom": {
-	"num": 472,
-	"accuracy": true,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "For 5 turns, all active Pokemon have their Defense and Special Defense stats swapped. Stat stage changes are unaffected. If this move is used during the effect, the effect ends.",
-	"shortDesc": "For 5 turns, all Defense and Sp. Def stats switch.",
-	"id": "wonderroom",
-	"name": "Wonder Room",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"mirror": 1
-	},
-	"pseudoWeather": "wonderroom",
-	"effect": {
-		"duration": 5,
-		"durationCallback": function (source, effect) {
-				if (source && source.hasAbility('persistent')) {
-					return 7;
-			}
-				return 5;
+	"volttackle": {
+		"num": 344,
+		"accuracy": 100,
+		"basePower": 120,
+		"category": "Physical",
+		"desc": "Has a 10% chance to paralyze the target. If the target lost HP, the user takes recoil damage equal to 33% the HP lost by the target, rounded half up, but not less than 1 HP.",
+		"shortDesc": "Has 33% recoil. 10% chance to paralyze target.",
+		"id": "volttackle",
+		"isViable": true,
+		"name": "Volt Tackle",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
 		},
-		"onStart": function (side, source) {
-			"this.add('-fieldstart', 'move": Wonder Room', '[of
-			] ' + source);
+		"recoil": [
+			33,
+			100
+		],
+		"secondary": {
+			"chance": 10,
+			"status": "par"
 		},
-		"onRestart": function (target, source) {
-				this.removePseudoWeather('wonderroom');
+		"target": "normal",
+		"type": "Electric",
+		"zMovePower": 190,
+		"contestType": "Cool"
+	},
+	"wakeupslap": {
+		"num": 358,
+		"accuracy": 100,
+		"basePower": 70,
+		"category": "Physical",
+		"desc": "Power doubles if the target is asleep. If the user has not fainted, the target wakes up.",
+		"shortDesc": "Power doubles if target is asleep, and wakes it.",
+		"id": "wakeupslap",
+		"name": "Wake-Up Slap",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
 		},
-			"
-			"onResidualOrder": 24,
-		"onEnd": function () {
-			"this.add('-fieldend', 'move": Wonder Room');
-		}
+		"secondary": false,
+		"target": "normal",
+		"type": "Fighting",
+		"zMovePower": 140,
+		"contestType": "Tough"
 	},
-	"secondary": false,
-	"target": "all",
-	"type": "Psychic",
-	"zMoveBoost": {
-		"spd": 1
-	},
-	"contestType": "Clever"
-},
-"woodhammer": {
-	"num": 452,
-	"accuracy": 100,
-	"basePower": 120,
-	"category": "Physical",
-	"desc": "If the target lost HP, the user takes recoil damage equal to 33% the HP lost by the target, rounded half up, but not less than 1 HP.",
-	"shortDesc": "Has 33% recoil.",
-	"id": "woodhammer",
-	"isViable": true,
-	"name": "Wood Hammer",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"recoil": [
-		33,
-		100
-	],
-	"secondary": false,
-	"target": "normal",
-	"type": "Grass",
-	"zMovePower": 190,
-	"contestType": "Tough"
-},
-"workup": {
-	"num": 526,
-	"accuracy": true,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "Raises the user's Attack and Special Attack by 1 stage.",
-	"shortDesc": "Raises the user's Attack and Sp. Atk by 1.",
-	"id": "workup",
-	"name": "Work Up",
-	"pp": 30,
-	"priority": 0,
-	"flags": {
-		"snatch": 1
-	},
-	"boosts": {
-		"atk": 1,
-		"spa": 1
-	},
-	"secondary": false,
-	"target": "self",
-	"type": "Normal",
-	"zMoveBoost": {
-		"atk": 1
-	},
-	"contestType": "Tough"
-},
-"worryseed": {
-	"num": 388,
-	"accuracy": 100,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "Causes the target's Ability to become Insomnia. Fails if the target's Ability is Insomnia, Multitype, Stance Change, or Truant.",
-	"shortDesc": "The target's Ability becomes Insomnia.",
-	"id": "worryseed",
-	"name": "Worry Seed",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"reflectable": 1,
-		"mirror": 1,
-		"mystery": 1
-	},
-	"onTryHit": function (pokemon) {
-			let bannedAbilities = ['battlebond', 'comatose', 'disguise', 'insomnia', 'multitype', 'powerconstruct', 'rkssystem', 'schooling', 'shieldsdown', 'stancechange', 'truant'
-		];
-			if (bannedAbilities.includes(pokemon.ability)) {
-				return false;
-		}
-	},
-	"onHit": function (pokemon) {
-			let oldAbility = pokemon.setAbility('insomnia');
-			if (oldAbility) {
-			"this.add('-ability', pokemon, 'Insomnia', '[from] move": Worry Seed');
-				if (pokemon.status === 'slp') {
-					pokemon.cureStatus();
-			}
-				return;
-		}
-			return false;
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Grass",
-	"zMoveBoost": {
-		"spe": 1
-	},
-	"contestType": "Clever"
-},
-"wrap": {
-	"num": 35,
-	"accuracy": 90,
-	"basePower": 15,
-	"category": "Physical",
-	"desc": "Prevents the target from switching for four or five turns; seven turns if the user is holding Grip Claw. Causes damage to the target equal to 1/8 of its maximum HP (1/6 if the user is holding Binding Band), rounded down, at the end of each turn during effect. The target can still switch out if it is holding Shed Shell or uses Baton Pass, Parting Shot, U-turn, or Volt Switch. The effect ends if either the user or the target leaves the field, or if the target uses Rapid Spin or Substitute. This effect is not stackable or reset by using this or another partial-trapping move.",
-	"shortDesc": "Traps and damages the target for 4-5 turns.",
-	"id": "wrap",
-	"name": "Wrap",
-	"pp": 20,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"volatileStatus": "partiallytrapped",
-	"secondary": false,
-	"target": "normal",
-	"type": "Normal",
-	"zMovePower": 100,
-	"contestType": "Tough"
-},
-"wringout": {
-	"num": 378,
-	"accuracy": 100,
-	"basePower": 0,
-	"basePowerCallback": function (pokemon, target) {
-			return Math.floor(Math.floor((120 * (100 * Math.floor(target.hp * 4096 / target.maxhp)) + 2048 - 1) / 4096) / 100) || 1;
-	},
-	"category": "Special",
-	"desc": "Power is equal to 120 * (target's current HP / target's maximum HP), rounded half down, but not less than 1.",
-	"shortDesc": "More power the more HP the target has left.",
-	"id": "wringout",
-	"name": "Wring Out",
-	"pp": 5,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Normal",
-	"zMovePower": 190,
-	"contestType": "Tough"
-},
-"xscissor": {
-	"num": 404,
-	"accuracy": 100,
-	"basePower": 80,
-	"category": "Physical",
-	"desc": "No additional effect.",
-	"shortDesc": "No additional effect.",
-	"id": "xscissor",
-	"isViable": true,
-	"name": "X-Scissor",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Bug",
-	"zMovePower": 160,
-	"contestType": "Cool"
-},
-"yawn": {
-	"num": 281,
-	"accuracy": true,
-	"basePower": 0,
-	"category": "Status",
-	"desc": "Causes the target to fall asleep at the end of the next turn. Fails when used if the target cannot fall asleep or if it already has a major status condition. At the end of the next turn, if the target is still on the field, does not have a major status condition, and can fall asleep, it falls asleep. If the target becomes affected, this effect cannot be prevented by Safeguard or a substitute, or by falling asleep and waking up during the effect.",
-	"shortDesc": "Puts the target to sleep after 1 turn.",
-	"id": "yawn",
-	"name": "Yawn",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"reflectable": 1,
-		"mirror": 1
-	},
-	"volatileStatus": "yawn",
-	"onTryHit": function (target) {
-			if (target.status || !target.runStatusImmunity('slp')) {
-				return false;
-		}
-	},
-	"effect": {
-		"noCopy": true,
-		"duration": 2,
-		"onStart": function (target, source) {
-			"this.add('-start', target, 'move": Yawn', '[of
-			] ' + source);
+	"watergun": {
+		"num": 55,
+		"accuracy": 100,
+		"basePower": 40,
+		"category": "Special",
+		"desc": "No additional effect.",
+		"shortDesc": "No additional effect.",
+		"id": "watergun",
+		"name": "Water Gun",
+		"pp": 25,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"mirror": 1
 		},
-		"onEnd": function (target) {
-			"this.add('-end', target, 'move": Yawn', '[silent
-			]');
-				target.trySetStatus('slp');
-		}
+		"secondary": false,
+		"target": "normal",
+		"type": "Water",
+		"zMovePower": 100,
+		"contestType": "Cute"
 	},
-	"secondary": false,
-	"target": "normal",
-	"type": "Normal",
-	"zMoveBoost": {
-		"spe": 1
+	"waterpledge": {
+		"num": 518,
+		"accuracy": 100,
+		"basePower": 80,
+		"category": "Special",
+		"desc": "If one of the user's allies chose to use Fire Pledge or Grass Pledge this turn and has not moved yet, it takes its turn immediately after the user and the user's move does nothing. If combined with Fire Pledge, the ally uses Water Pledge with 150 Base Power and a rainbow appears on the user's side for 4 turns, which doubles secondary effect chances but does not stack with the Ability Serene Grace. If combined with Grass Pledge, the ally uses Grass Pledge with 150 Base Power and a swamp appears on the target's side for 4 turns, which quarters the Speed of each Pokemon on that side. When used as a combined move, this move gains STAB no matter what the user's type is. This move does not consume the user's Water Gem, and cannot be redirected by the Ability Storm Drain.",
+		"shortDesc": "Use with Grass or Fire Pledge for added effect.",
+		"id": "waterpledge",
+		"name": "Water Pledge",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"mirror": 1,
+			"nonsky": 1
+		},
+		"effect": {
+			"duration": 4
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Water",
+		"zMovePower": 160,
+		"contestType": "Beautiful"
 	},
-	"contestType": "Cute"
-},
-"zapcannon": {
-	"num": 192,
-	"accuracy": 50,
-	"basePower": 120,
-	"category": "Special",
-	"desc": "Has a 100% chance to paralyze the target.",
-	"shortDesc": "100% chance to paralyze the target.",
-	"id": "zapcannon",
-	"name": "Zap Cannon",
-	"pp": 5,
-	"priority": 0,
-	"flags": {
-		"bullet": 1,
-		"protect": 1,
-		"mirror": 1
+	"waterpulse": {
+		"num": 352,
+		"accuracy": 100,
+		"basePower": 60,
+		"category": "Special",
+		"desc": "Has a 20% chance to confuse the target.",
+		"shortDesc": "20% chance to confuse the target.",
+		"id": "waterpulse",
+		"name": "Water Pulse",
+		"pp": 20,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"pulse": 1,
+			"mirror": 1,
+			"distance": 1
+		},
+		"secondary": {
+			"chance": 20,
+			"volatileStatus": "confusion"
+		},
+		"target": "any",
+		"type": "Water",
+		"zMovePower": 120,
+		"contestType": "Beautiful"
 	},
-	"secondary": {
-		"chance": 100,
-		"status": "par"
+	"watersport": {
+		"num": 346,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "For 5 turns, all Fire-type attacks used by any active Pokemon have their power reduced to 0.33x. Fails if this move is already in effect.",
+		"shortDesc": "For 5 turns, Fire-type attacks have 1/3 power.",
+		"id": "watersport",
+		"name": "Water Sport",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"nonsky": 1
+		},
+		"pseudoWeather": "watersport",
+		"effect": {
+			"duration": 5,
+			"onResidualOrder": 21
+		},
+		"secondary": false,
+		"target": "all",
+		"type": "Water",
+		"zMoveBoost": {
+			"spd": 1
+		},
+		"contestType": "Cute"
 	},
-	"target": "normal",
-	"type": "Electric",
-	"zMovePower": 190,
-	"contestType": "Cool"
-},
-"zenheadbutt": {
-	"num": 428,
-	"accuracy": 90,
-	"basePower": 80,
-	"category": "Physical",
-	"desc": "Has a 20% chance to flinch the target.",
-	"shortDesc": "20% chance to flinch the target.",
-	"id": "zenheadbutt",
-	"isViable": true,
-	"name": "Zen Headbutt",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
+	"waterspout": {
+		"num": 323,
+		"accuracy": 100,
+		"basePower": 150,
+		"category": "Special",
+		"desc": "Power is equal to (user's current HP * 150 / user's maximum HP), rounded down, but not less than 1.",
+		"shortDesc": "Less power as user's HP decreases. Hits foe(s).",
+		"id": "waterspout",
+		"isViable": true,
+		"name": "Water Spout",
+		"pp": 5,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": false,
+		"target": "allAdjacentFoes",
+		"type": "Water",
+		"zMovePower": 200,
+		"contestType": "Beautiful"
 	},
-	"secondary": {
-		"chance": 20,
-		"volatileStatus": "flinch"
+	"waterfall": {
+		"num": 127,
+		"accuracy": 100,
+		"basePower": 80,
+		"category": "Physical",
+		"desc": "Has a 20% chance to flinch the target.",
+		"shortDesc": "20% chance to flinch the target.",
+		"id": "waterfall",
+		"isViable": true,
+		"name": "Waterfall",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 20,
+			"volatileStatus": "flinch"
+		},
+		"target": "normal",
+		"type": "Water",
+		"zMovePower": 160,
+		"contestType": "Tough"
 	},
-	"target": "normal",
-	"type": "Psychic",
-	"zMovePower": 160,
-	"contestType": "Clever"
-},
-"zingzap": {
-	"num": 716,
-	"accuracy": 100,
-	"basePower": 80,
-	"category": "Physical",
-	"desc": "Has a 30% chance to flinch the target.",
-	"shortDesc": "30% chance to flinch the target.",
-	"id": "zingzap",
-	"isViable": true,
-	"name": "Zing Zap",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
+	"watershuriken": {
+		"num": 594,
+		"accuracy": 100,
+		"basePower": 15,
+		"category": "Special",
+		"desc": "Hits two to five times. Has a 1/3 chance to hit two or three times, and a 1/6 chance to hit four or five times. If one of the hits breaks the target's substitute, it will take damage for the remaining hits. If the user has the Ability Skill Link, this move will always hit five times. Base power is 20 if the user is Ash-Greninja.",
+		"shortDesc": "Hits 2-5 times in one turn.",
+		"id": "watershuriken",
+		"isViable": true,
+		"name": "Water Shuriken",
+		"pp": 20,
+		"priority": 1,
+		"flags": {
+			"protect": 1,
+			"mirror": 1
+		},
+		"multihit": [
+			2,
+			5
+		],
+		"secondary": false,
+		"target": "normal",
+		"type": "Water",
+		"zMovePower": 100,
+		"contestType": "Cool"
 	},
-	"secondary": {
-		"chance": 30,
-		"volatileStatus": "flinch"
+	"weatherball": {
+		"num": 311,
+		"accuracy": 100,
+		"basePower": 50,
+		"category": "Special",
+		"desc": "Power doubles during weather effects (except strong winds) and this move's type changes to match; Ice type during Hail, Water type during Rain Dance, Rock type during Sandstorm, and Fire type during Sunny Day.",
+		"shortDesc": "Power doubles and type varies in each weather.",
+		"id": "weatherball",
+		"name": "Weather Ball",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"bullet": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Normal",
+		"zMovePower": 160,
+		"contestType": "Beautiful"
 	},
-	"target": "normal",
-	"type": "Electric",
-	"zMovePower": 160,
-	"contestType": "Cool"
-},
-"paleowave": {
-	"num": 0,
-	"accuracy": 100,
-	"basePower": 85,
-	"category": "Special",
-	"desc": "Has a 20% chance to lower the target's Attack by 1 stage.",
-	"shortDesc": "20% chance to lower the target's Attack by 1.",
-	"id": "paleowave",
-	"isNonstandard": true,
-	"isViable": true,
-	"name": "Paleo Wave",
-	"pp": 15,
-	"priority": 0,
-	"flags": {
-		"protect": 1,
-		"mirror": 1
+	"whirlpool": {
+		"num": 250,
+		"accuracy": 85,
+		"basePower": 35,
+		"category": "Special",
+		"desc": "Prevents the target from switching for four or five turns; seven turns if the user is holding Grip Claw. Causes damage to the target equal to 1/8 of its maximum HP (1/6 if the user is holding Binding Band), rounded down, at the end of each turn during effect. The target can still switch out if it is holding Shed Shell or uses Baton Pass, Parting Shot, U-turn, or Volt Switch. The effect ends if either the user or the target leaves the field, or if the target uses Rapid Spin or Substitute. This effect is not stackable or reset by using this or another partial-trapping move.",
+		"shortDesc": "Traps and damages the target for 4-5 turns.",
+		"id": "whirlpool",
+		"name": "Whirlpool",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"mirror": 1
+		},
+		"volatileStatus": "partiallytrapped",
+		"secondary": false,
+		"target": "normal",
+		"type": "Water",
+		"zMovePower": 100,
+		"contestType": "Beautiful"
 	},
-	"secondary": {
-		"chance": 20,
+	"whirlwind": {
+		"num": 18,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "The target is forced to switch out and be replaced with a random unfainted ally. Fails if the target used Ingrain previously or has the Ability Suction Cups.",
+		"shortDesc": "Forces the target to switch to a random ally.",
+		"id": "whirlwind",
+		"isViable": true,
+		"name": "Whirlwind",
+		"pp": 20,
+		"priority": -6,
+		"flags": {
+			"reflectable": 1,
+			"mirror": 1,
+			"authentic": 1,
+			"mystery": 1
+		},
+		"forceSwitch": true,
+		"secondary": false,
+		"target": "normal",
+		"type": "Normal",
+		"zMoveBoost": {
+			"spd": 1
+		},
+		"contestType": "Clever"
+	},
+	"wideguard": {
+		"num": 469,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "The user and its party members are protected from moves made by other Pokemon, including allies, during this turn that target all adjacent foes or all adjacent Pokemon. This move modifies the same 1/X chance of being successful used by other protection moves, where X starts at 1 and triples each time this move is successfully used, but does not use the chance to check for failure. X resets to 1 if this move fails or if the user's last move used is not Baneful Bunker, Detect, Endure, King's Shield, Protect, Quick Guard, Spiky Shield, or Wide Guard. Fails if the user moves last this turn or if this move is already in effect for the user's side.",
+		"shortDesc": "Protects allies from multi-target moves this turn.",
+		"id": "wideguard",
+		"name": "Wide Guard",
+		"pp": 10,
+		"priority": 3,
+		"flags": {
+			"snatch": 1
+		},
+		"sideCondition": "wideguard",
+		"effect": {
+			"duration": 1,
+			"onTryHitPriority": 4
+		},
+		"secondary": false,
+		"target": "allySide",
+		"type": "Rock",
+		"zMoveBoost": {
+			"def": 1
+		},
+		"contestType": "Tough"
+	},
+	"wildcharge": {
+		"num": 528,
+		"accuracy": 100,
+		"basePower": 90,
+		"category": "Physical",
+		"desc": "If the target lost HP, the user takes recoil damage equal to 1/4 the HP lost by the target, rounded half up, but not less than 1 HP.",
+		"shortDesc": "Has 1/4 recoil.",
+		"id": "wildcharge",
+		"isViable": true,
+		"name": "Wild Charge",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"recoil": [
+			1,
+			4
+		],
+		"secondary": false,
+		"target": "normal",
+		"type": "Electric",
+		"zMovePower": 175,
+		"contestType": "Tough"
+	},
+	"willowisp": {
+		"num": 261,
+		"accuracy": 85,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "Burns the target.",
+		"shortDesc": "Burns the target.",
+		"id": "willowisp",
+		"isViable": true,
+		"name": "Will-O-Wisp",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"reflectable": 1,
+			"mirror": 1
+		},
+		"status": "brn",
+		"secondary": false,
+		"target": "normal",
+		"type": "Fire",
+		"zMoveBoost": {
+			"atk": 1
+		},
+		"contestType": "Beautiful"
+	},
+	"wingattack": {
+		"num": 17,
+		"accuracy": 100,
+		"basePower": 60,
+		"category": "Physical",
+		"desc": "No additional effect.",
+		"shortDesc": "No additional effect.",
+		"id": "wingattack",
+		"name": "Wing Attack",
+		"pp": 35,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1,
+			"distance": 1
+		},
+		"secondary": false,
+		"target": "any",
+		"type": "Flying",
+		"zMovePower": 120,
+		"contestType": "Cool"
+	},
+	"wish": {
+		"num": 273,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "At the end of the next turn, the Pokemon at the user's position has 1/2 of the user's maximum HP restored to it, rounded half up. Fails if this move is already in effect for the user's position.",
+		"shortDesc": "Next turn, 50% of the user's max HP is restored.",
+		"id": "wish",
+		"isViable": true,
+		"name": "Wish",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"snatch": 1,
+			"heal": 1
+		},
+		"sideCondition": "Wish",
+		"effect": {
+			"duration": 2,
+			"onResidualOrder": 4
+		},
+		"secondary": false,
+		"target": "self",
+		"type": "Normal",
+		"zMoveBoost": {
+			"spd": 1
+		},
+		"contestType": "Cute"
+	},
+	"withdraw": {
+		"num": 110,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "Raises the user's Defense by 1 stage.",
+		"shortDesc": "Raises the user's Defense by 1.",
+		"id": "withdraw",
+		"name": "Withdraw",
+		"pp": 40,
+		"priority": 0,
+		"flags": {
+			"snatch": 1
+		},
 		"boosts": {
-			"atk": -1
-		}
-	},
-	"target": "normal",
-	"type": "Rock",
-	"zMovePower": 160,
-	"contestType": "Beautiful"
-},
-"shadowstrike": {
-	"num": 0,
-	"accuracy": 95,
-	"basePower": 80,
-	"category": "Physical",
-	"desc": "Has a 50% chance to lower the target's Defense by 1 stage.",
-	"shortDesc": "50% chance to lower the target's Defense by 1.",
-	"id": "shadowstrike",
-	"isNonstandard": true,
-	"isViable": true,
-	"name": "Shadow Strike",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"protect": 1,
-		"mirror": 1
-	},
-	"secondary": {
-		"chance": 50,
-		"boosts": {
-			"def": -1
-		}
-	},
-	"target": "normal",
-	"type": "Ghost",
-	"zMovePower": 160,
-	"contestType": "Clever"
-},
-"magikarpsrevenge": {
-	"num": 0,
-	"accuracy": true,
-	"basePower": 120,
-	"category": "Physical",
-	"desc": "Has a 100% chance to confuse the target and lower its Defense and Special Attack by 1 stage. The user recovers 1/2 the HP lost by the target, rounded half up. If Big Root is held by the user, the HP recovered is 1.3x normal, rounded half down. The user steals the foe's boosts. If this move is successful, the weather changes to rain unless it is already in effect, and the user gains the effects of Aqua Ring and Magic Coat.",
-	"shortDesc": "Does many things turn 1. Can't move turn 2.",
-	"id": "magikarpsrevenge",
-	"isNonstandard": true,
-	"name": "Magikarp's Revenge",
-	"pp": 10,
-	"priority": 0,
-	"flags": {
-		"contact": 1,
-		"recharge": 1,
-		"protect": 1,
-		"mirror": 1,
-		"heal": 1
-	},
-	"noSketch": true,
-	"drain": [
-		1,
-		2
-	],
-	"onTry": function (pokemon) {
-			if (pokemon.template.name !== 'Magikarp') {
-			"this.add('-fail', pokemon, 'move": Magikarp\'s Revenge');
-				return null;
-		}
-	},
-	"self": {
-		"onHit": function (source) {
-				this.setWeather('raindance');
-				source.addVolatile('magiccoat');
-				source.addVolatile('aquaring');
+			"def": 1
 		},
-		"volatileStatus": "mustrecharge"
+		"secondary": false,
+		"target": "self",
+		"type": "Water",
+		"zMoveBoost": {
+			"def": 1
+		},
+		"contestType": "Cute"
 	},
-	"secondary": {
-		"chance": 100,
-		"volatileStatus": "confusion",
+	"wonderroom": {
+		"num": 472,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "For 5 turns, all active Pokemon have their Defense and Special Defense stats swapped. Stat stage changes are unaffected. If this move is used during the effect, the effect ends.",
+		"shortDesc": "For 5 turns, all Defense and Sp. Def stats switch.",
+		"id": "wonderroom",
+		"name": "Wonder Room",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"mirror": 1
+		},
+		"pseudoWeather": "wonderroom",
+		"effect": {
+			"duration": 5,
+			"onResidualOrder": 24
+		},
+		"secondary": false,
+		"target": "all",
+		"type": "Psychic",
+		"zMoveBoost": {
+			"spd": 1
+		},
+		"contestType": "Clever"
+	},
+	"woodhammer": {
+		"num": 452,
+		"accuracy": 100,
+		"basePower": 120,
+		"category": "Physical",
+		"desc": "If the target lost HP, the user takes recoil damage equal to 33% the HP lost by the target, rounded half up, but not less than 1 HP.",
+		"shortDesc": "Has 33% recoil.",
+		"id": "woodhammer",
+		"isViable": true,
+		"name": "Wood Hammer",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"recoil": [
+			33,
+			100
+		],
+		"secondary": false,
+		"target": "normal",
+		"type": "Grass",
+		"zMovePower": 190,
+		"contestType": "Tough"
+	},
+	"workup": {
+		"num": 526,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "Raises the user's Attack and Special Attack by 1 stage.",
+		"shortDesc": "Raises the user's Attack and Sp. Atk by 1.",
+		"id": "workup",
+		"name": "Work Up",
+		"pp": 30,
+		"priority": 0,
+		"flags": {
+			"snatch": 1
+		},
 		"boosts": {
-			"def": -1,
-			"spa": -1
-		}
+			"atk": 1,
+			"spa": 1
+		},
+		"secondary": false,
+		"target": "self",
+		"type": "Normal",
+		"zMoveBoost": {
+			"atk": 1
+		},
+		"contestType": "Tough"
 	},
-	"stealsBoosts": true,
-	"target": "normal",
-	"type": "Water",
-	"zMovePower": 190,
-	"contestType": "Cute"
-},
+	"worryseed": {
+		"num": 388,
+		"accuracy": 100,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "Causes the target's Ability to become Insomnia. Fails if the target's Ability is Insomnia, Multitype, Stance Change, or Truant.",
+		"shortDesc": "The target's Ability becomes Insomnia.",
+		"id": "worryseed",
+		"name": "Worry Seed",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"reflectable": 1,
+			"mirror": 1,
+			"mystery": 1
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Grass",
+		"zMoveBoost": {
+			"spe": 1
+		},
+		"contestType": "Clever"
+	},
+	"wrap": {
+		"num": 35,
+		"accuracy": 90,
+		"basePower": 15,
+		"category": "Physical",
+		"desc": "Prevents the target from switching for four or five turns; seven turns if the user is holding Grip Claw. Causes damage to the target equal to 1/8 of its maximum HP (1/6 if the user is holding Binding Band), rounded down, at the end of each turn during effect. The target can still switch out if it is holding Shed Shell or uses Baton Pass, Parting Shot, U-turn, or Volt Switch. The effect ends if either the user or the target leaves the field, or if the target uses Rapid Spin or Substitute. This effect is not stackable or reset by using this or another partial-trapping move.",
+		"shortDesc": "Traps and damages the target for 4-5 turns.",
+		"id": "wrap",
+		"name": "Wrap",
+		"pp": 20,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"volatileStatus": "partiallytrapped",
+		"secondary": false,
+		"target": "normal",
+		"type": "Normal",
+		"zMovePower": 100,
+		"contestType": "Tough"
+	},
+	"wringout": {
+		"num": 378,
+		"accuracy": 100,
+		"basePower": 0,
+		"category": "Special",
+		"desc": "Power is equal to 120 * (target's current HP / target's maximum HP), rounded half down, but not less than 1.",
+		"shortDesc": "More power the more HP the target has left.",
+		"id": "wringout",
+		"name": "Wring Out",
+		"pp": 5,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Normal",
+		"zMovePower": 190,
+		"contestType": "Tough"
+	},
+	"xscissor": {
+		"num": 404,
+		"accuracy": 100,
+		"basePower": 80,
+		"category": "Physical",
+		"desc": "No additional effect.",
+		"shortDesc": "No additional effect.",
+		"id": "xscissor",
+		"isViable": true,
+		"name": "X-Scissor",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Bug",
+		"zMovePower": 160,
+		"contestType": "Cool"
+	},
+	"yawn": {
+		"num": 281,
+		"accuracy": true,
+		"basePower": 0,
+		"category": "Status",
+		"desc": "Causes the target to fall asleep at the end of the next turn. Fails when used if the target cannot fall asleep or if it already has a major status condition. At the end of the next turn, if the target is still on the field, does not have a major status condition, and can fall asleep, it falls asleep. If the target becomes affected, this effect cannot be prevented by Safeguard or a substitute, or by falling asleep and waking up during the effect.",
+		"shortDesc": "Puts the target to sleep after 1 turn.",
+		"id": "yawn",
+		"name": "Yawn",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"reflectable": 1,
+			"mirror": 1
+		},
+		"volatileStatus": "yawn",
+		"effect": {
+			"noCopy": true,
+			"duration": 2
+		},
+		"secondary": false,
+		"target": "normal",
+		"type": "Normal",
+		"zMoveBoost": {
+			"spe": 1
+		},
+		"contestType": "Cute"
+	},
+	"zapcannon": {
+		"num": 192,
+		"accuracy": 50,
+		"basePower": 120,
+		"category": "Special",
+		"desc": "Has a 100% chance to paralyze the target.",
+		"shortDesc": "100% chance to paralyze the target.",
+		"id": "zapcannon",
+		"name": "Zap Cannon",
+		"pp": 5,
+		"priority": 0,
+		"flags": {
+			"bullet": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 100,
+			"status": "par"
+		},
+		"target": "normal",
+		"type": "Electric",
+		"zMovePower": 190,
+		"contestType": "Cool"
+	},
+	"zenheadbutt": {
+		"num": 428,
+		"accuracy": 90,
+		"basePower": 80,
+		"category": "Physical",
+		"desc": "Has a 20% chance to flinch the target.",
+		"shortDesc": "20% chance to flinch the target.",
+		"id": "zenheadbutt",
+		"isViable": true,
+		"name": "Zen Headbutt",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 20,
+			"volatileStatus": "flinch"
+		},
+		"target": "normal",
+		"type": "Psychic",
+		"zMovePower": 160,
+		"contestType": "Clever"
+	},
+	"zingzap": {
+		"num": 716,
+		"accuracy": 100,
+		"basePower": 80,
+		"category": "Physical",
+		"desc": "Has a 30% chance to flinch the target.",
+		"shortDesc": "30% chance to flinch the target.",
+		"id": "zingzap",
+		"isViable": true,
+		"name": "Zing Zap",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 30,
+			"volatileStatus": "flinch"
+		},
+		"target": "normal",
+		"type": "Electric",
+		"zMovePower": 160,
+		"contestType": "Cool"
+	},
+	"paleowave": {
+		"num": 0,
+		"accuracy": 100,
+		"basePower": 85,
+		"category": "Special",
+		"desc": "Has a 20% chance to lower the target's Attack by 1 stage.",
+		"shortDesc": "20% chance to lower the target's Attack by 1.",
+		"id": "paleowave",
+		"isNonstandard": true,
+		"isViable": true,
+		"name": "Paleo Wave",
+		"pp": 15,
+		"priority": 0,
+		"flags": {
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 20,
+			"boosts": {
+				"atk": -1
+			}
+		},
+		"target": "normal",
+		"type": "Rock",
+		"zMovePower": 160,
+		"contestType": "Beautiful"
+	},
+	"shadowstrike": {
+		"num": 0,
+		"accuracy": 95,
+		"basePower": 80,
+		"category": "Physical",
+		"desc": "Has a 50% chance to lower the target's Defense by 1 stage.",
+		"shortDesc": "50% chance to lower the target's Defense by 1.",
+		"id": "shadowstrike",
+		"isNonstandard": true,
+		"isViable": true,
+		"name": "Shadow Strike",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"protect": 1,
+			"mirror": 1
+		},
+		"secondary": {
+			"chance": 50,
+			"boosts": {
+				"def": -1
+			}
+		},
+		"target": "normal",
+		"type": "Ghost",
+		"zMovePower": 160,
+		"contestType": "Clever"
+	},
+	"magikarpsrevenge": {
+		"num": 0,
+		"accuracy": true,
+		"basePower": 120,
+		"category": "Physical",
+		"desc": "Has a 100% chance to confuse the target and lower its Defense and Special Attack by 1 stage. The user recovers 1/2 the HP lost by the target, rounded half up. If Big Root is held by the user, the HP recovered is 1.3x normal, rounded half down. The user steals the foe's boosts. If this move is successful, the weather changes to rain unless it is already in effect, and the user gains the effects of Aqua Ring and Magic Coat.",
+		"shortDesc": "Does many things turn 1. Can't move turn 2.",
+		"id": "magikarpsrevenge",
+		"isNonstandard": true,
+		"name": "Magikarp's Revenge",
+		"pp": 10,
+		"priority": 0,
+		"flags": {
+			"contact": 1,
+			"recharge": 1,
+			"protect": 1,
+			"mirror": 1,
+			"heal": 1
+		},
+		"noSketch": true,
+		"drain": [
+			1,
+			2
+		],
+		"secondary": {
+			"chance": 100,
+			"volatileStatus": "confusion",
+			"boosts": {
+				"def": -1,
+				"spa": -1
+			}
+		},
+		"stealsBoosts": true,
+		"target": "normal",
+		"type": "Water",
+		"zMovePower": 190,
+		"contestType": "Cute"
+	}
 }
