@@ -12,12 +12,12 @@ if not os.path.isdir(LOG_DIR):
 
 # Store move data
 MOVE_DATA = None
-with open("data/moves/sample_moves.json") as move_file:
+with open("data/moves/moves.json") as move_file:
     MOVE_DATA = json.load(move_file)
 
 # Store pokemon (stats) data
 POKEMON_DATA = None
-with open("data/pokemon/sample_dex.json") as dex_file:
+with open("data/pokemon/dex.json") as dex_file:
     POKEMON_DATA = json.load(dex_file)
 
 WEAKNESS_CHART = None
