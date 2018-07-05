@@ -13,8 +13,8 @@ Ability: Regenerator
 EVs: 10 HP / 30 Def / 40 SpA / 60 Spe  
 Serious Nature  
 IVs: 0 Spe  
-- Moonblast  
-- Soft-Boiled  
-- Calm Mind  
-- Thunder Wave  
+- Giga Drain  
+- Sludge Bomb  
+- Spore  
+- Stun Spore  
 
