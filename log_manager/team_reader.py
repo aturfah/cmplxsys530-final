@@ -23,5 +23,4 @@ class TeamReader:
             team_file_list = [
                 team_file for team_file in team_file_list if team_file.endswith(suffix)]
 
-        print(team_file_list)
         self.team_files = team_file_list
