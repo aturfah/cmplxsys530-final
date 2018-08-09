@@ -5,6 +5,7 @@ from os.path import join
 
 from re import match
 
+from numpy.random import uniform
 
 class TeamReader:
     """
@@ -46,8 +47,9 @@ class TeamReader:
                     started_pokemon = True
                     read_name(line, pokemon_dict)
                     print(pokemon_dict)
-                else:
-                    print(line)
+                    continue
+
+                print(line)
 
 
 def read_name(input_str, pokemon_dict):
@@ -55,16 +57,24 @@ def read_name(input_str, pokemon_dict):
     print("READING NAME: ", input_str)
     # Try to read an item
     try:
-        name_species, item = input_str.strip().rsplit("@", 1)
+        name_species_gender, item = input_str.strip().rsplit("@", 1)
         item = item.strip()
     except ValueError:
-        name_species = input_str.strip()
+        name_species_gender = input_str.strip()
         item = None
+
+    # Try to parse out Pokemon Gender
+    name_species_gender = name_species_gender.strip()
+    matches = match(r"^(.+) \(([MF])\)$", name_species_gender)
+    if matches:
+        name_species, gender = matches.groups()
+    else:
+        name_species = name_species_gender
+        gender = None
 
     # Try to read nickname/species
     name_species = name_species.strip()
     matches = match(r"^(.+) \((.+)\)$", name_species)
-
     if matches:
         nickname, species = matches.groups()
     else:
@@ -75,6 +85,7 @@ def read_name(input_str, pokemon_dict):
     pokemon_dict["nickname"] = nickname
     pokemon_dict["species"] = species
     pokemon_dict["item"] = item
+    pokemon_dict["gender"] = gender
 
 
 def process_pokemon():
