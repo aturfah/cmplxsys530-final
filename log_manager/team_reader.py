@@ -5,6 +5,7 @@ from os.path import join
 
 from re import match
 
+
 class TeamReader:
     """
     Team Reader Class.
@@ -12,10 +13,11 @@ class TeamReader:
     Attributes:
         team_files: List of filenames for the teams
         teams: List of teams
+
     """
 
     def __init__(self, teams_directory="data/teams", prefix=None, suffix=None):
-        """Initialization method."""
+        """Initialize a TeamReader."""
         team_file_list = listdir(teams_directory)
 
         if prefix:
