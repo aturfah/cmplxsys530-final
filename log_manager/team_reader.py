@@ -3,6 +3,8 @@
 from os import listdir
 from os.path import join
 
+from re import match
+
 class TeamReader:
     """
     Team Reader Class.
@@ -56,8 +58,16 @@ def read_name(input_str, pokemon_dict):
 
     name_species = name_species.strip()
 
-    pokemon_dict["species"] = "Doot"
-    pokemon_dict["nickname"] = "Foo"
+    matches = match(r"^(.+) \((.+)\)$", name_species)
+
+    if matches:
+        nickname, species = matches.groups()
+    else:
+        nickname = name_species
+        species = name_species
+
+    pokemon_dict["nickname"] = nickname
+    pokemon_dict["species"] = species
     pokemon_dict["item"] = item
 
 
