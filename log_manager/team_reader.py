@@ -33,7 +33,23 @@ class TeamReader:
         """Read the contents of each file and load them into a list."""
         for filename in self.team_files:
             file_lines = [line.strip() for line in open(filename).readlines()]
-            print(file_lines)
+
+            started_pokemon = False
+            pokemon_dict = {}
+            for line in file_lines:
+                print(line)
+                if not started_pokemon:
+                    started_pokemon = True
+                    read_name(line, pokemon_dict)
+                    print(pokemon_dict)
+
+
+def read_name(input_str, pokemon_dict):
+    """Read in a Pokemon's name, and add it to the pokemon_dict."""
+    print("READING NAME: ", input_str)
+    pokemon_dict["species"] = "Doot"
+    pokemon_dict["nickname"] = "Foo"
+    pokemon_dict["item"] = "Baz"
 
 
 def process_pokemon():
