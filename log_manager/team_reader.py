@@ -8,7 +8,8 @@ class TeamReader:
     Team Reader Class.
 
     Attributes:
-        team_files = List of filenames for the teams
+        team_files: List of filenames for the teams
+        teams: List of teams
     """
 
     def __init__(self, teams_directory="data/teams", prefix=None, suffix=None):
@@ -24,3 +25,8 @@ class TeamReader:
                 team_file for team_file in team_file_list if team_file.endswith(suffix)]
 
         self.team_files = team_file_list
+        self.teams = []
+
+    def process_files(self):
+        """Read the contents of each file and load them into a list."""
+        pass
