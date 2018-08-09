@@ -49,7 +49,10 @@ class TeamReader:
                     print(pokemon_dict)
                     continue
 
-                print(line)
+                if line.startswith("Ability:"):
+                    read_ability(line, pokemon_dict)
+                else:
+                    print(line)
 
 
 def read_name(input_str, pokemon_dict):
@@ -86,6 +89,11 @@ def read_name(input_str, pokemon_dict):
     pokemon_dict["species"] = species
     pokemon_dict["item"] = item
     pokemon_dict["gender"] = gender
+
+
+def read_ability(input_str, pokemon_dict):
+    """Read out the Pokemon's ability."""
+    print(input_str, pokemon_dict)
 
 
 def process_pokemon():
