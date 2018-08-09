@@ -5,5 +5,7 @@ from log_manager.team_reader import TeamReader
 def test_init():
     """Test initialization method for TeamReader."""
     tr1 = TeamReader()
+    tr2 = TeamReader(prefix="p")
+    tr3 = TeamReader(suffix="q")
 
 test_init()
