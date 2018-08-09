@@ -13,4 +13,11 @@ def test_init():
     assert not tr_pre.team_files
     assert not tr_suf.team_files
 
+def test_process():
+    """Test processing of a text file."""
+    tr_proc = TeamReader()
+
+    tr_proc.process_files()
+
 test_init()
+test_process()
