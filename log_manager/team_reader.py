@@ -29,4 +29,10 @@ class TeamReader:
 
     def process_files(self):
         """Read the contents of each file and load them into a list."""
-        pass
+        for filename in self.team_files:
+            print(filename)
+
+
+def process_pokemon():
+    """Generate a Pokemon from the string in a file."""
+    pass
