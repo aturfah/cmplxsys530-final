@@ -51,6 +51,7 @@ class TeamReader:
 def read_name(input_str, pokemon_dict):
     """Read in a Pokemon's name, and add it to the pokemon_dict."""
     print("READING NAME: ", input_str)
+    # Try to read an item
     try:
         name_species, item = input_str.strip().rsplit("@", 1)
         item = item.strip()
@@ -58,8 +59,8 @@ def read_name(input_str, pokemon_dict):
         name_species = input_str.strip()
         item = None
 
+    # Try to read nickname/species
     name_species = name_species.strip()
-
     matches = match(r"^(.+) \((.+)\)$", name_species)
 
     if matches:
@@ -68,6 +69,7 @@ def read_name(input_str, pokemon_dict):
         nickname = name_species
         species = name_species
 
+    # Update the dictionaries
     pokemon_dict["nickname"] = nickname
     pokemon_dict["species"] = species
     pokemon_dict["item"] = item
