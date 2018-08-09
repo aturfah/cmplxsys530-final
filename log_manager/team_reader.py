@@ -28,7 +28,8 @@ class TeamReader:
             team_file_list = [
                 team_file for team_file in team_file_list if team_file.endswith(suffix)]
 
-        team_file_list = [join(teams_directory, team_file) for team_file in team_file_list]
+        team_file_list = [join(teams_directory, team_file)
+                          for team_file in team_file_list]
 
         self.team_files = team_file_list
         self.teams = []
@@ -41,11 +42,12 @@ class TeamReader:
             started_pokemon = False
             pokemon_dict = {}
             for line in file_lines:
-                print(line)
                 if not started_pokemon:
                     started_pokemon = True
                     read_name(line, pokemon_dict)
                     print(pokemon_dict)
+                else:
+                    print(line)
 
 
 def read_name(input_str, pokemon_dict):
