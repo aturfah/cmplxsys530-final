@@ -47,9 +47,14 @@ class TeamReader:
 def read_name(input_str, pokemon_dict):
     """Read in a Pokemon's name, and add it to the pokemon_dict."""
     print("READING NAME: ", input_str)
+    name_species, item = input_str.rsplit("@", 1)
+
+    item = item.strip()
+    name_species = name_species.strip()
+
     pokemon_dict["species"] = "Doot"
     pokemon_dict["nickname"] = "Foo"
-    pokemon_dict["item"] = "Baz"
+    pokemon_dict["item"] = item
 
 
 def process_pokemon():
