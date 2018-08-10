@@ -103,11 +103,11 @@ def read_ability(input_str, pokemon_dict):
 def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
     """Read a Pokemon's EV/IVs."""
     pokemon_dict[chosen] = {}
-    ev_list = [ev_str.strip() for ev_str in input_str.split("/")]
+    value_list = [value_str.strip() for value_str in input_str.split("/")]
 
-    for ev_str in ev_list:
-        ev_val, stat = ev_str.strip().split()
-        pokemon_dict[chosen][stat] = int(ev_val)
+    for value_str in value_list:
+        value_val, stat = value_str.strip().split()
+        pokemon_dict[chosen][stat] = int(value_val)
 
     print(pokemon_dict)
 
