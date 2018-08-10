@@ -63,6 +63,8 @@ class TeamReader:
                     read_move(line, pokemon_dict)
                 else:
                     raise RuntimeWarning("Line not recognized and will be ignored: {}".format(line))
+        print(file_team)
+        self.teams.append(file_team)
 
 
 def read_name(input_str, pokemon_dict):
@@ -133,10 +135,20 @@ def read_move(input_str, pokemon_dict):
     if "moves" not in pokemon_dict:
         pokemon_dict["moves"] = []
 
-    pokemon_dict["moves"].append(move.lower())
+    pokemon_dict["moves"].append(move.lower().replace(" ", ""))
     # print(pokemon_dict)
 
 
 def process_pokemon(pokemon_dict):
     """Generate a Pokemon from the string in a file."""
-    print("Processing:", pokemon_dict)
+    init_dict = {}
+    init_dict["nickname"] = pokemon_dict["species"]
+    init_dict["name"] = pokemon_dict["species"]
+    init_dict["item"] = pokemon_dict["item"]
+    init_dict["gender"] = pokemon_dict["gender"]
+    init_dict["ability"] = pokemon_dict["ability"]
+    init_dict["evs"] = pokemon_dict["ev"]
+    init_dict["ivs"] = pokemon_dict["iv"]
+    init_dict["moves"] = pokemon_dict["moves"]
+
+    return Pokemon(**init_dict)
