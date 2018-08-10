@@ -7,6 +7,7 @@ from re import match
 
 from pokemon_helpers.pokemon import Pokemon
 
+
 class TeamReader:
     """
     Team Reader Class.
@@ -62,8 +63,9 @@ class TeamReader:
                 elif line.startswith("-"):
                     read_move(line, pokemon_dict)
                 else:
-                    raise RuntimeWarning("Line not recognized and will be ignored: {}".format(line))
-        print(file_team)
+                    raise RuntimeWarning(
+                        "Line not recognized and will be ignored: {}".format(line))
+
         self.teams.append(file_team)
 
 
