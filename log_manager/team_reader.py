@@ -46,11 +46,10 @@ class TeamReader:
                 if not started_pokemon:
                     started_pokemon = True
                     read_name(line, pokemon_dict)
-                    print(pokemon_dict)
-                    continue
-
-                if line.startswith("Ability:"):
+                elif line.startswith("Ability:"):
                     read_ability(line, pokemon_dict)
+                elif line.startswith("EVs:"):
+                    read_evs(line, pokemon_dict)
                 else:
                     print(line)
 
@@ -89,11 +88,26 @@ def read_name(input_str, pokemon_dict):
     pokemon_dict["species"] = species
     pokemon_dict["item"] = item
     pokemon_dict["gender"] = gender
+    print(pokemon_dict)
 
 
 def read_ability(input_str, pokemon_dict):
     """Read out the Pokemon's ability."""
-    print(input_str, pokemon_dict)
+    ability = input_str.replace("Ability: ", "").strip()
+    pokemon_dict["ability"] = ability
+    print(pokemon_dict)
+
+
+def read_evs(input_str, pokemon_dict):
+    """Read a Pokemon's EVs."""
+    input_str = input_str.replace("EVs:", "")
+    pokemon_dict["evs"] = {}
+    ev_list = [ev_str.strip() for ev_str in input_str.split("/")]
+    print(ev_list)
+    
+    for ev_str in ev_list:
+        ev, stat = ev_str.strip().split()
+        print(ev, stat)
 
 
 def process_pokemon():
