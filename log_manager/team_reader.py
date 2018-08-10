@@ -49,7 +49,9 @@ class TeamReader:
                 elif line.startswith("Ability:"):
                     read_ability(line, pokemon_dict)
                 elif line.startswith("EVs:"):
-                    read_evs(line, pokemon_dict)
+                    read_ev_iv(line.replace("EVs:", ""), pokemon_dict, "ev")
+                elif line.startswith("IVs:"):
+                    read_ev_iv(line.replace("IVs:", ""), pokemon_dict, "iv")
                 else:
                     print(line)
 
@@ -98,15 +100,14 @@ def read_ability(input_str, pokemon_dict):
     print(pokemon_dict)
 
 
-def read_evs(input_str, pokemon_dict):
-    """Read a Pokemon's EVs."""
-    input_str = input_str.replace("EVs:", "")
-    pokemon_dict["evs"] = {}
+def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
+    """Read a Pokemon's EV/IVs."""
+    pokemon_dict[chosen] = {}
     ev_list = [ev_str.strip() for ev_str in input_str.split("/")]
 
     for ev_str in ev_list:
         ev_val, stat = ev_str.strip().split()
-        pokemon_dict["evs"]["stat"] = int(ev_val)
+        pokemon_dict[chosen][stat] = int(ev_val)
 
     print(pokemon_dict)
 
