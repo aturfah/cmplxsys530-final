@@ -18,6 +18,8 @@ def test_process():
     tr_proc = TeamReader()
 
     tr_proc.process_files()
+    assert tr_proc.teams
+    assert len(tr_proc.teams[0]) == 3
 
 test_init()
 test_process()
