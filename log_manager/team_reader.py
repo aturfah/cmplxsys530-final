@@ -96,7 +96,9 @@ def read_name(input_str, pokemon_dict):
 
 def read_nature(input_str, pokemon_dict):
     """Read a Pokemon's Nature."""
-    print("NATURE", input_str)
+    nature = input_str.replace("Nature", "").strip()
+    pokemon_dict["nature"] = nature
+    print(pokemon_dict)
 
 
 def read_ability(input_str, pokemon_dict):
