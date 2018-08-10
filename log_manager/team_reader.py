@@ -53,6 +53,8 @@ class TeamReader:
                     read_ev_iv(line.replace("IVs:", ""), pokemon_dict, "iv")
                 elif line.endswith("Nature"):
                     read_nature(line, pokemon_dict)
+                elif line.startswith("-"):
+                    read_move(line, pokemon_dict)
                 else:
                     print(line)
 
@@ -117,6 +119,16 @@ def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
         value_val, stat = value_str.strip().split()
         pokemon_dict[chosen][stat] = int(value_val)
 
+    print(pokemon_dict)
+
+
+def read_move(input_str, pokemon_dict):
+    """Read a Pokemon's move."""
+    move = input_str.replace("-", "").strip()
+    if "moves" not in pokemon_dict:
+        pokemon_dict["moves"] = []
+
+    pokemon_dict["moves"].append(move.lower())
     print(pokemon_dict)
 
 
