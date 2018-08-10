@@ -61,7 +61,6 @@ class TeamReader:
 
 def read_name(input_str, pokemon_dict):
     """Read in a Pokemon's name, and add it to the pokemon_dict."""
-    print("READING NAME: ", input_str)
     # Try to read an item
     try:
         name_species_gender, item = input_str.strip().rsplit("@", 1)
@@ -93,21 +92,21 @@ def read_name(input_str, pokemon_dict):
     pokemon_dict["species"] = species
     pokemon_dict["item"] = item
     pokemon_dict["gender"] = gender
-    print(pokemon_dict)
+    # print(pokemon_dict)
 
 
 def read_nature(input_str, pokemon_dict):
     """Read a Pokemon's Nature."""
     nature = input_str.replace("Nature", "").strip()
     pokemon_dict["nature"] = nature
-    print(pokemon_dict)
+    # print(pokemon_dict)
 
 
 def read_ability(input_str, pokemon_dict):
     """Read out the Pokemon's ability."""
     ability = input_str.replace("Ability: ", "").strip()
     pokemon_dict["ability"] = ability
-    print(pokemon_dict)
+    # print(pokemon_dict)
 
 
 def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
@@ -119,7 +118,7 @@ def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
         value_val, stat = value_str.strip().split()
         pokemon_dict[chosen][stat] = int(value_val)
 
-    print(pokemon_dict)
+    # print(pokemon_dict)
 
 
 def read_move(input_str, pokemon_dict):
@@ -129,7 +128,7 @@ def read_move(input_str, pokemon_dict):
         pokemon_dict["moves"] = []
 
     pokemon_dict["moves"].append(move.lower())
-    print(pokemon_dict)
+    # print(pokemon_dict)
 
 
 def process_pokemon():
