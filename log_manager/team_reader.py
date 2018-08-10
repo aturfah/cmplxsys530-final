@@ -5,7 +5,6 @@ from os.path import join
 
 from re import match
 
-from numpy.random import uniform
 
 class TeamReader:
     """
@@ -52,6 +51,8 @@ class TeamReader:
                     read_ev_iv(line.replace("EVs:", ""), pokemon_dict, "ev")
                 elif line.startswith("IVs:"):
                     read_ev_iv(line.replace("IVs:", ""), pokemon_dict, "iv")
+                elif line.endswith("Nature"):
+                    read_nature(line, pokemon_dict)
                 else:
                     print(line)
 
@@ -93,6 +94,11 @@ def read_name(input_str, pokemon_dict):
     print(pokemon_dict)
 
 
+def read_nature(input_str, pokemon_dict):
+    """Read a Pokemon's Nature."""
+    print("NATURE", input_str)
+
+
 def read_ability(input_str, pokemon_dict):
     """Read out the Pokemon's ability."""
     ability = input_str.replace("Ability: ", "").strip()
@@ -110,6 +116,7 @@ def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
         pokemon_dict[chosen][stat] = int(value_val)
 
     print(pokemon_dict)
+
 
 def process_pokemon():
     """Generate a Pokemon from the string in a file."""
