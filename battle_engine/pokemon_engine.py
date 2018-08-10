@@ -7,7 +7,7 @@ from uuid import uuid4
 from numpy.random import uniform
 
 from config import WEAKNESS_CHART
-from log_manager.log_writer import LogWriter
+from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
 
 

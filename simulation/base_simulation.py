@@ -5,7 +5,7 @@ from time import time
 from ladder.random_ladder import RandomLadder
 from ladder.weighted_ladder import WeightedLadder
 
-from log_manager.log_writer import LogWriter
+from file_manager.log_writer import LogWriter
 
 LADDER_CHOICES = [
     WeightedLadder,
