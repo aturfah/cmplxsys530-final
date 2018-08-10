@@ -103,12 +103,12 @@ def read_evs(input_str, pokemon_dict):
     input_str = input_str.replace("EVs:", "")
     pokemon_dict["evs"] = {}
     ev_list = [ev_str.strip() for ev_str in input_str.split("/")]
-    print(ev_list)
-    
-    for ev_str in ev_list:
-        ev, stat = ev_str.strip().split()
-        print(ev, stat)
 
+    for ev_str in ev_list:
+        ev_val, stat = ev_str.strip().split()
+        pokemon_dict["evs"]["stat"] = int(ev_val)
+
+    print(pokemon_dict)
 
 def process_pokemon():
     """Generate a Pokemon from the string in a file."""
