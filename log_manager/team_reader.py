@@ -38,11 +38,16 @@ class TeamReader:
         """Read the contents of each file and load them into a list."""
         for filename in self.team_files:
             file_lines = [line.strip() for line in open(filename).readlines()]
-
+            file_team = []
             started_pokemon = False
             pokemon_dict = {}
             for line in file_lines:
-                if not started_pokemon:
+                if not line:
+                    started_pokemon = False
+                    if pokemon_dict:
+                        file_team.append(process_pokemon(pokemon_dict))
+                        pokemon_dict = {}
+                elif not started_pokemon:
                     started_pokemon = True
                     read_name(line, pokemon_dict)
                 elif line.startswith("Ability:"):
@@ -56,7 +61,7 @@ class TeamReader:
                 elif line.startswith("-"):
                     read_move(line, pokemon_dict)
                 else:
-                    print(line)
+                    raise RuntimeWarning("Line not recognized and will be ignored: {}".format(line))
 
 
 def read_name(input_str, pokemon_dict):
@@ -131,6 +136,6 @@ def read_move(input_str, pokemon_dict):
     # print(pokemon_dict)
 
 
-def process_pokemon():
+def process_pokemon(pokemon_dict):
     """Generate a Pokemon from the string in a file."""
-    pass
+    print("Processing:", pokemon_dict)
