@@ -5,6 +5,7 @@ from os.path import join
 
 from re import match
 
+from pokemon_helpers.pokemon import Pokemon
 
 class TeamReader:
     """
@@ -94,7 +95,7 @@ def read_name(input_str, pokemon_dict):
 
     # Update the dictionaries
     pokemon_dict["nickname"] = nickname
-    pokemon_dict["species"] = species
+    pokemon_dict["species"] = species.lower()
     pokemon_dict["item"] = item
     pokemon_dict["gender"] = gender
     # print(pokemon_dict)
