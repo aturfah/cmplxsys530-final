@@ -6,7 +6,7 @@ from simulation.base_type_logging_simulation import BaseLoggingSimulation
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
 from agent.counter_rps_agent import CounterRPSAgent
-from log_manager.log_writer import LogWriter
+from file_manager.log_writer import LogWriter
 
 
 class RPSSimulation(BaseLoggingSimulation):

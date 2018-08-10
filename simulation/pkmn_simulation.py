@@ -7,7 +7,7 @@ from time import time
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
-from log_manager.log_writer import LogWriter
+from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_team_floatzel
 from pokemon_helpers.pokemon import default_team_ivysaur
 from pokemon_helpers.pokemon import default_team_spinda

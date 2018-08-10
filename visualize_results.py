@@ -4,7 +4,7 @@ from tkinter.filedialog import askopenfilenames
 
 import click
 
-from log_manager.log_reader import LogReader
+from file_manager.log_reader import LogReader
 from stats import plot
 from stats import calc
 
