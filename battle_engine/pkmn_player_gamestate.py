@@ -6,4 +6,3 @@ class PokemonPlayerGameState():
     def __init__(self):
         """Initialize this player's internal game state."""
         pass
-
