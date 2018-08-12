@@ -6,3 +6,12 @@ class PokemonPlayerGameState():
     def __init__(self):
         """Initialize this player's internal game state."""
         pass
+
+    def __getitem__(self, key):
+        """
+        Define [] operating on this object.
+
+        :param key: str
+            Attribute of this object to get.
+        """
+        return self.__getattribute__(key)
