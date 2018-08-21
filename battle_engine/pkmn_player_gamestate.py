@@ -5,11 +5,11 @@ class PokemonPlayerGameState():
     """Representation of a player's internal game state."""
     def __init__(self):
         """Initialize this player's internal game state."""
-        pass
+        self.test = "DOOT"
 
     def __getitem__(self, key):
         """
-        Define [] operating on this object.
+        Define [] lookup on this object.
 
         :param key: str
             Attribute of this object to get.
@@ -18,7 +18,7 @@ class PokemonPlayerGameState():
 
     def __setattr__(self, key, value):
         """
-        Define [] operating on this object.
+        Define [] setting on this object.
 
         :param key: str
             Attribute of this object to get.
