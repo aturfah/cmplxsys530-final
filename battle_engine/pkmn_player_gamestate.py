@@ -15,3 +15,15 @@ class PokemonPlayerGameState():
             Attribute of this object to get.
         """
         return self.__getattribute__(key)
+
+    def __setattr__(self, key, value):
+        """
+        Define [] operating on this object.
+
+        :param key: str
+            Attribute of this object to get.
+        :param value: Object
+            Value to set for attribute
+
+        """
+        pass
