@@ -15,6 +15,7 @@ def basic_test():
     assert ppgs.test_attr
     assert ppgs.test_attr["test"] == 7
 
+
 def test_reset():
     """Test that resetting a gamestate works."""
     ppgs = PokemonPlayerGameState()
@@ -34,6 +35,7 @@ def test_reset():
     assert not ppgs.opp_gamestate["data"]
     assert not ppgs.opp_gamestate["moves"]
     assert not ppgs.opp_gamestate["investment"]
+
 
 basic_test()
 test_reset()
