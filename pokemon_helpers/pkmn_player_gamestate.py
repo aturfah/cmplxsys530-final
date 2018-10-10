@@ -17,7 +17,6 @@ class PokemonPlayerGameState:
         self.opp_gamestate["investment"] = {}
         self.dmg_stat_calc = DamageStatCalc()
 
-
     def reset_gamestates(self):
         """Reset gamestate values for a new battle."""
         self.gamestate = {}
@@ -25,7 +24,6 @@ class PokemonPlayerGameState:
         self.opp_gamestate["data"] = {}
         self.opp_gamestate["moves"] = {}
         self.opp_gamestate["investment"] = {}
-
 
     def __getitem__(self, key):
         """
