@@ -5,7 +5,7 @@ from pokemon_helpers.pkmn_player_gamestate import PokemonPlayerGameState
 def basic_test():
     """Test initializing and accessing of attributes."""
     ppgs = PokemonPlayerGameState()
-    assert ppgs.test == "DOOT"
     assert ppgs["test"] == "pew"
+    assert ppgs.test == "DOOT"
 
 basic_test()
