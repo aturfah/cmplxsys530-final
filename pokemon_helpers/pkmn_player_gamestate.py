@@ -6,7 +6,7 @@ class PokemonPlayerGameState:
 
     def __init__(self):
         """Initialize this player's internal game state."""
-        self.test = "DOOT"
+        self.test_attr = {}
 
     def __getitem__(self, key):
         """
