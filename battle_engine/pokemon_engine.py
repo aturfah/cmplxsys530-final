@@ -133,6 +133,23 @@ class PokemonEngine():
         """
         turn_info = self.calculate_turn(player1_move, player2_move)
 
+        # Go from player1/2 to the players' IDs
+        player_id_dict = {
+            "player1": player1.id,
+            "player2": player2.id,
+            None: None
+        }
+        for info in turn_info:
+            if "player" in info:
+                info["player"] = player_id_dict[info.get("player")]
+            elif "attacker" in info:
+                info["attacker"] = player_id_dict[info.get("attacker")]
+                info["defender"] = player_id_dict[info.get("defender")]
+
+            print("\nplayer:", info.get("player"))
+            print("attacker:", info.get("attacker"))
+            print("defender:", info.get("defender"))
+
         apply_status_damage(self.game_state["player1"]["active"])
         apply_status_damage(self.game_state["player2"]["active"])
 
