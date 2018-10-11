@@ -120,11 +120,11 @@ def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
 
 def load_config(config_filename):
     """Load the config for a pokemon simulation."""
-    print(config_filename)
     config_data = []
     with open(config_filename) as config_file:
         config_data = json.loads(config_file.read())
 
-    print(config_data)
-    raise RuntimeError("DOOT")
-    return None
+    if not config_data:
+        raise RuntimeError("No Config Loaded: {}".format(config_filename))
+
+    return config_data
