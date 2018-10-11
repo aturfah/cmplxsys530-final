@@ -37,9 +37,9 @@ def test_run_multiple_pokemon():
 
     p_eng.run(player1, player2)
 
-    assert len(player1.opp_gamestate["moves"]["magikarp"]) == 1
-    assert player1.opp_gamestate["moves"]["magikarp"][0]["name"] == "Thunder Shock"
-    assert len(player1.opp_gamestate["moves"]["spinda"]) == 2
+    assert len(player1.game_state.opp_gamestate["moves"]["magikarp"]) == 1
+    assert player1.game_state.opp_gamestate["moves"]["magikarp"][0]["name"] == "Thunder Shock"
+    assert len(player1.game_state.opp_gamestate["moves"]["spinda"]) == 2
 
 
 def test_run_multiple_moves():
