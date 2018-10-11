@@ -146,10 +146,6 @@ class PokemonEngine():
                 info["attacker"] = player_id_dict[info.get("attacker")]
                 info["defender"] = player_id_dict[info.get("defender")]
 
-            print("\nplayer:", info.get("player"))
-            print("attacker:", info.get("attacker"))
-            print("defender:", info.get("defender"))
-
         apply_status_damage(self.game_state["player1"]["active"])
         apply_status_damage(self.game_state["player2"]["active"])
 
