@@ -71,14 +71,14 @@ class PokemonAgent(BaseAgent):
 
         """
         response = ()
-        can_switch = len(self.gamestate["team"]) > 0
+        can_switch = len(self.game_state.gamestate["team"]) > 0
 
         if can_switch and uniform() < 0.5:
-            switch = uniform(0, len(self.gamestate["team"]))
+            switch = uniform(0, len(self.game_state.gamestate["team"]))
             switch = int(switch)
             response = "SWITCH", switch
         else:
-            move = uniform(0, len(self.gamestate["active"].moves))
+            move = uniform(0, len(self.game_state.gamestate["active"].moves))
             move = int(move)
             response = "ATTACK", move
 
@@ -94,7 +94,7 @@ class PokemonAgent(BaseAgent):
             Position of the next pokemon to switch to.
 
         """
-        choice = uniform(0, len(self.gamestate["team"]))
+        choice = uniform(0, len(self.game_state.gamestate["team"]))
         choice = int(choice)
         return choice
 
@@ -120,7 +120,7 @@ class PokemonAgent(BaseAgent):
             This player's remaining % HP.
 
         """
-        return calc_position_helper(self.gamestate)
+        return calc_position_helper(self.game_state.gamestate)
 
     def calc_opp_position(self):
         """
@@ -130,7 +130,7 @@ class PokemonAgent(BaseAgent):
             The opponent's remaining % HP.
 
         """
-        return calc_opp_position_helper(self.opp_gamestate)
+        return calc_opp_position_helper(self.game_state.opp_gamestate)
 
     def new_info(self, raw_turn_info, my_id):
         """
@@ -211,4 +211,3 @@ def calc_opp_position_helper(opp_gs):
             opp_posn += poke["pct_hp"]
 
     return opp_posn
-
