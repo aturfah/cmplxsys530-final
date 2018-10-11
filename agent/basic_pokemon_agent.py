@@ -10,6 +10,7 @@ from pokemon_helpers.damage_stats import DamageStatCalc
 from pokemon_helpers.pokemon import Pokemon
 from pokemon_helpers.pkmn_player_gamestate import PokemonPlayerGameState
 
+
 class PokemonAgent(BaseAgent):
     """
     Class for a pokemon player.
