@@ -293,7 +293,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Same priority is decided by speed
         if p_move["priority"] == o_move["priority"]:
-            min_opp_spe, max_opp_spe = self.game_state.opp_gamestate["investment"][o_poke_name]["spe"]
+            speed_pairs = self.game_state.opp_gamestate["investment"][o_poke_name]["spe"]
+            min_opp_spe, max_opp_spe = speed_pairs
             return p_poke.speed > (min_opp_spe + max_opp_spe) / 2
 
         # Moves of different priority will always go in priority order
