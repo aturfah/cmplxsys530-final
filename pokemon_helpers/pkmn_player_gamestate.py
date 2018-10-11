@@ -7,6 +7,7 @@ from pokemon_helpers.calculate import calculate_spe_range
 from pokemon_helpers.calculate import generate_all_ev_combinations
 from pokemon_helpers.damage_stats import DamageStatCalc
 
+
 class PokemonPlayerGameState:
     """Representation of a player's internal game state."""
 
