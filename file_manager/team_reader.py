@@ -30,7 +30,7 @@ class TeamReader:
             team_file_list = [
                 team_file for team_file in team_file_list if team_file.endswith(suffix)]
 
-        team_file_list = [join(teams_directory, team_file)
+        team_file_list = [join(teams_directory, team_file).replace("\\", "/")
                           for team_file in team_file_list]
 
         self.team_files = team_file_list
@@ -66,7 +66,11 @@ class TeamReader:
                     raise RuntimeWarning(
                         "Line not recognized and will be ignored: {}".format(line))
 
-        self.teams.append(file_team)
+            # Account for end of file
+            if started_pokemon and pokemon_dict:
+                file_team.append(process_pokemon(pokemon_dict))
+
+            self.teams.append(file_team)
 
 
 def read_name(input_str, pokemon_dict):
@@ -149,8 +153,8 @@ def process_pokemon(pokemon_dict):
     init_dict["item"] = pokemon_dict["item"]
     init_dict["gender"] = pokemon_dict["gender"]
     init_dict["ability"] = pokemon_dict["ability"]
-    init_dict["evs"] = pokemon_dict["ev"]
-    init_dict["ivs"] = pokemon_dict["iv"]
+    init_dict["evs"] = pokemon_dict.get("ev", {})
+    init_dict["ivs"] = pokemon_dict.get("iv", {})
     init_dict["moves"] = pokemon_dict["moves"]
 
     return Pokemon(**init_dict)
