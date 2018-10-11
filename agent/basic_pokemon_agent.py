@@ -129,7 +129,7 @@ class PokemonAgent(BaseAgent):
         """
         return calc_opp_position_helper(self.game_state.opp_gamestate)
 
-    def new_info(self, raw_turn_info, my_id):
+    def new_info(self, raw_turn_info):
         """
         Get new info for opponent's game_state.
 
@@ -141,7 +141,7 @@ class PokemonAgent(BaseAgent):
                 values of this dict. To know which values the method
                 should be looking at in turn_info.
         """
-        self.game_state.new_info(raw_turn_info, my_id)
+        self.game_state.new_info(raw_turn_info, self.id)
 
 
 def battle_position_helper(player_gs, opp_gs):
