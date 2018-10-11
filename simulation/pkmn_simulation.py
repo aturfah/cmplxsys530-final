@@ -9,9 +9,7 @@ from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
 from file_manager.log_writer import LogWriter
-from pokemon_helpers.pokemon import default_team_floatzel
-from pokemon_helpers.pokemon import default_team_ivysaur
-from pokemon_helpers.pokemon import default_team_spinda
+from file_manager.team_reader import TeamReader
 from simulation.base_type_logging_simulation import BaseLoggingSimulation
 from stats.calc import calculate_avg_elo
 
@@ -34,16 +32,19 @@ class PokemonSimulation(BaseLoggingSimulation):
     def add_agents(self):
         """Add the agents to this model."""
         for conf in self.config:
+            conf_tr = TeamReader(prefix=conf["team_file"])
+            conf_tr.process_files()
+            conf_team = conf_tr.teams[0]
             for _ in range(int(self.num_players * conf["proportion"])):
                 pkmn_agent = None
                 if conf["agent_class"] == "basic":
                     pkmn_agent = PokemonAgent(
-                        team=default_team_floatzel()
+                        team=conf_team
                     )
                 elif conf["agent_class"] == "basicplanning":
                     pkmn_agent = BasicPlanningPokemonAgent(
                         tier=conf["agent_tier"],
-                        team=default_team_floatzel()
+                        team=conf_team
                     )
                 else:
                     raise RuntimeError("Invalid agent_class: {}".format(conf["agent_class"]))
