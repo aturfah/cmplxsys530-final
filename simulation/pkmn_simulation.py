@@ -41,11 +41,15 @@ class PokemonSimulation(BaseLoggingSimulation):
                     pkmn_agent = PokemonAgent(
                         team=conf_team
                     )
+                    pkmn_agent.type = conf["agent_type"]
+
                 elif conf["agent_class"] == "basicplanning":
                     pkmn_agent = BasicPlanningPokemonAgent(
                         tier=conf["agent_tier"],
                         team=conf_team
                     )
+                    pkmn_agent.type = conf["agent_type"]
+
                 else:
                     raise RuntimeError("Invalid agent_class: {}".format(conf["agent_class"]))
 
