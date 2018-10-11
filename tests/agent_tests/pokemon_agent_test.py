@@ -13,9 +13,9 @@ def test_make_move():
     pa1 = PokemonAgent([spinda, magikarp, magikarp, magikarp])
 
     # Set player's gamestate
-    pa1.gamestate = {}
-    pa1.gamestate["team"] = [magikarp, magikarp, magikarp]
-    pa1.gamestate["active"] = spinda
+    pa1.game_state.gamestate = {}
+    pa1.game_state.gamestate["team"] = [magikarp, magikarp, magikarp]
+    pa1.game_state.gamestate["active"] = spinda
 
     move_type, val = pa1.make_move()
 
