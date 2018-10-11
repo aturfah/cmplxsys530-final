@@ -119,10 +119,10 @@ def process_opts(player, player_opts):
         res = list(opt)
         if opt[0] == "ATTACK":
             # Get move name
-            res.append(player.gamestate["active"].moves[opt[1]]["name"])
+            res.append(player.game_state.gamestate["active"].moves[opt[1]]["name"])
         else:
             # Get pokemon name
-            res.append(player.gamestate["team"][opt[1]].name)
+            res.append(player.game_state.gamestate["team"][opt[1]].name)
         results.append(res)
 
     return results
