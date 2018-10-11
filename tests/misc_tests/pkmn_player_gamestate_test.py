@@ -7,6 +7,7 @@ from config import MOVE_DATA
 from pokemon_helpers.pokemon import Pokemon
 from pokemon_helpers.pkmn_player_gamestate import PokemonPlayerGameState
 
+
 def basic_test():
     """Test initializing and accessing of attributes."""
     ppgs = PokemonPlayerGameState()
@@ -40,6 +41,7 @@ def test_reset_gamestates():
     assert not ppgs.opp_gamestate["moves"]
     assert not ppgs.opp_gamestate["investment"]
 
+
 def test_init_opp_gamestate():
     """Test that initializing an opponent's gamestate works."""
     ppgs = PokemonPlayerGameState()
@@ -59,6 +61,7 @@ def test_init_opp_gamestate():
     # Assert that values were filled in properly
     assert ppgs.opp_gamestate["investment"]["spinda"]["hp"]
     assert [int(x) for x in ppgs.opp_gamestate["investment"]["spinda"]["spe"]] == [140, 240]
+
 
 def test_opp_gamestate():
     """Test that opponent's gamestate is updated properly."""
