@@ -4,9 +4,6 @@ from pokemon_helpers.pokemon import Pokemon
 from agent.basic_pokemon_agent import PokemonAgent
 from battle_engine.pokemon_engine import anonymize_gamestate_helper
 
-from config import MOVE_DATA
-
-
 def test_make_move():
     """Test that make_move is outputting valid info."""
     spinda = Pokemon(
