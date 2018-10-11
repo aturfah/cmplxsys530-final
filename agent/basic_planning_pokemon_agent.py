@@ -51,22 +51,22 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # My possible attacks
         posn = 0
-        for _ in self.gamestate["active"].moves:
+        for _ in self.game_state.gamestate["active"].moves:
             player_opts.append(("ATTACK", posn))
             posn += 1
 
         # My possible switches
         posn = 0
-        for _ in self.gamestate["team"]:
+        for _ in self.game_state.gamestate["team"]:
             player_opts.append(("SWITCH", posn))
             posn += 1
 
         # Opponent's possible attacks
         posn = 0
-        opp_active_poke = self.opp_gamestate["data"]["active"]["name"]
+        opp_active_poke = self.game_state.opp_gamestate["data"]["active"]["name"]
         opp_moves = []
-        if opp_active_poke in self.opp_gamestate["moves"]:
-            for move in self.opp_gamestate["moves"][opp_active_poke]:
+        if opp_active_poke in self.game_state.opp_gamestate["moves"]:
+            for move in self.game_state.opp_gamestate["moves"][opp_active_poke]:
                 opp_moves.append(move["id"])
         if len(opp_moves) < 4:
             common_moves = USAGE_STATS[self.tier][opp_active_poke]["Moves"]
@@ -83,7 +83,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Opponent's possible switches
         posn = 0
-        for _ in self.opp_gamestate["data"]["team"]:
+        for _ in self.game_state.opp_gamestate["data"]["team"]:
             opp_opts.append(("SWITCH", posn))
             posn += 1
 
@@ -106,8 +106,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         for p_opt in player_opts:
             total_position = 0
             for o_opt in opp_opts:
-                my_gs = deepcopy(self.gamestate)
-                opp_gs = deepcopy(self.opp_gamestate)
+                my_gs = deepcopy(self.game_state.gamestate)
+                opp_gs = deepcopy(self.game_state.opp_gamestate)
 
                 # Player Switches
                 if p_opt[0] == "SWITCH":
@@ -170,7 +170,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         p_move = p_poke.moves[p_opt[1]]
         o_poke_name = opp_gs["data"]["active"]["name"]
         o_poke = POKEMON_DATA[o_poke_name]
-        params = self.opp_gamestate["investment"][o_poke_name]
+        params = self.game_state.opp_gamestate["investment"][o_poke_name]
 
         # We do not handle status moves at this point in time.
         if p_move["category"] == "Status":
@@ -210,7 +210,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         o_move = MOVE_DATA[o_opt[1]]
         o_poke_name = opp_gs["data"]["active"]["name"]
         o_poke = POKEMON_DATA[o_poke_name]
-        params = self.opp_gamestate["investment"][o_poke_name]
+        params = self.game_state.opp_gamestate["investment"][o_poke_name]
 
         # We do not handle status moves at this point in time.
         if o_move["category"] == "Status":
@@ -293,7 +293,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Same priority is decided by speed
         if p_move["priority"] == o_move["priority"]:
-            min_opp_spe, max_opp_spe = self.opp_gamestate["investment"][o_poke_name]["spe"]
+            speed_pairs = self.game_state.opp_gamestate["investment"][o_poke_name]["spe"]
+            min_opp_spe, max_opp_spe = speed_pairs
             return p_poke.speed > (min_opp_spe + max_opp_spe) / 2
 
         # Moves of different priority will always go in priority order
