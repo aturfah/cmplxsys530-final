@@ -60,6 +60,43 @@ def test_init_opp_gamestate():
     assert ppgs.opp_gamestate["investment"]["spinda"]["hp"]
     assert [int(x) for x in ppgs.opp_gamestate["investment"]["spinda"]["spe"]] == [140, 240]
 
+def test_opp_gamestate():
+    """Test that opponent's gamestate is updated properly."""
+    spinda = Pokemon(name="spinda", moves=["tackle"])
+
+    ppgs1 = PokemonPlayerGameState()
+    ppgs2 = PokemonPlayerGameState()
+
+    gamestate = {}
+    gamestate["team"] = []
+    gamestate["active"] = spinda
+
+    opp_gamestate = anonymize_gamestate_helper(gamestate)
+
+    # Update the gamestate
+    ppgs1.update_gamestate(gamestate, opp_gamestate)
+    ppgs2.update_gamestate(gamestate, opp_gamestate)
+
+    # Gamestate updating happens properly.
+    assert ppgs1.opp_gamestate["data"]
+    assert not ppgs1.opp_gamestate["data"]["team"]
+    assert ppgs1.opp_gamestate["data"]["active"]["name"] == "spinda"
+
+    turn_info = {}
+    turn_info["type"] = "ATTACK"
+    turn_info["attacker"] = "player2"
+    turn_info["move"] = spinda.moves[0]
+    turn_info["pct_damage"] = 28
+    turn_info["def_poke"] = "spinda"
+    turn_info["atk_poke"] = "spinda"
+    turn_info = [turn_info]
+
+    # Give new info
+    ppgs1.new_info(turn_info, "player1")
+    # New info is stored properly
+    assert len(ppgs1.opp_gamestate["moves"]["spinda"]) == 1
+
+
 def test_infer_investment():
     """Make sure investment is properly inferred."""
     magikarp = Pokemon(name="magikarp", moves=["tackle"])
