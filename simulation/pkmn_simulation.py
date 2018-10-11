@@ -3,6 +3,7 @@
 from threading import Thread
 from queue import Queue
 from time import time
+import json
 
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
@@ -26,6 +27,7 @@ class PokemonSimulation(BaseLoggingSimulation):
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
         self.multithread = kwargs.get("multithread", False)
+        self.config = load_config(kwargs["config"])
         super().__init__(pkmn_kwargs)
 
     def add_agents(self):
@@ -115,3 +117,10 @@ def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
             type_queue.put(calculate_avg_elo(main_sim.ladder))
         main_sim.print_progress_bar(main_sim.num_games - battle_queue.qsize(), start_time)
         battle_queue.task_done()
+
+def load_config(config_filename):
+    """Load the config for a pokemon simulation."""
+    print(config_filename)
+
+    raise RuntimeError("DOOT")
+    return None
