@@ -153,8 +153,8 @@ class PokemonEngine():
         apply_status_damage(self.game_state["player1"]["active"])
         apply_status_damage(self.game_state["player2"]["active"])
 
-        player1.new_info(turn_info, "player1")
-        player2.new_info(turn_info, "player2")
+        player1.new_info(turn_info)
+        player2.new_info(turn_info)
 
         # Figure out who faints at the end of this turn.
         if self.game_state["player1"]["active"].current_hp <= 0:
