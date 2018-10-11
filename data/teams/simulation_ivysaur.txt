@@ -1,30 +1,6 @@
-Amoonguss 
-Ability: Regenerator  
-EVs: 10 HP / 30 Def / 40 SpA / 60 Spe  
-Serious Nature  
-IVs: 0 Spe  
-- Giga Drain  
-- Sludge Bomb  
-- Spore  
-- Stun Spore  
-
-sam (Clefable) @ Leftovers  
-Ability: Cute Charm  
-EVs: 10 HP / 20 Atk / 30 Def / 40 SpA / 50 SpD / 60 Spe  
-Mild Nature  
-IVs: 30 Atk / 29 Def / 28 SpA / 27 SpD / 26 Spe  
-- Moonblast  
-- Soft-Boiled  
-- Calm Mind  
-- Thunder Wave  
-
-Amoonguss @ Leftovers  
-Ability: Regenerator  
-EVs: 10 HP / 30 Def / 40 SpA / 60 Spe  
-Serious Nature  
-IVs: 0 Spe  
-- Giga Drain  
-- Sludge Bomb  
-- Spore  
-- Stun Spore  
-
+Ivysaur  
+Ability: Overgrow  
+- Seed Bomb  
+- Return  
+- Synthesis  
+- Swords Dance
