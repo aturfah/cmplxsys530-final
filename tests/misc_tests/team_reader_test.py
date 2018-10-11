@@ -17,7 +17,7 @@ def test_init():
 
 def test_process():
     """Test processing of a text file."""
-    tr_proc = TeamReader()
+    tr_proc = TeamReader(prefix="unit_test")
 
     tr_proc.process_files()
     assert tr_proc.teams
