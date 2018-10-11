@@ -1,0 +1,6 @@
+Ivysaur  
+Ability: Overgrow  
+- Seed Bomb  
+- Return  
+- Synthesis  
+- Swords Dance

@@ -1,0 +1,6 @@
+Floatzel  
+Ability: Swift Swim  
+- Water Gun  
+- Liquidation  
+- Ice Beam  
+- Tackle

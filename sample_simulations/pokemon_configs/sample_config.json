@@ -1,0 +1,41 @@
+[
+    {
+        "proportion": 0.3,
+        "team_file": "simulation_floatzel.txt",
+        "agent_type": "RandomFloatzel",
+        "agent_class": "basic"
+    },
+    {
+        "proportion": 0.3,
+        "team_file": "simulation_ivysaur.txt",
+        "agent_type": "RandomIvysaur",
+        "agent_class": "basic"
+    },
+    {
+        "proportion": 0.3,
+        "team_file": "simulation_spinda.txt",
+        "agent_type": "RandomSpinda",
+        "agent_class": "basic"
+    },
+    {
+        "proportion": 0.3,
+        "team_file": "simulation_floatzel.txt",
+        "agent_type": "PlannningFloatzel",
+        "agent_class": "basicplanning",
+        "agent_tier": "pu"
+    },
+    {
+        "proportion": 0.3,
+        "team_file": "simulation_ivysaur.txt",
+        "agent_type": "PlanningIvysaur",
+        "agent_class": "basicplanning",
+        "agent_tier": "pu"
+    },
+    {
+        "proportion": 0.3,
+        "team_file": "simulation_spinda.txt",
+        "agent_type": "PlanningSpinda",
+        "agent_class": "basicplanning",
+        "agent_tier": "pu"
+    }
+]

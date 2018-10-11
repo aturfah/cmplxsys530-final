@@ -27,4 +27,3 @@ IVs: 0 Spe
 - Sludge Bomb  
 - Spore  
 - Stun Spore  
-

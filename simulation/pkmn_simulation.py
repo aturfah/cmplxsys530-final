@@ -3,14 +3,13 @@
 from threading import Thread
 from queue import Queue
 from time import time
+import json
 
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from battle_engine.pokemon_engine import PokemonEngine
 from file_manager.log_writer import LogWriter
-from pokemon_helpers.pokemon import default_team_floatzel
-from pokemon_helpers.pokemon import default_team_ivysaur
-from pokemon_helpers.pokemon import default_team_spinda
+from file_manager.team_reader import TeamReader
 from simulation.base_type_logging_simulation import BaseLoggingSimulation
 from stats.calc import calculate_avg_elo
 
@@ -23,6 +22,8 @@ class PokemonSimulation(BaseLoggingSimulation):
         pkmn_kwargs = kwargs
         pkmn_kwargs["game"] = PokemonEngine()
         pkmn_kwargs["prefix"] = "PKMN"
+
+        self.config = load_config(kwargs["config"])
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
         self.multithread = kwargs.get("multithread", False)
@@ -30,43 +31,31 @@ class PokemonSimulation(BaseLoggingSimulation):
 
     def add_agents(self):
         """Add the agents to this model."""
-        for ind in range(self.num_players):
-            if ind % 3 == 1:
-                pkmn_agent = PokemonAgent(default_team_floatzel())
-                pkmn_agent.type = "RandomFloatzel"
-            elif ind % 3 == 2:
-                pkmn_agent = PokemonAgent(default_team_ivysaur())
-                pkmn_agent.type = "RandomIvysaur"
-            else:
-                pkmn_agent = PokemonAgent(default_team_spinda())
-                pkmn_agent.type = "RandomSpinda"
+        for conf in self.config:
+            conf_tr = TeamReader(prefix=conf["team_file"])
+            conf_tr.process_files()
+            conf_team = conf_tr.teams[0]
+            for _ in range(int(self.num_players * conf["proportion"])):
+                pkmn_agent = None
+                if conf["agent_class"] == "basic":
+                    pkmn_agent = PokemonAgent(
+                        team=conf_team
+                    )
+                elif conf["agent_class"] == "basicplanning":
+                    pkmn_agent = BasicPlanningPokemonAgent(
+                        tier=conf["agent_tier"],
+                        team=conf_team
+                    )
+                else:
+                    raise RuntimeError("Invalid agent_class: {}".format(conf["agent_class"]))
 
-            self.ladder.add_player(pkmn_agent)
-
-        for ind in range(self.num_players):
-            if ind % 3 == 1:
-                pkmn_agent = BasicPlanningPokemonAgent(
-                    tier="pu", team=default_team_floatzel())
-                pkmn_agent.type = "PlanningFloatzel"
-            elif ind % 3 == 2:
-                pkmn_agent = BasicPlanningPokemonAgent(
-                    tier="pu", team=default_team_ivysaur())
-                pkmn_agent.type = "PlanningIvysaur"
-            else:
-                pkmn_agent = BasicPlanningPokemonAgent(
-                    tier="pu", team=default_team_spinda())
-                pkmn_agent.type = "PlanningSpinda"
-            self.ladder.add_player(pkmn_agent)
+                self.ladder.add_player(pkmn_agent)
 
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""
         header = []
-        header.append("RandomSpinda")
-        header.append("RandomIvysaur")
-        header.append("RandomFloatzel")
-        header.append("PlanningSpinda")
-        header.append("PlanningIvysaur")
-        header.append("PlanningFloatzel")
+        for conf in self.config:
+            header.append(conf["agent_type"])
 
         self.type_log_writer = LogWriter(header, prefix="PKMNTypes")
 
@@ -115,3 +104,15 @@ def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
             type_queue.put(calculate_avg_elo(main_sim.ladder))
         main_sim.print_progress_bar(main_sim.num_games - battle_queue.qsize(), start_time)
         battle_queue.task_done()
+
+
+def load_config(config_filename):
+    """Load the config for a pokemon simulation."""
+    config_data = []
+    with open(config_filename) as config_file:
+        config_data = json.loads(config_file.read())
+
+    if not config_data:
+        raise RuntimeError("No Config Loaded: {}".format(config_filename))
+
+    return config_data
