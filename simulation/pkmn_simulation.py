@@ -24,41 +24,31 @@ class PokemonSimulation(BaseLoggingSimulation):
         pkmn_kwargs = kwargs
         pkmn_kwargs["game"] = PokemonEngine()
         pkmn_kwargs["prefix"] = "PKMN"
+
+        self.config = load_config(kwargs["config"])
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
         self.multithread = kwargs.get("multithread", False)
-        self.config = load_config(kwargs["config"])
         super().__init__(pkmn_kwargs)
 
     def add_agents(self):
         """Add the agents to this model."""
-        for ind in range(self.num_players):
-            if ind % 3 == 1:
-                pkmn_agent = PokemonAgent(default_team_floatzel())
-                pkmn_agent.type = "RandomFloatzel"
-            elif ind % 3 == 2:
-                pkmn_agent = PokemonAgent(default_team_ivysaur())
-                pkmn_agent.type = "RandomIvysaur"
-            else:
-                pkmn_agent = PokemonAgent(default_team_spinda())
-                pkmn_agent.type = "RandomSpinda"
+        for conf in self.config:
+            for _ in range(int(self.num_players * conf["proportion"])):
+                pkmn_agent = None
+                if conf["agent_class"] == "basic":
+                    pkmn_agent = PokemonAgent(
+                        team=default_team_floatzel()
+                    )
+                elif conf["agent_class"] == "basicplanning":
+                    pkmn_agent = BasicPlanningPokemonAgent(
+                        tier=conf["agent_tier"],
+                        team=default_team_floatzel()
+                    )
+                else:
+                    raise RuntimeError("Invalid agent_class: {}".format(conf["agent_class"]))
 
-            self.ladder.add_player(pkmn_agent)
-
-        for ind in range(self.num_players):
-            if ind % 3 == 1:
-                pkmn_agent = BasicPlanningPokemonAgent(
-                    tier="pu", team=default_team_floatzel())
-                pkmn_agent.type = "PlanningFloatzel"
-            elif ind % 3 == 2:
-                pkmn_agent = BasicPlanningPokemonAgent(
-                    tier="pu", team=default_team_ivysaur())
-                pkmn_agent.type = "PlanningIvysaur"
-            else:
-                pkmn_agent = BasicPlanningPokemonAgent(
-                    tier="pu", team=default_team_spinda())
-                pkmn_agent.type = "PlanningSpinda"
-            self.ladder.add_player(pkmn_agent)
+                self.ladder.add_player(pkmn_agent)
 
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""
@@ -113,6 +103,7 @@ def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
             type_queue.put(calculate_avg_elo(main_sim.ladder))
         main_sim.print_progress_bar(main_sim.num_games - battle_queue.qsize(), start_time)
         battle_queue.task_done()
+
 
 def load_config(config_filename):
     """Load the config for a pokemon simulation."""
