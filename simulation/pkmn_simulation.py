@@ -63,12 +63,8 @@ class PokemonSimulation(BaseLoggingSimulation):
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""
         header = []
-        header.append("RandomSpinda")
-        header.append("RandomIvysaur")
-        header.append("RandomFloatzel")
-        header.append("PlanningSpinda")
-        header.append("PlanningIvysaur")
-        header.append("PlanningFloatzel")
+        for conf in self.config:
+            header.append(conf["agent_type"])
 
         self.type_log_writer = LogWriter(header, prefix="PKMNTypes")
 
