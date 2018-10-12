@@ -157,7 +157,24 @@ def test_toxic_dmg():
 
 def test_secondary_effects():
     """Main testing driver for secondary effects."""
-    pass
+    test_secondary_stat_change()
+
+
+def test_secondary_stat_change():
+    """Test secondary effects that involve stat changes."""
+    spinda = Pokemon(name="spinda", moves=["acidspray"])
+    spinda_target = Pokemon(name="spinda", moves=["synthesis"])
+
+    player1 = PokemonAgent([spinda])
+    player2 = PokemonAgent([spinda_target])
+    player_move = ("ATTACK", 0)
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Assert SPinda_target's at -2 SpD
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
 
 
 test_run()
