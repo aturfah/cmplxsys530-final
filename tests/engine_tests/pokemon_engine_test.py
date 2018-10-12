@@ -172,22 +172,25 @@ def test_secondary_stat_change():
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player2)
 
-    # Assert SPinda_target's at -2 SpD
+    # Assert Spinda_target's at -2 SpD
     p_eng.run_single_turn(player_move, player_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].boosts["spd"] == -2
 
     # Test that if on damage happens, stat drops don't
+    # Ex: Poison Move to Steel-Type
     magnemite_target = Pokemon(name="magnemite", moves=["synthesis"])
     player3 = PokemonAgent([magnemite_target])
+
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player3)
-    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    p_eng.run_single_turn(player_move, player_move, player1, player3)
+
     assert p_eng.game_state["player2"]["active"].boosts["spd"] == 0
 
-test_run()
-test_run_multiple_moves()
-test_run_multiple_pokemon()
-test_run_infinite()
-test_heal()
-test_status_dmg()
+# test_run()
+# test_run_multiple_moves()
+# test_run_multiple_pokemon()
+# test_run_infinite()
+# test_heal()
+# test_status_dmg()
 test_secondary_effects()
