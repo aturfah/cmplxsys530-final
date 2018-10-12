@@ -325,10 +325,12 @@ class PokemonEngine():
                 for stat in move["boosts"]:
                     atk_poke.boosts[stat] += move["boosts"][stat]
                     atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
+                    atk_poke.boosts[stat] = max(atk_poke.boosts[stat], -6)
             else:
                 for stat in move["boosts"]:
                     def_poke.boosts[stat] += move["boosts"][stat]
                     def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
+                    def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
 
         results = {}
         results["type"] = "ATTACK"
