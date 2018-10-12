@@ -332,6 +332,11 @@ class PokemonEngine():
                     def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
                     def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
 
+        # Move Secondary effects
+        if damage != 0 and move.get("secondary", {}):
+            raise RuntimeError("DOOT")
+
+
         results = {}
         results["type"] = "ATTACK"
         results["move"] = move
