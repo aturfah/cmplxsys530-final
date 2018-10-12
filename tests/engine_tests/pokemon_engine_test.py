@@ -176,6 +176,11 @@ def test_secondary_stat_change():
     p_eng.run_single_turn(player_move, player_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].boosts["spd"] == -2
 
+    # Assert that stat doesn't get lower than -6
+    for _ in range(5):
+        p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert p_eng.game_state["player2"]["active"].boosts["spd"] == -6
+
     # Test that if on damage happens, stat drops don't
     # Ex: Poison Move to Steel-Type
     magnemite_target = Pokemon(name="magnemite", moves=["synthesis"])
