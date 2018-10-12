@@ -2,6 +2,7 @@
 from tkinter import Tk
 from tkinter.filedialog import askopenfile
 
+import yaml
 import click
 
 from simulation.cf_simulation import CFSimulation
@@ -107,6 +108,8 @@ def read_file():
     c_file = askopenfile()
     if c_file is None:
         raise RuntimeError("Load Aborted")
+
+    print(c_file.name)
 
     results = {}
     for line in c_file:
