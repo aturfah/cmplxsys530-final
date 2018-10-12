@@ -3,6 +3,7 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfile
 
 import click
+import yaml
 
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
@@ -108,19 +109,7 @@ def read_file():
     if c_file is None:
         raise RuntimeError("Load Aborted")
 
-    results = {}
-    for line in c_file:
-        line = line.replace("\n", "")
-        if line == "" or line[0] == "#":
-            continue
-
-        parameter, value = line.split("|")
-        parameter = parameter.strip()
-        value = value.strip()
-        if " " in value:
-            value = value.split(" ")
-
-        results[parameter] = value
+    results = yaml.load(c_file)
 
     return results
 
