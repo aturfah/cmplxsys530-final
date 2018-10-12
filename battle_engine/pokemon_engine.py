@@ -334,7 +334,10 @@ class PokemonEngine():
 
         # Move Secondary effects
         if damage != 0 and move.get("secondary", {}):
-            raise RuntimeError("DOOT")
+            secondary_effects = move["secondary"]
+            if uniform(0, 100) < secondary_effects["chance"]:
+                # Do something
+                pass
 
 
         results = {}
