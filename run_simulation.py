@@ -3,12 +3,11 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfile
 
 import click
+import yaml
 
 from simulation.cf_simulation import CFSimulation
 from simulation.rps_simulation import RPSSimulation
 from simulation.pkmn_simulation import PokemonSimulation
-
-import yaml
 
 
 @click.command()
