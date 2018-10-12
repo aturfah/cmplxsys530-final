@@ -176,6 +176,13 @@ def test_secondary_stat_change():
     p_eng.run_single_turn(player_move, player_move, player1, player2)
 
 
+    # Test that if on damage happens, stat drops don't
+    magnemite_target = Pokemon(name="magnemite", moves=["synthesis"])
+    player3 = PokemonAgent([magnemite_target])
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player3)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    print(p_eng.game_state["player2"]["active"]["stats"])
 
 test_run()
 test_run_multiple_moves()
