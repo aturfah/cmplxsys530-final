@@ -155,9 +155,15 @@ def test_toxic_dmg():
         int(1 + prev_hp - 2*p_eng.game_state["player2"]["active"].max_hp/16)
 
 
+def test_secondary_effects():
+    """Main testing driver for secondary effects."""
+    pass
+
+
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
 test_run_infinite()
 test_heal()
 test_status_dmg()
+test_secondary_effects()
