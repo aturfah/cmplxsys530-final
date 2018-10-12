@@ -324,21 +324,26 @@ class PokemonEngine():
             if move["target"] == "self":
                 for stat in move["boosts"]:
                     atk_poke.boosts[stat] += move["boosts"][stat]
-                    atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
-                    atk_poke.boosts[stat] = max(atk_poke.boosts[stat], -6)
             else:
                 for stat in move["boosts"]:
                     def_poke.boosts[stat] += move["boosts"][stat]
-                    def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
-                    def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
 
         # Move Secondary effects
         if damage != 0 and move.get("secondary", {}):
             secondary_effects = move["secondary"]
             if uniform(0, 100) < secondary_effects["chance"]:
-                # Do something
-                pass
+                if "boosts" in secondary_effects:
+                    # Apply boosts
+                    for stat in secondary_effects["boosts"]:
+                        def_poke.boosts[stat] += secondary_effects["boosts"][stat]
 
+        # Floor/Ceiling boosts
+        for stat in atk_poke.boosts:
+            atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
+            atk_poke.boosts[stat] = max(atk_poke.boosts[stat], -6)
+        for stat in def_poke.boosts:
+            def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
+            def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
 
         results = {}
         results["type"] = "ATTACK"
