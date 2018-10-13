@@ -157,11 +157,11 @@ def test_toxic_dmg():
 
 def test_secondary_effects():
     """Main testing driver for secondary effects."""
-    test_secondary_stat_change()
+    test_opp_secondary_stat_change()
 
 
-def test_secondary_stat_change():
-    """Test secondary effects that involve stat changes."""
+def test_opp_secondary_stat_change():
+    """Test secondary effects that involve opponent's stat changes."""
     spinda = Pokemon(name="spinda", moves=["acidspray"])
     spinda_target = Pokemon(name="spinda", moves=["synthesis"])
 
