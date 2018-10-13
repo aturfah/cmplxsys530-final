@@ -333,7 +333,7 @@ class PokemonEngine():
             secondary_effects = move["secondary"]
             if uniform(0, 100) < secondary_effects["chance"]:
                 if "boosts" in secondary_effects:
-                    # Apply boosts
+                    # Apply Status boosts to opponents
                     for stat in secondary_effects["boosts"]:
                         def_poke.boosts[stat] += secondary_effects["boosts"][stat]
 
