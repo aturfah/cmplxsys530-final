@@ -165,7 +165,7 @@ def test_secondary_effects():
 
 def test_opp_2ndary_stat_change():
     """Test secondary effects that involve opponent's stat changes."""
-    spinda = Pokemon(name="spinda", moves=["acidspray"])
+    spinda = Pokemon(name="spinda", moves=["lowsweep"])
     spinda_target = Pokemon(name="spinda", moves=["synthesis"])
 
     player1 = PokemonAgent([spinda])
@@ -177,23 +177,23 @@ def test_opp_2ndary_stat_change():
 
     # Assert Spinda_target's at -2 SpD
     p_eng.run_single_turn(player_move, player_move, player1, player2)
-    assert p_eng.game_state["player2"]["active"].boosts["spd"] == -2
+    assert p_eng.game_state["player2"]["active"].boosts["spe"] == -1
 
     # Assert that stat doesn't get lower than -6
-    for _ in range(5):
+    for _ in range(10):
         p_eng.run_single_turn(player_move, player_move, player1, player2)
-    assert p_eng.game_state["player2"]["active"].boosts["spd"] == -6
+    assert p_eng.game_state["player2"]["active"].boosts["spe"] == -6
 
     # Test that if on damage happens, stat drops don't
     # Ex: Poison Move to Steel-Type
-    magnemite_target = Pokemon(name="magnemite", moves=["synthesis"])
-    player3 = PokemonAgent([magnemite_target])
+    gengar_target = Pokemon(name="gengar", moves=["synthesis"])
+    player3 = PokemonAgent([gengar_target])
 
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player3)
     p_eng.run_single_turn(player_move, player_move, player1, player3)
 
-    assert p_eng.game_state["player2"]["active"].boosts["spd"] == 0
+    assert p_eng.game_state["player2"]["active"].boosts["spe"] == 0
 
 
 def test_player_2ndary_stat_changes():
@@ -231,11 +231,11 @@ def test_player_2ndary_stat_changes():
 
 def test_2ndary_status():
     """Status effects as secondary effect."""
-    spinda = Pokemon(name="spinda", moves=["nuzzle"])
-    muk_target = Pokemon(name="muk", moves=["synthesis"])
+    spinda = Pokemon(name="spinda", moves=["nuzzle", "inferno"])
+    charizard_target = Pokemon(name="charizard", moves=["synthesis", "recover"])
 
     player1 = PokemonAgent([spinda])
-    player2 = PokemonAgent([muk_target])
+    player2 = PokemonAgent([charizard_target])
     player_move = ("ATTACK", 0)
 
     p_eng = PokemonEngine()
@@ -247,25 +247,19 @@ def test_2ndary_status():
 
     # Assert that if there's another status effect, it
     # cannot be overwritten
-    muk_target.status = FRZ_STATUS
+    charizard_target.status = FRZ_STATUS
     p_eng.initialize_battle(player1, player2)
     p_eng.run_single_turn(player_move, player_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].status == FRZ_STATUS
 
     # Assert that the type immunities are respected
-    spinda = Pokemon(name="spinda", moves=["inferno"])
-    charizard_target = Pokemon(name="charizard", moves=["synthesis"])
+    charizard_target.status = None
 
-    player1 = PokemonAgent([spinda])
-    player2 = PokemonAgent([charizard_target])
-    player_move = ("ATTACK", 0)
-
-    p_eng = PokemonEngine()
+    player_move = ("ATTACK", 1)
     p_eng.initialize_battle(player1, player2)
 
     # Assert that Charizard does not get burned
     p_eng.run_single_turn(player_move, player_move, player1, player2)
-    print(p_eng.game_state["player2"]["active"].status)
     assert p_eng.game_state["player2"]["active"].status is None
 
 
