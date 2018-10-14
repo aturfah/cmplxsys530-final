@@ -150,3 +150,11 @@ SLP_STATUS = "slp"
 BRN_STATUS = "brn"
 PSN_STATUS = "psn"
 TOX_STATUS = "tox"
+
+STATUS_IMMUNITIES = {
+    PAR_STATUS: ["Electric"],
+    FRZ_STATUS: ["Ice"],
+    BRN_STATUS: ["Fire"],
+    PSN_STATUS: ["Poison", "Steel"],
+    TOX_STATUS: ["Poison", "Steel"]
+}
