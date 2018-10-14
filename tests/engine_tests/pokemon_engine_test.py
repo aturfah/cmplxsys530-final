@@ -269,10 +269,10 @@ def test_2ndary_status():
     assert p_eng.game_state["player2"]["active"].status is None
 
 
-# test_run()
-# test_run_multiple_moves()
-# test_run_multiple_pokemon()
-# test_run_infinite()
-# test_heal()
-# test_status_dmg()
+test_run()
+test_run_multiple_moves()
+test_run_multiple_pokemon()
+test_run_infinite()
+test_heal()
+test_status_dmg()
 test_secondary_effects()
