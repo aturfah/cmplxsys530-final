@@ -2,6 +2,7 @@
 
 from math import floor
 
+from config import BRN_STATUS, PAR_STATUS
 from pokemon_helpers.pokemon import Pokemon
 
 
@@ -181,7 +182,7 @@ def test_speed_paralyze():
     """
     exploud = Pokemon(name="exploud", moves=["tackle"])
     exploud_par = Pokemon(name="exploud", moves=["tackle"])
-    exploud_par.status = "par"
+    exploud_par.status = PAR_STATUS
 
     assert exploud.speed == exploud_par.speed
     assert floor(exploud.effective_stat("spe") / 2) ==\
@@ -196,7 +197,7 @@ def test_attack_burn():
     """
     exploud = Pokemon(name="exploud", moves=["tackle"])
     exploud_brn = Pokemon(name="exploud", moves=["tackle"])
-    exploud_brn.status = "brn"
+    exploud_brn.status = BRN_STATUS
 
     assert exploud.attack == exploud_brn.attack
     assert floor(exploud.effective_stat("atk") / 2) ==\
