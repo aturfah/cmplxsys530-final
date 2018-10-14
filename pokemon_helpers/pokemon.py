@@ -5,6 +5,7 @@ from math import floor
 from config import MOVE_DATA
 from config import POKEMON_DATA
 from config import NATURES
+from config import (PAR_STATUS, BRN_STATUS)
 
 from pokemon_helpers.calculate import calculate_hp_stat
 from pokemon_helpers.calculate import calculate_stat
@@ -121,7 +122,7 @@ class Pokemon:
         status_modifier = 1
         if stat == "atk":
             stat_name = "attack"
-            if self.status == "brn":
+            if self.status == BRN_STATUS:
                 status_modifier = 0.5
         elif stat == "def":
             stat_name = "defense"
@@ -131,7 +132,7 @@ class Pokemon:
             stat_name = "sp_defense"
         elif stat == "spe":
             stat_name = "speed"
-            if self.status == "par":
+            if self.status == PAR_STATUS:
                 status_modifier = 0.5
 
         # Apply boosts

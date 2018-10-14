@@ -6,7 +6,10 @@ from uuid import uuid4
 
 from numpy.random import uniform
 
-from config import WEAKNESS_CHART
+from config import WEAKNESS_CHART, STATUS_IMMUNITIES
+from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
+                    BRN_STATUS, PSN_STATUS, TOX_STATUS)
+
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
 
@@ -239,7 +242,7 @@ class PokemonEngine():
         self.game_state[player]["active"].boosts = default_boosts()
 
         # If toxic-ed, reset the turn counter
-        if self.game_state[player]["active"].status == "tox":
+        if self.game_state[player]["active"].status == TOX_STATUS:
             self.game_state[player]["active"].status_turns = 0
 
         # Switch
@@ -273,6 +276,12 @@ class PokemonEngine():
         # Disable too many branches
         # I don't think there's a better way to do this
 
+        # pylint: disable=R0915
+        # Disable too many statements
+        # Right now I don't have everything implemented, so I'll
+        # wait until then to fully break this out.
+        # TODO: Break these out into own functions eventually
+
         if attacker == "player1":
             defender = "player2"
         else:
@@ -282,16 +291,16 @@ class PokemonEngine():
         def_poke = self.game_state[defender]["active"]
 
         # Check for paralysis
-        if atk_poke.status == "par" and uniform() < 0.25:
+        if atk_poke.status == PAR_STATUS and uniform() < 0.25:
             return None
         # Check for freeze
-        elif atk_poke.status == "frz":
+        elif atk_poke.status == FRZ_STATUS:
             # Check for player thaw
             if uniform() < 0.2 or move["type"] == "fire" or move["id"] == "scald":
                 atk_poke.status = None
             else:
                 return None
-        elif atk_poke.status == "slp":
+        elif atk_poke.status == SLP_STATUS:
             # Check for player wake up
             if uniform() < 1.0/3 or atk_poke.status_counter == 3:
                 atk_poke.status = None
@@ -306,7 +315,7 @@ class PokemonEngine():
         def_poke.current_hp -= damage
 
         # Thaw opponent if applicable
-        if def_poke.status == "frz" and (move["type"] == "fire" or move["id"] == "scald"):
+        if def_poke.status == FRZ_STATUS and (move["type"] == "fire" or move["id"] == "scald"):
             def_poke.status = None
 
         # Healing
@@ -319,16 +328,33 @@ class PokemonEngine():
             # No overheal
             atk_poke.current_hp = min(atk_poke.max_hp, atk_poke.current_hp + heal_amount)
 
-        # Move boosts
+        # Stat boosts (for boosting moves)
         if "boosts" in move:
             if move["target"] == "self":
                 for stat in move["boosts"]:
                     atk_poke.boosts[stat] += move["boosts"][stat]
-                    atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
             else:
                 for stat in move["boosts"]:
                     def_poke.boosts[stat] += move["boosts"][stat]
-                    def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
+
+        # Move Secondary effects
+        if damage != 0 and move.get("secondary", {}):
+            secondary_effects = move["secondary"]
+            if uniform(0, 100) < secondary_effects["chance"]:
+                # Apply secondary effect to player
+                if "self" in secondary_effects:
+                    secondary_effect_logic(atk_poke, secondary_effects["self"])
+
+                # Apply secondary effects to the opponent
+                secondary_effect_logic(def_poke, secondary_effects)
+
+        # Floor/Ceiling boosts
+        for stat in atk_poke.boosts:
+            atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
+            atk_poke.boosts[stat] = max(atk_poke.boosts[stat], -6)
+        for stat in def_poke.boosts:
+            def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
+            def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
 
         results = {}
         results["type"] = "ATTACK"
@@ -528,6 +554,25 @@ class PokemonEngine():
             turn_logwriter.write_line(new_line)
 
 
+def secondary_effect_logic(target_poke, secondary_effects):
+    """Apply secondary effect logic to a player's pokemon."""
+    # Apply boosts
+    if "boosts" in secondary_effects:
+        for stat in secondary_effects["boosts"]:
+            target_poke.boosts[stat] += secondary_effects["boosts"][stat]
+
+    # Apply status effects
+    if "status" in secondary_effects and target_poke.status is None:
+        # Check for type immunity
+        type_immunity = False
+        for type_ in target_poke.types:
+            if type_ in STATUS_IMMUNITIES[secondary_effects["status"]]:
+                type_immunity = True
+
+        if not type_immunity:
+            target_poke.status = secondary_effects["status"]
+
+
 def apply_status_damage(pokemon):
     """
     Apply damage for status conditions when appropriate.
@@ -540,13 +585,13 @@ def apply_status_damage(pokemon):
         return
 
     dmg_pct = 0
-    if pokemon.status == "brn":
+    if pokemon.status == BRN_STATUS:
         # Burns do 1/16 of hp
         dmg_pct = 1.0/16
-    elif pokemon.status == "psn":
+    elif pokemon.status == PSN_STATUS:
         # Poison does 1/8 of hp
         dmg_pct = 1.0/8
-    elif pokemon.status == "tox":
+    elif pokemon.status == TOX_STATUS:
         # Toxic does variable damage
         dmg_pct = (pokemon.status_turns+1)*1.0/16
         pokemon.status_turns += 1
