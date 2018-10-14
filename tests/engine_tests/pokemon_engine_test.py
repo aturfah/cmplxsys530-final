@@ -6,6 +6,7 @@ from battle_engine.pokemon_engine import PokemonEngine
 
 from config import (PAR_STATUS, FRZ_STATUS, PSN_STATUS, TOX_STATUS)
 
+
 def test_run():
     """Test running of a pokemon game."""
     exploud = Pokemon(name="exploud", moves=["return"])
@@ -268,6 +269,7 @@ def test_2ndary_status():
 
     p_eng.run_single_turn(player_first_move, player_first_move, player1, player3)
     assert p_eng.game_state["player2"]["active"].status is None
+
 
 test_run()
 test_run_multiple_moves()
