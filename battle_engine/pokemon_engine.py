@@ -319,7 +319,7 @@ class PokemonEngine():
             # No overheal
             atk_poke.current_hp = min(atk_poke.max_hp, atk_poke.current_hp + heal_amount)
 
-        # Move boosts
+        # Stat boosts (for boosting moves)
         if "boosts" in move:
             if move["target"] == "self":
                 for stat in move["boosts"]:
