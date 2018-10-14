@@ -236,32 +236,38 @@ def test_2ndary_status():
 
     player1 = PokemonAgent([spinda])
     player2 = PokemonAgent([charizard_target])
-    player_move = ("ATTACK", 0)
+    player_first_move = ("ATTACK", 0)
 
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player2)
 
     # Assert that Muk gets paralyzed
-    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    p_eng.run_single_turn(player_first_move, player_first_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].status == PAR_STATUS
 
     # Assert that if there's another status effect, it
     # cannot be overwritten
     charizard_target.status = FRZ_STATUS
     p_eng.initialize_battle(player1, player2)
-    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    p_eng.run_single_turn(player_first_move, player_first_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].status == FRZ_STATUS
 
     # Assert that the type immunities are respected
     charizard_target.status = None
 
-    player_move = ("ATTACK", 1)
+    player_second_move = ("ATTACK", 1)
     p_eng.initialize_battle(player1, player2)
 
-    # Assert that Charizard does not get burned
-    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    p_eng.run_single_turn(player_second_move, player_second_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].status is None
 
+    # Assert that if no damage, no status effect
+    trapinch_target = Pokemon(name="trapinch", moves=["synthesis"])
+    player3 = PokemonAgent([trapinch_target])
+    p_eng.initialize_battle(player1, player3)
+
+    p_eng.run_single_turn(player_first_move, player_first_move, player1, player3)
+    assert p_eng.game_state["player2"]["active"].status is None
 
 test_run()
 test_run_multiple_moves()
