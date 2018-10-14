@@ -7,7 +7,8 @@ from uuid import uuid4
 from numpy.random import uniform
 
 from config import WEAKNESS_CHART
-from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS)
+from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
+                    BRN_STATUS, PSN_STATUS, TOX_STATUS)
 
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
@@ -241,7 +242,7 @@ class PokemonEngine():
         self.game_state[player]["active"].boosts = default_boosts()
 
         # If toxic-ed, reset the turn counter
-        if self.game_state[player]["active"].status == "tox":
+        if self.game_state[player]["active"].status == TOX_STATUS:
             self.game_state[player]["active"].status_turns = 0
 
         # Switch
@@ -571,13 +572,13 @@ def apply_status_damage(pokemon):
         return
 
     dmg_pct = 0
-    if pokemon.status == "brn":
+    if pokemon.status == BRN_STATUS:
         # Burns do 1/16 of hp
         dmg_pct = 1.0/16
-    elif pokemon.status == "psn":
+    elif pokemon.status == PSN_STATUS:
         # Poison does 1/8 of hp
         dmg_pct = 1.0/8
-    elif pokemon.status == "tox":
+    elif pokemon.status == TOX_STATUS:
         # Toxic does variable damage
         dmg_pct = (pokemon.status_turns+1)*1.0/16
         pokemon.status_turns += 1
