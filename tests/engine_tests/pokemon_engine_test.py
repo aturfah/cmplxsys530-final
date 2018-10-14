@@ -157,11 +157,11 @@ def test_toxic_dmg():
 
 def test_secondary_effects():
     """Main testing driver for secondary effects."""
-    test_opp_secondary_stat_change()
-    test_player_secondary_stat_changes()
+    test_opp_2ndary_stat_change()
+    test_player_2ndary_stat_changes()
 
 
-def test_opp_secondary_stat_change():
+def test_opp_2ndary_stat_change():
     """Test secondary effects that involve opponent's stat changes."""
     spinda = Pokemon(name="spinda", moves=["acidspray"])
     spinda_target = Pokemon(name="spinda", moves=["synthesis"])
@@ -194,7 +194,7 @@ def test_opp_secondary_stat_change():
     assert p_eng.game_state["player2"]["active"].boosts["spd"] == 0
 
 
-def test_player_secondary_stat_changes():
+def test_player_2ndary_stat_changes():
     """Test for secondary stat changes to self."""
     spinda = Pokemon(name="spinda", moves=["poweruppunch"])
     muk_target = Pokemon(name="muk", moves=["synthesis"])
