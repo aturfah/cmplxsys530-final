@@ -158,6 +158,7 @@ def test_toxic_dmg():
 def test_secondary_effects():
     """Main testing driver for secondary effects."""
     test_opp_secondary_stat_change()
+    test_player_secondary_stat_changes()
 
 
 def test_opp_secondary_stat_change():
@@ -191,6 +192,40 @@ def test_opp_secondary_stat_change():
     p_eng.run_single_turn(player_move, player_move, player1, player3)
 
     assert p_eng.game_state["player2"]["active"].boosts["spd"] == 0
+
+
+def test_player_secondary_stat_changes():
+    """Test for secondary stat changes to self."""
+    spinda = Pokemon(name="spinda", moves=["poweruppunch"])
+    muk_target = Pokemon(name="muk", moves=["synthesis"])
+
+    player1 = PokemonAgent([spinda])
+    player2 = PokemonAgent([muk_target])
+    player_move = ("ATTACK", 0)
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Assert that spinda's attack is +1
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert p_eng.game_state["player1"]["active"].boosts["atk"] == 1
+
+    # Assert that stat doesn't get higher than +6
+    for _ in range(5):
+        p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert p_eng.game_state["player1"]["active"].boosts["atk"] == 6
+
+    # Test that if on damage happens, stat drops don't
+    # Ex: Fighting move to Ghost-type
+    gengar_target = Pokemon(name="gengar", moves=["synthesis"])
+    player3 = PokemonAgent([gengar_target])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player3)
+    p_eng.run_single_turn(player_move, player_move, player1, player3)
+
+    assert p_eng.game_state["player1"]["active"].boosts["atk"] == 0
+
 
 # test_run()
 # test_run_multiple_moves()
