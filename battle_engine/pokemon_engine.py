@@ -332,6 +332,14 @@ class PokemonEngine():
         if damage != 0 and move.get("secondary", {}):
             secondary_effects = move["secondary"]
             if uniform(0, 100) < secondary_effects["chance"]:
+                # Apply secondary effect to player
+                if "self" in secondary_effects:
+                    if "boosts" in secondary_effects["self"]:
+                        # Apply Status boosts to self
+                        for stat in secondary_effects["boosts"]:
+                            atk_poke.boosts[stat] += secondary_effects["boosts"][stat]
+
+                # Apply secondary effect to opponent
                 if "boosts" in secondary_effects:
                     # Apply Status boosts to opponents
                     for stat in secondary_effects["boosts"]:
