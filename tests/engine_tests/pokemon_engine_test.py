@@ -4,7 +4,7 @@ from agent.basic_pokemon_agent import PokemonAgent
 from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
 
-from config import (PAR_STATUS, FRZ_STATUS)
+from config import (PAR_STATUS, FRZ_STATUS, PSN_STATUS, TOX_STATUS)
 
 def test_run():
     """Test running of a pokemon game."""
@@ -117,7 +117,7 @@ def test_poison_dmg():
     """Test that poison damage is applied."""
     exploud = Pokemon(name="exploud", moves=["synthesis"])
     exploud_psn = Pokemon(name="exploud", moves=["synthesis"])
-    exploud_psn.status = "psn"
+    exploud_psn.status = PSN_STATUS
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([exploud_psn])
@@ -135,7 +135,7 @@ def test_toxic_dmg():
     """Toxic damage applied correctly."""
     exploud = Pokemon(name="exploud", moves=["synthesis"])
     exploud_tox = Pokemon(name="exploud", moves=["shadowball"])
-    exploud_tox.status = "tox"
+    exploud_tox.status = TOX_STATUS
 
     player1 = PokemonAgent([exploud])
     player2 = PokemonAgent([exploud_tox])
