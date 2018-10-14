@@ -87,6 +87,10 @@ def set_engine():
         response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
         response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
         response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
+        response["gamestate"] = {}
+        response["gamestate"]["player"] = PLAYER.game_state.gamestate
+        response["gamestate"]["opponent"] = PLAYER.game_state.opp_gamestate
+
 
     return jsonify(response)
 
