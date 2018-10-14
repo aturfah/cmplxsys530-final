@@ -336,8 +336,8 @@ class PokemonEngine():
                 if "self" in secondary_effects:
                     if "boosts" in secondary_effects["self"]:
                         # Apply Status boosts to self
-                        for stat in secondary_effects["boosts"]:
-                            atk_poke.boosts[stat] += secondary_effects["boosts"][stat]
+                        for stat in secondary_effects["self"]["boosts"]:
+                            atk_poke.boosts[stat] += secondary_effects["self"]["boosts"][stat]
 
                 # Apply secondary effect to opponent
                 if "boosts" in secondary_effects:
