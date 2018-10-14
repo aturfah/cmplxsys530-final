@@ -211,7 +211,7 @@ def test_player_secondary_stat_changes():
     assert p_eng.game_state["player1"]["active"].boosts["atk"] == 1
 
     # Assert that stat doesn't get higher than +6
-    for _ in range(5):
+    for _ in range(10):
         p_eng.run_single_turn(player_move, player_move, player1, player2)
     assert p_eng.game_state["player1"]["active"].boosts["atk"] == 6
 
