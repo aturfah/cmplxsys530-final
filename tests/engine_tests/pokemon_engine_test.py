@@ -4,6 +4,7 @@ from agent.basic_pokemon_agent import PokemonAgent
 from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
 
+from config import (PAR_STATUS, FRZ_STATUS)
 
 def test_run():
     """Test running of a pokemon game."""
@@ -240,10 +241,18 @@ def test_2ndary_status():
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player2)
 
-    # Assert that Muk is paralyzed
+    # Assert that Muk gets paralyzed
     p_eng.run_single_turn(player_move, player_move, player1, player2)
     print(p_eng.game_state["player2"]["active"].__dict__)
-    assert p_eng.game_state["player2"]["active"].status == 1
+    assert p_eng.game_state["player2"]["active"].status == PAR_STATUS
+
+    # Assert that if there's another status effect, it
+    # cannot be overwritten
+    muk_target.status = FRZ_STATUS
+    p_eng.initialize_battle(player1, player2)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert p_eng.game_state["player2"]["active"].status == FRZ_STATUS
+
 
 # test_run()
 # test_run_multiple_moves()
