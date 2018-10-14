@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from numpy.random import uniform
 
-from config import WEAKNESS_CHART
+from config import WEAKNESS_CHART, STATUS_IMMUNITIES
 from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
                     BRN_STATUS, PSN_STATUS, TOX_STATUS)
 
@@ -557,7 +557,14 @@ def secondary_effect_logic(target_poke, secondary_effects):
 
     # Apply status effects
     if "status" in secondary_effects and target_poke.status is None:
-        target_poke.status = secondary_effects["status"]
+        # Check for type immunity
+        type_immunity = False
+        for type_ in target_poke.types:
+            if type_ in STATUS_IMMUNITIES[secondary_effects["status"]]:
+                type_immunity = True
+
+        if not type_immunity:
+            target_poke.status = secondary_effects["status"]
 
 
 def apply_status_damage(pokemon):
