@@ -334,16 +334,10 @@ class PokemonEngine():
             if uniform(0, 100) < secondary_effects["chance"]:
                 # Apply secondary effect to player
                 if "self" in secondary_effects:
-                    if "boosts" in secondary_effects["self"]:
-                        # Apply Status boosts to self
-                        for stat in secondary_effects["self"]["boosts"]:
-                            atk_poke.boosts[stat] += secondary_effects["self"]["boosts"][stat]
+                    secondary_effect_logic(atk_poke, secondary_effects["self"])
 
-                # Apply secondary effect to opponent
-                if "boosts" in secondary_effects:
-                    # Apply Status boosts to opponents
-                    for stat in secondary_effects["boosts"]:
-                        def_poke.boosts[stat] += secondary_effects["boosts"][stat]
+                # Apply secondary effects to the opponent
+                secondary_effect_logic(def_poke, secondary_effects)
 
         # Floor/Ceiling boosts
         for stat in atk_poke.boosts:
@@ -551,9 +545,12 @@ class PokemonEngine():
             turn_logwriter.write_line(new_line)
 
 
-def secondary_effect_logic():
+def secondary_effect_logic(target_poke, secondary_effects):
     """Apply secondary effect logic to a player's pokemon."""
-    pass
+    if "boosts" in secondary_effects:
+        # Apply boosts
+        for stat in secondary_effects["boosts"]:
+            target_poke.boosts[stat] += secondary_effects["boosts"][stat]
 
 
 def apply_status_damage(pokemon):
