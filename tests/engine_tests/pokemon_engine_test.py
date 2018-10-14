@@ -159,6 +159,7 @@ def test_secondary_effects():
     """Main testing driver for secondary effects."""
     test_opp_2ndary_stat_change()
     test_player_2ndary_stat_changes()
+    test_2ndary_status()
 
 
 def test_opp_2ndary_stat_change():
@@ -226,6 +227,23 @@ def test_player_2ndary_stat_changes():
 
     assert p_eng.game_state["player1"]["active"].boosts["atk"] == 0
 
+
+def test_2ndary_status():
+    """Status effects as secondary effect."""
+    spinda = Pokemon(name="spinda", moves=["nuzzle"])
+    muk_target = Pokemon(name="muk", moves=["synthesis"])
+
+    player1 = PokemonAgent([spinda])
+    player2 = PokemonAgent([muk_target])
+    player_move = ("ATTACK", 0)
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Assert that Muk is paralyzed
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    print(p_eng.game_state["player2"]["active"].__dict__)
+    assert p_eng.game_state["player2"]["active"].status == 1
 
 # test_run()
 # test_run_multiple_moves()
