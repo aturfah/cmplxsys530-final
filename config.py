@@ -142,3 +142,9 @@ for poke_name in USAGE_STATS["pu"]:
     TEMP_DICT[mod_name] = USAGE_STATS["pu"][poke_name]
 USAGE_STATS["pu"] = TEMP_DICT
 del TEMP_DICT
+
+# Status strings
+PAR_STATUS = "par"
+FRZ_STATUS = "frz"
+SLP_STATUS = "slp"
+BRN_STATUS = "brn"
