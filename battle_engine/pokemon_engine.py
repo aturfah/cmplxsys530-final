@@ -7,6 +7,8 @@ from uuid import uuid4
 from numpy.random import uniform
 
 from config import WEAKNESS_CHART
+from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS)
+
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
 
@@ -282,16 +284,16 @@ class PokemonEngine():
         def_poke = self.game_state[defender]["active"]
 
         # Check for paralysis
-        if atk_poke.status == "par" and uniform() < 0.25:
+        if atk_poke.status == PAR_STATUS and uniform() < 0.25:
             return None
         # Check for freeze
-        elif atk_poke.status == "frz":
+        elif atk_poke.status == FRZ_STATUS:
             # Check for player thaw
             if uniform() < 0.2 or move["type"] == "fire" or move["id"] == "scald":
                 atk_poke.status = None
             else:
                 return None
-        elif atk_poke.status == "slp":
+        elif atk_poke.status == SLP_STATUS:
             # Check for player wake up
             if uniform() < 1.0/3 or atk_poke.status_counter == 3:
                 atk_poke.status = None
@@ -306,7 +308,7 @@ class PokemonEngine():
         def_poke.current_hp -= damage
 
         # Thaw opponent if applicable
-        if def_poke.status == "frz" and (move["type"] == "fire" or move["id"] == "scald"):
+        if def_poke.status == FRZ_STATUS and (move["type"] == "fire" or move["id"] == "scald"):
             def_poke.status = None
 
         # Healing
