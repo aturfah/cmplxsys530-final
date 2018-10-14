@@ -549,10 +549,14 @@ class PokemonEngine():
 
 def secondary_effect_logic(target_poke, secondary_effects):
     """Apply secondary effect logic to a player's pokemon."""
+    # Apply boosts
     if "boosts" in secondary_effects:
-        # Apply boosts
         for stat in secondary_effects["boosts"]:
             target_poke.boosts[stat] += secondary_effects["boosts"][stat]
+
+    # Apply status effects
+    if "status" in secondary_effects and target_poke.status is None:
+        target_poke.status = secondary_effects["status"]
 
 
 def apply_status_damage(pokemon):
