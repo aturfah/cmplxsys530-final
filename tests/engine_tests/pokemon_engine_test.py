@@ -199,10 +199,10 @@ def test_opp_2ndary_stat_change():
 def test_player_2ndary_stat_changes():
     """Test for secondary stat changes to self."""
     spinda = Pokemon(name="spinda", moves=["poweruppunch"])
-    muk_target = Pokemon(name="muk", moves=["synthesis"])
+    scyther_target = Pokemon(name="scyther", moves=["synthesis"])
 
     player1 = PokemonAgent([spinda])
-    player2 = PokemonAgent([muk_target])
+    player2 = PokemonAgent([scyther_target])
     player_move = ("ATTACK", 0)
 
     p_eng = PokemonEngine()
@@ -243,7 +243,6 @@ def test_2ndary_status():
 
     # Assert that Muk gets paralyzed
     p_eng.run_single_turn(player_move, player_move, player1, player2)
-    print(p_eng.game_state["player2"]["active"].__dict__)
     assert p_eng.game_state["player2"]["active"].status == PAR_STATUS
 
     # Assert that if there's another status effect, it
@@ -252,6 +251,22 @@ def test_2ndary_status():
     p_eng.initialize_battle(player1, player2)
     p_eng.run_single_turn(player_move, player_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].status == FRZ_STATUS
+
+    # Assert that the type immunities are respected
+    spinda = Pokemon(name="spinda", moves=["inferno"])
+    charizard_target = Pokemon(name="charizard", moves=["synthesis"])
+
+    player1 = PokemonAgent([spinda])
+    player2 = PokemonAgent([charizard_target])
+    player_move = ("ATTACK", 0)
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Assert that Charizard does not get burned
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    print(p_eng.game_state["player2"]["active"].status)
+    assert p_eng.game_state["player2"]["active"].status is None
 
 
 # test_run()
