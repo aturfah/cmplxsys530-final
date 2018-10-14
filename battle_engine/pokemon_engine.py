@@ -276,6 +276,12 @@ class PokemonEngine():
         # Disable too many branches
         # I don't think there's a better way to do this
 
+        # pylint: disable=R0915
+        # Disable too many statements
+        # Right now I don't have everything implemented, so I'll
+        # wait until then to fully break this out.
+        # TODO: Break these out into own functions eventually
+
         if attacker == "player1":
             defender = "player2"
         else:
