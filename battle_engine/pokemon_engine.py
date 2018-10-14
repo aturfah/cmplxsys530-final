@@ -551,6 +551,11 @@ class PokemonEngine():
             turn_logwriter.write_line(new_line)
 
 
+def secondary_effect_logic():
+    """Apply secondary effect logic to a player's pokemon."""
+    pass
+
+
 def apply_status_damage(pokemon):
     """
     Apply damage for status conditions when appropriate.
