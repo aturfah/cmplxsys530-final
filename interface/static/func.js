@@ -24,6 +24,7 @@ function submit_form() {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById("game_log").innerHTML = ""
             set_opts(JSON.parse(this.responseText));
+            update_gamestate(JSON.parse(this.responseText));
         } else if (this.status == 500) {
             console.log("Something went wrong...")
         }
@@ -294,7 +295,13 @@ function update_log(data) {
 }
 
 function update_gamestate(data) {
-    console.log(data["gamestate"])
+    player_div = document.getElementById("player_info");
+    player_gs = data["gamestate"]["player"];
+    console.log(player_gs);
+
+    opponent_div = document.getElementById("opponent_info");
+    opponent_gs = data["gamestate"]["opponent"];
+    console.log(opponent_gs);
 }
 
 function update_battle_finished(data) {
