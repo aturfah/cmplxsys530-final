@@ -176,6 +176,10 @@ class Pokemon:
 
         return True
 
+    def to_json(self):
+        """Return JSON serializable version of self."""
+        return self.__dict__
+
 
 def default_boosts():
     """Generate dictionary with default boost levels."""
