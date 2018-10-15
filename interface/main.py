@@ -80,6 +80,9 @@ def set_engine():
         else:
             OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team, tier="pu")
 
+        PLAYER.id = "player1"
+        OPPONENT.id = "player2"
+
         ENGINE.initialize_battle(PLAYER, OPPONENT)
 
         # Set the response data
