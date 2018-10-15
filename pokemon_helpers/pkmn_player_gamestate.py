@@ -416,18 +416,13 @@ class PokemonPlayerGameState:
         """Convert this instance to something the interface can use."""
         output = {}
 
-        # Add the player's team
+        # Add the player's gamestate info
         output["player"] = {}
         output["player"]["active"] = self.gamestate["active"].to_json()
         output["player"]["team"] = [pkmn.to_json() for pkmn in self.gamestate["team"]]
 
-        print("\n\n")
         # Add opponent's info
-        output["opponent"] = {}
-        for info in self.opp_gamestate:
-            for item in self.opp_gamestate[info]:
-                print(item)
-                print(self.opp_gamestate[info][item])
+        output["opponent"] = self.opp_gamestate
 
         return output
 
