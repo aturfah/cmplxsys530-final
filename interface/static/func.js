@@ -298,6 +298,11 @@ function update_gamestate(data) {
     player_div = document.getElementById("player_info");
     player_gs = data["gamestate"]["player"];
     console.log(player_gs);
+    player_section = document.createElement("ul")
+    player_section.appendChild(document.createElement("li"))
+
+    player_div.innerHTML = ""
+    player_div.appendChild(player_section)
 
     opponent_div = document.getElementById("opponent_info");
     opponent_gs = data["gamestate"]["opponent"];
