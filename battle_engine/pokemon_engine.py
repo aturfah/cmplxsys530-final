@@ -624,7 +624,7 @@ def anonymize_gamestate_helper(data):
             "name": name,
             "pct_hp": pct_hp,
             "status": status,
-            "dex_num": data["active"].dex_num
+            "dex_num": pokemon.dex_num
         })
 
     if data["active"] is not None:
