@@ -234,7 +234,8 @@ function submit_move(move_choice) {
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             set_opts(JSON.parse(this.responseText));
-            update_log(JSON.parse(this.responseText))
+            update_log(JSON.parse(this.responseText));
+            update_gamestate(JSON.parse(this.responseText));
         } else if (this.status == 500 || this.status == 404) {
             console.log("Something went wrong...");
         }
@@ -290,6 +291,10 @@ function update_log(data) {
     }
     game_log.appendChild(new_entry)
 
+}
+
+function update_gamestate(data) {
+    console.log(data["gamestate"])
 }
 
 function update_battle_finished(data) {
