@@ -412,6 +412,9 @@ class PokemonPlayerGameState:
         """
         return self.__getattribute__(key)
 
+    def to_json(self):
+        """Convert this instance to something the interface can use."""
+        return {}
 
 def contains_switch(turn_info):
     """
