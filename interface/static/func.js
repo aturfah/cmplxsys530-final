@@ -386,7 +386,7 @@ function create_player_pkmn_panel(pkmn_data, active) {
     return(data_div)
 }
 
-function create_opponent_pkmn_panel(pkmn_data, active) {
+function create_opponent_pkmn_panel(pkmn_data, active, investment_data, move_data) {
     console.log(pkmn_data)
     console.log(active)
 
@@ -420,7 +420,8 @@ function update_gamestate(data) {
     //Make divs for opponent's info
     opponent_div.appendChild(create_opponent_pkmn_panel(opponent_gs["data"]["active"], true));
     opponent_gs["data"]["team"].forEach(function (pkmn_datum) {
-        opponent_div.appendChild(create_opponent_pkmn_panel(pkmn_datum, false))
+        let poke_name = pkmn_datum["name"]
+        opponent_div.appendChild(create_opponent_pkmn_panel(pkmn_datum, false, opponent_gs["moves"][poke_name], opponent_gs["investment"][poke_name]))
     })
 
     make_pkmn_data_visible(player_gs["active"]["dex_num"], "player_info_")
