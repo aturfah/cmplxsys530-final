@@ -422,6 +422,30 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
     speed_element.innerHTML = "<b>Speed Range:</b> ".concat(investment_data["spe"][0], " to ", investment_data["spe"][1])
     data_list.appendChild(speed_element)
 
+    // Display Attack, Defense, Sp.Attack, Sp.Defense investment inferences
+    var stats = [["attack", "atk"], ["defense", "def"], ["sp_attack","spa"], ["sp_defense", "spd"]];
+    var stat_label = document.createElement("li");
+    stat_label.innerHTML = "<b>Stats:</b>"
+    var stat_ul = document.createElement("ul");
+    stats.forEach(function(stat_pair){
+        let stat_name = stat_pair[0];
+        let stat_key = stat_pair[1];
+        let stat_li = document.createElement("li");
+        stat_li.innerHTML = uc_first_char(stat_name).concat(" Investments"); 
+        stat_ul.appendChild(stat_li)
+
+        // List for the investment info
+        investment_ul = document.createElement("ul")
+        investment_data[stat_key].forEach(function (investment_pair) {
+            let temp_li = document.createElement("li")
+            temp_li.innerHTML = "".concat("Positive Nature: ", investment_pair["positive_nature"], " || Investment: ", investment_pair["max_evs"])
+            investment_ul.appendChild(temp_li)
+        });
+        stat_ul.appendChild(investment_ul)
+    });
+    data_list.appendChild(stat_label)
+    data_list.appendChild(stat_ul)
+
 
     data_div.appendChild(data_list)
 
