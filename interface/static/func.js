@@ -410,12 +410,18 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
     hp_element.innerHTML = "<b>HP remaining:</b> ".concat(pct_hp, "%")
     data_list.appendChild(hp_element)
 
-    // Add Pokemon Status
+    // Add Pokemon's status, if present
     if (pkmn_data["status"] !== null) {
-        var status_element = document.createElement("li")
-        status_element.innerHTML = "<b>Status:</b>: ".concat(pkmn_data["status"])
+        let status_element = document.createElement("li")
+        status_element.innerHTML = "<b>Status:</b> ".concat(pkmn_data["status"])
         data_list.appendChild(status_element)
     }
+
+    // Display speed range
+    var speed_element = document.createElement("li")
+    speed_element.innerHTML = "<b>Speed Range:</b> ".concat(investment_data["spe"][0], " to ", investment_data["spe"][1])
+    data_list.appendChild(speed_element)
+
 
     data_div.appendChild(data_list)
 
