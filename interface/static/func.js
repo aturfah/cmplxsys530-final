@@ -413,7 +413,7 @@ function update_gamestate(data) {
         player_div.appendChild(create_player_pkmn_panel(pkmn_datum, false));
     });
 
-    make_player_pkmn_data_visible(2)
+    make_player_pkmn_data_visible(player_gs["active"]["dex_num"], "player_info_")
 }
 
 function update_battle_finished(data) {
@@ -426,10 +426,9 @@ function update_battle_finished(data) {
     }
 }
 
-function make_player_pkmn_data_visible(dex_num) {
+function make_player_pkmn_data_visible(dex_num, id_prefix) {
     // Make other divs invisible
     console.log(dex_num)
-    var id_prefix = "player_info_"
     player_info_div = document.getElementById("player_info");
     player_info_div.childNodes.forEach(function (child_node) {
         if (child_node.id.includes(id_prefix)) {
