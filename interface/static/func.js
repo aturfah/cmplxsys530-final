@@ -321,9 +321,6 @@ function create_team_list(gamestate, owner){
 }
 
 function create_player_pkmn_panel(pkmn_data, active) {
-    console.log(pkmn_data)
-    console.log(active)
-
     var id_prefix = "player_info_"
     var data_div = document.createElement("div");
     data_div.id = id_prefix.concat(pkmn_data["dex_num"]);
@@ -389,6 +386,13 @@ function create_player_pkmn_panel(pkmn_data, active) {
     return(data_div)
 }
 
+function create_opponent_pkmn_panel(pkmn_data, active) {
+    console.log(pkmn_data)
+    console.log(active)
+
+    return document.createElement("p")
+}
+
 function update_gamestate(data) {
     // Set up variables for player and opponent
     var player_div = document.getElementById("player_info");
@@ -413,7 +417,14 @@ function update_gamestate(data) {
         player_div.appendChild(create_player_pkmn_panel(pkmn_datum, false));
     });
 
-    make_player_pkmn_data_visible(player_gs["active"]["dex_num"], "player_info_")
+    //Make divs for opponent's info
+    opponent_div.appendChild(create_opponent_pkmn_panel(opponent_gs["data"]["active"], true));
+    opponent_gs["data"]["team"].forEach(function (pkmn_datum) {
+        opponent_div.appendChild(create_opponent_pkmn_panel(pkmn_datum, false))
+    })
+
+    make_pkmn_data_visible(player_gs["active"]["dex_num"], "player_info_")
+    make_pkmn_data_visible(opponent_gs["data"]["active"]["dex_num"], "opponent_info_")
 }
 
 function update_battle_finished(data) {
@@ -426,9 +437,8 @@ function update_battle_finished(data) {
     }
 }
 
-function make_player_pkmn_data_visible(dex_num, id_prefix) {
+function make_pkmn_data_visible(dex_num, id_prefix) {
     // Make other divs invisible
-    console.log(dex_num)
     player_info_div = document.getElementById("player_info");
     player_info_div.childNodes.forEach(function (child_node) {
         if (child_node.id.includes(id_prefix)) {
