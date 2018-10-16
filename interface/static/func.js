@@ -334,12 +334,24 @@ function create_player_pkmn_panel(pkmn_data, active) {
     hp_element.innerHTML = "<b>Hit Points:</b> ".concat(pkmn_data["current_hp"], "/", pkmn_data["max_hp"])
     data_list.appendChild(hp_element)
 
-    // Add Pokemon's status
+    // Add Pokemon's status, if present
     if (pkmn_data["status"] !== null) {
-        var status_element = document.createElement("li")
+        let status_element = document.createElement("li")
         status_element.innerHTML = "<b>Status:</b> ".concat(pkmn_data["status"])
         data_list.appendChild(status_element)
     }
+
+    // Display Pokemon's moves
+    var moves_label = document.createElement("li")
+    moves_label.innerHTML = "<b>Moves:</b>"
+    var move_sublist = document.createElement("ul");
+    pkmn_data["moves"].forEach(function (move_info){
+        let move_li = document.createElement("li");
+        move_li.innerHTML = move_info["name"]
+        move_sublist.appendChild(move_li)
+    });
+    data_list.appendChild(moves_label)
+    data_list.appendChild(move_sublist);
 
     data_div.appendChild(data_list);
     return(data_div)
