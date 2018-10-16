@@ -355,6 +355,30 @@ function create_player_pkmn_panel(pkmn_data, active) {
         data_list.appendChild(move_sublist);
     }
 
+    // Display pokemon's stats, and boosts (if active)
+    var stats = [["attack", "atk"], ["defense", "def"], ["sp_attack","spa"], ["sp_defense", "spd"], ["speed", "spe"]];
+    var stat_label = document.createElement("li");
+    stat_label.innerHTML = "<b>Stats:</b>"
+    var stat_ul = document.createElement("ul");
+    stats.forEach(function (stat_pair) {
+        let stat_name = stat_pair[0];
+        let stat_key = stat_pair[1];
+        stat_li = document.createElement("li");
+        var boost_text = ""
+        if (pkmn_data["boosts"][stat_key] !== 0) {
+            boost_text = " @ "
+            if (pkmn_data["boosts"][stat_key] > 0) {
+                boost_text = boost_text.concat("+", pkmn_data["boosts"][stat_key])
+            } else {
+                boost_text = boost_text.concat(pkmn_data["boosts"][stat_key])
+            }
+        }
+        stat_li.innerHTML = stat_name.concat(":", pkmn_data[stat_name], boost_text)
+        stat_ul.appendChild(stat_li)
+    });
+    data_list.appendChild(stat_label)
+    data_list.appendChild(stat_ul)
+
     data_div.appendChild(data_list);
     return(data_div)
 }
