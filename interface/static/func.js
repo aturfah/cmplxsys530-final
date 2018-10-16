@@ -425,3 +425,19 @@ function update_battle_finished(data) {
         document.getElementById("opp_pct_hp").innerHTML = "0%"
     }
 }
+
+function make_player_pkmn_data_visible(dex_num) {
+    // Make other divs invisible
+    console.log(dex_num)
+    var id_prefix = "player_info_"
+    player_info_div = document.getElementById("player_info");
+    player_info_div.childNodes.forEach(function (child_node) {
+        if (child_node.id.includes(id_prefix)) {
+            child_node.className = "invisible_panel"
+        }
+    });
+
+    // Make this div visible
+    target_div = document.getElementById(id_prefix.concat(dex_num));
+    target_div.className = null
+}

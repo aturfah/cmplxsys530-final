@@ -13,3 +13,8 @@ ul.pokemon_list {
 ul.pokemon_list li {
     display: inline-block;
 }
+
+div.invisible_panel {
+    color: red;
+    display: none;
+}
