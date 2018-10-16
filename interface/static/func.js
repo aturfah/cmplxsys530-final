@@ -315,13 +315,31 @@ function create_team_list(gamestate){
 }
 
 function create_player_pkmn_panel(pkmn_data, active) {
-    console.log("HERE!!!")
-    console.log(active)
     console.log(pkmn_data)
+    console.log(active)
+
     var id_prefix = "player_"
     var data_div = document.createElement("div");
     data_div.id = id_prefix.concat(pkmn_data["dex_num"]);
-    data_div.innerHTML = "Doot";
+
+    data_list = document.createElement("ul")
+
+    // Add Pokemon's name
+    var name_element = document.createElement("li")
+    name_element.innerHTML = "<b>Name:</b> ".concat(pkmn_data["name"])
+    data_list.appendChild(name_element)
+
+    // Add Pokemon's HP
+    var hp_element = document.createElement("li")
+    hp_element.innerHTML = "<b>Hit Points:</b> ".concat(pkmn_data["current_hp"], "/", pkmn_data["max_hp"])
+    data_list.appendChild(hp_element)
+
+    // Add Pokemon's status
+    var status_element = document.createElement("li")
+    status_element.innerHTML = "<b>Status:</b>".concat(pkmn_data["status"])
+    data_list.appendChild(status_element)
+
+    data_div.appendChild(data_list);
     return(data_div)
 }
 
