@@ -1,3 +1,7 @@
+function uc_first_char(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function submit_form() {
     var game_choice = document.getElementById("game_dropdown").value;
     var opp_choice = document.getElementById("opp_dropdown").value;
@@ -300,12 +304,14 @@ function create_team_list(gamestate){
     team_icons.className = "pokemon_list"
 
     var temp_li = document.createElement("li");
+    temp_li.id = "player_icon_".concat(gamestate["active"]["dex_num"])
     var active_icon = document.createElement("img");
     active_icon.src = icon_placeholder.replace("{DEX_NUM}", gamestate["active"]["dex_num"].toString().padStart(3, "0"));
     temp_li.appendChild(active_icon)
     team_icons.appendChild(temp_li);
     gamestate["team"].forEach(function (pkmn) {
         let temp_li = document.createElement("li");
+        temp_li.id = "player_icon_".concat(pkmn["dex_num"])
         var team_icon = document.createElement("img");
         team_icon.src = icon_placeholder.replace("{DEX_NUM}", pkmn["dex_num"].toString().padStart(3, "0"));
         temp_li.appendChild(team_icon);
@@ -318,7 +324,7 @@ function create_player_pkmn_panel(pkmn_data, active) {
     console.log(pkmn_data)
     console.log(active)
 
-    var id_prefix = "player_"
+    var id_prefix = "player_info_"
     var data_div = document.createElement("div");
     data_div.id = id_prefix.concat(pkmn_data["dex_num"]);
 
@@ -326,7 +332,7 @@ function create_player_pkmn_panel(pkmn_data, active) {
 
     // Add Pokemon's name
     var name_element = document.createElement("li")
-    name_element.innerHTML = "<b>Name:</b> ".concat(pkmn_data["name"])
+    name_element.innerHTML = "<b>Name:</b> ".concat(uc_first_char(pkmn_data["name"]));
     data_list.appendChild(name_element)
 
     // Add Pokemon's HP
@@ -373,7 +379,7 @@ function create_player_pkmn_panel(pkmn_data, active) {
                 boost_text = boost_text.concat(pkmn_data["boosts"][stat_key])
             }
         }
-        stat_li.innerHTML = stat_name.concat(":", pkmn_data[stat_name], boost_text)
+        stat_li.innerHTML = uc_first_char(stat_name).concat(": ", pkmn_data[stat_name], boost_text)
         stat_ul.appendChild(stat_li)
     });
     data_list.appendChild(stat_label)
