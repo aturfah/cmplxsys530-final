@@ -392,7 +392,21 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
     console.log(move_data)
     console.log(investment_data)
 
-    return document.createElement("p")
+    // Set up the and preliminary list
+    var id_prefix = "opponent_info_"
+    var data_div = document.createElement("div");
+    data_div.id = id_prefix.concat(pkmn_data["dex_num"]);
+
+    data_list = document.createElement("ul")
+
+    // Add pokemon's name
+    var name_element = document.createElement("li")
+    name_element.innerHTML = "<b>Name:</b> ".concat(uc_first_char(pkmn_data["name"]));
+    data_list.appendChild(name_element)
+
+    data_div.appendChild(data_list)
+
+    return data_div
 }
 
 function update_gamestate(data) {
