@@ -301,7 +301,7 @@ function update_gamestate(data) {
     var player_gs = data["gamestate"]["player"];
     console.log(player_gs);
 
-    // Make team icons
+    // Make team icons for player
     var team_icons = document.createElement("ul");
     team_icons.className = "pokemon_list"
 
@@ -320,7 +320,7 @@ function update_gamestate(data) {
     player_div.innerHTML = ""
     player_div.appendChild(team_icons)
 
-
+    // Make team icons for opponent
     var opponent_div = document.getElementById("opponent_info");
     var opponent_gs = data["gamestate"]["opponent"];
     console.log(opponent_gs);
