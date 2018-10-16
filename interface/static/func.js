@@ -294,36 +294,41 @@ function update_log(data) {
 
 }
 
-function update_gamestate(data) {
+function create_team_list(gamestate){
     var icon_placeholder = "https://www.serebii.net/pokedex-sm/icon/{DEX_NUM}.png"
-    
-    var player_div = document.getElementById("player_info");
-    var player_gs = data["gamestate"]["player"];
-    console.log(player_gs);
-
-    // Make team icons for player
     var team_icons = document.createElement("ul");
     team_icons.className = "pokemon_list"
 
     var temp_li = document.createElement("li");
     var active_icon = document.createElement("img");
-    active_icon.src = icon_placeholder.replace("{DEX_NUM}", player_gs["active"]["dex_num"].toString().padStart(3, "0"));
+    active_icon.src = icon_placeholder.replace("{DEX_NUM}", gamestate["active"]["dex_num"].toString().padStart(3, "0"));
     temp_li.appendChild(active_icon)
     team_icons.appendChild(temp_li);
-    player_gs["team"].forEach(function (pkmn) {
+    gamestate["team"].forEach(function (pkmn) {
         let temp_li = document.createElement("li");
         var team_icon = document.createElement("img");
         team_icon.src = icon_placeholder.replace("{DEX_NUM}", pkmn["dex_num"].toString().padStart(3, "0"));
         temp_li.appendChild(team_icon);
         team_icons.appendChild(temp_li);
     });
+    return(team_icons)
+}
+
+function update_gamestate(data) {
+    var player_div = document.getElementById("player_info");
+    var player_gs = data["gamestate"]["player"];
+    console.log(player_gs);
+
+    // Make team icons for player
     player_div.innerHTML = ""
-    player_div.appendChild(team_icons)
+    player_div.appendChild(create_team_list(player_gs));
 
     // Make team icons for opponent
     var opponent_div = document.getElementById("opponent_info");
     var opponent_gs = data["gamestate"]["opponent"];
     console.log(opponent_gs);
+    opponent_div.innerHTML = "";
+    opponent_div.appendChild(create_team_list(opponent_gs["data"]));
 }
 
 function update_battle_finished(data) {
