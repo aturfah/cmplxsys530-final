@@ -404,6 +404,13 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
     name_element.innerHTML = "<b>Name:</b> ".concat(uc_first_char(pkmn_data["name"]));
     data_list.appendChild(name_element)
 
+    // Add Pokemon % HP
+    var hp_element = document.createElement("li")
+    var pct_hp = 100 * pkmn_data["pct_hp"]
+    hp_element.innerHTML = "<b>HP remaining:</b> ".concat(pct_hp, "%")
+    data_list.appendChild(hp_element)
+
+
     data_div.appendChild(data_list)
 
     return data_div
