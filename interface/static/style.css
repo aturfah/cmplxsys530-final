@@ -5,3 +5,11 @@ select {
 div {
     vertical-align:top;
 }
+
+ul.pokemon_list {
+    text-align: center;
+}
+
+ul.pokemon_list li {
+    display: inline-block;
+}
