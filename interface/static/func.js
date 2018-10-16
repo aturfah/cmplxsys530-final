@@ -314,10 +314,15 @@ function create_team_list(gamestate){
     return(team_icons)
 }
 
-function create_player_pkmn_panel(player_gs) {
-    var temp_output = document.createElement("div")
-    temp_output.innerHTML = "Doot"
-    return(temp_output)
+function create_player_pkmn_panel(pkmn_data, active) {
+    console.log("HERE!!!")
+    console.log(active)
+    console.log(pkmn_data)
+    var id_prefix = "player_"
+    var data_div = document.createElement("div");
+    data_div.id = id_prefix.concat(pkmn_data["dex_num"]);
+    data_div.innerHTML = "Doot";
+    return(data_div)
 }
 
 function update_gamestate(data) {
@@ -339,7 +344,10 @@ function update_gamestate(data) {
     opponent_div.appendChild(create_team_list(opponent_gs["data"]));
 
     //Make divs for the player's info
-    player_div.appendChild(create_player_pkmn_panel(player_gs))
+    player_div.appendChild(create_player_pkmn_panel(player_gs["active"], true));
+    player_gs["team"].forEach(function (pkmn_datum) {
+        player_div.appendChild(create_player_pkmn_panel(pkmn_datum, false));
+    });
 }
 
 function update_battle_finished(data) {
