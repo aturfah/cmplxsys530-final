@@ -314,21 +314,32 @@ function create_team_list(gamestate){
     return(team_icons)
 }
 
+function create_player_pkmn_panel(player_gs) {
+    var temp_output = document.createElement("div")
+    temp_output.innerHTML = "Doot"
+    return(temp_output)
+}
+
 function update_gamestate(data) {
+    // Set up variables for player and opponent
     var player_div = document.getElementById("player_info");
     var player_gs = data["gamestate"]["player"];
     console.log(player_gs);
+
+    var opponent_div = document.getElementById("opponent_info");
+    var opponent_gs = data["gamestate"]["opponent"];
+    console.log(opponent_gs);
 
     // Make team icons for player
     player_div.innerHTML = ""
     player_div.appendChild(create_team_list(player_gs));
 
     // Make team icons for opponent
-    var opponent_div = document.getElementById("opponent_info");
-    var opponent_gs = data["gamestate"]["opponent"];
-    console.log(opponent_gs);
     opponent_div.innerHTML = "";
     opponent_div.appendChild(create_team_list(opponent_gs["data"]));
+
+    //Make divs for the player's info
+    player_div.appendChild(create_player_pkmn_panel(player_gs))
 }
 
 function update_battle_finished(data) {
