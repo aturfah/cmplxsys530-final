@@ -417,10 +417,20 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
         data_list.appendChild(status_element)
     }
 
-    // Display speed range
-    var speed_element = document.createElement("li")
-    speed_element.innerHTML = "<b>Speed Range:</b> ".concat(investment_data["spe"][0], " to ", investment_data["spe"][1])
-    data_list.appendChild(speed_element)
+    // Display known moves
+    if (move_data) {
+        var move_label = document.createElement("li")
+        move_label.innerHTML = "<b>Moves</b>"
+        data_list.appendChild(move_label)
+        var move_ul = document.createElement("ul")
+        move_data.forEach(function (move_info) {
+            let move_li = document.createElement("li")
+            move_li.innerHTML = move_info["name"]
+            move_ul.appendChild(move_li)
+        });
+        data_list.appendChild(move_label)
+        data_list.appendChild(move_ul)
+    }
 
     // Display Attack, Defense, Sp.Attack, Sp.Defense investment inferences
     var stats = [["attack", "atk"], ["defense", "def"], ["sp_attack","spa"], ["sp_defense", "spd"]];
@@ -446,6 +456,10 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
     data_list.appendChild(stat_label)
     data_list.appendChild(stat_ul)
 
+        // Display speed range
+        var speed_element = document.createElement("li")
+        speed_element.innerHTML = "<b>Speed Range:</b> ".concat(investment_data["spe"][0], " to ", investment_data["spe"][1])
+        data_list.appendChild(speed_element)
 
     data_div.appendChild(data_list)
 
