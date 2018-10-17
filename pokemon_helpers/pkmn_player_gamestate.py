@@ -426,6 +426,7 @@ class PokemonPlayerGameState:
 
         return output
 
+
 def contains_switch(turn_info):
     """
     Determine if switching info contains Switch information.
