@@ -428,7 +428,7 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
     }
 
     // Display Attack, Defense, Sp.Attack, Sp.Defense investment inferences
-    var stats = [["attack", "atk"], ["defense", "def"], ["sp_attack","spa"], ["sp_defense", "spd"]];
+    var stats = [["hitpoints", "hp"], ["attack", "atk"], ["defense", "def"], ["sp_attack","spa"], ["sp_defense", "spd"]];
     var stat_label = document.createElement("li");
     stat_label.innerHTML = "<b>Stats:</b>"
     var stat_ul = document.createElement("ul");
@@ -443,7 +443,11 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
         investment_ul = document.createElement("ul");
         investment_data[stat_key].forEach(function (investment_pair) {
             let temp_li = document.createElement("li");
-            temp_li.innerHTML = "".concat("Positive Nature: ", investment_pair["positive_nature"], " || Investment: ", investment_pair["max_evs"]);
+            temp_li.innerHTML = ""
+            if (investment_pair["positive_nature"] !== undefined) {
+                temp_li.innerHTML = temp_li.innerHTML.concat("Positive Nature: ", investment_pair["positive_nature"], " || ")
+            }
+            temp_li.innerHTML = temp_li.innerHTML.concat("Investment: ", investment_pair["max_evs"]);
             investment_ul.appendChild(temp_li);
         });
         stat_ul.appendChild(investment_ul);
