@@ -387,11 +387,6 @@ function create_player_pkmn_panel(pkmn_data, active) {
 }
 
 function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_data) {
-    console.log(active)
-    console.log(pkmn_data)
-    console.log(move_data)
-    console.log(investment_data)
-
     // Set up the and preliminary list
     var id_prefix = "opponent_info_"
     var data_div = document.createElement("div");
@@ -497,8 +492,8 @@ function update_gamestate(data) {
         opponent_div.appendChild(create_opponent_pkmn_panel(pkmn_datum, false, opponent_gs["moves"][poke_name], opponent_gs["investment"][poke_name]))
     })
 
-    make_pkmn_data_visible(player_gs["active"]["dex_num"], "player_info_")
-    make_pkmn_data_visible(opponent_gs["data"]["active"]["dex_num"], "opponent_info_")
+    make_pkmn_data_visible(player_gs["active"]["dex_num"], "player_info", "player_info_")
+    make_pkmn_data_visible(opponent_gs["data"]["active"]["dex_num"], "opponent_info", "opponent_info_")
 }
 
 function update_battle_finished(data) {
@@ -511,9 +506,9 @@ function update_battle_finished(data) {
     }
 }
 
-function make_pkmn_data_visible(dex_num, id_prefix) {
+function make_pkmn_data_visible(dex_num, info_div, id_prefix) {
     // Make other divs invisible
-    player_info_div = document.getElementById("player_info");
+    player_info_div = document.getElementById(info_div);
     player_info_div.childNodes.forEach(function (child_node) {
         if (child_node.id.includes(id_prefix)) {
             child_node.className = "invisible_panel"
