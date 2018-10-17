@@ -299,19 +299,19 @@ function update_log(data) {
 }
 
 function create_team_list(gamestate, owner){
-    var icon_placeholder = "https://www.serebii.net/pokedex-sm/icon/{DEX_NUM}.png"
+    var icon_placeholder = "https://www.serebii.net/pokedex-sm/icon/{DEX_NUM}.png";
     var team_icons = document.createElement("ul");
-    team_icons.className = "pokemon_list"
+    team_icons.className = "pokemon_list";
 
     var temp_li = document.createElement("li");
-    temp_li.id = owner.concat("_icon_", gamestate["active"]["dex_num"])
+    temp_li.id = owner.concat("_icon_", gamestate["active"]["dex_num"]);
     var active_icon = document.createElement("img");
     active_icon.src = icon_placeholder.replace("{DEX_NUM}", gamestate["active"]["dex_num"].toString().padStart(3, "0"));
-    temp_li.appendChild(active_icon)
+    temp_li.appendChild(active_icon);
     team_icons.appendChild(temp_li);
     gamestate["team"].forEach(function (pkmn) {
         let temp_li = document.createElement("li");
-        temp_li.id = owner.concat("_icon_", pkmn["dex_num"])
+        temp_li.id = owner.concat("_icon_", pkmn["dex_num"]);
         var team_icon = document.createElement("img");
         team_icon.src = icon_placeholder.replace("{DEX_NUM}", pkmn["dex_num"].toString().padStart(3, "0"));
         temp_li.appendChild(team_icon);
@@ -388,43 +388,43 @@ function create_player_pkmn_panel(pkmn_data, active) {
 
 function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_data) {
     // Set up the and preliminary list
-    var id_prefix = "opponent_info_"
+    var id_prefix = "opponent_info_";
     var data_div = document.createElement("div");
     data_div.id = id_prefix.concat(pkmn_data["dex_num"]);
 
-    data_list = document.createElement("ul")
+    data_list = document.createElement("ul");
 
     // Add pokemon's name
-    var name_element = document.createElement("li")
+    var name_element = document.createElement("li");
     name_element.innerHTML = "<b>Name:</b> ".concat(uc_first_char(pkmn_data["name"]));
-    data_list.appendChild(name_element)
+    data_list.appendChild(name_element);
 
     // Add Pokemon % HP
-    var hp_element = document.createElement("li")
-    var pct_hp = 100 * pkmn_data["pct_hp"]
-    hp_element.innerHTML = "<b>HP remaining:</b> ".concat(pct_hp, "%")
-    data_list.appendChild(hp_element)
+    var hp_element = document.createElement("li");
+    var pct_hp = 100 * pkmn_data["pct_hp"];
+    hp_element.innerHTML = "<b>HP remaining:</b> ".concat(pct_hp, "%");
+    data_list.appendChild(hp_element);
 
     // Add Pokemon's status, if present
     if (pkmn_data["status"] !== null) {
-        let status_element = document.createElement("li")
-        status_element.innerHTML = "<b>Status:</b> ".concat(pkmn_data["status"])
-        data_list.appendChild(status_element)
+        let status_element = document.createElement("li");
+        status_element.innerHTML = "<b>Status:</b> ".concat(pkmn_data["status"]);
+        data_list.appendChild(status_element);
     }
 
     // Display known moves
     if (move_data) {
-        var move_label = document.createElement("li")
-        move_label.innerHTML = "<b>Moves</b>"
-        data_list.appendChild(move_label)
-        var move_ul = document.createElement("ul")
+        var move_label = document.createElement("li");
+        move_label.innerHTML = "<b>Moves</b>";
+        data_list.appendChild(move_label);
+        var move_ul = document.createElement("ul");
         move_data.forEach(function (move_info) {
-            let move_li = document.createElement("li")
-            move_li.innerHTML = move_info["name"]
-            move_ul.appendChild(move_li)
+            let move_li = document.createElement("li");
+            move_li.innerHTML = move_info["name"];
+            move_ul.appendChild(move_li);
         });
-        data_list.appendChild(move_label)
-        data_list.appendChild(move_ul)
+        data_list.appendChild(move_label);
+        data_list.appendChild(move_ul);
     }
 
     // Display Attack, Defense, Sp.Attack, Sp.Defense investment inferences
@@ -437,24 +437,24 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
         let stat_key = stat_pair[1];
         let stat_li = document.createElement("li");
         stat_li.innerHTML = uc_first_char(stat_name).concat(" Investments"); 
-        stat_ul.appendChild(stat_li)
+        stat_ul.appendChild(stat_li);
 
         // List for the investment info
-        investment_ul = document.createElement("ul")
+        investment_ul = document.createElement("ul");
         investment_data[stat_key].forEach(function (investment_pair) {
-            let temp_li = document.createElement("li")
-            temp_li.innerHTML = "".concat("Positive Nature: ", investment_pair["positive_nature"], " || Investment: ", investment_pair["max_evs"])
-            investment_ul.appendChild(temp_li)
+            let temp_li = document.createElement("li");
+            temp_li.innerHTML = "".concat("Positive Nature: ", investment_pair["positive_nature"], " || Investment: ", investment_pair["max_evs"]);
+            investment_ul.appendChild(temp_li);
         });
-        stat_ul.appendChild(investment_ul)
+        stat_ul.appendChild(investment_ul);
     });
-    data_list.appendChild(stat_label)
-    data_list.appendChild(stat_ul)
+    data_list.appendChild(stat_label);
+    data_list.appendChild(stat_ul);
 
-        // Display speed range
-        var speed_element = document.createElement("li")
-        speed_element.innerHTML = "<b>Speed Range:</b> ".concat(investment_data["spe"][0], " to ", investment_data["spe"][1])
-        data_list.appendChild(speed_element)
+    // Display speed range
+    var speed_element = document.createElement("li");
+    speed_element.innerHTML = "<b>Speed Range:</b> ".concat(investment_data["spe"][0], " to ", investment_data["spe"][1]);
+    data_list.appendChild(speed_element);
 
     data_div.appendChild(data_list)
 
