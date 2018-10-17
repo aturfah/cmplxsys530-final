@@ -321,47 +321,47 @@ function create_team_list(gamestate, owner){
 }
 
 function create_player_pkmn_panel(pkmn_data, active) {
-    var id_prefix = "player_info_"
+    var id_prefix = "player_info_";
     var data_div = document.createElement("div");
     data_div.id = id_prefix.concat(pkmn_data["dex_num"]);
 
-    data_list = document.createElement("ul")
+    data_list = document.createElement("ul");
 
     // Add Pokemon's name
-    var name_element = document.createElement("li")
+    var name_element = document.createElement("li");
     name_element.innerHTML = "<b>Name:</b> ".concat(uc_first_char(pkmn_data["name"]));
-    data_list.appendChild(name_element)
+    data_list.appendChild(name_element);
 
     // Add Pokemon's HP
-    var hp_element = document.createElement("li")
-    hp_element.innerHTML = "<b>Hit Points:</b> ".concat(pkmn_data["current_hp"], "/", pkmn_data["max_hp"])
-    data_list.appendChild(hp_element)
+    var hp_element = document.createElement("li");
+    hp_element.innerHTML = "<b>Hit Points:</b> ".concat(pkmn_data["current_hp"], "/", pkmn_data["max_hp"]);
+    data_list.appendChild(hp_element);
 
     // Add Pokemon's status, if present
     if (pkmn_data["status"] !== null) {
-        let status_element = document.createElement("li")
-        status_element.innerHTML = "<b>Status:</b> ".concat(pkmn_data["status"])
-        data_list.appendChild(status_element)
+        let status_element = document.createElement("li");
+        status_element.innerHTML = "<b>Status:</b> ".concat(pkmn_data["status"]);
+        data_list.appendChild(status_element);
     }
 
     // Display Pokemon's moves, if not active
     if (active === false) {
-        var moves_label = document.createElement("li")
-        moves_label.innerHTML = "<b>Moves:</b>"
+        var moves_label = document.createElement("li");
+        moves_label.innerHTML = "<b>Moves:</b>";
         var move_sublist = document.createElement("ul");
         pkmn_data["moves"].forEach(function (move_info){
             let move_li = document.createElement("li");
-            move_li.innerHTML = move_info["name"]
-            move_sublist.appendChild(move_li)
+            move_li.innerHTML = move_info["name"];
+            move_sublist.appendChild(move_li);
         });
-        data_list.appendChild(moves_label)
+        data_list.appendChild(moves_label);
         data_list.appendChild(move_sublist);
     }
 
     // Display pokemon's stats, and boosts (if active)
     var stats = [["attack", "atk"], ["defense", "def"], ["sp_attack","spa"], ["sp_defense", "spd"], ["speed", "spe"]];
     var stat_label = document.createElement("li");
-    stat_label.innerHTML = "<b>Stats:</b>"
+    stat_label.innerHTML = "<b>Stats:</b>";
     var stat_ul = document.createElement("ul");
     stats.forEach(function (stat_pair) {
         let stat_name = stat_pair[0];
@@ -369,21 +369,21 @@ function create_player_pkmn_panel(pkmn_data, active) {
         stat_li = document.createElement("li");
         var boost_text = ""
         if (pkmn_data["boosts"][stat_key] !== 0) {
-            boost_text = " @ "
+            boost_text = " @ ";
             if (pkmn_data["boosts"][stat_key] > 0) {
-                boost_text = boost_text.concat("+", pkmn_data["boosts"][stat_key])
+                boost_text = boost_text.concat("+", pkmn_data["boosts"][stat_key]);
             } else {
-                boost_text = boost_text.concat(pkmn_data["boosts"][stat_key])
+                boost_text = boost_text.concat(pkmn_data["boosts"][stat_key]);
             }
         }
-        stat_li.innerHTML = uc_first_char(stat_name).concat(": ", pkmn_data[stat_name], boost_text)
-        stat_ul.appendChild(stat_li)
+        stat_li.innerHTML = uc_first_char(stat_name).concat(": ", pkmn_data[stat_name], boost_text);
+        stat_ul.appendChild(stat_li);
     });
-    data_list.appendChild(stat_label)
-    data_list.appendChild(stat_ul)
+    data_list.appendChild(stat_label);
+    data_list.appendChild(stat_ul);
 
     data_div.appendChild(data_list);
-    return(data_div)
+    return(data_div);
 }
 
 function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_data) {
@@ -465,7 +465,7 @@ function update_gamestate(data) {
     // Check if game is over (don't update gamestate)
     var outcome = data["outcome"]
     if (outcome["finished"] === true) {
-        return
+        return;
     }
 
     // Set up variables for player and opponent
@@ -490,7 +490,9 @@ function update_gamestate(data) {
     });
 
     //Make divs for opponent's info
-    opponent_div.appendChild(create_opponent_pkmn_panel(opponent_gs["data"]["active"], true, opponent_gs["moves"][opponent_gs["data"]["active"]["name"]], opponent_gs["investment"][opponent_gs["data"]["active"]["name"]]));
+    opponent_div.appendChild(create_opponent_pkmn_panel(opponent_gs["data"]["active"], true,
+                                                        opponent_gs["moves"][opponent_gs["data"]["active"]["name"]],
+                                                        opponent_gs["investment"][opponent_gs["data"]["active"]["name"]]));
     opponent_gs["data"]["team"].forEach(function (pkmn_datum) {
         let poke_name = pkmn_datum["name"]
         opponent_div.appendChild(create_opponent_pkmn_panel(pkmn_datum, false, opponent_gs["moves"][poke_name], opponent_gs["investment"][poke_name]))
