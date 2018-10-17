@@ -85,12 +85,8 @@ def generate_all_ev_combinations():
 
     def_combinations = []
     def_combinations.append((False, False))
-    def_combinations.append((False, False))
-    def_combinations.append((True, False))
     def_combinations.append((True, False))
     def_combinations.append((False, True))
-    def_combinations.append((False, True))
-    def_combinations.append((True, True))
     def_combinations.append((True, True))
 
     for combination in def_combinations:

@@ -412,6 +412,20 @@ class PokemonPlayerGameState:
         """
         return self.__getattribute__(key)
 
+    def to_json(self):
+        """Convert this instance to something the interface can use."""
+        output = {}
+
+        # Add the player's gamestate info
+        output["player"] = {}
+        output["player"]["active"] = self.gamestate["active"].to_json()
+        output["player"]["team"] = [pkmn.to_json() for pkmn in self.gamestate["team"]]
+
+        # Add opponent's info
+        output["opponent"] = self.opp_gamestate
+
+        return output
+
 
 def contains_switch(turn_info):
     """

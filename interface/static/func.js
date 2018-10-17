@@ -1,3 +1,7 @@
+function uc_first_char(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function submit_form() {
     var game_choice = document.getElementById("game_dropdown").value;
     var opp_choice = document.getElementById("opp_dropdown").value;
@@ -24,6 +28,7 @@ function submit_form() {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById("game_log").innerHTML = ""
             set_opts(JSON.parse(this.responseText));
+            update_gamestate(JSON.parse(this.responseText));
         } else if (this.status == 500) {
             console.log("Something went wrong...")
         }
@@ -234,7 +239,8 @@ function submit_move(move_choice) {
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             set_opts(JSON.parse(this.responseText));
-            update_log(JSON.parse(this.responseText))
+            update_log(JSON.parse(this.responseText));
+            update_gamestate(JSON.parse(this.responseText));
         } else if (this.status == 500 || this.status == 404) {
             console.log("Something went wrong...");
         }
@@ -292,6 +298,214 @@ function update_log(data) {
 
 }
 
+function create_team_list(gamestate, owner){
+    var icon_placeholder = "https://www.serebii.net/pokedex-sm/icon/{DEX_NUM}.png";
+    var team_icons = document.createElement("ul");
+    team_icons.className = "pokemon_list";
+
+    var temp_li = document.createElement("li");
+    temp_li.id = owner.concat("_icon_", gamestate["active"]["dex_num"]);
+    var active_icon = document.createElement("img");
+    active_icon.src = icon_placeholder.replace("{DEX_NUM}", gamestate["active"]["dex_num"].toString().padStart(3, "0"));
+    temp_li.appendChild(active_icon);
+    team_icons.appendChild(temp_li);
+    gamestate["team"].forEach(function (pkmn) {
+        let temp_li = document.createElement("li");
+        temp_li.id = owner.concat("_icon_", pkmn["dex_num"]);
+        var team_icon = document.createElement("img");
+        team_icon.src = icon_placeholder.replace("{DEX_NUM}", pkmn["dex_num"].toString().padStart(3, "0"));
+        temp_li.appendChild(team_icon);
+        team_icons.appendChild(temp_li);
+    });
+    return(team_icons)
+}
+
+function create_player_pkmn_panel(pkmn_data, active) {
+    var id_prefix = "player_info_";
+    var data_div = document.createElement("div");
+    data_div.id = id_prefix.concat(pkmn_data["dex_num"]);
+
+    data_list = document.createElement("ul");
+
+    // Add Pokemon's name
+    var name_element = document.createElement("li");
+    name_element.innerHTML = "<b>Name:</b> ".concat(uc_first_char(pkmn_data["name"]));
+    data_list.appendChild(name_element);
+
+    // Add Pokemon's HP
+    var hp_element = document.createElement("li");
+    hp_element.innerHTML = "<b>Hit Points:</b> ".concat(pkmn_data["current_hp"], "/", pkmn_data["max_hp"]);
+    data_list.appendChild(hp_element);
+
+    // Add Pokemon's status, if present
+    if (pkmn_data["status"] !== null) {
+        let status_element = document.createElement("li");
+        status_element.innerHTML = "<b>Status:</b> ".concat(pkmn_data["status"]);
+        data_list.appendChild(status_element);
+    }
+
+    // Display Pokemon's moves, if not active
+    if (active === false) {
+        var moves_label = document.createElement("li");
+        moves_label.innerHTML = "<b>Moves:</b>";
+        var move_sublist = document.createElement("ul");
+        pkmn_data["moves"].forEach(function (move_info){
+            let move_li = document.createElement("li");
+            move_li.innerHTML = move_info["name"];
+            move_sublist.appendChild(move_li);
+        });
+        data_list.appendChild(moves_label);
+        data_list.appendChild(move_sublist);
+    }
+
+    // Display pokemon's stats, and boosts (if active)
+    var stats = [["attack", "atk"], ["defense", "def"], ["sp_attack","spa"], ["sp_defense", "spd"], ["speed", "spe"]];
+    var stat_label = document.createElement("li");
+    stat_label.innerHTML = "<b>Stats:</b>";
+    var stat_ul = document.createElement("ul");
+    stats.forEach(function (stat_pair) {
+        let stat_name = stat_pair[0];
+        let stat_key = stat_pair[1];
+        stat_li = document.createElement("li");
+        var boost_text = ""
+        if (pkmn_data["boosts"][stat_key] !== 0) {
+            boost_text = " @ ";
+            if (pkmn_data["boosts"][stat_key] > 0) {
+                boost_text = boost_text.concat("+", pkmn_data["boosts"][stat_key]);
+            } else {
+                boost_text = boost_text.concat(pkmn_data["boosts"][stat_key]);
+            }
+        }
+        stat_li.innerHTML = uc_first_char(stat_name).concat(": ", pkmn_data[stat_name], boost_text);
+        stat_ul.appendChild(stat_li);
+    });
+    data_list.appendChild(stat_label);
+    data_list.appendChild(stat_ul);
+
+    data_div.appendChild(data_list);
+    return(data_div);
+}
+
+function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_data) {
+    // Set up the and preliminary list
+    var id_prefix = "opponent_info_";
+    var data_div = document.createElement("div");
+    data_div.id = id_prefix.concat(pkmn_data["dex_num"]);
+
+    data_list = document.createElement("ul");
+
+    // Add pokemon's name
+    var name_element = document.createElement("li");
+    name_element.innerHTML = "<b>Name:</b> ".concat(uc_first_char(pkmn_data["name"]));
+    data_list.appendChild(name_element);
+
+    // Add Pokemon % HP
+    var hp_element = document.createElement("li");
+    var pct_hp = 100 * pkmn_data["pct_hp"];
+    hp_element.innerHTML = "<b>HP remaining:</b> ".concat(pct_hp, "%");
+    data_list.appendChild(hp_element);
+
+    // Add Pokemon's status, if present
+    if (pkmn_data["status"] !== null) {
+        let status_element = document.createElement("li");
+        status_element.innerHTML = "<b>Status:</b> ".concat(pkmn_data["status"]);
+        data_list.appendChild(status_element);
+    }
+
+    // Display known moves
+    if (move_data) {
+        var move_label = document.createElement("li");
+        move_label.innerHTML = "<b>Moves</b>";
+        data_list.appendChild(move_label);
+        var move_ul = document.createElement("ul");
+        move_data.forEach(function (move_info) {
+            let move_li = document.createElement("li");
+            move_li.innerHTML = move_info["name"];
+            move_ul.appendChild(move_li);
+        });
+        data_list.appendChild(move_label);
+        data_list.appendChild(move_ul);
+    }
+
+    // Display Attack, Defense, Sp.Attack, Sp.Defense investment inferences
+    var stats = [["hitpoints", "hp"], ["attack", "atk"], ["defense", "def"], ["sp_attack","spa"], ["sp_defense", "spd"]];
+    var stat_label = document.createElement("li");
+    stat_label.innerHTML = "<b>Stats:</b>"
+    var stat_ul = document.createElement("ul");
+    stats.forEach(function(stat_pair){
+        let stat_name = stat_pair[0];
+        let stat_key = stat_pair[1];
+        let stat_li = document.createElement("li");
+        stat_li.innerHTML = uc_first_char(stat_name).concat(" Investments"); 
+        stat_ul.appendChild(stat_li);
+
+        // List for the investment info
+        investment_ul = document.createElement("ul");
+        investment_data[stat_key].forEach(function (investment_pair) {
+            let temp_li = document.createElement("li");
+            temp_li.innerHTML = ""
+            if (investment_pair["positive_nature"] !== undefined) {
+                temp_li.innerHTML = temp_li.innerHTML.concat("Positive Nature: ", investment_pair["positive_nature"], " || ")
+            }
+            temp_li.innerHTML = temp_li.innerHTML.concat("Investment: ", investment_pair["max_evs"]);
+            investment_ul.appendChild(temp_li);
+        });
+        stat_ul.appendChild(investment_ul);
+    });
+    data_list.appendChild(stat_label);
+    data_list.appendChild(stat_ul);
+
+    // Display speed range
+    var speed_element = document.createElement("li");
+    speed_element.innerHTML = "<b>Speed Range:</b> ".concat(investment_data["spe"][0], " to ", investment_data["spe"][1]);
+    data_list.appendChild(speed_element);
+
+    data_div.appendChild(data_list)
+
+    return data_div
+}
+
+function update_gamestate(data) {
+    // Check if game is over (don't update gamestate)
+    var outcome = data["outcome"]
+    if (outcome["finished"] === true) {
+        return;
+    }
+
+    // Set up variables for player and opponent
+    var player_div = document.getElementById("player_info");
+    var player_gs = data["gamestate"]["player"];
+
+    var opponent_div = document.getElementById("opponent_info");
+    var opponent_gs = data["gamestate"]["opponent"];
+
+    // Make team icons for player
+    player_div.innerHTML = ""
+    player_div.appendChild(create_team_list(player_gs, "player"));
+
+    // Make team icons for opponent
+    opponent_div.innerHTML = "";
+    opponent_div.appendChild(create_team_list(opponent_gs["data"], "opponent"));
+
+    //Make divs for the player's info
+    player_div.appendChild(create_player_pkmn_panel(player_gs["active"], true));
+    player_gs["team"].forEach(function (pkmn_datum) {
+        player_div.appendChild(create_player_pkmn_panel(pkmn_datum, false));
+    });
+
+    //Make divs for opponent's info
+    opponent_div.appendChild(create_opponent_pkmn_panel(opponent_gs["data"]["active"], true,
+                                                        opponent_gs["moves"][opponent_gs["data"]["active"]["name"]],
+                                                        opponent_gs["investment"][opponent_gs["data"]["active"]["name"]]));
+    opponent_gs["data"]["team"].forEach(function (pkmn_datum) {
+        let poke_name = pkmn_datum["name"]
+        opponent_div.appendChild(create_opponent_pkmn_panel(pkmn_datum, false, opponent_gs["moves"][poke_name], opponent_gs["investment"][poke_name]))
+    })
+
+    make_pkmn_data_visible(player_gs["active"]["dex_num"], "player_info", "player_info_")
+    make_pkmn_data_visible(opponent_gs["data"]["active"]["dex_num"], "opponent_info", "opponent_info_")
+}
+
 function update_battle_finished(data) {
     document.getElementById("moves").innerHTML = ""
     if (data["outcome"]["winner"] === 0) {
@@ -300,4 +514,18 @@ function update_battle_finished(data) {
     } else {
         document.getElementById("opp_pct_hp").innerHTML = "0%"
     }
+}
+
+function make_pkmn_data_visible(dex_num, info_div, id_prefix) {
+    // Make other divs invisible
+    player_info_div = document.getElementById(info_div);
+    player_info_div.childNodes.forEach(function (child_node) {
+        if (child_node.id.includes(id_prefix)) {
+            child_node.className = "invisible_panel"
+        }
+    });
+
+    // Make this div visible
+    target_div = document.getElementById(id_prefix.concat(dex_num));
+    target_div.className = null
 }

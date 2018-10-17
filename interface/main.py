@@ -80,6 +80,9 @@ def set_engine():
         else:
             OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team, tier="pu")
 
+        PLAYER.id = "player1"
+        OPPONENT.id = "player2"
+
         ENGINE.initialize_battle(PLAYER, OPPONENT)
 
         # Set the response data
@@ -87,6 +90,7 @@ def set_engine():
         response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
         response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
         response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
+        response["gamestate"] = PLAYER.game_state.to_json()
 
     return jsonify(response)
 
@@ -105,6 +109,7 @@ def make_move():
     response["outcome"] = outcome
 
     if not outcome["finished"]:
+        response["gamestate"] = PLAYER.game_state.to_json()
         response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
         response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
         response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])

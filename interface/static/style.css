@@ -5,3 +5,16 @@ select {
 div {
     vertical-align:top;
 }
+
+ul.pokemon_list {
+    _text-align: center;
+}
+
+ul.pokemon_list li {
+    display: inline-block;
+}
+
+div.invisible_panel {
+    color: red;
+    display: none;
+}
