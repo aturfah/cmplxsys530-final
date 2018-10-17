@@ -462,14 +462,18 @@ function create_opponent_pkmn_panel(pkmn_data, active, move_data, investment_dat
 }
 
 function update_gamestate(data) {
+    // Check if game is over (don't update gamestate)
+    var outcome = data["outcome"]
+    if (outcome["finished"] === true) {
+        return
+    }
+
     // Set up variables for player and opponent
     var player_div = document.getElementById("player_info");
     var player_gs = data["gamestate"]["player"];
-    console.log(player_gs);
 
     var opponent_div = document.getElementById("opponent_info");
     var opponent_gs = data["gamestate"]["opponent"];
-    console.log(opponent_gs);
 
     // Make team icons for player
     player_div.innerHTML = ""
