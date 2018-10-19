@@ -124,7 +124,7 @@ def team_options():
     global TEAM_DICT
     response = {}
     if TEAM_DICT is not None:
-        response["teams"] = TEAM_DICT
+        response["teams"] = list(TEAM_DICT.keys())
 
     return jsonify(response)
 
@@ -154,7 +154,11 @@ def read_teams(team_dir="data/teams"):
     num_teams = len(team_reader.team_files)
     for team_ind in range(num_teams):
         target_teamname = team_reader.team_files[team_ind]
+        if "unit_test" in target_teamname:
+            continue
+
+        target_teamname = target_teamname.replace("{}/".format(team_dir), "")
         target_team = team_reader.teams[team_ind]
         output[target_teamname] = target_team
 
-    return {}
+    return output
