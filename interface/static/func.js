@@ -223,24 +223,14 @@ function create_move_DOM(moves) {
 
 function submit_move(move_choice) {
     // Set properties of request
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/make_move", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    var data = {
-        "move_choice": move_choice
+    var req_data = {
+        "move_class": move_choice[0],
+        "move_choice": move_choice[1]
     }
-    // On request competion
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            set_opts(JSON.parse(this.responseText));
-            update_log(JSON.parse(this.responseText));
-            update_gamestate(JSON.parse(this.responseText));
-        } else if (this.status == 500 || this.status == 404) {
-            console.log("Something went wrong...");
-        }
-    };
-    // Send the request.
-    xhr.send(JSON.stringify(data));
+
+    $.post("/make_move", req_data, function(data) {
+        console.log(data);
+    });
 }
 
 function update_log(data) {
