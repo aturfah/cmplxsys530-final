@@ -7,7 +7,7 @@ function submit_form() {
     var opp_choice = document.getElementById("opp_dropdown").value;
     var player_team_choice = document.getElementById("player_team_dropdown").value;
     var opp_team_choice = document.getElementById("opp_team_dropdown").value;
-    var data = {
+    var req_data = {
         "game_choice": game_choice,
         "opp_choice": opp_choice,
         "player_team_choice": player_team_choice,
@@ -19,22 +19,11 @@ function submit_form() {
         return
     }
 
-    var xhr = new XMLHttpRequest();
-    // Set properties of request
-    xhr.open("POST", "/set_parameters", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    // On request competion
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("game_log").innerHTML = ""
-            set_opts(JSON.parse(this.responseText));
-            update_gamestate(JSON.parse(this.responseText));
-        } else if (this.status == 500) {
-            console.log("Something went wrong...")
-        }
-    };
-    // Send the request.
-    xhr.send(JSON.stringify(data));
+    $.post("/set_parameters", req_data, function (data) {
+        document.getElementById("game_log").innerHTML = ""
+        set_opts(data);
+        update_gamestate(data);
+    });
 }
 
 function update_opp_choices(game_choice) {
