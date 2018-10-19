@@ -61,7 +61,7 @@ def set_engine():
     global ENGINE, OPPONENT, PLAYER
     response = {}
 
-    req_data = json.loads(request.data)
+    req_data = request.form
 
     game_choice = req_data["game_choice"]
     opp_choice = req_data["opp_choice"]
