@@ -19,6 +19,7 @@ from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from pokemon_helpers.pokemon import default_team_floatzel
 from pokemon_helpers.pokemon import default_team_ivysaur
 from pokemon_helpers.pokemon import default_team_spinda
+from file_manager.team_reader import TeamReader
 
 # pylint: disable=W0603
 # I want to use global here.
@@ -55,10 +56,12 @@ TEAM_DICT = {
 @INTERFACE.route("/")
 def index():
     """Index page."""
-    global ENGINE, OPPONENT
+    global ENGINE, OPPONENT, TEAM_DICT
     ENGINE = None
     OPPONENT = None
-    return render_template('index.html')
+    TEAM_DICT = read_teams()
+
+    return render_template('index.html', {"teams": TEAM_DICT.keys()})
 
 
 @INTERFACE.route("/set_parameters", methods=["POST"])
@@ -93,7 +96,6 @@ def set_engine():
         response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
         response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
         response["gamestate"] = PLAYER.game_state.to_json()
-        response["teams"] = read_teams()
 
     return jsonify(response)
 
@@ -138,7 +140,14 @@ def process_opts(player, player_opts):
 
 def read_teams(team_dir="data/teams"):
     """Read the teams from data/teams directory."""
-    team_file_list = os.listdir(team_dir)
-    team_file_list = [filename for filename in team_file_list if 'unit_test' not in filename]
+    team_reader = TeamReader(team_dir)
+    team_reader.process_files()
 
-    return team_file_list
+    output = {}
+    num_teams = len(team_reader.team_files)
+    for team_ind in range(num_teams):
+        target_teamname = team_reader.team_files[team_ind]
+        target_team = team_reader.teams[team_ind]
+        output[target_teamname] = target_team
+
+    return {}
