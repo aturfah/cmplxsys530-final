@@ -1,0 +1,8 @@
+Spinda @ Choice Band  
+Ability: Own Tempo  
+EVs: 252 HP / 252 Atk / 4 SpD  
+Adamant Nature  
+- Return  
+- Drain Punch  
+- Zen Headbutt  
+- Body Slam
