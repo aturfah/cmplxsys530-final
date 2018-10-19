@@ -105,26 +105,16 @@ function update_team(game_choice) {
         opp_team_dropdown.add(option1.cloneNode(true));
         player_team_dropdown.add(option1.cloneNode(true));
     } else {
-        // Send request to /team_options endpoint
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/team_options", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let data = JSON.parse(this.responseText)["teams"]
-                data.forEach(function(datum) {
-                    var option_i = document.createElement("option")
-                    option_i.text = datum
-                    option_i.value = datum
-                    opp_team_dropdown.add(option_i.cloneNode(true));
-                    player_team_dropdown.add(option_i.cloneNode(true));
-                })
-            } else if (this.status == 500 || this.status == 404) {
-                console.log("Something went wrong...");
-            }
-        };
-        // Send the request.
-        xhr.send();
+            // Send request to /team_options endpoint
+            $.get("/team_options", success=function(data) {
+            data["teams"].forEach(function(datum) {
+                var option_i = document.createElement("option")
+                option_i.text = datum
+                option_i.value = datum
+                opp_team_dropdown.add(option_i.cloneNode(true));
+                player_team_dropdown.add(option_i.cloneNode(true));
+            })
+        });
     }
 }
 
