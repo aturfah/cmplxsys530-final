@@ -283,6 +283,9 @@ function create_team_list(gamestate, owner){
     temp_li.id = owner.concat("_icon_", gamestate["active"]["dex_num"]);
     var active_icon = document.createElement("img");
     active_icon.src = icon_placeholder.replace("{DEX_NUM}", gamestate["active"]["dex_num"].toString().padStart(3, "0"));
+    temp_li.onmouseover = function () {
+        make_pkmn_data_visible(gamestate["active"]["dex_num"], owner.concat("_info"), owner.concat("_info_"))
+    }
     temp_li.appendChild(active_icon);
     team_icons.appendChild(temp_li);
     gamestate["team"].forEach(function (pkmn) {
@@ -290,6 +293,9 @@ function create_team_list(gamestate, owner){
         temp_li.id = owner.concat("_icon_", pkmn["dex_num"]);
         var team_icon = document.createElement("img");
         team_icon.src = icon_placeholder.replace("{DEX_NUM}", pkmn["dex_num"].toString().padStart(3, "0"));
+        temp_li.onmouseover = function () {
+            make_pkmn_data_visible(pkmn["dex_num"], owner.concat("_info"), owner.concat("_info_"))
+        }
         temp_li.appendChild(team_icon);
         team_icons.appendChild(temp_li);
     });
