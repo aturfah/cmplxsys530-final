@@ -1,6 +1,6 @@
 # Sample Pokemon Simulation
-# 30 Players
-# 10,000 Games
+# 50 Players
+# 15,000 Games
 # Multithreaded
 
 game_choice: 4
