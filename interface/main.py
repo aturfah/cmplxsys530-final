@@ -46,11 +46,7 @@ OPPONENT_DICT = {
     "uniform_rps": 8
 }
 
-TEAM_DICT = {
-    "floatzel": default_team_floatzel,
-    "ivysaur": default_team_ivysaur,
-    "spinda": default_team_spinda
-}
+TEAM_DICT = None
 
 
 @INTERFACE.route("/")
@@ -61,7 +57,7 @@ def index():
     OPPONENT = None
     TEAM_DICT = read_teams()
 
-    return render_template('index.html', {"teams": TEAM_DICT.keys()})
+    return render_template('index.html', context={"teams": TEAM_DICT.keys()})
 
 
 @INTERFACE.route("/set_parameters", methods=["POST"])
