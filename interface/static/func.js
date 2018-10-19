@@ -496,11 +496,11 @@ function make_pkmn_data_visible(dex_num, info_div, id_prefix) {
     player_info_div = document.getElementById(info_div);
     player_info_div.childNodes.forEach(function (child_node) {
         if (child_node.id.includes(id_prefix)) {
-            child_node.className = "invisible_panel"
+            child_node.classList.add("invisible_panel");
         }
     });
 
     // Make this div visible
     target_div = document.getElementById(id_prefix.concat(dex_num));
-    target_div.className = null
+    target_div.classList.remove("invisible_panel")
 }
