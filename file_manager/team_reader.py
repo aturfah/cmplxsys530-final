@@ -112,7 +112,7 @@ def read_name(input_str, pokemon_dict):
 def read_nature(input_str, pokemon_dict):
     """Read a Pokemon's Nature."""
     nature = input_str.replace("Nature", "").strip()
-    pokemon_dict["nature"] = nature
+    pokemon_dict["nature"] = nature.lower()
     # print(pokemon_dict)
 
 
@@ -130,6 +130,7 @@ def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
 
     for value_str in value_list:
         value_val, stat = value_str.strip().split()
+        stat = stat.lower()
         pokemon_dict[chosen][stat] = int(value_val)
 
     # print(pokemon_dict)
