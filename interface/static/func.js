@@ -7,7 +7,7 @@ function submit_form() {
     var opp_choice = document.getElementById("opp_dropdown").value;
     var player_team_choice = document.getElementById("player_team_dropdown").value;
     var opp_team_choice = document.getElementById("opp_team_dropdown").value;
-    var data = {
+    var req_data = {
         "game_choice": game_choice,
         "opp_choice": opp_choice,
         "player_team_choice": player_team_choice,
@@ -19,22 +19,11 @@ function submit_form() {
         return
     }
 
-    var xhr = new XMLHttpRequest();
-    // Set properties of request
-    xhr.open("POST", "/set_parameters", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    // On request competion
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("game_log").innerHTML = ""
-            set_opts(JSON.parse(this.responseText));
-            update_gamestate(JSON.parse(this.responseText));
-        } else if (this.status == 500) {
-            console.log("Something went wrong...")
-        }
-    };
-    // Send the request.
-    xhr.send(JSON.stringify(data));
+    $.post("/set_parameters", req_data, function (data) {
+        document.getElementById("game_log").innerHTML = ""
+        set_opts(data);
+        update_gamestate(data);
+    });
 }
 
 function update_opp_choices(game_choice) {
@@ -105,26 +94,16 @@ function update_team(game_choice) {
         opp_team_dropdown.add(option1.cloneNode(true));
         player_team_dropdown.add(option1.cloneNode(true));
     } else {
-        // Send request to /team_options endpoint
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/team_options", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let data = JSON.parse(this.responseText)["teams"]
-                data.forEach(function(datum) {
-                    var option_i = document.createElement("option")
-                    option_i.text = datum
-                    option_i.value = datum
-                    opp_team_dropdown.add(option_i.cloneNode(true));
-                    player_team_dropdown.add(option_i.cloneNode(true));
-                })
-            } else if (this.status == 500 || this.status == 404) {
-                console.log("Something went wrong...");
-            }
-        };
-        // Send the request.
-        xhr.send();
+            // Send request to /team_options endpoint
+            $.get("/team_options", success=function(data) {
+            data["teams"].forEach(function(datum) {
+                var option_i = document.createElement("option")
+                option_i.text = datum
+                option_i.value = datum
+                opp_team_dropdown.add(option_i.cloneNode(true));
+                player_team_dropdown.add(option_i.cloneNode(true));
+            })
+        });
     }
 }
 
@@ -233,24 +212,16 @@ function create_move_DOM(moves) {
 
 function submit_move(move_choice) {
     // Set properties of request
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/make_move", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    var data = {
-        "move_choice": move_choice
+    var req_data = {
+        "move_class": move_choice[0],
+        "move_choice": move_choice[1]
     }
-    // On request competion
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            set_opts(JSON.parse(this.responseText));
-            update_log(JSON.parse(this.responseText));
-            update_gamestate(JSON.parse(this.responseText));
-        } else if (this.status == 500 || this.status == 404) {
-            console.log("Something went wrong...");
-        }
-    };
-    // Send the request.
-    xhr.send(JSON.stringify(data));
+
+    $.post("/make_move", req_data, function(data) {
+        set_opts(data);
+        update_log(data);
+        update_gamestate(data);
+    });
 }
 
 function update_log(data) {
@@ -305,7 +276,7 @@ function update_log(data) {
 function create_team_list(gamestate, owner){
     var icon_placeholder = "https://www.serebii.net/pokedex-sm/icon/{DEX_NUM}.png";
     var team_icons = document.createElement("ul");
-    team_icons.className = "pokemon_list";
+    team_icons.classList.add("pokemon_list");
 
     var temp_li = document.createElement("li");
     temp_li.id = owner.concat("_icon_", gamestate["active"]["dex_num"]);
@@ -525,11 +496,11 @@ function make_pkmn_data_visible(dex_num, info_div, id_prefix) {
     player_info_div = document.getElementById(info_div);
     player_info_div.childNodes.forEach(function (child_node) {
         if (child_node.id.includes(id_prefix)) {
-            child_node.className = "invisible_panel"
+            child_node.classList.add("invisible_panel");
         }
     });
 
     // Make this div visible
     target_div = document.getElementById(id_prefix.concat(dex_num));
-    target_div.className = null
+    target_div.classList.remove("invisible_panel")
 }

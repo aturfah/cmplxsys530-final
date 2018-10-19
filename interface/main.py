@@ -61,7 +61,7 @@ def set_engine():
     global ENGINE, OPPONENT, PLAYER
     response = {}
 
-    req_data = json.loads(request.data)
+    req_data = request.form
 
     game_choice = req_data["game_choice"]
     opp_choice = req_data["opp_choice"]
@@ -97,7 +97,9 @@ def make_move():
     global ENGINE, OPPONENT, PLAYER
     response = {}
 
-    req_data = json.loads(request.data)
+    req_data = {
+        "move_choice": [request.form["move_class"], int(request.form["move_choice"])]
+    }
 
     player_move = (req_data["move_choice"][0], req_data["move_choice"][1])
     turn_info, outcome = ENGINE.run_turn(player_move, PLAYER, OPPONENT)
