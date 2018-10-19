@@ -57,7 +57,7 @@ def index():
     OPPONENT = None
     TEAM_DICT = read_teams()
 
-    return render_template('index.html', context={"teams": TEAM_DICT.keys()})
+    return render_template('index.html')
 
 
 @INTERFACE.route("/set_parameters", methods=["POST"])
@@ -114,6 +114,17 @@ def make_move():
         response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
         response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
         response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
+
+    return jsonify(response)
+
+
+@INTERFACE.route("/team_options", methods=["GET"])
+def team_options():
+    """Return the team options availible to a player."""
+    global TEAM_DICT
+    response = {}
+    if TEAM_DICT is not None:
+        response["teams"] = TEAM_DICT
 
     return jsonify(response)
 
