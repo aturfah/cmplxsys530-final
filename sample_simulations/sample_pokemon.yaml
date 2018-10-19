@@ -1,10 +1,10 @@
 # Sample Pokemon Simulation
-# 50 Players
+# 60 Players
 # 15,000 Games
 # Multithreaded
 
 game_choice: 4
-num_players: 50
+num_players: 60
 num_games: 15000
 multithread: 1
 config: "sample_simulations/pokemon_configs/sample_config.json"
