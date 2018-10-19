@@ -16,9 +16,6 @@ from battle_engine.interactive_pokemon_engine import InteractivePokemonEngine
 # Pokemon Imports
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
-from pokemon_helpers.pokemon import default_team_floatzel
-from pokemon_helpers.pokemon import default_team_ivysaur
-from pokemon_helpers.pokemon import default_team_spinda
 from file_manager.team_reader import TeamReader
 
 # pylint: disable=W0603
