@@ -97,31 +97,35 @@ function update_team(game_choice) {
     opp_team_dropdown.options.length = 0;
     player_team_dropdown.options.length = 0;
 
-    // REpopulate
+    // Repopulate
     var options = []
     if (game_choice === "rps") {
         var option1 = document.createElement("option");
         option1.text = "N/A";
-        options.push(option1)
+        opp_team_dropdown.add(option1.cloneNode(true));
+        player_team_dropdown.add(option1.cloneNode(true));
     } else {
-        var option1 = document.createElement("option");
-        option1.text = "Spinda";
-        option1.value = "spinda"
-        var option2 = document.createElement("option");
-        option2.text = "Floatzel";
-        option2.value = "floatzel"
-        var option3 = document.createElement("option");
-        option3.text = "Ivysaur";
-        option3.value = "ivysaur"
-        options.push(option1)
-        options.push(option2)
-        options.push(option3)
+        // Send request to /team_options endpoint
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/team_options", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let data = JSON.parse(this.responseText)["teams"]
+                data.forEach(function(datum) {
+                    var option_i = document.createElement("option")
+                    option_i.text = datum
+                    option_i.value = datum
+                    opp_team_dropdown.add(option_i.cloneNode(true));
+                    player_team_dropdown.add(option_i.cloneNode(true));
+                })
+            } else if (this.status == 500 || this.status == 404) {
+                console.log("Something went wrong...");
+            }
+        };
+        // Send the request.
+        xhr.send();
     }
-
-    options.forEach(function (option) {
-        opp_team_dropdown.add(option.cloneNode(true));
-        player_team_dropdown.add(option.cloneNode(true));
-    });
 }
 
 function set_opts(options) {
