@@ -10,13 +10,16 @@
 
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 
 </head>
 
@@ -28,35 +31,38 @@
 
             <hr />
             <h2>Setup</h2>
-            <div id="setup_form">
-                <label for="game_dropdown">Game Choice</label>
-                <select name="game_dropdown" id="game_dropdown" onchange="update_opp_choices(this.value);">
-                    <option value="rps">Rock Paper Scissors</option>
-                    <option value="pkmn">Pokemon</option>
-                </select>
-                <br/>
-                <label for="opp_dropdown">Opponent Type</label>
-                <select name="opp_dropdown" id="opp_dropdown">
-                    <option value="random_rps">Random</option>
-                    <option value="counter_rps">Counter</option>
-                    <option value="rock_rps">Rock</option>
-                    <option value="paper_rps">Paper</option>
-                    <option value="scissors_rps">Scissors</option>
-                    <option value="uniform_rps">Uniform</option>
-                </select>
-                <br/>
-                <label for="player_team_dropdown">Player Team</label>
-                <select name="player_team_dropdown" id="player_team_dropdown">
-                    <option>N/A</option>
-                </select>
-                <br/>
-                <label for="opp_team_dropdown">Opponent Team</label>
-                <select name="opp_team_dropdown" id="opp_team_dropdown">
-                    <option>N/A</option>
-                </select>
-                <br/>
-                <input type="button" value="Submit" onclick="submit_form()">
+            <div class="row">
+                <div class="col-xs-12" id="setup_form">
+                    <label for="game_dropdown">Game Choice</label>
+                    <select name="game_dropdown" id="game_dropdown" onchange="update_opp_choices(this.value);">
+                        <option value="rps">Rock Paper Scissors</option>
+                        <option value="pkmn">Pokemon</option>
+                    </select>
+                    <br />
+                    <label for="opp_dropdown">Opponent Type</label>
+                    <select name="opp_dropdown" id="opp_dropdown">
+                        <option value="random_rps">Random</option>
+                        <option value="counter_rps">Counter</option>
+                        <option value="rock_rps">Rock</option>
+                        <option value="paper_rps">Paper</option>
+                        <option value="scissors_rps">Scissors</option>
+                        <option value="uniform_rps">Uniform</option>
+                    </select>
+                    <br />
+                    <label for="player_team_dropdown">Player Team</label>
+                    <select name="player_team_dropdown" id="player_team_dropdown">
+                        <option>N/A</option>
+                    </select>
+                    <br />
+                    <label for="opp_team_dropdown">Opponent Team</label>
+                    <select name="opp_team_dropdown" id="opp_team_dropdown">
+                        <option>N/A</option>
+                    </select>
+                    <br />
+                    <input type="button" value="Submit" onclick="submit_form()">
+                </div>
             </div>
+
             <hr />
             <h2>Game</h2>
             <div id="game_window">
