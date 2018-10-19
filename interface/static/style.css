@@ -22,3 +22,7 @@ div.invisible_panel {
     color: red;
     display: none;
 }
+
+.pkmn_title {
+    font-weight: bold;
+}

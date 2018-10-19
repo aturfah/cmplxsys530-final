@@ -133,11 +133,12 @@ function create_poke_DOM(data, opponent) {
     poke_div.style.display = "inline-block"
     // Set player/Opponent box
     var title = document.createElement("h5")
+    title.classList.add("pkmn_title")
     if (opponent) {
-        title.innerHTML = "".concat("Opponent's ", data["name"])
+        title.innerHTML = "".concat("Opponent's ", uc_first_char(data["name"]))
         poke_div.id = "opponent_poke"
     } else {
-        title.innerHTML = "".concat("Player's ", data["name"])
+        title.innerHTML = "".concat("Player's ", uc_first_char(data["name"]))
         poke_div.id = "player_poke"
     }
     // Set image
