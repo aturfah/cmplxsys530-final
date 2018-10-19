@@ -91,6 +91,7 @@ def set_engine():
         response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
         response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
         response["gamestate"] = PLAYER.game_state.to_json()
+        response["teams"] = read_teams()
 
     return jsonify(response)
 
@@ -131,3 +132,8 @@ def process_opts(player, player_opts):
         results.append(res)
 
     return results
+
+
+def read_teams():
+    """Read the teams from data/teams directory."""
+    return []
