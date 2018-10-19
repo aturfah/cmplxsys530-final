@@ -1,5 +1,7 @@
 """Main Flask App for Agent Interface."""
 
+import os
+
 import json
 
 from flask import Flask
@@ -134,6 +136,9 @@ def process_opts(player, player_opts):
     return results
 
 
-def read_teams():
+def read_teams(team_dir="data/teams"):
     """Read the teams from data/teams directory."""
-    return []
+    team_file_list = os.listdir(team_dir)
+    team_file_list = [filename for filename in team_file_list if 'unit_test' not in filename]
+
+    return team_file_list
