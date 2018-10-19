@@ -150,7 +150,6 @@ def process_pokemon(pokemon_dict):
     """Generate a Pokemon from the string in a file."""
     init_dict = {}
     init_dict["nickname"] = pokemon_dict["species"]
-    init_dict["nature"] = pokemon_dict.get("nature", "serious")
     init_dict["name"] = pokemon_dict["species"]
     init_dict["item"] = pokemon_dict["item"]
     init_dict["gender"] = pokemon_dict["gender"]
