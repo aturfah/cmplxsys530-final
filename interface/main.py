@@ -1,7 +1,5 @@
 """Main Flask App for Agent Interface."""
 
-import os
-
 import json
 
 from flask import Flask
