@@ -1,60 +1,90 @@
 <html>
 
 <head>
+    <!-- My stuff-->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='func.js') }}"></script>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
 </head>
 
 <body>
-    <h1>Hello World!</h1>
-    <p>This is the index page.</p>
-    <hr />
-    <h2>Setup</h2>
-    <div id="setup_form">
-        <label for="game_dropdown">Game Choice</label>
-        <select name="game_dropdown" id="game_dropdown" onchange="update_opp_choices(this.value);">
-            <option value="rps">Rock Paper Scissors</option>
-            <option value="pkmn">Pokemon</option>
-        </select>
-        <br/>
-        <label for="opp_dropdown">Opponent Type</label>
-        <select name="opp_dropdown" id="opp_dropdown">
-            <option value="random_rps">Random</option>
-            <option value="counter_rps">Counter</option>
-            <option value="rock_rps">Rock</option>
-            <option value="paper_rps">Paper</option>
-            <option value="scissors_rps">Scissors</option>
-            <option value="uniform_rps">Uniform</option>
-        </select>
-        <br/>
-        <label for="player_team_dropdown">Player Team</label>
-        <select name="player_team_dropdown" id="player_team_dropdown">
-            <option>N/A</option>
-        </select>
-        <br/>
-        <label for="opp_team_dropdown">Opponent Team</label>
-        <select name="opp_team_dropdown" id="opp_team_dropdown">
-            <option>N/A</option>
-        </select>
-        <br/>
-        <input type="button" value="Submit" onclick="submit_form()">
-    </div>
-    <hr />
-    <h2>Game</h2>
-    <div id="game_window">
-        <div id="player_options"></div>
-    </div>
-    <div id="game_log">
-        <h5>Game Log</h5>
-    </div>
-    <hr />
-    <h2>Game State Info</h2>
-    <div id="gamestate_window">
-        <h5>Player Info</h5>
-        <div id="player_info">Doot</div>
-        <h5>Opponent Info</h5>
-        <div id="opponent_info">Doot</div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Hello World!</h1>
+            <p>This is the index page.</p>
+        
+            <hr />
+            <h2>Setup</h2>
+            <div class="row">
+                <div class="col-xs-12" id="setup_form">
+                    <label for="game_dropdown">Game Choice</label>
+                    <select name="game_dropdown" id="game_dropdown" onchange="update_opp_choices(this.value);">
+                        <option value="rps">Rock Paper Scissors</option>
+                        <option value="pkmn">Pokemon</option>
+                    </select>
+                    <br />
+                    <label for="opp_dropdown">Opponent Type</label>
+                    <select name="opp_dropdown" id="opp_dropdown">
+                        <option value="random_rps">Random</option>
+                        <option value="counter_rps">Counter</option>
+                        <option value="rock_rps">Rock</option>
+                        <option value="paper_rps">Paper</option>
+                        <option value="scissors_rps">Scissors</option>
+                        <option value="uniform_rps">Uniform</option>
+                    </select>
+                    <br />
+                    <label for="player_team_dropdown">Player Team</label>
+                    <select name="player_team_dropdown" id="player_team_dropdown">
+                        <option>N/A</option>
+                    </select>
+                    <br />
+                    <label for="opp_team_dropdown">Opponent Team</label>
+                    <select name="opp_team_dropdown" id="opp_team_dropdown">
+                        <option>N/A</option>
+                    </select>
+                    <br />
+                    <input type="button" value="Submit" onclick="submit_form()">
+                </div>
+            </div>
+        
+            <hr />
+            <div class="row">
+                <div class="col-xs-7">
+                    <h2>Game</h2>
+                    <div id="game_window">
+                        <div id="player_options"></div>
+                    </div>
+                    <div id="game_log">
+                        <h5>Game Log</h5>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <h2>Game State Info</h2>
+                    <div id="gamestate_window">
+                        <h4>Player Info</h4>
+                        <div id="player_info"><i>Doot</i></div>
+                        <h4>Opponent Info</h4>
+                        <div id="opponent_info"><i>Doot</i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </body>

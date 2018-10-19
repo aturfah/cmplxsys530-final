@@ -133,11 +133,12 @@ function create_poke_DOM(data, opponent) {
     poke_div.style.display = "inline-block"
     // Set player/Opponent box
     var title = document.createElement("h5")
+    title.classList.add("pkmn_title")
     if (opponent) {
-        title.innerHTML = "".concat("Opponent's ", data["name"])
+        title.innerHTML = "".concat("Opponent's ", uc_first_char(data["name"]))
         poke_div.id = "opponent_poke"
     } else {
-        title.innerHTML = "".concat("Player's ", data["name"])
+        title.innerHTML = "".concat("Player's ", uc_first_char(data["name"]))
         poke_div.id = "player_poke"
     }
     // Set image
@@ -282,6 +283,9 @@ function create_team_list(gamestate, owner){
     temp_li.id = owner.concat("_icon_", gamestate["active"]["dex_num"]);
     var active_icon = document.createElement("img");
     active_icon.src = icon_placeholder.replace("{DEX_NUM}", gamestate["active"]["dex_num"].toString().padStart(3, "0"));
+    temp_li.onmouseover = function () {
+        make_pkmn_data_visible(gamestate["active"]["dex_num"], owner.concat("_info"), owner.concat("_info_"))
+    }
     temp_li.appendChild(active_icon);
     team_icons.appendChild(temp_li);
     gamestate["team"].forEach(function (pkmn) {
@@ -289,6 +293,9 @@ function create_team_list(gamestate, owner){
         temp_li.id = owner.concat("_icon_", pkmn["dex_num"]);
         var team_icon = document.createElement("img");
         team_icon.src = icon_placeholder.replace("{DEX_NUM}", pkmn["dex_num"].toString().padStart(3, "0"));
+        temp_li.onmouseover = function () {
+            make_pkmn_data_visible(pkmn["dex_num"], owner.concat("_info"), owner.concat("_info_"))
+        }
         temp_li.appendChild(team_icon);
         team_icons.appendChild(temp_li);
     });
@@ -320,18 +327,16 @@ function create_player_pkmn_panel(pkmn_data, active) {
     }
 
     // Display Pokemon's moves, if not active
-    if (active === false) {
-        var moves_label = document.createElement("li");
-        moves_label.innerHTML = "<b>Moves:</b>";
-        var move_sublist = document.createElement("ul");
-        pkmn_data["moves"].forEach(function (move_info){
-            let move_li = document.createElement("li");
-            move_li.innerHTML = move_info["name"];
-            move_sublist.appendChild(move_li);
-        });
-        data_list.appendChild(moves_label);
-        data_list.appendChild(move_sublist);
-    }
+    var moves_label = document.createElement("li");
+    moves_label.innerHTML = "<b>Moves:</b>";
+    var move_sublist = document.createElement("ul");
+    pkmn_data["moves"].forEach(function (move_info){
+        let move_li = document.createElement("li");
+        move_li.innerHTML = move_info["name"];
+        move_sublist.appendChild(move_li);
+    });
+    data_list.appendChild(moves_label);
+    data_list.appendChild(move_sublist);
 
     // Display pokemon's stats, and boosts (if active)
     var stats = [["attack", "atk"], ["defense", "def"], ["sp_attack","spa"], ["sp_defense", "spd"], ["speed", "spe"]];
