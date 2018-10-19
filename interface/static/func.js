@@ -229,7 +229,9 @@ function submit_move(move_choice) {
     }
 
     $.post("/make_move", req_data, function(data) {
-        console.log(data);
+        set_opts(data);
+        update_log(data);
+        update_gamestate(data);
     });
 }
 
