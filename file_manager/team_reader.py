@@ -130,7 +130,7 @@ def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
 
     for value_str in value_list:
         value_val, stat = value_str.strip().split()
-        pokemon_dict[chosen][stat] = int(value_val)
+        pokemon_dict[chosen][stat.lower()] = int(value_val)
 
     # print(pokemon_dict)
 
