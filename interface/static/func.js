@@ -276,7 +276,7 @@ function update_log(data) {
 function create_team_list(gamestate, owner){
     var icon_placeholder = "https://www.serebii.net/pokedex-sm/icon/{DEX_NUM}.png";
     var team_icons = document.createElement("ul");
-    team_icons.className = "pokemon_list";
+    team_icons.classList.add("pokemon_list");
 
     var temp_li = document.createElement("li");
     temp_li.id = owner.concat("_icon_", gamestate["active"]["dex_num"]);
