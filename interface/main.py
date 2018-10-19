@@ -14,9 +14,7 @@ from battle_engine.interactive_pokemon_engine import InteractivePokemonEngine
 # Pokemon Imports
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
-from pokemon_helpers.pokemon import default_team_floatzel
-from pokemon_helpers.pokemon import default_team_ivysaur
-from pokemon_helpers.pokemon import default_team_spinda
+from file_manager.team_reader import TeamReader
 
 # pylint: disable=W0603
 # I want to use global here.
@@ -43,19 +41,17 @@ OPPONENT_DICT = {
     "uniform_rps": 8
 }
 
-TEAM_DICT = {
-    "floatzel": default_team_floatzel,
-    "ivysaur": default_team_ivysaur,
-    "spinda": default_team_spinda
-}
+TEAM_DICT = None
 
 
 @INTERFACE.route("/")
 def index():
     """Index page."""
-    global ENGINE, OPPONENT
+    global ENGINE, OPPONENT, TEAM_DICT
     ENGINE = None
     OPPONENT = None
+    TEAM_DICT = read_teams()
+
     return render_template('index.html')
 
 
@@ -72,8 +68,8 @@ def set_engine():
 
     ENGINE = ENGINE_DICT[game_choice]()
     if game_choice == "pkmn":
-        team = TEAM_DICT[req_data.get("player_team_choice", None)]()
-        opp_team = TEAM_DICT[req_data.get("opp_team_choice", None)]()
+        team = TEAM_DICT[req_data.get("player_team_choice", None)]
+        opp_team = TEAM_DICT[req_data.get("opp_team_choice", None)]
         PLAYER = OPPONENT_DICT["basic_planning_pkmn"](team=team, tier="pu")
         if opp_choice == "random_pkmn":
             OPPONENT = OPPONENT_DICT[opp_choice](team=opp_team)
@@ -117,6 +113,17 @@ def make_move():
     return jsonify(response)
 
 
+@INTERFACE.route("/team_options", methods=["GET"])
+def team_options():
+    """Return the team options availible to a player."""
+    global TEAM_DICT
+    response = {}
+    if TEAM_DICT is not None:
+        response["teams"] = list(TEAM_DICT.keys())
+
+    return jsonify(response)
+
+
 def process_opts(player, player_opts):
     """Add data to the options to make them human readable."""
     results = []
@@ -131,3 +138,22 @@ def process_opts(player, player_opts):
         results.append(res)
 
     return results
+
+
+def read_teams(team_dir="data/teams"):
+    """Read the teams from data/teams directory."""
+    team_reader = TeamReader(team_dir)
+    team_reader.process_files()
+
+    output = {}
+    num_teams = len(team_reader.team_files)
+    for team_ind in range(num_teams):
+        target_teamname = team_reader.team_files[team_ind]
+        if "unit_test" in target_teamname:
+            continue
+
+        target_teamname = target_teamname.replace("{}/".format(team_dir), "")
+        target_team = team_reader.teams[team_ind]
+        output[target_teamname] = target_team
+
+    return output
