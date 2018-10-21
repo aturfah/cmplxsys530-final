@@ -2,6 +2,7 @@
 
 from math import ceil
 
+from simulation.base_simulation import load_config
 from simulation.base_type_logging_simulation import BaseLoggingSimulation
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
@@ -31,9 +32,14 @@ class RPSSimulation(BaseLoggingSimulation):
         self.proportions = [float(val) for val in kwargs["proportions"]]
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
+        self.config = load_config(kwargs["config"])
 
     def add_agents(self):
         """Add agents in specified proportions to ladder."""
+        for conf in self.config:
+            print(conf)
+        raise RuntimeError("DOOT")
+
         num_rock = ceil(float(self.proportions[0])*self.num_players)
         num_paper = ceil(float(self.proportions[1])*self.num_players)
         num_scissors = ceil(float(self.proportions[2])*self.num_players)

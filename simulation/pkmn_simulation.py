@@ -3,7 +3,6 @@
 from threading import Thread
 from queue import Queue
 from time import time
-import json
 
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
@@ -11,6 +10,7 @@ from battle_engine.pokemon_engine import PokemonEngine
 from file_manager.log_writer import LogWriter
 from file_manager.team_reader import TeamReader
 from simulation.base_type_logging_simulation import BaseLoggingSimulation
+from simulation.base_simulation import load_config
 from stats.calc import calculate_avg_elo
 
 
@@ -108,15 +108,3 @@ def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
             type_queue.put(calculate_avg_elo(main_sim.ladder))
         main_sim.print_progress_bar(main_sim.num_games - battle_queue.qsize(), start_time)
         battle_queue.task_done()
-
-
-def load_config(config_filename):
-    """Load the config for a pokemon simulation."""
-    config_data = []
-    with open(config_filename) as config_file:
-        config_data = json.loads(config_file.read())
-
-    if not config_data:
-        raise RuntimeError("No Config Loaded: {}".format(config_filename))
-
-    return config_data
