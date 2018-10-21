@@ -52,35 +52,35 @@ class RPSSimulation(BaseLoggingSimulation):
     def add_agents_proportions(self):
         """Logic for adding agents based on proportions vector."""
         num_rock = ceil(float(self.proportions[0])*self.num_players)
-            num_paper = ceil(float(self.proportions[1])*self.num_players)
-            num_scissors = ceil(float(self.proportions[2])*self.num_players)
-            num_mixed = ceil(float(self.proportions[3])*self.num_players)
-            num_counter = ceil(float(self.proportions[4])*self.num_players)
+        num_paper = ceil(float(self.proportions[1])*self.num_players)
+        num_scissors = ceil(float(self.proportions[2])*self.num_players)
+        num_mixed = ceil(float(self.proportions[3])*self.num_players)
+        num_counter = ceil(float(self.proportions[4])*self.num_players)
 
-            for rock_ind in range(num_rock):
-                agent_id = 'rock_{}'.format(rock_ind)
-                player = RPSAgent(id_in=agent_id, strategy_in='rock')
-                self.ladder.add_player(player)
+        for rock_ind in range(num_rock):
+            agent_id = 'rock_{}'.format(rock_ind)
+            player = RPSAgent(id_in=agent_id, strategy_in='rock')
+            self.ladder.add_player(player)
 
-            for paper_ind in range(num_paper):
-                agent_id = 'paper_{}'.format(paper_ind)
-                player = RPSAgent(id_in=agent_id, strategy_in='paper')
-                self.ladder.add_player(player)
+        for paper_ind in range(num_paper):
+            agent_id = 'paper_{}'.format(paper_ind)
+            player = RPSAgent(id_in=agent_id, strategy_in='paper')
+            self.ladder.add_player(player)
 
-            for sciss_ind in range(num_scissors):
-                agent_id = 'scissors_{}'.format(sciss_ind)
-                player = RPSAgent(id_in=agent_id, strategy_in='scissors')
-                self.ladder.add_player(player)
+        for sciss_ind in range(num_scissors):
+            agent_id = 'scissors_{}'.format(sciss_ind)
+            player = RPSAgent(id_in=agent_id, strategy_in='scissors')
+            self.ladder.add_player(player)
 
-            for mixed_ind in range(num_mixed):
-                agent_id = 'mixed_{}'.format(mixed_ind)
-                player = RPSAgent(id_in=agent_id)
-                self.ladder.add_player(player)
+        for mixed_ind in range(num_mixed):
+            agent_id = 'mixed_{}'.format(mixed_ind)
+            player = RPSAgent(id_in=agent_id)
+            self.ladder.add_player(player)
 
-            for counter_ind in range(num_counter):
-                agent_id = 'counter_{}'.format(counter_ind)
-                player = CounterRPSAgent(id_in=agent_id)
-                self.ladder.add_player(player)
+        for counter_ind in range(num_counter):
+            agent_id = 'counter_{}'.format(counter_ind)
+            player = CounterRPSAgent(id_in=agent_id)
+            self.ladder.add_player(player)
 
     def add_agents(self):
         """Add agents in specified proportions to ladder."""
