@@ -24,5 +24,28 @@ def test_process():
     assert len(tr_proc.teams[0]) == 3
 
 
+def test_teams():
+    """Test that teams are read in properly."""
+    tr_proc = TeamReader(prefix="cb_spinda.txt")
+    tr_proc.process_files()
+    processed_spinda = tr_proc.teams[0][0]
+
+    # Test that it is a spinda
+    assert processed_spinda.name == "spinda"
+
+    # Test that moves read properly
+    assert len(processed_spinda.moves) == 4
+
+    # EVs
+    assert processed_spinda.evs["hp"] == 252
+    assert "spe" not in processed_spinda.evs
+
+    # Stats calculated correctly
+    assert processed_spinda.attack == 240
+    assert processed_spinda.speed == 156
+    assert processed_spinda.max_hp == 324
+
+
 test_init()
 test_process()
+test_teams()
