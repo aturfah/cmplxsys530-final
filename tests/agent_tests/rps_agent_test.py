@@ -26,12 +26,6 @@ def test_validate_strategy():
         pass
 
     try:
-        RPSAgent(strategy_in=[1, 1, 1])
-        assert False
-    except ValueError:
-        pass
-
-    try:
         RPSAgent(strategy_in=[-1, 1, 1])
         assert False
     except ValueError:
