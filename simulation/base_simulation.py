@@ -107,6 +107,9 @@ class BaseSimulation():
 
 def load_config(config_filename):
     """Load the config for a pokemon simulation."""
+    if not config_filename:
+        return {}
+
     config_data = []
     with open(config_filename) as config_file:
         config_data = json.loads(config_file.read())
