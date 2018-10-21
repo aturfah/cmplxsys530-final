@@ -38,7 +38,6 @@ class RPSSimulation(BaseLoggingSimulation):
         """Add agents in specified proportions to ladder."""
         if self.config:
             for conf in self.config:
-                print(conf)
                 num_agents = ceil(float(conf["proportion"]*self.num_players))
                 for agent_ind in range(num_agents):
                     player = None
@@ -85,15 +84,21 @@ class RPSSimulation(BaseLoggingSimulation):
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""
         header = []
-        if self.proportions[0] != 0:
-            header.append("rock")
-        if self.proportions[1] != 0:
-            header.append("paper")
-        if self.proportions[2] != 0:
-            header.append("scissors")
-        if self.proportions[3] != 0:
-            header.append("uniform")
-        if self.proportions[4] != 0:
-            header.append("counter")
+        if self.config:
+            temp_header = set()
+            for conf in self.config:
+                temp_header.add(conf["agent_type"])
+            header = sorted(list(temp_header))
+        else:
+            if self.proportions[0] != 0:
+                header.append("rock")
+            if self.proportions[1] != 0:
+                header.append("paper")
+            if self.proportions[2] != 0:
+                header.append("scissors")
+            if self.proportions[3] != 0:
+                header.append("uniform")
+            if self.proportions[4] != 0:
+                header.append("counter")
 
         self.type_log_writer = LogWriter(header, prefix="RPSTypes")
