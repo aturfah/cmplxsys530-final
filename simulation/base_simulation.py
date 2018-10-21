@@ -1,6 +1,7 @@
 """Class for simulation that everything inherits from."""
 
 from time import time
+import json
 
 from ladder.random_ladder import RandomLadder
 from ladder.weighted_ladder import WeightedLadder
@@ -102,3 +103,18 @@ class BaseSimulation():
     def run(self):
         """Run this simulation."""
         raise NotImplementedError("Implement in inherited class")
+
+
+def load_config(config_filename):
+    """Load the config for a pokemon simulation."""
+    if not config_filename:
+        return {}
+
+    config_data = []
+    with open(config_filename) as config_file:
+        config_data = json.loads(config_file.read())
+
+    if not config_data:
+        raise RuntimeError("No Config Loaded: {}".format(config_filename))
+
+    return config_data

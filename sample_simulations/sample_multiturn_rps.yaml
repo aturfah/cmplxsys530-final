@@ -8,4 +8,4 @@ num_rounds: 5
 ladder: 1
 num_games: 50000
 num_players: 40
-proportions: [0.3, 0.3, 0.3, 0.05, 0.05]
+config: "sample_simulations/sim_configs/sample_rps_config.json"

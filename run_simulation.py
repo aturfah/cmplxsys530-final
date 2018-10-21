@@ -66,7 +66,7 @@ def run(**kwargs):
     params["num_rounds"] = int(params.get("num_rounds", None))
     params["multithread"] = int(params.get("multithread", 0))
 
-    if not params["proportions"] and (game_choice == 2 or game_choice == 3):
+    if not params["proportions"] and (game_choice in [2, 3]) and not params.get("config"):
         raise RuntimeError("No proportions specified.")
 
     if game_choice == 0:

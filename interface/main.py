@@ -1,7 +1,5 @@
 """Main Flask App for Agent Interface."""
 
-import json
-
 from flask import Flask
 from flask import jsonify
 from flask import render_template

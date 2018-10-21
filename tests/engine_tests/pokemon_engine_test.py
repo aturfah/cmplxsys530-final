@@ -4,7 +4,7 @@ from agent.basic_pokemon_agent import PokemonAgent
 from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
 
-from config import (PAR_STATUS, FRZ_STATUS, PSN_STATUS, TOX_STATUS)
+from config import (PAR_STATUS, PSN_STATUS, TOX_STATUS)
 
 
 def test_run():
@@ -248,10 +248,10 @@ def test_2ndary_status():
 
     # Assert that if there's another status effect, it
     # cannot be overwritten
-    charizard_target.status = FRZ_STATUS
+    charizard_target.status = PSN_STATUS
     p_eng.initialize_battle(player1, player2)
     p_eng.run_single_turn(player_first_move, player_first_move, player1, player2)
-    assert p_eng.game_state["player2"]["active"].status == FRZ_STATUS
+    assert p_eng.game_state["player2"]["active"].status == PSN_STATUS
 
     # Assert that the type immunities are respected
     charizard_target.status = None
