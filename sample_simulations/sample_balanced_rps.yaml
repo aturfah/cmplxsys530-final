@@ -6,4 +6,4 @@ game_choice: 1
 num_games: 2000
 num_players: 8
 data_delay: 10
-config: "sample_simulations/sim_configs/sample_rps_config.json"
+proportions: [0.25, 0.25, 0.25, 0.25, 0]
