@@ -24,5 +24,13 @@ def test_process():
     assert len(tr_proc.teams[0]) == 3
 
 
+def test_teams():
+    """Test that teams are read in properly."""
+    tr_proc = TeamReader(prefix="cb_spinda.txt")
+    tr_proc.process_files()
+    assert tr_proc.teams
+    print(tr_proc.teams)
+
 test_init()
 test_process()
+test_teams()
