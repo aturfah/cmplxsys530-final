@@ -38,12 +38,12 @@ def test_teams():
 
     # EVs
     assert processed_spinda.evs["hp"] == 252
-    assert not processed_spinda.evs["speed"]
+    assert "spe" not in processed_spinda.evs
 
     # Stats calculated correctly
     assert processed_spinda.attack == 240
     assert processed_spinda.speed == 156
-    assert processed_spinda.hp == 324
+    assert processed_spinda.max_hp == 324
 
 
 test_init()
