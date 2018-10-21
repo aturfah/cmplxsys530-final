@@ -29,57 +29,58 @@ class RPSSimulation(BaseLoggingSimulation):
         rps_kwargs["prefix"] = "RPS"
         super().__init__(rps_kwargs)
 
-        self.proportions = [float(val) for val in kwargs["proportions"]]
+        self.proportions = [float(val) for val in kwargs.get("proportions", [])]
         self.type_log_writer = None
         self.data_delay = kwargs["data_delay"]
-        self.config = load_config(kwargs["config"])
+        self.config = load_config(kwargs.get("config"))
 
     def add_agents(self):
         """Add agents in specified proportions to ladder."""
-        for conf in self.config:
-            print(conf)
-            num_agents = ceil(float(conf["proportion"]*self.num_players))
-            for agent_ind in range(num_agents):
-                player = None
-                agent_id = "{}_{}".format(conf["agent_type"], agent_ind)
-                if conf["agent_strategy"] is not None:
-                    player = RPSAgent(id_in=agent_id, strategy_in=conf["agent_strategy"])
-                else:
-                    player = CounterRPSAgent(id_in=agent_id)
+        if self.config:
+            for conf in self.config:
+                print(conf)
+                num_agents = ceil(float(conf["proportion"]*self.num_players))
+                for agent_ind in range(num_agents):
+                    player = None
+                    agent_id = "{}_{}".format(conf["agent_type"], agent_ind)
+                    if conf["agent_strategy"] is not None:
+                        player = RPSAgent(id_in=agent_id, strategy_in=conf["agent_strategy"])
+                    else:
+                        player = CounterRPSAgent(id_in=agent_id)
 
-                player.type = conf["agent_type"]
+                    player.type = conf["agent_type"]
+                    self.ladder.add_player(player)
+        else:
+            num_rock = ceil(float(self.proportions[0])*self.num_players)
+            num_paper = ceil(float(self.proportions[1])*self.num_players)
+            num_scissors = ceil(float(self.proportions[2])*self.num_players)
+            num_mixed = ceil(float(self.proportions[3])*self.num_players)
+            num_counter = ceil(float(self.proportions[4])*self.num_players)
+
+            for rock_ind in range(num_rock):
+                agent_id = 'rock_{}'.format(rock_ind)
+                player = RPSAgent(id_in=agent_id, strategy_in='rock')
                 self.ladder.add_player(player)
 
-        # num_rock = ceil(float(self.proportions[0])*self.num_players)
-        # num_paper = ceil(float(self.proportions[1])*self.num_players)
-        # num_scissors = ceil(float(self.proportions[2])*self.num_players)
-        # num_mixed = ceil(float(self.proportions[3])*self.num_players)
-        # num_counter = ceil(float(self.proportions[4])*self.num_players)
+            for paper_ind in range(num_paper):
+                agent_id = 'paper_{}'.format(paper_ind)
+                player = RPSAgent(id_in=agent_id, strategy_in='paper')
+                self.ladder.add_player(player)
 
-        # for rock_ind in range(num_rock):
-        #     agent_id = 'rock_{}'.format(rock_ind)
-        #     player = RPSAgent(id_in=agent_id, strategy_in='rock')
-        #     self.ladder.add_player(player)
+            for sciss_ind in range(num_scissors):
+                agent_id = 'scissors_{}'.format(sciss_ind)
+                player = RPSAgent(id_in=agent_id, strategy_in='scissors')
+                self.ladder.add_player(player)
 
-        # for paper_ind in range(num_paper):
-        #     agent_id = 'paper_{}'.format(paper_ind)
-        #     player = RPSAgent(id_in=agent_id, strategy_in='paper')
-        #     self.ladder.add_player(player)
+            for mixed_ind in range(num_mixed):
+                agent_id = 'mixed_{}'.format(mixed_ind)
+                player = RPSAgent(id_in=agent_id)
+                self.ladder.add_player(player)
 
-        # for sciss_ind in range(num_scissors):
-        #     agent_id = 'scissors_{}'.format(sciss_ind)
-        #     player = RPSAgent(id_in=agent_id, strategy_in='scissors')
-        #     self.ladder.add_player(player)
-
-        # for mixed_ind in range(num_mixed):
-        #     agent_id = 'mixed_{}'.format(mixed_ind)
-        #     player = RPSAgent(id_in=agent_id)
-        #     self.ladder.add_player(player)
-
-        # for counter_ind in range(num_counter):
-        #     agent_id = 'counter_{}'.format(counter_ind)
-        #     player = CounterRPSAgent(id_in=agent_id)
-        #     self.ladder.add_player(player)
+            for counter_ind in range(num_counter):
+                agent_id = 'counter_{}'.format(counter_ind)
+                player = CounterRPSAgent(id_in=agent_id)
+                self.ladder.add_player(player)
 
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""
