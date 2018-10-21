@@ -34,7 +34,7 @@ class RPSAgent(BaseAgent):
 
         """
         if isinstance(strategy_in, list):
-            strategy = strategy_in
+            strategy = [val/sum(strategy_in) for val in strategy_in]
             type_ = "mixed"
         elif strategy_in in STRATEGIES:
             strategy = STRATEGIES[strategy_in]
