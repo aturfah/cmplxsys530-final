@@ -6,4 +6,3 @@ game_choice: 1
 num_games: 2000
 num_players: 8
 data_delay: 10
-proportions: [0.25, 0.25, 0.25, 0.25, 0]
