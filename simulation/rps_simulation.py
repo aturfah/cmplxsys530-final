@@ -34,23 +34,24 @@ class RPSSimulation(BaseLoggingSimulation):
         self.data_delay = kwargs["data_delay"]
         self.config = load_config(kwargs.get("config"))
 
-    def add_agents(self):
-        """Add agents in specified proportions to ladder."""
-        if self.config:
-            for conf in self.config:
-                num_agents = ceil(float(conf["proportion"]*self.num_players))
-                for agent_ind in range(num_agents):
-                    player = None
-                    agent_id = "{}_{}".format(conf["agent_type"], agent_ind)
-                    if conf["agent_strategy"] is not None:
-                        player = RPSAgent(id_in=agent_id, strategy_in=conf["agent_strategy"])
-                    else:
-                        player = CounterRPSAgent(id_in=agent_id)
+    def add_agents_config(self):
+        """Logic for adding agents from a specified config."""
+        for conf in self.config:
+            num_agents = ceil(float(conf["proportion"]*self.num_players))
+            for agent_ind in range(num_agents):
+                player = None
+                agent_id = "{}_{}".format(conf["agent_type"], agent_ind)
+                if conf["agent_strategy"] is not None:
+                    player = RPSAgent(id_in=agent_id, strategy_in=conf["agent_strategy"])
+                else:
+                    player = CounterRPSAgent(id_in=agent_id)
 
-                    player.type = conf["agent_type"]
-                    self.ladder.add_player(player)
-        else:
-            num_rock = ceil(float(self.proportions[0])*self.num_players)
+                player.type = conf["agent_type"]
+                self.ladder.add_player(player)
+
+    def add_agents_proportions(self):
+        """Logic for adding agents based on proportions vector."""
+        num_rock = ceil(float(self.proportions[0])*self.num_players)
             num_paper = ceil(float(self.proportions[1])*self.num_players)
             num_scissors = ceil(float(self.proportions[2])*self.num_players)
             num_mixed = ceil(float(self.proportions[3])*self.num_players)
@@ -80,6 +81,13 @@ class RPSSimulation(BaseLoggingSimulation):
                 agent_id = 'counter_{}'.format(counter_ind)
                 player = CounterRPSAgent(id_in=agent_id)
                 self.ladder.add_player(player)
+
+    def add_agents(self):
+        """Add agents in specified proportions to ladder."""
+        if self.config:
+            self.add_agents_config()
+        else:
+            self.add_agents_proportions()
 
     def init_type_log_writer(self):
         """Initialize Type Average Elo LogWriter."""
