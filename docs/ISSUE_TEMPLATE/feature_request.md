@@ -1,7 +1,3 @@
-# Bug Issue Template
-_Description of what is breaking, vs expected_
-_How to reproduce bug_
-
 # Enhancement Issue Template
 _Description of feature_
 
