@@ -1,6 +1,6 @@
 """Ladder that randomly pairs two agents."""
 
-from numpy.random import rand
+from random import random
 from ladder.base_ladder import BaseLadder
 
 
@@ -34,4 +34,4 @@ class RandomLadder(BaseLadder):
             The score for a match; in this case a random number.
 
         """
-        return rand()
+        return random()
