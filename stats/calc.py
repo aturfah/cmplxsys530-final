@@ -2,6 +2,7 @@
 
 from math import sqrt
 
+import numpy as np
 
 def calculate_avg_elo(ladder, group_by="type"):
     """
@@ -139,6 +140,7 @@ def calculate_matchup_matrix(results):
     num_cols = len(names)
 
     output = [[[0 for _ in range(num_cols)] for _ in range(num_cols)] for _ in range(2)]
+    output = np.zeros(2, num_cols, num_cols)
 
     # Generate matchup matrix
     for col_ind in range(num_cols):
@@ -146,7 +148,7 @@ def calculate_matchup_matrix(results):
             rowname = names[row_ind]
             colname = names[col_ind]
 
-            output[0][row_ind][col_ind] = results[rowname][colname]["ratio"]
-            output[1][row_ind][col_ind] = results[rowname][colname]["total"]
+            output[0, row_ind, col_ind] = results[rowname][colname]["ratio"]
+            output[1, row_ind, col_ind] = results[rowname][colname]["total"]
 
     return names, output
