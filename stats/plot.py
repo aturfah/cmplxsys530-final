@@ -57,8 +57,8 @@ def plot_matchup_matrix(colnames, matchup_matrix):
     :param matchup_matrix: np.ndarray
         2xNxN Matrix of matchup results.
     """
-    plot1_data = matchup_matrix[0, :, :]
-    plot2_data = matchup_matrix[1, :, :]
+    plot1_data = matchup_matrix[0]
+    plot2_data = matchup_matrix[1]
 
     wl_axis = plt.subplot(121)
     plt.title("W/L Ratio")
