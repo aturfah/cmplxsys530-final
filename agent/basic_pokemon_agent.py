@@ -1,6 +1,7 @@
 """Class for a pokemon player."""
 
-from numpy.random import uniform
+from random import random
+from random import uniform
 
 from agent.base_agent import BaseAgent
 from pokemon_helpers.damage_stats import DamageStatCalc
