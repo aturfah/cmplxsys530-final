@@ -87,10 +87,10 @@ def format_plot(axis, colnames):
 
     plt.grid(which="minor", lw=1, color="black")
 
-    axis.set_yticks(np.arange(num_rows))
-    axis.set_xticks(np.arange(num_cols))
-    axis.set_yticks([x - 0.5 for x in np.arange(1, num_rows)], minor=True)
-    axis.set_xticks([x - 0.5 for x in np.arange(1, num_cols)], minor=True)
+    axis.set_yticks([x for x in range(num_rows)])
+    axis.set_xticks([x for x in range(num_cols)])
+    axis.set_yticks([x - 0.5 for x in range(1, num_rows)], minor=True)
+    axis.set_xticks([x - 0.5 for x in range(1, num_cols)], minor=True)
     axis.tick_params(axis="y", which="minor", bottom="off")
     axis.tick_params(axis="x", which="minor", bottom="off")
     axis.invert_yaxis()
