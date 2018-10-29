@@ -2,7 +2,7 @@
 from copy import deepcopy
 from threading import Lock
 
-from numpy.random import randint
+from random import randint
 from ladder.elo import elo
 
 
@@ -92,7 +92,7 @@ class BaseLadder:
         self.thread_lock.acquire()
 
         # Select a random player
-        player_ind = randint(low=0, high=len(self.player_pool))
+        player_ind = randint(a=0, b=(len(self.player_pool)-1))
         player = self.player_pool[player_ind][0]
         del self.player_pool[player_ind]
 

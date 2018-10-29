@@ -4,8 +4,6 @@ from cycler import cycler
 import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
 
-import numpy as np
-
 COLORS = ["b", "g", "r", "c", "m", "y", "k", "w"]
 
 
@@ -57,8 +55,8 @@ def plot_matchup_matrix(colnames, matchup_matrix):
     :param matchup_matrix: np.ndarray
         2xNxN Matrix of matchup results.
     """
-    plot1_data = matchup_matrix[0, :, :]
-    plot2_data = matchup_matrix[1, :, :]
+    plot1_data = matchup_matrix[0]
+    plot2_data = matchup_matrix[1]
 
     wl_axis = plt.subplot(121)
     plt.title("W/L Ratio")
@@ -87,10 +85,10 @@ def format_plot(axis, colnames):
 
     plt.grid(which="minor", lw=1, color="black")
 
-    axis.set_yticks(np.arange(num_rows))
-    axis.set_xticks(np.arange(num_cols))
-    axis.set_yticks([x - 0.5 for x in np.arange(1, num_rows)], minor=True)
-    axis.set_xticks([x - 0.5 for x in np.arange(1, num_cols)], minor=True)
+    axis.set_yticks([x for x in range(num_rows)])
+    axis.set_xticks([x for x in range(num_cols)])
+    axis.set_yticks([x - 0.5 for x in range(1, num_rows)], minor=True)
+    axis.set_xticks([x - 0.5 for x in range(1, num_cols)], minor=True)
     axis.tick_params(axis="y", which="minor", bottom="off")
     axis.tick_params(axis="x", which="minor", bottom="off")
     axis.invert_yaxis()

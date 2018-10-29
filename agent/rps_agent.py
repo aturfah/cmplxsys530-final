@@ -1,5 +1,5 @@
 """Agent class for Rock/Paper/Scissors."""
-from numpy.random import uniform
+from random import random
 
 from agent.base_agent import BaseAgent
 
@@ -61,7 +61,7 @@ class RPSAgent(BaseAgent):
             Move corresponding to R, P, or S as defined by the strategy.
 
         """
-        num = uniform()
+        num = random()
         for i in range(3):
             if num < sum(self.strategy[:i + 1]):
                 return i

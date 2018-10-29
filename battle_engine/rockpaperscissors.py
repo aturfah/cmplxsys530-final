@@ -1,5 +1,5 @@
 """Engine implementation for Rock, Paper, Scissors."""
-from numpy.random import uniform
+from random import random
 
 from agent.counter_rps_agent import CounterRPSAgent
 
@@ -68,7 +68,7 @@ class RPSEngine:
 
         if outcome["draw"]:
             # It was a draw, decide randomly
-            return int(uniform() < 0.5)
+            return int(random() < 0.5)
 
         return outcome["winner"]
 

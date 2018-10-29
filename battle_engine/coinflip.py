@@ -1,5 +1,5 @@
 """Coin Flip Engine, random chance of winning."""
-from numpy.random import uniform
+from random import random
 
 
 class CoinFlipEngine:
@@ -39,7 +39,7 @@ class CoinFlipEngine:
             1 if player1 wins, or 0 if player2 wins.
 
         """
-        draw = uniform()
+        draw = random()
 
         if draw < self.prob_win:
             # Player1 wins

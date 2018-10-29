@@ -4,7 +4,8 @@ from math import floor
 from copy import deepcopy
 from uuid import uuid4
 
-from numpy.random import uniform
+from random import uniform
+from random import random
 
 from config import WEAKNESS_CHART, STATUS_IMMUNITIES
 from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
@@ -115,7 +116,7 @@ class PokemonEngine():
 
         if outcome["draw"]:
             # It was a draw, decide randomly
-            return int(uniform() < 0.5)
+            return int(random() < 0.5)
 
         return outcome["winner"]
 
@@ -291,18 +292,18 @@ class PokemonEngine():
         def_poke = self.game_state[defender]["active"]
 
         # Check for paralysis
-        if atk_poke.status == PAR_STATUS and uniform() < 0.25:
+        if atk_poke.status == PAR_STATUS and random() < 0.25:
             return None
         # Check for freeze
         elif atk_poke.status == FRZ_STATUS:
             # Check for player thaw
-            if uniform() < 0.2 or move["type"] == "fire" or move["id"] == "scald":
+            if random() < 0.2 or move["type"] == "fire" or move["id"] == "scald":
                 atk_poke.status = None
             else:
                 return None
         elif atk_poke.status == SLP_STATUS:
             # Check for player wake up
-            if uniform() < 1.0/3 or atk_poke.status_counter == 3:
+            if random() < 1.0/3 or atk_poke.status_counter == 3:
                 atk_poke.status = None
                 atk_poke.status_counter = 0
             # Increment sleep counter
@@ -496,7 +497,7 @@ class PokemonEngine():
 
             if p1_speed == p2_speed:
                 # Speed tie, coin flip
-                if uniform() > 0.5:
+                if random() > 0.5:
                     faster_player = "player1"
                     slower_player = "player2"
                 else:
@@ -676,7 +677,7 @@ def calculate_damage(move, attacker, defender):
     modifier = calculate_modifier(move, attacker, defender)
 
     # Critical Hit
-    if uniform() < 0.0625:
+    if random() < 0.0625:
         critical_hit = True
         modifier = modifier * 1.5
 
