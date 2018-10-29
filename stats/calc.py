@@ -140,7 +140,7 @@ def calculate_matchup_matrix(results):
     num_cols = len(names)
 
     output = [[[0 for _ in range(num_cols)] for _ in range(num_cols)] for _ in range(2)]
-    output = np.zeros(2, num_cols, num_cols)
+    output = np.zeros((2, num_cols, num_cols))
 
     # Generate matchup matrix
     for col_ind in range(num_cols):
