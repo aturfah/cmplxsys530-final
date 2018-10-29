@@ -1,7 +1,6 @@
 """Package to calculate interesting ladder metrics."""
 
 from math import sqrt
-import numpy as np
 
 
 def calculate_avg_elo(ladder, group_by="type"):
