@@ -4,8 +4,6 @@ from cycler import cycler
 import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
 
-import numpy as np
-
 COLORS = ["b", "g", "r", "c", "m", "y", "k", "w"]
 
 
