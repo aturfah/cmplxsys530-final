@@ -4,6 +4,7 @@ from math import sqrt
 
 import numpy as np
 
+
 def calculate_avg_elo(ladder, group_by="type"):
     """
     Calculate the elo rankings on a ladder at a specific point in time.
