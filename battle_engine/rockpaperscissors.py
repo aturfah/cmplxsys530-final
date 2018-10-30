@@ -2,7 +2,7 @@
 from random import random
 
 from agent.counter_rps_agent import CounterRPSAgent
-
+from agent.adjusting_rps_agent import AdjustingRPSAgent
 
 class RPSEngine:
     """Engine to run a game of rock, paper, scissors."""
@@ -44,10 +44,9 @@ class RPSEngine:
         """
         self.reset_game_state()
 
-        if isinstance(player1, CounterRPSAgent):
-            player1.reset_state()
-        if isinstance(player2, CounterRPSAgent):
-            player2.reset_state()
+        for player in [player1, player2]:
+            if isinstance(player, CounterRPSAgent):
+                player.reset_state()
 
         outcome = None
         for _ in range(self.num_games):
@@ -55,9 +54,14 @@ class RPSEngine:
             p2_move = player2.make_move()
 
             if isinstance(player1, CounterRPSAgent):
-                player1.last_move = p2_move
+                player1.update_info(last_move=p2_move)
+            elif isinstance(player1, AdjustingRPSAgent):
+                player1.update_info(opp_move=p2_move)
+
             if isinstance(player2, CounterRPSAgent):
-                player2.last_move = p1_move
+                player2.update_info(last_move=p1_move)
+            elif isinstance(player2, AdjustingRPSAgent):
+                player2.update_info(opp_move=p1_move)
 
             results = rps_logic(p1_move, p2_move)
             self.game_state[results] += 1
