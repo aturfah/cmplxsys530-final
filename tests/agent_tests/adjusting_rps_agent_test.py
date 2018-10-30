@@ -11,11 +11,6 @@ def test_init():
     assert arps.original_strategy == arps.strategy
     assert arps.counts == [1/3, 1/3, 1/3]
 
-    test_init_weights()
-
-
-def test_init_weights():
-    """Tests weights formatting of initialization."""
     # Tests when weights are not defaults
     arps_int = AdjustingRPSAgent(weight=6)
     assert arps_int.weight == 6
@@ -25,6 +20,15 @@ def test_init_weights():
     arps_float = AdjustingRPSAgent(weight=2)
     assert arps_float.weight == 2
     assert arps_float.counts == [2/3, 2/3, 2/3]
+
+    # Test that non-standard strategy set properly
+    arps_nstd = AdjustingRPSAgent(strategy_in="rock")
+    assert arps_nstd.weight == 1
+    assert arps_nstd.counts == [1, 0, 0]
+
+    # Test that strategy plays nicely with weight
+    arps_nstd_weight = AdjustingRPSAgent(strategy_in="rock", weight=5)
+    assert arps_nstd_weight.counts == [5, 0 ,0]
 
 
 test_init()
