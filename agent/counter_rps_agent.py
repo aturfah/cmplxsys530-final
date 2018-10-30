@@ -17,10 +17,16 @@ class CounterRPSAgent(RPSAgent):
         super().__init__(id_in=id_in)
         self.reset_state()
         self.type = "counter"
+        self.last_move = None
 
     def reset_state(self):
         """Reset state once game is finished."""
         self.last_move = None
+
+    def update_info(self, *args, **kwargs):
+        """Store opponent's last move."""
+        last_move = kwargs.get("last_move")
+        self.last_move = last_move
 
     def make_move(self):
         """
