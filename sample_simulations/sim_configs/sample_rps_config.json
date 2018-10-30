@@ -1,27 +1,33 @@
 [
     {
-        "proportion": 0.3,
+        "proportion": 0.25,
         "agent_type": "Rock",
         "agent_strategy": [1, 0, 0]
     },
     {
-        "proportion": 0.3,
+        "proportion": 0.25,
         "agent_type": "Paper",
         "agent_strategy": [0, 1, 0]
     },
     {
-        "proportion": 0.3,
+        "proportion": 0.25,
         "agent_type": "Scissors",
         "agent_strategy": [0, 0, 1]
     },
     {
-        "proportion": 0.05,
+        "proportion": 0.1,
         "agent_type": "Uniform",
         "agent_strategy": [0.33, 0.33, 0.33]
     },
     {
-        "proportion": 0.05,
+        "proportion": 0.075,
         "agent_type": "Counter",
         "agent_strategy": null
+    },
+    {
+        "proportion": 0.075,
+        "agent_type": "Adjusting",
+        "agent_strategy": "Uniform",
+        "weight": 5
     }
 ]
