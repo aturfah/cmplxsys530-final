@@ -38,6 +38,7 @@ def test_update_info_and_reset():
 
     arps.update_info(opp_move=0)
     assert arps.counts == [1/3, 4/3, 1/3]
+    assert arps.original_strategy == [1/3, 1/3, 1/3]
     assert [round(prob, 4) for prob in arps.strategy] == [0.1667, 0.6667, 0.1667]
 
     arps.reset_state()
