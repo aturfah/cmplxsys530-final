@@ -68,6 +68,14 @@ class RPSAgent(BaseAgent):
 
         raise RuntimeError("Something went wrong with strategy selection")
 
+    def update_info(self, *args, **kwargs):
+        """
+        Update player with new information.
+
+        To be defined by subclass.
+        """
+        pass
+
     def print_info(self):
         """Print the info on this player."""
         print("Player: {}".format(self.id))

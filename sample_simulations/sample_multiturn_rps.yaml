@@ -1,11 +1,12 @@
-# Best of 5 RPS Tournament
-# 30% Rock, 30% Paper, 30% Scissors, 5% Uniform, 5% Counter
-# 50000 games, 40 players
+# Best of 9 RPS Tournament
+# 25% Rock, 25% Paper, 25% Scissors,
+# 10% Uniform, 7.5% Counter, 7.5% Adjusting
+# 50000 games, 100 players
 # Random Ladder
 
 game_choice: 3
-num_rounds: 5
+num_rounds: 9
 ladder: 1
 num_games: 50000
-num_players: 40
+num_players: 100
 config: "sample_simulations/sim_configs/sample_rps_config.json"

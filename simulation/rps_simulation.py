@@ -7,6 +7,7 @@ from simulation.base_type_logging_simulation import BaseLoggingSimulation
 from battle_engine.rockpaperscissors import RPSEngine
 from agent.rps_agent import RPSAgent
 from agent.counter_rps_agent import CounterRPSAgent
+from agent.adjusting_rps_agent import AdjustingRPSAgent
 from file_manager.log_writer import LogWriter
 
 
@@ -41,10 +42,14 @@ class RPSSimulation(BaseLoggingSimulation):
             for agent_ind in range(num_agents):
                 player = None
                 agent_id = "{}_{}".format(conf["agent_type"], agent_ind)
-                if conf["agent_strategy"] is not None:
-                    player = RPSAgent(id_in=agent_id, strategy_in=conf["agent_strategy"])
-                else:
+                strategy = conf.get("agent_strategy", None)
+                weight = conf.get("weight", 1)
+                if conf.get("agent_class") == "counter":
                     player = CounterRPSAgent(id_in=agent_id)
+                elif conf.get("agent_class") == "adjusting":
+                    player = AdjustingRPSAgent(id_in=agent_id, strategy_in=strategy, weight=weight)
+                else:
+                    player = RPSAgent(id_in=agent_id, strategy_in=strategy)
 
                 player.type = conf["agent_type"]
                 self.ladder.add_player(player)

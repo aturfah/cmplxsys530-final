@@ -41,6 +41,16 @@ def test_reset_state():
     assert c_player.last_move is None
 
 
+def test_update_info():
+    """Assert that player actually updates its internal state."""
+    c_player = CounterRPSAgent()
+    assert c_player.last_move is None
+
+    c_player.update_info(last_move=1)
+    assert c_player.last_move == 1
+
+
 test_init()
 test_make_move()
 test_reset_state()
+test_update_info
