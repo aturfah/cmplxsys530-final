@@ -23,7 +23,7 @@ class AdjustingRPSAgent(RPSAgent):
     def reset_state(self):
         """Reset state once game is finished."""
         self.strategy = deepcopy(self.original_strategy)
-        self.counts = [int(val * self.weight) for val in self.strategy]
+        self.counts = [val * self.weight for val in self.strategy]
 
     def update_info(self, *args, **kwargs):
         """Update the agent's counts and strategy."""
