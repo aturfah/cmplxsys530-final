@@ -32,6 +32,7 @@ def test_init():
 
 def test_update_info_and_reset():
     """Test that update_info works properly, as does resetting."""
+    # Test updating with default parameters
     arps = AdjustingRPSAgent()
     assert arps.strategy == [1/3, 1/3, 1/3]
 
@@ -42,6 +43,13 @@ def test_update_info_and_reset():
     arps.reset_state()
     assert arps.strategy == [1/3, 1/3, 1/3]
     assert arps.counts == [1/3, 1/3, 1/3]
+
+    # Make sure that weights are accounted for
+    arps_weight = AdjustingRPSAgent(weight=3)
+
+    arps_weight.update_info(opp_move=1)
+    assert arps_weight.counts == [3, 3, 4]
+    assert arps_weight.strategy == [0.3, 0.3, 0.4]
 
 
 test_init()
