@@ -22,11 +22,13 @@
     {
         "proportion": 0.075,
         "agent_type": "Counter",
+        "agent_class": "counter",
         "agent_strategy": null
     },
     {
         "proportion": 0.075,
         "agent_type": "Adjusting",
+        "agent_class": "adjusting"
         "agent_strategy": "Uniform",
         "weight": 5
     }
