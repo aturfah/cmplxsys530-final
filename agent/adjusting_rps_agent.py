@@ -12,7 +12,7 @@ class AdjustingRPSAgent(RPSAgent):
     Updates strategy based on all games played.
     """
 
-    def __init__(self, id_in=None, strategy_in="uniform", weight=3):
+    def __init__(self, id_in=None, strategy_in="uniform", weight=1):
         """Initialize this Agent."""
         super().__init__(id_in=id_in, strategy_in=strategy_in)
         self.type = "PopnAdjust"
