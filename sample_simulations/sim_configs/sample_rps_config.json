@@ -29,7 +29,7 @@
         "proportion": 0.075,
         "agent_type": "Adjusting",
         "agent_class": "adjusting",
-        "agent_strategy": "Uniform",
+        "agent_strategy": "uniform",
         "weight": 5
     }
 ]
