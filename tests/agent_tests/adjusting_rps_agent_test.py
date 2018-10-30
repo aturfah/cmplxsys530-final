@@ -45,12 +45,15 @@ def test_update_info_and_reset():
     assert arps.counts == [1/3, 1/3, 1/3]
 
     # Make sure that weights are accounted for
-    arps_weight = AdjustingRPSAgent(weight=3)
+    arps_weight = AdjustingRPSAgent(weight=9)
 
     arps_weight.update_info(opp_move=1)
     assert arps_weight.counts == [3, 3, 4]
     assert arps_weight.strategy == [0.3, 0.3, 0.4]
 
+    arps_weight.reset_state()
+    assert arps_weight.strategy == [1/3, 1/3, 1/3]
+    assert arps_weight.counts == [3, 3, 3]
 
 test_init()
 test_update_info_and_reset()
