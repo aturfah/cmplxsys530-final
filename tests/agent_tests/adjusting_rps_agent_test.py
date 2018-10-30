@@ -30,5 +30,15 @@ def test_init():
     arps_nstd_weight = AdjustingRPSAgent(strategy_in="rock", weight=5)
     assert arps_nstd_weight.counts == [5, 0 ,0]
 
+def test_update_info_and_reset():
+    """Test that update_info works properly, as does resetting."""
+    arps = AdjustingRPSAgent()
+    assert arps.strategy == [1/3, 1/3, 1/3]
+
+    arps.update_info(opp_move=0)
+    assert arps.counts == [1/3, 4/3, 1/3]
+    assert arps.strategy == [1/4, 1/2, 1/4]
+
 
 test_init()
+test_update_info_and_reset()
