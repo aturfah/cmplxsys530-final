@@ -47,6 +47,8 @@ class RPSEngine:
         for player in [player1, player2]:
             if isinstance(player, CounterRPSAgent):
                 player.reset_state()
+            elif isinstance(player, AdjustingRPSAgent):
+                player.reset_state()
 
         outcome = None
         for _ in range(self.num_games):

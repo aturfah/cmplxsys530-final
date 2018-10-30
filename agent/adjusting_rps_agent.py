@@ -9,7 +9,7 @@ class AdjustingRPSAgent(RPSAgent):
     """
     Class for the AdjustingRPSAgent
 
-    Updates strategy based on all games played.
+    Updates strategy based on all sets played against single opponent.
     """
 
     def __init__(self, id_in=None, strategy_in="uniform", weight=1):
