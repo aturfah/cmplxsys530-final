@@ -17,7 +17,7 @@ class AdjustingRPSAgent(RPSAgent):
         super().__init__(id_in=id_in, strategy_in=strategy_in)
         self.type = "PopnAdjust"
         self.original_strategy = deepcopy(self.strategy)
-        self.counts = [int(val * weight) for val in self.strategy]
+        self.counts = [val * weight for val in self.strategy]
         self.weight = weight
 
     def reset_state(self):
