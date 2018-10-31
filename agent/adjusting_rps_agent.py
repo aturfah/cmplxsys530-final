@@ -10,6 +10,12 @@ class AdjustingRPSAgent(RPSAgent):
     Class for the AdjustingRPSAgent
 
     Updates strategy based on all sets played against single opponent.
+
+    Attributes:
+        counts (list): List of counts for Rock, Paper, Scissors.
+        original_strategy (list): Original strategy vector.
+        weight (int/float): Factor to weight original_strategy by when calculating strategy.
+
     """
 
     def __init__(self, id_in=None, strategy_in="uniform", weight=1):
