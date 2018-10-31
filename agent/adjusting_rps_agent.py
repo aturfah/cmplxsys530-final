@@ -32,7 +32,14 @@ class AdjustingRPSAgent(RPSAgent):
         self.counts = [val * self.weight for val in self.strategy]
 
     def update_info(self, *args, **kwargs):
-        """Update the agent's counts and strategy."""
+        """
+        Update the agent's counts and strategy.
+
+        Args:
+            opp_move (int): The move the opponent just made.
+                [R, P, S] -> [0, 1, 2] respectively
+
+        """
         opp_move = kwargs.get("opp_move")
         self.counts[(opp_move + 1) % 3] += 1
         self.strategy = [val/sum(self.counts) for val in self.counts]
