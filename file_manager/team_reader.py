@@ -125,21 +125,44 @@ def read_name(input_str, pokemon_dict):
 
 
 def read_nature(input_str, pokemon_dict):
-    """Read a Pokemon's Nature."""
+    """
+    Read a Pokemon's Nature.
+
+    Args:
+        input_str (str): Row to read data from.
+        pokemon_dict (dict): Dictionary with Pokemon data to update.
+
+    """
     nature = input_str.replace("Nature", "").strip()
     pokemon_dict["nature"] = nature.lower()
     # print(pokemon_dict)
 
 
 def read_ability(input_str, pokemon_dict):
-    """Read out the Pokemon's ability."""
+    """
+    Read out the Pokemon's ability.
+
+    Args:
+        input_str (str): Row to read data from.
+        pokemon_dict (dict): Dictionary with Pokemon data to update.
+
+    """
     ability = input_str.replace("Ability: ", "").strip()
     pokemon_dict["ability"] = ability
     # print(pokemon_dict)
 
 
 def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
-    """Read a Pokemon's EV/IVs."""
+    """
+    Read a Pokemon's EV/IVs.
+
+    Args:
+        input_str (str): Row to read data from.
+        pokemon_dict (dict): Dictionary with Pokemon data to update.
+        chosen (str): One of 'ev' or 'iv', to determine whether to read in EVs
+            or IVs
+
+    """
     pokemon_dict[chosen] = {}
     value_list = [value_str.strip() for value_str in input_str.split("/")]
 
@@ -151,7 +174,14 @@ def read_ev_iv(input_str, pokemon_dict, chosen="ev"):
 
 
 def read_move(input_str, pokemon_dict):
-    """Read a Pokemon's move."""
+    """
+    Read a Pokemon's move.
+
+    Args:
+        input_str (str): Row to read data from.
+        pokemon_dict (dict): Dictionary with Pokemon data to update.
+
+    """
     move = input_str.replace("-", "").strip()
     if "moves" not in pokemon_dict:
         pokemon_dict["moves"] = []
@@ -161,7 +191,13 @@ def read_move(input_str, pokemon_dict):
 
 
 def process_pokemon(pokemon_dict):
-    """Generate a Pokemon from the string in a file."""
+    """
+    Generate a Pokemon from the string in a file.
+
+    Args:
+        pokemon_dict (dict): Dictionary with Pokemon data.
+
+    """
     init_dict = {}
     init_dict["nickname"] = pokemon_dict["species"]
     init_dict["name"] = pokemon_dict["species"]
