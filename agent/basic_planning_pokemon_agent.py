@@ -109,6 +109,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         for p_opt in player_opts:
             total_position = 0
             for o_opt in opp_opts:
+                # Calculate average position given opponent's possible moves
                 my_gs = deepcopy(self.game_state.gamestate)
                 opp_gs = deepcopy(self.game_state.opp_gamestate)
 
@@ -148,6 +149,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 opp_posn = calc_opp_position_helper(opp_gs) + 0.01
                 total_position += my_posn / opp_posn
 
+            # Calculate expected position for this move
             avg_position = total_position / len(opp_opts)
             if avg_position > maximal_position:
                 optimal_opt = p_opt
