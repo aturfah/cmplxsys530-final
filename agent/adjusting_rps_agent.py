@@ -7,7 +7,7 @@ from agent.rps_agent import RPSAgent
 
 class AdjustingRPSAgent(RPSAgent):
     """
-    Class for the AdjustingRPSAgent
+    Class for the AdjustingRPSAgent.
 
     Updates strategy based on all sets played against single opponent.
 
