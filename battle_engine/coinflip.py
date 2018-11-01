@@ -39,7 +39,10 @@ class CoinFlipEngine:
             1 if player1 wins, or 0 if player2 wins.
 
         """
+        # This is my hack around unused-argument
         draw = random()
+        draw = draw * (player1.elo/player1.elo)
+        draw = draw * (player2.elo/player2.elo)
 
         if draw < self.prob_win:
             # Player1 wins
