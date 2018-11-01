@@ -343,11 +343,13 @@ def atk_param_combinations(active_poke, opp_params, move):
     result_dict = {}
     result_dict["atk"] = {}
 
+    # Set the values for the player's pokemon investment
     if stat in active_poke.evs and active_poke.evs[stat] > 128:
         result_dict["atk"]["max_evs"] = True
     if active_poke.increase_stat == stat:
         result_dict["atk"]["positive_nature"] = True
 
+    # Set the values for the opponent's investment
     for hp_params in opp_params["hp"]:
         for def_params in opp_params[opp_stat]:
             temp_results = deepcopy(result_dict)
