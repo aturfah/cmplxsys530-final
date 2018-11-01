@@ -181,6 +181,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         if p_move["category"] == "Status":
             return [0, 0]
 
+        # Get sum of damage ranges
         dmg_range = None
         param_combs = atk_param_combinations(p_poke, params, p_move)
         for param_comb in param_combs:
@@ -254,6 +255,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Average damage as decimal
         opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
+
+        # Control for being less than zero
+        if opp_gs["data"]["active"]["pct_hp"] < 0:
+            opp_gs["data"]["active"]["pct_hp"] = 0
         return opp_gs
 
     def update_my_gs_def(self, my_gs, opp_gs, o_opt):
@@ -274,6 +279,11 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         # Average damage as portion of total HP
         my_gs["active"].current_hp -= my_gs["active"].max_hp * \
             (dmg_range[0] + dmg_range[1]) / 200
+
+        # Control for being less than zero
+        if my_gs["active"].current_hp < 0:
+            my_gs["active"].current_hp = 0
+
         return my_gs
 
     def determine_faster(self, my_gs, opp_gs, p_opt, o_opt):
