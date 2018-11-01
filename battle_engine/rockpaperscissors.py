@@ -4,6 +4,7 @@ from random import random
 from agent.counter_rps_agent import CounterRPSAgent
 from agent.adjusting_rps_agent import AdjustingRPSAgent
 
+
 class RPSEngine:
     """Engine to run a game of rock, paper, scissors."""
 
