@@ -19,7 +19,15 @@ class TeamReader:
     """
 
     def __init__(self, teams_directory="data/teams", prefix=None, suffix=None):
-        """Initialize a TeamReader."""
+        """
+        Initialize a TeamReader.
+
+        Args:
+            teams_directory (str): Path to folder to read files from.
+            prefix (str): Prefix to look for in filenames.
+            suffix (str): Suffix to look for in filenames.
+
+        """
         team_file_list = listdir(teams_directory)
 
         if prefix:
