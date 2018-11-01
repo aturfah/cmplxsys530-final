@@ -82,7 +82,14 @@ class TeamReader:
 
 
 def read_name(input_str, pokemon_dict):
-    """Read in a Pokemon's name, and add it to the pokemon_dict."""
+    """
+    Read in a Pokemon's name, and add it to the pokemon_dict.
+
+    Args:
+        input_str (str): Row to read data from.
+        pokemon_dict (dict): Dictionary with Pokemon data to update.
+
+    """
     # Try to read an item
     try:
         name_species_gender, item = input_str.strip().rsplit("@", 1)
