@@ -44,10 +44,5 @@ class CoinFlipEngine:
         if draw < self.prob_win:
             # Player1 wins
             return 1
-        elif draw > self.prob_win:
-            # Player2 wins
-            return 0
-
-        # Its a draw, give it to whoever has higher elo
-        # Theoretically this should never happen...
-        return int(player1.elo > player2.elo)
+        # Player2 wins
+        return 0
