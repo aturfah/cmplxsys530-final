@@ -120,8 +120,7 @@ def rps_logic(p1_move, p2_move):
         # Same move, its a draw
         return 0
     elif (p1_move - p2_move) == 1 or (p1_move - p2_move) == -2:
-        # Player1 wins (Paper vs Rock or
-        #   Scissors vs Paper or Rock vs Scissors)
+        # Player1 wins (Paper vs Rock or Scissors vs Paper or Rock vs Scissors)
         return 1
 
     # Player2 wins
