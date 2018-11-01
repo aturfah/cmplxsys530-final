@@ -295,13 +295,14 @@ class PokemonEngine():
         if atk_poke.status == PAR_STATUS and random() < 0.25:
             return None
         # Check for freeze
-        elif atk_poke.status == FRZ_STATUS:
+        if atk_poke.status == FRZ_STATUS:
             # Check for player thaw
             if random() < 0.2 or move["type"] == "fire" or move["id"] == "scald":
                 atk_poke.status = None
             else:
                 return None
-        elif atk_poke.status == SLP_STATUS:
+        # Check for sleep
+        if atk_poke.status == SLP_STATUS:
             # Check for player wake up
             if random() < 1.0/3 or atk_poke.status_counter == 3:
                 atk_poke.status = None
