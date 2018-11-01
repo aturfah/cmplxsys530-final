@@ -24,7 +24,14 @@ class RPSEngine:
         self.reset_game_state()
 
     def reset_game_state(self):
-        """Reset game state to all zeros."""
+        """
+        Reset game state to all zeros.
+
+        "0" corresponds to ties.
+        "1" corresponds to player1 wins.
+        "2" corresponds to player2 wins.
+
+        """
         self.game_state = {}
         self.game_state[0] = 0
         self.game_state[1] = 0
