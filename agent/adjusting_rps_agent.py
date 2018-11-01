@@ -41,5 +41,9 @@ class AdjustingRPSAgent(RPSAgent):
 
         """
         opp_move = kwargs.get("opp_move")
+
+        # Add weight to the move beating the opponent's last move
         self.counts[(opp_move + 1) % 3] += 1
+
+        # Update the strategy
         self.strategy = [val/sum(self.counts) for val in self.counts]
