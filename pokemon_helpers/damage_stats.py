@@ -71,7 +71,7 @@ class DamageStatCalc():
                 associated with it.
 
         Returns:
-            Calculated Damage Statistic for the stat in question
+            Calculated Damage Statistic for the stat in question.
 
         """
         is_hp = kwargs.get("is_hp", False)
@@ -184,7 +184,19 @@ class DamageStatCalc():
 
 
 def boost_modifier(move, attacker, defender):
-    """Calcualte the boost modifier for an attack."""
+    """
+    Calcualte the boost modifier for an attack.
+
+    Args:
+        attacker (dict or Pokemon): Attacking Pokemon with boosts.
+            Must support [] lookup.
+        defender (dict or Pokemon): Defending Pokemon with boosts.
+            Must support [] lookup.
+
+    Returns:
+        Calculates the ratio of attacking boosts to defending boosts.
+
+    """
     stats = ("atk", "def")
     if move["category"] == "Special":
         stats = ("spa", "spd")
