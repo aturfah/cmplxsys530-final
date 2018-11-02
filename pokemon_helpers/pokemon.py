@@ -118,7 +118,16 @@ class Pokemon:
             self.__setattr__(decrease_stat, mod_dec)
 
     def effective_stat(self, stat):
-        """Calculate this pokemon's effective stat after boosts."""
+        """
+        Calculate this pokemon's effective stat after boosts.
+
+        Args:
+            stat (str): Statistic to get the value for.
+
+        Returns:
+            Pokemon's stat factoring in boosts and status effects.
+
+        """
         status_modifier = 1
         if stat == "atk":
             stat_name = "attack"
