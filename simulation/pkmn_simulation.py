@@ -99,7 +99,18 @@ class PokemonSimulation(BaseLoggingSimulation):
 
 
 def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
-    """Code for a single battle thread to run."""
+    """
+    Code for a single battle thread to run.
+
+    Args:
+        main_sim (BaseSimulation): Simulation that is spawning this thread.
+        battle_queue (Queue): Queue with placeholders to count number of
+            battles remaining.
+        output_queue (Queue): Queue to hold the results of the battles.
+        type_queue (Queue): Queue to hold the rating data broken down by agent type.
+        start_time (time): Time object to hold simulation starting time.
+
+    """
     while not battle_queue.empty():
         battle_queue.get()
         results = main_sim.ladder.run_game()
