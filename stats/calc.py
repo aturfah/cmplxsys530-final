@@ -9,9 +9,13 @@ def calculate_avg_elo(ladder, group_by="type"):
     """
     Calculate the elo rankings on a ladder at a specific point in time.
 
-    :param ladder: The ladder for which to calculate the rankings
-    :param group_strategy: Whether to group results by
-        strategy or by individuals
+    Args:
+        ladder (BaseLadder): Ladder for which to calculate rankings.
+        group_by (str): Attribute to group players by.
+
+    Returns:
+        Dictionary with average Elo grouped by group_by attribute.
+
     """
     player_pool = ladder.get_players()
     output = {}
