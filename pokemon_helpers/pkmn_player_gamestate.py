@@ -407,8 +407,12 @@ class PokemonPlayerGameState:
         """
         Define [] lookup on this object.
 
-        :param key: str
-            Attribute of this object to get.
+        Args:
+            key (str): Attribute of this object to get.
+
+        Returns:
+            Attribute of this object at the key.
+
         """
         return self.__getattribute__(key)
 
