@@ -21,17 +21,14 @@ class BaseSimulation():
         """
         Init method.
 
-        :param num_games: int
-            Total number of games to simulate
-        :param num_players: int
-            Approximate number of players to have on the ladder
-        :param game: GameEngine
-            Game to play in this simulation
-        :param ladder_choice: int
-            Whether to use WeightedLadder (0) or RandomLadder (1)
-            for ladder matching.
-        :param prefix: str
-            Prefix to use for these filenames.
+        Args:
+            num_games (int): Total number of games to simulate.
+            num_players (int): Approximate number of players to have on the ladder.
+            game (class defined in battle_engine): Game to play in this simulation.
+            ladder_choice (int): Whether to use WeightedLadder (0) or RandomLadder (1)
+                for ladder matching.
+            prefix (str): Prefix to use for these filenames.
+
         """
         self.num_players = kwargs["num_players"]
         self.num_games = kwargs["num_games"]
