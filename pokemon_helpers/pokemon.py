@@ -164,8 +164,12 @@ class Pokemon:
         """
         Define [] operating on this object.
 
-        :param key: str
-            Attribute of this object to get.
+        Args:
+            key (str): Attribute of this object to get.
+
+        Returns:
+            Value of this object's key.
+
         """
         if key == "baseStats":
             key = "base_stats"
@@ -175,8 +179,12 @@ class Pokemon:
         """
         Define 'in' operator on this object.
 
-        :param key: str
-            Attribute to check this object for.
+        Args:
+            key (str): Attribute to theck this object for.
+
+        Returns:
+            True if this object has 'key' as an attribute.
+
         """
         try:
             self.__getattribute__(key)
