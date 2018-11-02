@@ -23,17 +23,14 @@ class Pokemon:
         Make a new instance of species <name> with moves <moves>
         at level <level> with nature <quirky>
 
-        :param name: str
-            String corresponding to value in config.POKEMON_DATA
-        :param moves: list
-            List of moves corresponding to moves in config.MOVE_DATA
-        :param level: int
-            Level of pokemon to be used in calculations
-        :param nature: str
-            Pokemon nature to be used to modify stat values.
-        :param evs: dict
-            Dictionary of key/value pairs with EVs for each stat.
-            Key should be stat code, value should be number of EVs.
+        Args:
+            name (str): String corresponding to value in config.POKEMON_DATA
+            moves (list): List of moves corresponding to moves in config.MOVE_DATA
+            level (int): Level of pokemon to be used in calculations
+            nature (str): Pokemon nature to be used to modify stat values.
+            evs (dict): Dictionary of key/value pairs with EVs for each stat.
+                Key should be stat code, value should be number of EVs.
+
         """
         name = kwargs["name"]
         moves = kwargs["moves"]
