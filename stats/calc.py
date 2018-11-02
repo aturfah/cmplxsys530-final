@@ -42,8 +42,12 @@ def calculate_matchups(log_reader):
     """
     Calculate matchup results for player types.
 
-    :param log_reader: LogReader
-        LogReader with the matchup data loaded.
+    Args:
+        log_reader (LogReader): LogReader with matchup data loaded.
+
+    Returns:
+        Dictionary with matchup matrix broken down by type in file.
+
     """
     num_games = len(log_reader.data[log_reader.data_keys[0]])
     num_files = len(log_reader.files)
