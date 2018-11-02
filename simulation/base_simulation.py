@@ -19,7 +19,7 @@ class BaseSimulation():
 
     def __init__(self, kwargs):
         """
-        Init method.
+        Initalize a simulation.
 
         Args:
             num_games (int): Total number of games to simulate.
@@ -40,7 +40,15 @@ class BaseSimulation():
         self.init_player_log_writer()
 
     def write_player_log(self, outcome, player1, player2):
-        """Write the log of an individual game to a file."""
+        """
+        Write the log of an individual game to a file.
+
+        Args:
+            outcome (int): Results of the game.
+            player1 (BaseAgent): Player in this game.
+            player2 (BaseAgent): Other player in this game.
+
+        """
         datum = {
             "player1.type": player1.type,
             "player1.elo": player1.elo,
@@ -74,6 +82,11 @@ class BaseSimulation():
 
         Code borrowed/modified from:
         https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
+
+        Args:
+            iter_num (int): Point in the simulation that we are at.
+            start_time (time.time): time object representing start of simulation.
+
         """
         iteration = iter_num + 1
         prefix = "Progress: "
@@ -103,7 +116,16 @@ class BaseSimulation():
 
 
 def load_config(config_filename):
-    """Load the config for a pokemon simulation."""
+    """
+    Load the population config for this simulation.
+
+    Args:
+        config_filename (str): Filename for the simulation's config.
+
+    Returns:
+        Dict containing data from the config file.
+
+    """
     if not config_filename:
         return {}
 
