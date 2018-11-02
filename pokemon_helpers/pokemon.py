@@ -85,8 +85,10 @@ class Pokemon:
         """
         Calculate stats for the pokemon.
 
-        :param nature: str
-            Nature of the pokemon to modify stats.
+        Args:
+            nature (str): Nature of the pokemon to modify stats.
+            evs (dict): Dictionary with EVs for this Pokemon.
+
         """
         base_stats = self.base_stats
 
