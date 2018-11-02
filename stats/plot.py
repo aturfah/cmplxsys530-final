@@ -49,11 +49,12 @@ def plot_matchup_matrix(colnames, matchup_matrix):
     """
     Plot matchup matrix as heatmap.
 
-    :param colnames: list
-        List of column names to display on heatmap; since
-        matrix is NxN, also displays as rows.
-    :param matchup_matrix: np.ndarray
-        2xNxN Matrix of matchup results.
+    Args:
+        colnames (list): List of column names to display on heatmap; since
+            matrix is NxN, also displays as rows.
+        matchup_matrix (np.ndarray): 2xNxN Matrix of matchup results, where N
+            is len(colnames)
+
     """
     plot1_data = matchup_matrix[0]
     plot2_data = matchup_matrix[1]
@@ -75,10 +76,10 @@ def format_plot(axis, colnames):
     """
     Do formatting for plots.
 
-    :param axis: plt.axis
-        Plot figure with graph data.
-    :param colnames: list
-        List of row/column names to display on heatmap.
+    Args:
+        axis (plt.axis):  Plot figure with graph data.
+        colnames (list): List of row/column names to display on heatmap.
+
     """
     num_rows = len(colnames)
     num_cols = len(colnames)
