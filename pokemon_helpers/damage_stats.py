@@ -12,7 +12,7 @@ from battle_engine.pokemon_engine import calculate_modifier
 
 
 class DamageStatCalc():
-    """The class to do the thing."""
+    """Class to estimate damage taken/given."""
 
     def __init__(self):
         """Initialize the calculator."""
@@ -23,16 +23,19 @@ class DamageStatCalc():
         """
         Calculate the damage range for a player's attack.
 
-        :param attacker: dict-like
-            Stats and boosts for the attacking pokemon.
-        :param defender: dict-like
-            Stats and boosts for the defending pokemon.
-        :param move: dict
-            Dictionary with the move's data.
-        :param params: dict
-            Dictionary with three required keys, 'atk' and
-            'def', and 'hp' with the kwargs for the estimate_dmg_val
-            calculations.
+        Args:
+            attacker (dict or Pokemon): Stats and boosts for attacking Pokemon.
+                Must support [] lookup.
+            defender (dict or Pokemon): Stats and boosts for defending Pokemon.
+                Must support [] lookup.
+            move (dict): Dictionary with attacking move's data
+            params (dict): Dictionary with three required keys, 'atk' and
+                'def', and 'hp' with the kwargs for the estimate_dmg_val
+                calculations.
+
+        Returns:
+            Tuple of damage range possible in the form (min, max)
+
         """
         move_cat = ("atk", "def")
         if move["category"] != "Physical":
