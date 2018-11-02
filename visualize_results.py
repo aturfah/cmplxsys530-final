@@ -24,6 +24,8 @@ def run(prefix, method, numeric_columns):
     Args:
         prefix (str): Prefix to specify for LogReader's files.
         numeric_columns (tuple): Which columns to convert to numeric (for the analysis)
+        method (str): Which type data visualization to use.
+            Either 'elo' or 'matchup'
 
     """
     if method is None:
