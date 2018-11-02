@@ -96,7 +96,16 @@ def calculate_matchups(log_reader):
 
 
 def validate_results(results):
-    """Fill in any missing values."""
+    """
+    Fill in any missing values.
+
+    Args:
+        results (dict): Output of the calculate_matchups()
+
+    Returns:
+        Updated results dictionary with all class combinations represented.
+
+    """
     names = results.keys()
     for p1_type in names:
         for p2_type in names:
