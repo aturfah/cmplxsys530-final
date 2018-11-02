@@ -62,17 +62,14 @@ class DamageStatCalc():
         """
         Estimate the value of a damage_statistic.
 
-        :param stat_val: int
-            The pokemon's base value for this statistic.
-        :param is_hp: bool
-            Whether or not we are calculating the HP statisitc.
-        :param is_atk: bool
-            Whether or not we are calculating an Attack statistic.
-        :param max_evs: bool
-            Whether or not this stat has the maximum number of EVs.
-        :param positive_nature: bool
-            Whether or not this stat has a positive nature associated
-            with it.
+        Args:
+            stat_val (int): The pokemon's base value for this statistic.
+            is_hp (bool): Whether or not we are calculating the HP statisitc.
+            is_atk (bool): Whether or not we are calculating an Attack statistic.
+            max_evs (bool): Whether or not this stat has the maximum number of EVs.
+            positive_nature (bool): Whether or not this stat has a positive nature
+                associated with it.
+
         """
         is_hp = kwargs.get("is_hp", False)
         is_atk = kwargs.get("is_atk", False)
