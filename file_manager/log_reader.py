@@ -27,10 +27,10 @@ class LogReader():
         One of filename or prefix should be specified,
         not both.
 
-        :param filenames: list
-            List of filenames to read.
-        :param prefix: str
-            Prefix for filenames to read.
+        Args:
+            filenames (list): List of filenames to read.
+            prefix (str): Prefix for filenames to read.
+
         """
         if filenames is None and prefix is None:
             raise AttributeError("One of filename or prefix must be specified")
