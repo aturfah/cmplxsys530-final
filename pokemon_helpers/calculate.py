@@ -51,8 +51,12 @@ def calculate_spe_range(pokemon_name):
     """
     Calculate the range for a pokemon's speed.
 
-    :param pokemon_name: str
-        The name of the pokemon for whom the range is being calculated.
+    Args:
+        pokmeon_name (str): The name of the pokemon for whom the range is being calculated.
+
+    Returns:
+        Tuple win min/max speed for this Pokemon
+
     """
     speed_base_stat = POKEMON_DATA[pokemon_name]["baseStats"]["spe"]
 
