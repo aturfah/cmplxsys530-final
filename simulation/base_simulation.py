@@ -19,7 +19,7 @@ class BaseSimulation():
 
     def __init__(self, kwargs):
         """
-        Initalize a simulation.
+        Init method for a simulation.
 
         Args:
             num_games (int): Total number of games to simulate.
