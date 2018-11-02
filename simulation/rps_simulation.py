@@ -21,8 +21,9 @@ class RPSSimulation(BaseLoggingSimulation):
         Args:
             proportions (list): List of proportions for Rock, Paper,
                 Scissors, and Uniform players respectively.
-            data_delay: Iteration gap to calculate average
+            data_delay (int): Iteration gap to calculate average
                 elo ranking for each strategy (R/P/S/U/C)
+            config (str): Filename with the population config.
 
         """
         rps_kwargs = kwargs
