@@ -4,6 +4,7 @@ from random import random
 from agent.counter_rps_agent import CounterRPSAgent
 from agent.adjusting_rps_agent import AdjustingRPSAgent
 
+
 class RPSEngine:
     """Engine to run a game of rock, paper, scissors."""
 
@@ -24,7 +25,14 @@ class RPSEngine:
         self.reset_game_state()
 
     def reset_game_state(self):
-        """Reset game state to all zeros."""
+        """
+        Reset game state to all zeros.
+
+        "0" corresponds to ties.
+        "1" corresponds to player1 wins.
+        "2" corresponds to player2 wins.
+
+        """
         self.game_state = {}
         self.game_state[0] = 0
         self.game_state[1] = 0
@@ -37,10 +45,13 @@ class RPSEngine:
         Returns 1 if player1 wins, 0 if player2 wins.
         In the case of a draw, flip a coin.
 
-        :param player1: BaseAgent
-            A player in this simulation.
-        :param player2: BaseAgent
-            The other player in this simulation.
+        Args:
+            player1 (BaseAgent): A player in this simulation.
+            player2 (BaseAgent): The other player in this simulation.
+
+        Returns:
+            1 if player1 wins, 2 if player2 wins.
+
         """
         self.reset_game_state()
 
@@ -108,13 +119,22 @@ def rps_logic(p1_move, p2_move):
     Execute logic of RPS Game.
 
     Rock < Paper < Scissors < Rock
+
+    Args:
+        p1_move (int): Encoded player1 move.
+        p2_move (int): Encoded player2 move.
+
+    Returns:
+        0 if its a tie.
+        1 if Player1 wins.
+        2 if Player2 wins.
+
     """
     if p1_move == p2_move:
         # Same move, its a draw
         return 0
-    elif (p1_move - p2_move) == 1 or (p1_move - p2_move) == -2:
-        # Player1 wins (Paper vs Rock or
-        #   Scissors vs Paper or Rock vs Scissors)
+    if (p1_move - p2_move) == 1 or (p1_move - p2_move) == -2:
+        # Player1 wins (Paper vs Rock or Scissors vs Paper or Rock vs Scissors)
         return 1
 
     # Player2 wins

@@ -68,7 +68,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         if opp_active_poke in self.game_state.opp_gamestate["moves"]:
             for move in self.game_state.opp_gamestate["moves"][opp_active_poke]:
                 opp_moves.append(move["id"])
+
         if len(opp_moves) < 4:
+            # Infer remaining moves from tier's data
             common_moves = USAGE_STATS[self.tier][opp_active_poke]["Moves"]
             common_moves = sorted(common_moves.items(),
                                   key=operator.itemgetter(1), reverse=True)
@@ -78,6 +80,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                     opp_moves.append(move)
                 if len(opp_moves) == 4:
                     break
+
         for move in opp_moves:
             opp_opts.append(("ATTACK", move))
 
@@ -106,6 +109,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         for p_opt in player_opts:
             total_position = 0
             for o_opt in opp_opts:
+                # Calculate average position given opponent's possible moves
                 my_gs = deepcopy(self.game_state.gamestate)
                 opp_gs = deepcopy(self.game_state.opp_gamestate)
 
@@ -145,6 +149,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 opp_posn = calc_opp_position_helper(opp_gs) + 0.01
                 total_position += my_posn / opp_posn
 
+            # Calculate expected position for this move
             avg_position = total_position / len(opp_opts)
             if avg_position > maximal_position:
                 optimal_opt = p_opt
@@ -176,6 +181,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         if p_move["category"] == "Status":
             return [0, 0]
 
+        # Get sum of damage ranges
         dmg_range = None
         param_combs = atk_param_combinations(p_poke, params, p_move)
         for param_comb in param_combs:
@@ -249,6 +255,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Average damage as decimal
         opp_gs["data"]["active"]["pct_hp"] -= (dmg_range[0] + dmg_range[1]) / 200
+
+        # Control for being less than zero
+        if opp_gs["data"]["active"]["pct_hp"] < 0:
+            opp_gs["data"]["active"]["pct_hp"] = 0
         return opp_gs
 
     def update_my_gs_def(self, my_gs, opp_gs, o_opt):
@@ -269,6 +279,11 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         # Average damage as portion of total HP
         my_gs["active"].current_hp -= my_gs["active"].max_hp * \
             (dmg_range[0] + dmg_range[1]) / 200
+
+        # Control for being less than zero
+        if my_gs["active"].current_hp < 0:
+            my_gs["active"].current_hp = 0
+
         return my_gs
 
     def determine_faster(self, my_gs, opp_gs, p_opt, o_opt):
@@ -295,6 +310,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         if p_move["priority"] == o_move["priority"]:
             speed_pairs = self.game_state.opp_gamestate["investment"][o_poke_name]["spe"]
             min_opp_spe, max_opp_spe = speed_pairs
+
+            # Assume that any speed is possible, which isn't exactly correct
             return p_poke.speed > (min_opp_spe + max_opp_spe) / 2
 
         # Moves of different priority will always go in priority order
@@ -326,11 +343,13 @@ def atk_param_combinations(active_poke, opp_params, move):
     result_dict = {}
     result_dict["atk"] = {}
 
+    # Set the values for the player's pokemon investment
     if stat in active_poke.evs and active_poke.evs[stat] > 128:
         result_dict["atk"]["max_evs"] = True
     if active_poke.increase_stat == stat:
         result_dict["atk"]["positive_nature"] = True
 
+    # Set the values for the opponent's investment
     for hp_params in opp_params["hp"]:
         for def_params in opp_params[opp_stat]:
             temp_results = deepcopy(result_dict)

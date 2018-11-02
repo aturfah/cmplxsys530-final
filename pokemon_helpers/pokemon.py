@@ -23,17 +23,14 @@ class Pokemon:
         Make a new instance of species <name> with moves <moves>
         at level <level> with nature <quirky>
 
-        :param name: str
-            String corresponding to value in config.POKEMON_DATA
-        :param moves: list
-            List of moves corresponding to moves in config.MOVE_DATA
-        :param level: int
-            Level of pokemon to be used in calculations
-        :param nature: str
-            Pokemon nature to be used to modify stat values.
-        :param evs: dict
-            Dictionary of key/value pairs with EVs for each stat.
-            Key should be stat code, value should be number of EVs.
+        Args:
+            name (str): String corresponding to value in config.POKEMON_DATA
+            moves (list): List of moves corresponding to moves in config.MOVE_DATA
+            level (int): Level of pokemon to be used in calculations
+            nature (str): Pokemon nature to be used to modify stat values.
+            evs (dict): Dictionary of key/value pairs with EVs for each stat.
+                Key should be stat code, value should be number of EVs.
+
         """
         name = kwargs["name"]
         moves = kwargs["moves"]
@@ -88,8 +85,10 @@ class Pokemon:
         """
         Calculate stats for the pokemon.
 
-        :param nature: str
-            Nature of the pokemon to modify stats.
+        Args:
+            nature (str): Nature of the pokemon to modify stats.
+            evs (dict): Dictionary with EVs for this Pokemon.
+
         """
         base_stats = self.base_stats
 
@@ -119,7 +118,16 @@ class Pokemon:
             self.__setattr__(decrease_stat, mod_dec)
 
     def effective_stat(self, stat):
-        """Calculate this pokemon's effective stat after boosts."""
+        """
+        Calculate this pokemon's effective stat after boosts.
+
+        Args:
+            stat (str): Statistic to get the value for.
+
+        Returns:
+            Pokemon's stat factoring in boosts and status effects.
+
+        """
         status_modifier = 1
         if stat == "atk":
             stat_name = "attack"
@@ -156,8 +164,12 @@ class Pokemon:
         """
         Define [] operating on this object.
 
-        :param key: str
-            Attribute of this object to get.
+        Args:
+            key (str): Attribute of this object to get.
+
+        Returns:
+            Value of this object's key.
+
         """
         if key == "baseStats":
             key = "base_stats"
@@ -167,8 +179,12 @@ class Pokemon:
         """
         Define 'in' operator on this object.
 
-        :param key: str
-            Attribute to check this object for.
+        Args:
+            key (str): Attribute to theck this object for.
+
+        Returns:
+            True if this object has 'key' as an attribute.
+
         """
         try:
             self.__getattribute__(key)

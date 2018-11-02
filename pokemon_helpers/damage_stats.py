@@ -12,7 +12,7 @@ from battle_engine.pokemon_engine import calculate_modifier
 
 
 class DamageStatCalc():
-    """The class to do the thing."""
+    """Class to estimate damage taken/given."""
 
     def __init__(self):
         """Initialize the calculator."""
@@ -23,16 +23,19 @@ class DamageStatCalc():
         """
         Calculate the damage range for a player's attack.
 
-        :param attacker: dict-like
-            Stats and boosts for the attacking pokemon.
-        :param defender: dict-like
-            Stats and boosts for the defending pokemon.
-        :param move: dict
-            Dictionary with the move's data.
-        :param params: dict
-            Dictionary with three required keys, 'atk' and
-            'def', and 'hp' with the kwargs for the estimate_dmg_val
-            calculations.
+        Args:
+            attacker (dict or Pokemon): Stats and boosts for attacking Pokemon.
+                Must support [] lookup.
+            defender (dict or Pokemon): Stats and boosts for defending Pokemon.
+                Must support [] lookup.
+            move (dict): Dictionary with attacking move's data
+            params (dict): Dictionary with three required keys, 'atk' and
+                'def', and 'hp' with the kwargs for the estimate_dmg_val
+                calculations.
+
+        Returns:
+            Tuple of damage range possible in the form (min, max)
+
         """
         move_cat = ("atk", "def")
         if move["category"] != "Physical":
@@ -59,17 +62,17 @@ class DamageStatCalc():
         """
         Estimate the value of a damage_statistic.
 
-        :param stat_val: int
-            The pokemon's base value for this statistic.
-        :param is_hp: bool
-            Whether or not we are calculating the HP statisitc.
-        :param is_atk: bool
-            Whether or not we are calculating an Attack statistic.
-        :param max_evs: bool
-            Whether or not this stat has the maximum number of EVs.
-        :param positive_nature: bool
-            Whether or not this stat has a positive nature associated
-            with it.
+        Args:
+            stat_val (int): The pokemon's base value for this statistic.
+            is_hp (bool): Whether or not we are calculating the HP statisitc.
+            is_atk (bool): Whether or not we are calculating an Attack statistic.
+            max_evs (bool): Whether or not this stat has the maximum number of EVs.
+            positive_nature (bool): Whether or not this stat has a positive nature
+                associated with it.
+
+        Returns:
+            Calculated Damage Statistic for the stat in question.
+
         """
         is_hp = kwargs.get("is_hp", False)
         is_atk = kwargs.get("is_atk", False)
@@ -106,8 +109,13 @@ class DamageStatCalc():
         Find the closest value in the keys to this number.
 
         Rounds down, so 215 mathces to 200.
-        :param number: int
-            The number we are looking for a match for.
+
+        Args:
+            number (int): The number we are looking for a match for.
+
+        Returns:
+            Tuple of closest stat value, and the difference.
+
         """
         closest_num = None
         offset = None
@@ -176,7 +184,19 @@ class DamageStatCalc():
 
 
 def boost_modifier(move, attacker, defender):
-    """Calcualte the boost modifier for an attack."""
+    """
+    Calcualte the boost modifier for an attack.
+
+    Args:
+        attacker (dict or Pokemon): Attacking Pokemon with boosts.
+            Must support [] lookup.
+        defender (dict or Pokemon): Defending Pokemon with boosts.
+            Must support [] lookup.
+
+    Returns:
+        Calculates the ratio of attacking boosts to defending boosts.
+
+    """
     stats = ("atk", "def")
     if move["category"] == "Special":
         stats = ("spa", "spd")

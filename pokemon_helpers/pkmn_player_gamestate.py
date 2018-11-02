@@ -280,7 +280,7 @@ class PokemonPlayerGameState:
 
         for result_ind in range(num_results):
             result = results[result_ind]
-            if dmg_pct >= result[0] and dmg_pct <= result[1]:
+            if result[0] <= dmg_pct <= result[1]:
                 result_dict = {}
                 result_dict[stat] = {}
                 result_dict["hp"] = {}
@@ -318,7 +318,7 @@ class PokemonPlayerGameState:
 
         for result_ind in range(num_results):
             result = results[result_ind]
-            if dmg_pct >= result[0] and dmg_pct <= result[1]:
+            if result[0] <= dmg_pct <= result[1]:
                 result_dict = {}
                 result_dict["max_evs"] = combinations[result_ind][0]
                 result_dict["positive_nature"] = combinations[result_ind][1]
@@ -407,8 +407,12 @@ class PokemonPlayerGameState:
         """
         Define [] lookup on this object.
 
-        :param key: str
-            Attribute of this object to get.
+        Args:
+            key (str): Attribute of this object to get.
+
+        Returns:
+            Attribute of this object at the key.
+
         """
         return self.__getattribute__(key)
 

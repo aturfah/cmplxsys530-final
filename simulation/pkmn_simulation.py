@@ -18,7 +18,15 @@ class PokemonSimulation(BaseLoggingSimulation):
     """Class for Pokemon Simulation."""
 
     def __init__(self, **kwargs):
-        """Initialize this simulation."""
+        """
+        Initialize this simulation.
+
+        Args:
+            config (str): Filename for the population configs.
+            data_delay (int): Number of matches between gathering type data.
+            multithread (bool): Whether or not to run this simulation multithreaded.
+
+        """
         pkmn_kwargs = kwargs
         pkmn_kwargs["game"] = PokemonEngine()
         pkmn_kwargs["prefix"] = "PKMN"
@@ -99,7 +107,18 @@ class PokemonSimulation(BaseLoggingSimulation):
 
 
 def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
-    """Code for a single battle thread to run."""
+    """
+    Code for a single battle thread to run.
+
+    Args:
+        main_sim (BaseSimulation): Simulation that is spawning this thread.
+        battle_queue (Queue): Queue with placeholders to count number of
+            battles remaining.
+        output_queue (Queue): Queue to hold the results of the battles.
+        type_queue (Queue): Queue to hold the rating data broken down by agent type.
+        start_time (time): Time object to hold simulation starting time.
+
+    """
     while not battle_queue.empty():
         battle_queue.get()
         results = main_sim.ladder.run_game()
