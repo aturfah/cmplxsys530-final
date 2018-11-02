@@ -21,10 +21,10 @@ def run(prefix, method, numeric_columns):
     """
     Visualize the data from a LogReader.
 
-    :param prefix: str
-        Prefix to specify for LogReader's files
-    :param numeric_columns: tuple
-        Which columns to convert to numeric (for the analysis)
+    Args:
+        prefix (str): Prefix to specify for LogReader's files.
+        numeric_columns (tuple): Which columns to convert to numeric (for the analysis)
+
     """
     if method is None:
         raise RuntimeError("No method specified.")
