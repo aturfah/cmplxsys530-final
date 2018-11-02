@@ -45,10 +45,13 @@ class RPSEngine:
         Returns 1 if player1 wins, 0 if player2 wins.
         In the case of a draw, flip a coin.
 
-        :param player1: BaseAgent
-            A player in this simulation.
-        :param player2: BaseAgent
-            The other player in this simulation.
+        Args:
+            player1 (BaseAgent): A player in this simulation.
+            player2 (BaseAgent): The other player in this simulation.
+
+        Returns:
+            1 if player1 wins, 2 if player2 wins.
+
         """
         self.reset_game_state()
 
@@ -116,6 +119,16 @@ def rps_logic(p1_move, p2_move):
     Execute logic of RPS Game.
 
     Rock < Paper < Scissors < Rock
+
+    Args:
+        p1_move (int): Encoded player1 move.
+        p2_move (int): Encoded player2 move.
+
+    Returns:
+        0 if its a tie.
+        1 if Player1 wins.
+        2 if Player2 wins.
+
     """
     if p1_move == p2_move:
         # Same move, its a draw
