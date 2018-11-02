@@ -70,6 +70,9 @@ class DamageStatCalc():
             positive_nature (bool): Whether or not this stat has a positive nature
                 associated with it.
 
+        Returns:
+            Calculated Damage Statistic for the stat in question
+
         """
         is_hp = kwargs.get("is_hp", False)
         is_atk = kwargs.get("is_atk", False)
@@ -106,8 +109,13 @@ class DamageStatCalc():
         Find the closest value in the keys to this number.
 
         Rounds down, so 215 mathces to 200.
-        :param number: int
-            The number we are looking for a match for.
+
+        Args:
+            number (int): The number we are looking for a match for.
+
+        Returns:
+            Tuple of closest stat value, and the difference.
+
         """
         closest_num = None
         offset = None
