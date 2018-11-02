@@ -12,12 +12,14 @@ def calculate_stat(base_val, ev_val, level):
     Formula from
         https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats
 
-    :param base_val: int
-        The pokemon's base statistic value in that statistic
-    :param ev_val: int
-        The pokemon's effort values in that statistic
-    :param level: int
-        The pokemon's level
+    Args:
+        base_val (int): The pokemon's base statistic value in that statistic.
+        ev_val (int): The pokemon's effort values in that statistic
+        level (int): Pokemon's level
+
+    Returns:
+        Value for the statistic
+
     """
     stat_val = floor((2*(base_val) + 31 + floor(ev_val/4))*level/100)
     stat_val += 5
@@ -31,12 +33,14 @@ def calculate_hp_stat(base_hp, ev_val, level):
     Formula from
         https://bulbapedia.bulbagarden.net/wiki/Statistic#Determination_of_stats
 
-    :param base_hp: int
-        The pokemon's base HP statistic
-    :param ev_val: int
-        The pokemon's effort values in hitpoints statistic
-    :param level: int
-        The pokemon's level
+    Args:
+        base_hp (int): Base HP statistic.
+        ev_val (int): Pokemon's effort values in hitpoints.
+        level (int): Pokemon's level
+
+    Returns:
+        Maximum hitpoints for the pokemon.
+
     """
     hp_val = floor((2*base_hp + 31 + floor(ev_val/4))*level/100)
     hp_val += level + 10
