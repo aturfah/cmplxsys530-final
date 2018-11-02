@@ -29,8 +29,9 @@ def test_basic_results(RPS):
     """
     Test that RPS results are still valid.
 
-    :param RPS: RPSEngine
-        Engine to use for this test.
+    Args:
+        RPS (RPSEngine): Engine to use for this test.
+
     """
     rock_player = RPSAgent(strategy_in="rock")
     paper_player = RPSAgent(strategy_in="paper")
