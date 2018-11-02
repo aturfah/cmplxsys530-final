@@ -18,7 +18,15 @@ class PokemonSimulation(BaseLoggingSimulation):
     """Class for Pokemon Simulation."""
 
     def __init__(self, **kwargs):
-        """Initialize this simulation."""
+        """
+        Initialize this simulation.
+
+        Args:
+            config (str): Filename for the population configs.
+            data_delay (int): Number of matches between gathering type data.
+            multithread (bool): Whether or not to run this simulation multithreaded.
+
+        """
         pkmn_kwargs = kwargs
         pkmn_kwargs["game"] = PokemonEngine()
         pkmn_kwargs["prefix"] = "PKMN"
