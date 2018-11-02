@@ -18,12 +18,12 @@ class RPSSimulation(BaseLoggingSimulation):
         """
         Initialize an RPS Simulation.
 
-        :param proportions: list
-            List of proportions for Rock, Paper,
-            Scissors, and Uniform players respectively
-        :param data_delay: int
-            Iteration gap to calculate average
-            elo ranking for each strategy (R/P/S/U/C)
+        Args:
+            proportions (list): List of proportions for Rock, Paper,
+                Scissors, and Uniform players respectively.
+            data_delay: Iteration gap to calculate average
+                elo ranking for each strategy (R/P/S/U/C)
+
         """
         rps_kwargs = kwargs
         rps_kwargs["game"] = RPSEngine(kwargs["num_rounds"])
