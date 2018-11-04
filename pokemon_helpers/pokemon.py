@@ -178,7 +178,6 @@ class Pokemon:
 
         return default
 
-
     def __getitem__(self, key):
         """
         Define [] operating on this object.
