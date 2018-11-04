@@ -51,7 +51,17 @@ def test_make_move():
 
 
 def test_determine_faster():
-    """Test ability to determine if player faster."""
+    """
+    Test ability to determine if player faster.
+
+    A -> Abomasnow, S -> Spinda
+    Under normal conditions, A is faster.
+    When A is paralyzed, S is faster.
+    When S is boosted, S is faster.
+    When A and S are both boosted, A is faster.
+    When A and S are both boosted, and A is paralyzed, S is faster.
+
+    """
     player_spinda = Pokemon(name="spinda", moves=["tackle"])
     opp_abomasnow = Pokemon(name="abomasnow", moves=["tackle"])
 
