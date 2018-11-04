@@ -5,9 +5,9 @@ from copy import deepcopy
 
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_pokemon_agent import calc_opp_position_helper, calc_position_helper
-from calculate import calc_boost_factor
 from config import USAGE_STATS, POKEMON_DATA, MOVE_DATA
 from config import (PAR_STATUS)
+from pokemon_helpers.calculate import calc_boost_factor
 
 
 class BasicPlanningPokemonAgent(PokemonAgent):
