@@ -123,4 +123,4 @@ def calc_boost_factor(pokemon, stat_name):
 
     """
     return max(2, 2 + pokemon["boosts"][stat_name]) / \
-             max(2, 2 - pokemon["boosts"][stat_name])
+        max(2, 2 - pokemon["boosts"][stat_name])
