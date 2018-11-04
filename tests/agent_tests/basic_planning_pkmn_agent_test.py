@@ -4,6 +4,7 @@ from agent.basic_planning_pokemon_agent import BasicPlanningPokemonAgent
 from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import anonymize_gamestate_helper
 
+from config import PAR_STATUS
 
 def init_bppa():
     """Initialize the Player for these tests."""
@@ -49,5 +50,50 @@ def test_make_move():
     assert move[1] == 1
 
 
+def test_determine_faster():
+    """Test ability to determine if player faster."""
+    player_spinda = Pokemon(name="spinda", moves=["tackle"])
+    opp_abomasnow = Pokemon(name="abomasnow", moves=["tackle"])
+
+    player_move = ("ATTACK", 0)
+    opp_move = ("ATTACK", "tackle")
+    player_gs = {"team": [], "active": player_spinda}
+
+    player = BasicPlanningPokemonAgent(tier="pu", team=[player_spinda])
+
+    # Slower than regular abomasnow
+    opp_gs = {"data": anonymize_gamestate_helper({"team": [], "active": opp_abomasnow})}
+    player.update_gamestate(player_gs, opp_gs)
+    player.init_opp_gamestate(opp_gs["data"]["team"], opp_gs["data"]["active"])
+    assert not player.determine_faster(player.game_state.gamestate, opp_gs, player_move, opp_move)
+
+    # Faster than paralyzed abonasnow
+    opp_abomasnow.status = PAR_STATUS
+    opp_gs = {"data": anonymize_gamestate_helper({"team": [], "active": opp_abomasnow})}
+    player.update_gamestate(player_gs, opp_gs)
+
+    assert player.determine_faster(player.game_state.gamestate, opp_gs, player_move, opp_move)
+
+    # Faster than regular abomasnow at +6
+    player_gs["active"]["boosts"]["spe"] = 6
+    opp_abomasnow.status = None
+    opp_gs = {"data": anonymize_gamestate_helper({"team": [], "active": opp_abomasnow})}
+    player.update_gamestate(player_gs, opp_gs)
+    assert player.determine_faster(player.game_state.gamestate, opp_gs, player_move, opp_move)
+
+    # Slower than regular abomasnow when both at +6
+    opp_abomasnow.boosts["spe"] = 6
+    opp_gs = {"data": anonymize_gamestate_helper({"team": [], "active": opp_abomasnow})}
+    player.update_gamestate(player_gs, opp_gs)
+    assert not player.determine_faster(player.game_state.gamestate, opp_gs, player_move, opp_move)
+
+    # Faster than paralyzed abomasnow when both at +6
+    opp_abomasnow.status = PAR_STATUS
+    opp_gs = {"data": anonymize_gamestate_helper({"team": [], "active": opp_abomasnow})}
+    player.update_gamestate(player_gs, opp_gs)
+    assert player.determine_faster(player.game_state.gamestate, opp_gs, player_move, opp_move)
+
+
 test_generate_possibilities()
 test_make_move()
+test_determine_faster()
