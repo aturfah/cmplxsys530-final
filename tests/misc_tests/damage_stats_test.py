@@ -5,6 +5,7 @@ from pokemon_helpers.damage_stats import DamageStatCalc
 
 from config import MOVE_DATA
 from config import POKEMON_DATA
+from config import BRN_STATUS
 
 
 def test_init():
@@ -44,6 +45,7 @@ def test_dmg_range():
     range_def_params()
     range_hp_params()
     range_boosts()
+    range_status()
 
 
 def range_no_params():
@@ -173,6 +175,25 @@ def range_boosts():
     dmg_range = dsc.calculate_range(move, attacker, defender, params)
     assert dmg_range[0] == 36
     assert dmg_range[1] == 44
+
+
+def range_status():
+    """Test damage range with burn status."""
+    dsc = DamageStatCalc()
+    params = {}
+    params["atk"] = {}
+    params["def"] = {}
+    params["hp"] = {}
+    move = MOVE_DATA["tackle"]
+
+    attacker = Pokemon(name="spinda", moves=["tackle"])
+    defender = Pokemon(name="spinda", moves=["tackle"])
+
+    attacker.status = BRN_STATUS
+
+    dmg_range = dsc.calculate_range(move, attacker, defender, params)
+    assert dmg_range[0] == 8
+    assert dmg_range[1] == 10
 
 
 test_init()

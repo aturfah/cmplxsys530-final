@@ -9,6 +9,8 @@ from math import ceil
 from math import floor
 
 from battle_engine.pokemon_engine import calculate_modifier
+from pokemon_helpers.calculate import calc_boost_factor
+from config import BRN_STATUS
 
 
 class DamageStatCalc():
@@ -54,6 +56,10 @@ class DamageStatCalc():
 
         max_dmg = d_atk * modifier * move["basePower"]
         max_dmg = max_dmg / (d_hp * d_def)
+
+        # Burned attackers have their damage halved
+        if attacker.get("status") == BRN_STATUS and move_cat[0] == "atk":
+            max_dmg = 0.5 * max_dmg
 
         # Ceiling/Floor so we get a conservative estimate
         return (floor(0.85*max_dmg), ceil(max_dmg))
@@ -203,10 +209,8 @@ def boost_modifier(move, attacker, defender):
     atk_boost = 1
     def_boost = 1
     if "boosts" in attacker:
-        atk_boost = max(2, 2 + attacker["boosts"][stats[0]]) / \
-            max(2, 2 - attacker["boosts"][stats[0]])
+        atk_boost = calc_boost_factor(attacker, stats[0])
     if "boosts" in defender:
-        def_boost = max(2, 2 + defender["boosts"][stats[1]]) / \
-            max(2, 2 - defender["boosts"][stats[1]])
+        def_boost = calc_boost_factor(defender, stats[1])
 
     return atk_boost/def_boost

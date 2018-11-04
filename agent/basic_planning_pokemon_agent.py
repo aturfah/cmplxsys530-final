@@ -6,8 +6,8 @@ from copy import deepcopy
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_pokemon_agent import calc_opp_position_helper, calc_position_helper
 from config import USAGE_STATS, POKEMON_DATA, MOVE_DATA
-from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
-                    BRN_STATUS, PSN_STATUS, TOX_STATUS)
+from config import (PAR_STATUS)
+from pokemon_helpers.calculate import calc_boost_factor
 
 
 class BasicPlanningPokemonAgent(PokemonAgent):
@@ -218,6 +218,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         o_move = MOVE_DATA[o_opt[1]]
         o_poke_name = opp_gs["data"]["active"]["name"]
         o_poke = POKEMON_DATA[o_poke_name]
+        o_poke["status"] = opp_gs["data"]["active"]["status"]
         params = self.game_state.opp_gamestate["investment"][o_poke_name]
 
         # We do not handle status moves at this point in time.
@@ -314,15 +315,15 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             min_opp_spe, max_opp_spe = speed_pairs
 
             # Factor in status
-            player_modifier = 1
             opp_modifier = 1
-            if p_poke.status == PAR_STATUS:
-                player_modifier = player_modifier * 0.5
             if opp_gs["data"]["active"]["status"] == PAR_STATUS:
                 opp_modifier = opp_modifier * 0.5
 
+            # Factor in Boosts
+            opp_modifier = opp_modifier * calc_boost_factor(opp_gs["data"]["active"], "spe")
+
             # Assume that any speed is possible, which isn't exactly correct
-            return p_poke.speed > (min_opp_spe + max_opp_spe) / 2
+            return p_poke.effective_stat("spe") > opp_modifier * (min_opp_spe + max_opp_spe) / 2
 
         # Moves of different priority will always go in priority order
         return p_move["priority"] > o_move["priority"]

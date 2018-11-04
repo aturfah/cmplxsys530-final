@@ -160,6 +160,24 @@ class Pokemon:
 
         return val
 
+    def get(self, key, default=None):
+        """
+        Extend __getitem__ to have defaults.
+
+        Args:
+            key (str): Attribute of this object to get.
+            default: What to return if there is no such key.
+
+        Returns:
+            Value of this object's key, if it exists. If not, return value
+                specified in default.
+
+        """
+        if self.__contains__(key):
+            return self.__getitem__(key)
+
+        return default
+
     def __getitem__(self, key):
         """
         Define [] operating on this object.
