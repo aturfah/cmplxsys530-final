@@ -58,8 +58,7 @@ class DamageStatCalc():
         max_dmg = max_dmg / (d_hp * d_def)
 
         # Burned attackers have their damage halved
-        atk_status = attacker.get("status")
-        if atk_status == BRN_STATUS and move_cat[0] == "atk":
+        if attacker.get("status") == BRN_STATUS and move_cat[0] == "atk":
             max_dmg = 0.5 * max_dmg
 
         # Ceiling/Floor so we get a conservative estimate
