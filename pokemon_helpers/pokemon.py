@@ -162,7 +162,7 @@ class Pokemon:
 
     def get(self, key, default=None):
         """
-        Define .get() on this object.
+        Extend __getitem__ to have defaults.
 
         Args:
             key (str): Attribute of this object to get.
