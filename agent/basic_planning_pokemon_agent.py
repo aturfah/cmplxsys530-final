@@ -218,6 +218,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         o_move = MOVE_DATA[o_opt[1]]
         o_poke_name = opp_gs["data"]["active"]["name"]
         o_poke = POKEMON_DATA[o_poke_name]
+        o_poke["status"] = opp_gs["data"]["active"]["status"]
         params = self.game_state.opp_gamestate["investment"][o_poke_name]
 
         # We do not handle status moves at this point in time.
