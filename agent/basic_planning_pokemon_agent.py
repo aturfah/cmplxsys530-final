@@ -6,8 +6,7 @@ from copy import deepcopy
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_pokemon_agent import calc_opp_position_helper, calc_position_helper
 from config import USAGE_STATS, POKEMON_DATA, MOVE_DATA
-from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
-                    BRN_STATUS, PSN_STATUS, TOX_STATUS)
+from config import (PAR_STATUS)
 
 
 class BasicPlanningPokemonAgent(PokemonAgent):
