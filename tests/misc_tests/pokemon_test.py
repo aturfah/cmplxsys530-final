@@ -204,9 +204,18 @@ def test_attack_burn():
         exploud_brn.effective_stat("atk")
 
 
+def test_get_method():
+    """Test .get() on a Pokemon."""
+    pkmn = Pokemon(name="spinda", moves=["tackle"], level=50)
+
+    assert pkmn.get("name") == "spinda"
+    assert pkmn.get("DOOT") == None
+
+
 test_init()
 test_param_validation()
 test_stats_calculation()
 test_getitem_validation()
 test_effective_stats()
 test_status()
+test_get_method()
