@@ -108,3 +108,19 @@ def generate_all_ev_combinations():
     combinations["hp"].append({"max_evs": False})
 
     return combinations
+
+
+def calc_boost_factor(pokemon, stat_name):
+    """
+    Calculate the multiplicative modifier for a pokemon's stat.
+
+    Args:
+        pokemon (Pokemon): The pokemon for whom we are calculating.
+        stat (str): The stat for which we are calculating this for.
+
+    Returns:
+        The multiplier to apply to that pokemon's stat.
+
+    """
+    return max(2, 2 + pokemon["boosts"][stat_name]) / \
+             max(2, 2 - pokemon["boosts"][stat_name])
