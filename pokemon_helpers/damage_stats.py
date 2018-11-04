@@ -11,6 +11,8 @@ from math import floor
 from battle_engine.pokemon_engine import calculate_modifier
 from pokemon_helpers.calculate import calc_boost_factor
 
+from config import BRN_STATUS
+
 class DamageStatCalc():
     """Class to estimate damage taken/given."""
 
@@ -54,6 +56,11 @@ class DamageStatCalc():
 
         max_dmg = d_atk * modifier * move["basePower"]
         max_dmg = max_dmg / (d_hp * d_def)
+
+        # Burned attackers have their damage halved
+        atk_status = attacker.get("status")
+        if atk_status == BRN_STATUS and move_cat[0] == "atk":
+            max_dmg = 0.5 * max_dmg
 
         # Ceiling/Floor so we get a conservative estimate
         return (floor(0.85*max_dmg), ceil(max_dmg))
