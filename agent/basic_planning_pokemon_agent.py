@@ -8,7 +8,7 @@ from agent.basic_pokemon_agent import calc_opp_position_helper, calc_position_he
 from config import USAGE_STATS, POKEMON_DATA, MOVE_DATA
 from config import (PAR_STATUS)
 from pokemon_helpers.calculate import calc_boost_factor
-from battle_engine.pokemon_engine import calculate_status_damage
+from pokemon_helpers.calculate import calculate_status_damage
 
 
 class BasicPlanningPokemonAgent(PokemonAgent):
