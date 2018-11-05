@@ -5,6 +5,7 @@ from math import floor
 from config import POKEMON_DATA
 from config import (BRN_STATUS, PSN_STATUS, TOX_STATUS)
 
+
 def calculate_stat(base_val, ev_val, level):
     """
     Calculate the value for a given pokemon statistic.
