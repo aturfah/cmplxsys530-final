@@ -7,12 +7,12 @@ from uuid import uuid4
 from random import uniform
 from random import random
 
-from config import WEAKNESS_CHART, STATUS_IMMUNITIES
+from config import STATUS_IMMUNITIES
 from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS, TOX_STATUS)
 
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
-from pokemon_helpers.calculate import calculate_status_damage
+from pokemon_helpers.calculate import calculate_status_damage, calculate_damage
 
 
 class PokemonEngine():
@@ -636,81 +636,6 @@ def anonymize_gamestate_helper(data):
         anon_data["active"] = None
 
     return anon_data
-
-
-def calculate_damage(move, attacker, defender):
-    """
-    Calculate damage of a move.
-
-    Args:
-        move (dict): Information on the move being used.
-        attacker (Pokemon): The pokemon using the attack.
-        defender (Pokemon): The pokemon that is recieving the attack.
-
-    Returns:
-        The damage dealt by this move, as well as a flag whether or not
-            the attack resulted in a critical hit.
-
-    """
-    damage = 0
-    critical_hit = False
-    # Status moves do no damage
-    if move["category"] == "Status":
-        return damage, critical_hit
-
-    # Calculate actual damage
-    damage = floor(2*attacker["level"]/5 + 2)
-    damage = damage * move["basePower"]
-    if move["category"] == "Physical":
-        damage = floor(damage * attacker.effective_stat("atk")) / \
-            defender.effective_stat("def")
-    elif move["category"] == "Special":
-        damage = floor(damage * attacker.effective_stat("spa")) / \
-            defender.effective_stat("spd")
-    damage = floor(damage/50) + 2
-
-    # Damage Modifier
-    modifier = calculate_modifier(move, attacker, defender)
-
-    # Critical Hit
-    if random() < 0.0625:
-        critical_hit = True
-        modifier = modifier * 1.5
-
-    # Random Damage range
-    modifier = modifier * uniform(0.85, 1.00)
-    damage = floor(damage*modifier)
-
-    return (damage, critical_hit)
-
-
-def calculate_modifier(move, attacker, defender):
-    """
-    Calculate the damage modifier for an attack.
-
-    Factors in STAB, and type effectiveness.
-
-    Args:
-        move (dict): Information on the move being used.
-        attacker (Pokemon): The pokemon using the attack.
-        defender (Pokemon): The pokemon that is recieving the attack.
-
-    Returns:
-        The multipler to apply to the damage.
-
-    """
-    modifier = 1
-
-    # STAB Modifier
-    if move["type"] in attacker["types"]:
-        modifier = modifier * 1.5
-
-    # Weakness modifier
-    for def_type in defender["types"]:
-        if move["type"] in WEAKNESS_CHART[def_type]:
-            modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
-
-    return modifier
 
 
 def init_player_logwriter(player1, player2):
