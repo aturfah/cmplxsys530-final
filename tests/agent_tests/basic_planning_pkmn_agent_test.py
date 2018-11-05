@@ -6,6 +6,7 @@ from battle_engine.pokemon_engine import anonymize_gamestate_helper
 
 from config import PAR_STATUS
 
+
 def init_bppa():
     """Initialize the Player for these tests."""
     spinda = Pokemon(name="spinda", moves=["tackle", "frustration"])
