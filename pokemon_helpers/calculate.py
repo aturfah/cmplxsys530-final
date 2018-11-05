@@ -1,6 +1,7 @@
 """Module for Pokemon Helpers calculations."""
 
 from math import floor
+from random import uniform
 from random import random
 
 from config import POKEMON_DATA
