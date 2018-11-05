@@ -1,6 +1,7 @@
 """Module for Pokemon Helpers calculations."""
 
 from math import floor
+from random import random
 
 from config import POKEMON_DATA
 from config import WEAKNESS_CHART
