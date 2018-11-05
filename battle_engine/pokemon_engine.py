@@ -575,6 +575,33 @@ def secondary_effect_logic(target_poke, secondary_effects):
             target_poke.status = secondary_effects["status"]
 
 
+def calculate_status_damage(pokemon):
+    """
+    Calculate the % HP to remove as status damage.
+
+    Args:
+        pokemon (Pokemon): The pokemon that this damage is calculated for.
+            pokemon.status is None if no status, otherwise one of the _STATUS
+            variables in the config.
+
+    Returns:
+        Float value for the % Damage it will take from status this turn.
+
+    """
+    dmg_pct = 0
+    if pokemon.status == BRN_STATUS:
+        # Burns do 1/16 of hp
+        dmg_pct = 1.0/16
+    elif pokemon.status == PSN_STATUS:
+        # Poison does 1/8 of hp
+        dmg_pct = 1.0/8
+    elif pokemon.status == TOX_STATUS:
+        # Toxic does variable damage
+        dmg_pct = (pokemon.status_turns+1)*1.0/16
+
+    return dmg_pct
+
+
 def apply_status_damage(pokemon):
     """
     Apply damage for status conditions when appropriate.
@@ -586,16 +613,9 @@ def apply_status_damage(pokemon):
     if pokemon.status is None:
         return
 
-    dmg_pct = 0
-    if pokemon.status == BRN_STATUS:
-        # Burns do 1/16 of hp
-        dmg_pct = 1.0/16
-    elif pokemon.status == PSN_STATUS:
-        # Poison does 1/8 of hp
-        dmg_pct = 1.0/8
-    elif pokemon.status == TOX_STATUS:
-        # Toxic does variable damage
-        dmg_pct = (pokemon.status_turns+1)*1.0/16
+    dmg_pct = calculate_status_damage(pokemon)
+    if pokemon.status == TOX_STATUS:
+        # Increment toxic counter
         pokemon.status_turns += 1
 
     pokemon.current_hp -= floor(pokemon.max_hp*dmg_pct)
