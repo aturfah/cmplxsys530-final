@@ -8,6 +8,7 @@ from agent.basic_pokemon_agent import calc_opp_position_helper, calc_position_he
 from config import USAGE_STATS, POKEMON_DATA, MOVE_DATA
 from config import (PAR_STATUS)
 from pokemon_helpers.calculate import calc_boost_factor
+from battle_engine.pokemon_engine import calculate_status_damage
 
 
 class BasicPlanningPokemonAgent(PokemonAgent):
@@ -146,6 +147,16 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 elif o_opt[0] == "ATTACK":
                     # Only opponent attacks
                     my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+
+                # Apply status damage
+                my_gs["active"].current_hp -= my_gs["active"].current_hp * \
+                    calculate_status_damage(my_gs["active"])
+                opp_gs["data"]["active"]["pct_hp"] -= \
+                    calculate_status_damage(opp_gs["data"]["active"])
+
+                # Control for damage falling below zero
+                my_gs["active"].current_hp = max(my_gs["active"].current_hp, 0)
+                opp_gs["data"]["active"]["pct_hp"] = max(opp_gs["data"]["active"]["pct_hp"], 0.0)
 
                 my_posn = calc_position_helper(my_gs) + 0.01
                 opp_posn = calc_opp_position_helper(opp_gs) + 0.01
