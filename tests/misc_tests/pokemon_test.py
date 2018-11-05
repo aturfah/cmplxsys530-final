@@ -209,7 +209,7 @@ def test_get_method():
     pkmn = Pokemon(name="spinda", moves=["tackle"], level=50)
 
     assert pkmn.get("name") == "spinda"
-    assert pkmn.get("DOOT") == None
+    assert pkmn.get("DOOT") is None
 
 
 test_init()
