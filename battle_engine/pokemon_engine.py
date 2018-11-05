@@ -8,11 +8,11 @@ from random import uniform
 from random import random
 
 from config import WEAKNESS_CHART, STATUS_IMMUNITIES
-from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
-                    BRN_STATUS, PSN_STATUS, TOX_STATUS)
+from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS, TOX_STATUS)
 
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
+from pokemon_helpers.calculate import calculate_status_damage
 
 
 class PokemonEngine():
@@ -573,33 +573,6 @@ def secondary_effect_logic(target_poke, secondary_effects):
 
         if not type_immunity:
             target_poke.status = secondary_effects["status"]
-
-
-def calculate_status_damage(pokemon):
-    """
-    Calculate the % HP to remove as status damage.
-
-    Args:
-        pokemon (Pokemon or dict): The pokemon that this damage is calculated for.
-            pokemon.status is None if no status, otherwise one of the _STATUS
-            variables in the config.
-
-    Returns:
-        Float value for the % Damage it will take from status this turn.
-
-    """
-    dmg_pct = 0
-    if pokemon["status"] == BRN_STATUS:
-        # Burns do 1/16 of hp
-        dmg_pct = 1.0/16
-    elif pokemon["status"] == PSN_STATUS:
-        # Poison does 1/8 of hp
-        dmg_pct = 1.0/8
-    elif pokemon["status"] == TOX_STATUS:
-        # Toxic does variable damage
-        dmg_pct = (pokemon["status_turns"]+1)*1.0/16
-
-    return dmg_pct
 
 
 def apply_status_damage(pokemon):

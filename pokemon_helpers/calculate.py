@@ -3,7 +3,8 @@
 from math import floor
 
 from config import POKEMON_DATA
-
+from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
+                    BRN_STATUS, PSN_STATUS, TOX_STATUS)
 
 def calculate_stat(base_val, ev_val, level):
     """
@@ -124,3 +125,30 @@ def calc_boost_factor(pokemon, stat_name):
     """
     return max(2, 2 + pokemon["boosts"][stat_name]) / \
         max(2, 2 - pokemon["boosts"][stat_name])
+
+
+def calculate_status_damage(pokemon):
+    """
+    Calculate the % HP to remove as status damage.
+
+    Args:
+        pokemon (Pokemon or dict): The pokemon that this damage is calculated for.
+            pokemon.status is None if no status, otherwise one of the _STATUS
+            variables in the config.
+
+    Returns:
+        Float value for the % Damage it will take from status this turn.
+
+    """
+    dmg_pct = 0
+    if pokemon["status"] == BRN_STATUS:
+        # Burns do 1/16 of hp
+        dmg_pct = 1.0/16
+    elif pokemon["status"] == PSN_STATUS:
+        # Poison does 1/8 of hp
+        dmg_pct = 1.0/8
+    elif pokemon["status"] == TOX_STATUS:
+        # Toxic does variable damage
+        dmg_pct = (pokemon["status_turns"]+1)*1.0/16
+
+    return dmg_pct
