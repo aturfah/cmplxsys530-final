@@ -3,8 +3,7 @@
 from math import floor
 
 from config import POKEMON_DATA
-from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
-                    BRN_STATUS, PSN_STATUS, TOX_STATUS)
+from config import (BRN_STATUS, PSN_STATUS, TOX_STATUS)
 
 def calculate_stat(base_val, ev_val, level):
     """
