@@ -580,7 +580,7 @@ def calculate_status_damage(pokemon):
     Calculate the % HP to remove as status damage.
 
     Args:
-        pokemon (Pokemon): The pokemon that this damage is calculated for.
+        pokemon (Pokemon or dict): The pokemon that this damage is calculated for.
             pokemon.status is None if no status, otherwise one of the _STATUS
             variables in the config.
 
@@ -589,15 +589,15 @@ def calculate_status_damage(pokemon):
 
     """
     dmg_pct = 0
-    if pokemon.status == BRN_STATUS:
+    if pokemon["status"] == BRN_STATUS:
         # Burns do 1/16 of hp
         dmg_pct = 1.0/16
-    elif pokemon.status == PSN_STATUS:
+    elif pokemon["status"] == PSN_STATUS:
         # Poison does 1/8 of hp
         dmg_pct = 1.0/8
-    elif pokemon.status == TOX_STATUS:
+    elif pokemon["status"] == TOX_STATUS:
         # Toxic does variable damage
-        dmg_pct = (pokemon.status_turns+1)*1.0/16
+        dmg_pct = (pokemon["status_turns"]+1)*1.0/16
 
     return dmg_pct
 
