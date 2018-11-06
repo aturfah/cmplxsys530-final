@@ -112,13 +112,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         for p_opt in player_opts:
             total_position = 0
             # Calculate outcomes based on possible misses
-            possible_outcomes = []
-            outcome_weights = [(1, True)]
-            if p_opt[0] == "ATTACK":
-                acc = self.game_state.gamestate["active"].moves[p_opt[1]]["accuracy"]
-                if not isinstance(acc, bool) and acc < 100:
-                    outcome_weights = [(1.0 * val, val == acc) for val in [acc, 100 - acc]]
+            possible_outcomes, outcome_weights = self.calc_move_outcomes(True)
 
+            print(possible_outcomes)
             print(outcome_weights)
 
             for o_opt in opp_opts:
@@ -348,6 +344,29 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Moves of different priority will always go in priority order
         return p_move["priority"] > o_move["priority"]
+
+    def calc_move_outcomes(self, move_opt, player_flag=True):
+        """
+        For a move, generate possible outcomes.
+
+        Considers Hit/Miss.
+
+        Args:
+            player_flag (bool): Whether to use player or opponent's gamestate.
+
+        Returns:
+            List of possible outcomes and their weights.
+
+        """
+        possible_outcomes = [True]
+        outcome_weights = [move_opt + (1, )]
+        if move_opt[0] == "ATTACK":
+            acc = self.game_state.gamestate["active"].moves[move_opt[1]]["accuracy"]
+            if not isinstance(acc, bool) and acc < 100:
+                outcome_weights = [(1.0 * val) for val in [acc, 100 - acc]]
+                possible_outcomes = [move_opt + (val == acc, ) for val in [acc, 100 - acc]]
+
+        return possible_outcomes, outcome_weights
 
 
 def atk_param_combinations(active_poke, opp_params, move):
