@@ -112,12 +112,19 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         for p_opt in player_opts:
             total_position = 0
             # Calculate outcomes based on possible misses
-            possible_outcomes, outcome_weights = self.calc_move_outcomes(True)
+            player_outcomes, player_weights = self.calc_move_outcomes(p_opt, True)
 
-            print(possible_outcomes)
-            print(outcome_weights)
+            print(player_outcomes)
+            print(player_weights)
 
             for o_opt in opp_opts:
+                # Calculate outcomes based on possible misses
+                opp_outcomes, opp_weights = self.calc_move_outcomes(o_opt, False)
+
+                print(opp_outcomes)
+                print(opp_weights)
+                print("\n")
+
                 # Calculate average position given opponent's possible moves
                 my_gs = deepcopy(self.game_state.gamestate)
                 opp_gs = deepcopy(self.game_state.opp_gamestate)
@@ -361,7 +368,12 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         possible_outcomes = [True]
         outcome_weights = [move_opt + (1, )]
         if move_opt[0] == "ATTACK":
-            acc = self.game_state.gamestate["active"].moves[move_opt[1]]["accuracy"]
+            if player_flag:
+                chosen_move = self.game_state.gamestate["active"].moves[move_opt[1]]
+            else:
+                chosen_move = MOVE_DATA[move_opt[1]]
+
+            acc = chosen_move["accuracy"]
             if not isinstance(acc, bool) and acc < 100:
                 outcome_weights = [(1.0 * val) for val in [acc, 100 - acc]]
                 possible_outcomes = [move_opt + (val == acc, ) for val in [acc, 100 - acc]]
