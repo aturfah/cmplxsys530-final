@@ -8,7 +8,7 @@ from math import inf
 from math import ceil
 from math import floor
 
-from battle_engine.pokemon_engine import calculate_modifier
+from pokemon_helpers.calculate import calculate_modifier
 from pokemon_helpers.calculate import calc_boost_factor
 from config import BRN_STATUS
 

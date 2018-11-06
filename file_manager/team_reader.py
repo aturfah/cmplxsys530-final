@@ -114,7 +114,7 @@ def read_name(input_str, pokemon_dict):
         nickname, species = matches.groups()
     else:
         nickname = name_species
-        species = name_species
+        species = name_species.replace("-", "")
 
     # Update the dictionaries
     pokemon_dict["nickname"] = nickname

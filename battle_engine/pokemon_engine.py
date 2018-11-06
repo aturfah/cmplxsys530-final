@@ -7,12 +7,12 @@ from uuid import uuid4
 from random import uniform
 from random import random
 
-from config import WEAKNESS_CHART, STATUS_IMMUNITIES
-from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS,
-                    BRN_STATUS, PSN_STATUS, TOX_STATUS)
+from config import STATUS_IMMUNITIES
+from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS, TOX_STATUS)
 
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
+from pokemon_helpers.calculate import calculate_status_damage, calculate_damage
 
 
 class PokemonEngine():
@@ -586,16 +586,9 @@ def apply_status_damage(pokemon):
     if pokemon.status is None:
         return
 
-    dmg_pct = 0
-    if pokemon.status == BRN_STATUS:
-        # Burns do 1/16 of hp
-        dmg_pct = 1.0/16
-    elif pokemon.status == PSN_STATUS:
-        # Poison does 1/8 of hp
-        dmg_pct = 1.0/8
-    elif pokemon.status == TOX_STATUS:
-        # Toxic does variable damage
-        dmg_pct = (pokemon.status_turns+1)*1.0/16
+    dmg_pct = calculate_status_damage(pokemon)
+    if pokemon.status == TOX_STATUS:
+        # Increment toxic counter
         pokemon.status_turns += 1
 
     pokemon.current_hp -= floor(pokemon.max_hp*dmg_pct)
@@ -626,7 +619,8 @@ def anonymize_gamestate_helper(data):
             "name": name,
             "pct_hp": pct_hp,
             "status": status,
-            "dex_num": pokemon.dex_num
+            "dex_num": pokemon.dex_num,
+            "status_turns": pokemon.status_turns
         })
 
     if data["active"] is not None:
@@ -635,87 +629,13 @@ def anonymize_gamestate_helper(data):
             "pct_hp": data["active"].current_hp/data["active"].max_hp,
             "boosts": data["active"].boosts,
             "status": data["active"].status,
-            "dex_num": data["active"].dex_num
+            "dex_num": data["active"].dex_num,
+            "status_turns": data["active"].status_turns
         }
     else:
         anon_data["active"] = None
 
     return anon_data
-
-
-def calculate_damage(move, attacker, defender):
-    """
-    Calculate damage of a move.
-
-    Args:
-        move (dict): Information on the move being used.
-        attacker (Pokemon): The pokemon using the attack.
-        defender (Pokemon): The pokemon that is recieving the attack.
-
-    Returns:
-        The damage dealt by this move, as well as a flag whether or not
-            the attack resulted in a critical hit.
-
-    """
-    damage = 0
-    critical_hit = False
-    # Status moves do no damage
-    if move["category"] == "Status":
-        return damage, critical_hit
-
-    # Calculate actual damage
-    damage = floor(2*attacker["level"]/5 + 2)
-    damage = damage * move["basePower"]
-    if move["category"] == "Physical":
-        damage = floor(damage * attacker.effective_stat("atk")) / \
-            defender.effective_stat("def")
-    elif move["category"] == "Special":
-        damage = floor(damage * attacker.effective_stat("spa")) / \
-            defender.effective_stat("spd")
-    damage = floor(damage/50) + 2
-
-    # Damage Modifier
-    modifier = calculate_modifier(move, attacker, defender)
-
-    # Critical Hit
-    if random() < 0.0625:
-        critical_hit = True
-        modifier = modifier * 1.5
-
-    # Random Damage range
-    modifier = modifier * uniform(0.85, 1.00)
-    damage = floor(damage*modifier)
-
-    return (damage, critical_hit)
-
-
-def calculate_modifier(move, attacker, defender):
-    """
-    Calculate the damage modifier for an attack.
-
-    Factors in STAB, and type effectiveness.
-
-    Args:
-        move (dict): Information on the move being used.
-        attacker (Pokemon): The pokemon using the attack.
-        defender (Pokemon): The pokemon that is recieving the attack.
-
-    Returns:
-        The multipler to apply to the damage.
-
-    """
-    modifier = 1
-
-    # STAB Modifier
-    if move["type"] in attacker["types"]:
-        modifier = modifier * 1.5
-
-    # Weakness modifier
-    for def_type in defender["types"]:
-        if move["type"] in WEAKNESS_CHART[def_type]:
-            modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
-
-    return modifier
 
 
 def init_player_logwriter(player1, player2):
