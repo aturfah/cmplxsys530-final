@@ -110,6 +110,7 @@ def test_move_accuracy():
     # Set up Pokemon
     floatzel = Pokemon(name="floatzel", moves=["tackle", "hydropump"])
     opp_stunfisk = Pokemon(name="stunfisk", moves=["discharge"])
+    floatzel.current_hp = 1
     opp_stunfisk.current_hp = 1
 
     # Set up player gamestates
