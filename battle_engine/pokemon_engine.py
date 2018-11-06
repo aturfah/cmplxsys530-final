@@ -571,7 +571,11 @@ def check_hit(move):
         True/False depending on whether or not the move hits.
 
     """
-    return True
+    move_acc = move.get("accuracy")
+    if isinstance(move_acc, bool):
+        return move_acc
+
+    return 100*random() < move_acc
 
 
 def secondary_effect_logic(target_poke, secondary_effects):
