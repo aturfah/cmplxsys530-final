@@ -111,6 +111,16 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         maximal_position = -1
         for p_opt in player_opts:
             total_position = 0
+            # Calculate outcomes based on possible misses
+            possible_outcomes = []
+            outcome_weights = [(1, True)]
+            if p_opt[0] == "ATTACK":
+                acc = self.game_state.gamestate["active"].moves[p_opt[1]]["accuracy"]
+                if not isinstance(acc, bool) and acc < 100:
+                    outcome_weights = [(1.0 * val, val==acc) for val in [acc, 100 - acc]]
+
+            print(outcome_weights)
+
             for o_opt in opp_opts:
                 # Calculate average position given opponent's possible moves
                 my_gs = deepcopy(self.game_state.gamestate)
