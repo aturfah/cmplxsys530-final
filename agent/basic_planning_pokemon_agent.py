@@ -117,7 +117,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             if p_opt[0] == "ATTACK":
                 acc = self.game_state.gamestate["active"].moves[p_opt[1]]["accuracy"]
                 if not isinstance(acc, bool) and acc < 100:
-                    outcome_weights = [(1.0 * val, val==acc) for val in [acc, 100 - acc]]
+                    outcome_weights = [(1.0 * val, val == acc) for val in [acc, 100 - acc]]
 
             print(outcome_weights)
 
