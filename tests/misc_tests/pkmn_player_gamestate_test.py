@@ -248,10 +248,17 @@ def test_infer_speed_slower(player, new_info):
 
 def test_infer_miss(player_gs):
     """Infer on a miss."""
-    new_info = [{'type': 'ATTACK', 'move': {'num': 56, 'accuracy': 80, 'basePower': 110, 'category': 'Special', 'desc': 'No additional effect.', 'shortDesc': 'No additional effect.', 'id': 'hydropump', 'isViable': True, 'name': 'Hydro Pump', 'pp': 5, 'priority': 0, 'flags': {'protect': 1, 'mirror': 1}, 'secondary': False, 'target': 'normal', 'type': 'Water', 'zMovePower': 185, 'contestType': 'Beautiful'}, 'critical_hit': False, 'damage': 0, 'pct_damage': 0.0, 'attacker': "player1", 'defender': "player2", 'atk_poke': 'exploud', 'def_poke': 'floatzel', 'move_hits': False}]
-    print(player_gs.to_json())
+    new_info = [{'type': 'ATTACK', 'move': {'num': 56, 'accuracy': 80, 'basePower': 110, 'category': 'Special', 'desc': 'No additional effect.', 'shortDesc': 'No additional effect.', 'id': 'hydropump', 'isViable': True, 'name': 'Hydro Pump', 'pp': 5, 'priority': 0, 'flags': {'protect': 1, 'mirror': 1}, 'secondary': False, 'target': 'normal', 'type': 'Water', 'zMovePower': 185, 'contestType': 'Beautiful'}, 'critical_hit': False, 'damage': 0, 'pct_damage': 0.0, 'attacker': "player1", 'defender': "player2", 'atk_poke': 'spinda', 'def_poke': 'magikarp', 'move_hits': False}]
 
-    raise RuntimeError("DOOT")
+    original_investment = player_gs.opp_gamestate["investment"]
+
+    player_gs.new_info(new_info, "player2")
+    # Got new move info
+    assert "spinda" in player_gs.opp_gamestate["moves"]
+    assert player_gs.opp_gamestate["moves"]["spinda"]
+
+    # Did not do any inference on investment
+    assert player_gs.opp_gamestate["investment"] == original_investment
 
 
 basic_test()
