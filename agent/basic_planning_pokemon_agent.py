@@ -114,13 +114,12 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             # Calculate outcomes based on possible misses
             player_outcomes, player_weights = self.calc_move_outcomes(p_opt, True)
 
-            print(player_outcomes)
-            print(player_weights)
-
             for o_opt in opp_opts:
                 # Calculate outcomes based on possible misses
                 opp_outcomes, opp_weights = self.calc_move_outcomes(o_opt, False)
 
+                print(player_outcomes)
+                print(player_weights)
                 print(opp_outcomes)
                 print(opp_weights)
                 print("\n")
@@ -365,8 +364,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             List of possible outcomes and their weights.
 
         """
-        possible_outcomes = [True]
-        outcome_weights = [move_opt + (1, )]
+        possible_outcomes = [move_opt + (True, )]
+        outcome_weights = [1]
         if move_opt[0] == "ATTACK":
             if player_flag:
                 chosen_move = self.game_state.gamestate["active"].moves[move_opt[1]]
