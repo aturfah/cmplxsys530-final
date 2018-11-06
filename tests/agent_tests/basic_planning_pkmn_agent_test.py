@@ -108,7 +108,7 @@ def test_determine_faster():
 def test_move_accuracy():
     """Test ability to 'risk' with move accuracy."""
     # Set up Pokemon
-    floatzel = Pokemon(name="floatzel", moves=["tackle", "hydropump"])
+    floatzel = Pokemon(name="floatzel", moves=["hydropump", "tackle"])
     opp_stunfisk = Pokemon(name="stunfisk", moves=["discharge"])
     floatzel.current_hp = 1
     opp_stunfisk.current_hp = 1
@@ -123,9 +123,6 @@ def test_move_accuracy():
     opp_gs["active"] = opp_stunfisk
     opp_gs = anonymize_gamestate_helper(opp_gs)
 
-    print(player_gs)
-    print(opp_gs)
-
     # Set up Agent
     bppa = BasicPlanningPokemonAgent(tier="pu", team=[floatzel])
     bppa.update_gamestate(player_gs, opp_gs)
@@ -133,7 +130,7 @@ def test_move_accuracy():
 
     move = bppa.make_move()
     assert move[0] == "ATTACK"
-    assert move[1] == 0
+    assert move[1] == 1
 
 test_generate_possibilities()
 test_make_move()
