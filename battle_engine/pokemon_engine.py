@@ -373,6 +373,7 @@ class PokemonEngine():
         results["defender"] = defender
         results["atk_poke"] = atk_poke.name
         results["def_poke"] = def_poke.name
+        results["move_hits"] = move_hits
         return [results]
 
     def turn_both_attack(self, move1, move2):
