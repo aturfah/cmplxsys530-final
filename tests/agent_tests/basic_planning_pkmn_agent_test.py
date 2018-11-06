@@ -105,6 +105,36 @@ def test_determine_faster():
     assert player.determine_faster(player.game_state.gamestate, opp_gs, player_move, opp_move)
 
 
+def test_move_accuracy():
+    """Test ability to 'risk' with move accuracy."""
+    # Set up Pokemon
+    floatzel = Pokemon(name="floatzel", moves=["tackle", "hydropump"])
+    opp_stunfisk = Pokemon(name="stunfisk", moves=["discharge"])
+    opp_stunfisk.current_hp = 1
+
+    # Set up player gamestates
+    player_gs = {}
+    player_gs["team"] = []
+    player_gs["active"] = floatzel
+
+    opp_gs = {}
+    opp_gs["team"] = []
+    opp_gs["active"] = opp_stunfisk
+    opp_gs = anonymize_gamestate_helper(opp_gs)
+
+    print(player_gs)
+    print(opp_gs)
+
+    # Set up Agent
+    bppa = BasicPlanningPokemonAgent(tier="pu", team=[floatzel])
+    bppa.update_gamestate(player_gs, opp_gs)
+    bppa.init_opp_gamestate(opp_gs["team"], opp_gs["active"])
+
+    move = bppa.make_move()
+    assert move[0] == "ATTACK"
+    assert move[1] == 0
+
 test_generate_possibilities()
 test_make_move()
 test_determine_faster()
+test_move_accuracy()
