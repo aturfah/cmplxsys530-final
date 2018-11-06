@@ -291,6 +291,24 @@ def test_accuracy():
 
     assert num_misses > 0
 
+    num_misses = 0
+    # All the flamethrowers should hit
+    for _ in range(50):
+        exploud = Pokemon(name="exploud", moves=["flamethrower"])
+        floatzel = Pokemon(name="floatzel", moves=["flamethrower"])
+        player1 = PokemonAgent([exploud])
+        player2 = PokemonAgent([floatzel])
+
+        player_move = ("ATTACK", 0)
+
+        p_eng = PokemonEngine()
+        p_eng.initialize_battle(player1, player2)
+        for turn_info in p_eng.run_single_turn(player_move, player_move, player1, player2)[1]:
+            if not turn_info["move_hits"]:
+                num_misses += 1
+
+    assert num_misses == 0
+
 
 test_run()
 test_run_multiple_moves()
