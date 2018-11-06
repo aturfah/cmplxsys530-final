@@ -315,7 +315,8 @@ class PokemonEngine():
         # Check if the move even hit...
         damage = 0
         critical_hit = False
-        if check_hit(move):
+        move_hits = check_hit(move)
+        if move_hits:
             # Do Damage
             damage, critical_hit = calculate_damage(move, atk_poke, def_poke)
             def_poke.current_hp -= damage
