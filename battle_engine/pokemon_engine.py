@@ -312,51 +312,55 @@ class PokemonEngine():
                 atk_poke.status_counter += 1
                 return None
 
-        # Do Damage
-        damage, critical_hit = calculate_damage(move, atk_poke, def_poke)
-        def_poke.current_hp -= damage
+        # Check if the move even hit...
+        damage = 0
+        critical_hit = False
+        if check_hit(move):
+            # Do Damage
+            damage, critical_hit = calculate_damage(move, atk_poke, def_poke)
+            def_poke.current_hp -= damage
 
-        # Thaw opponent if applicable
-        if def_poke.status == FRZ_STATUS and (move["type"] == "fire" or move["id"] == "scald"):
-            def_poke.status = None
+            # Thaw opponent if applicable
+            if def_poke.status == FRZ_STATUS and (move["type"] == "fire" or move["id"] == "scald"):
+                def_poke.status = None
 
-        # Healing
-        if "heal" in move["flags"]:
-            if "heal" in move:
-                heal_factor = move["heal"][0]/move["heal"][1]
-            else:
-                heal_factor = 0.5
-            heal_amount = floor(heal_factor*atk_poke.max_hp)
-            # No overheal
-            atk_poke.current_hp = min(atk_poke.max_hp, atk_poke.current_hp + heal_amount)
+            # Healing
+            if "heal" in move["flags"]:
+                if "heal" in move:
+                    heal_factor = move["heal"][0]/move["heal"][1]
+                else:
+                    heal_factor = 0.5
+                heal_amount = floor(heal_factor*atk_poke.max_hp)
+                # No overheal
+                atk_poke.current_hp = min(atk_poke.max_hp, atk_poke.current_hp + heal_amount)
 
-        # Stat boosts (for boosting moves)
-        if "boosts" in move:
-            if move["target"] == "self":
-                for stat in move["boosts"]:
-                    atk_poke.boosts[stat] += move["boosts"][stat]
-            else:
-                for stat in move["boosts"]:
-                    def_poke.boosts[stat] += move["boosts"][stat]
+            # Stat boosts (for boosting moves)
+            if "boosts" in move:
+                if move["target"] == "self":
+                    for stat in move["boosts"]:
+                        atk_poke.boosts[stat] += move["boosts"][stat]
+                else:
+                    for stat in move["boosts"]:
+                        def_poke.boosts[stat] += move["boosts"][stat]
 
-        # Move Secondary effects
-        if damage != 0 and move.get("secondary", {}):
-            secondary_effects = move["secondary"]
-            if uniform(0, 100) < secondary_effects["chance"]:
-                # Apply secondary effect to player
-                if "self" in secondary_effects:
-                    secondary_effect_logic(atk_poke, secondary_effects["self"])
+            # Move Secondary effects
+            if damage != 0 and move.get("secondary", {}):
+                secondary_effects = move["secondary"]
+                if uniform(0, 100) < secondary_effects["chance"]:
+                    # Apply secondary effect to player
+                    if "self" in secondary_effects:
+                        secondary_effect_logic(atk_poke, secondary_effects["self"])
 
-                # Apply secondary effects to the opponent
-                secondary_effect_logic(def_poke, secondary_effects)
+                    # Apply secondary effects to the opponent
+                    secondary_effect_logic(def_poke, secondary_effects)
 
-        # Floor/Ceiling boosts
-        for stat in atk_poke.boosts:
-            atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
-            atk_poke.boosts[stat] = max(atk_poke.boosts[stat], -6)
-        for stat in def_poke.boosts:
-            def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
-            def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
+            # Floor/Ceiling boosts
+            for stat in atk_poke.boosts:
+                atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
+                atk_poke.boosts[stat] = max(atk_poke.boosts[stat], -6)
+            for stat in def_poke.boosts:
+                def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
+                def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
 
         results = {}
         results["type"] = "ATTACK"
@@ -554,6 +558,20 @@ class PokemonEngine():
             new_line["move"] = turn["move"]["id"]
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
+
+
+def check_hit(move):
+    """
+    Check whether or not a move hits.
+
+    Args:
+        move (dict): The move in question.
+
+    Returns:
+        True/False depending on whether or not the move hits.
+
+    """
+    return True
 
 
 def secondary_effect_logic(target_poke, secondary_effects):
