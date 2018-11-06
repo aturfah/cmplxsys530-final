@@ -136,6 +136,9 @@ def test_infer_investment():
     test_infer_attacking(ppgs1, new_info)
     test_infer_speed_investment()
 
+    ppgs1.update_gamestate(gamestate, opp_gamestate)
+    test_infer_miss(ppgs1)
+
 
 def test_infer_defending(ppgs2, new_info):
     """Make sure opponent attack investment is properly inferred."""
@@ -243,7 +246,16 @@ def test_infer_speed_slower(player, new_info):
     assert speed_inference[0] == 176
 
 
+def test_infer_miss(player_gs):
+    """Infer on a miss."""
+    new_info = [{'type': 'ATTACK', 'move': {'num': 56, 'accuracy': 80, 'basePower': 110, 'category': 'Special', 'desc': 'No additional effect.', 'shortDesc': 'No additional effect.', 'id': 'hydropump', 'isViable': True, 'name': 'Hydro Pump', 'pp': 5, 'priority': 0, 'flags': {'protect': 1, 'mirror': 1}, 'secondary': False, 'target': 'normal', 'type': 'Water', 'zMovePower': 185, 'contestType': 'Beautiful'}, 'critical_hit': False, 'damage': 0, 'pct_damage': 0.0, 'attacker': "player1", 'defender': "player2", 'atk_poke': 'exploud', 'def_poke': 'floatzel', 'move_hits': False}]
+    print(player_gs.to_json())
+
+    raise RuntimeError("DOOT")
+
+
 basic_test()
 test_reset_gamestates()
 test_init_opp_gamestate()
 test_infer_investment()
+test_infer_miss(8)
