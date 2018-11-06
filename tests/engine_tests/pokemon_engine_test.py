@@ -273,8 +273,8 @@ def test_2ndary_status():
 
 def test_accuracy():
     """Test to check for accuracy being taken into account."""
-    num_misses = 0
     # < 0.5% chance of all the hydro pumps hitting
+    num_misses = 0
     for _ in range(12):
         exploud = Pokemon(name="exploud", moves=["hydropump"])
         floatzel = Pokemon(name="floatzel", moves=["hydropump"])
@@ -291,8 +291,8 @@ def test_accuracy():
 
     assert num_misses > 0
 
-    num_misses = 0
     # All the flamethrowers should hit
+    num_misses = 0
     for _ in range(50):
         exploud = Pokemon(name="exploud", moves=["flamethrower"])
         floatzel = Pokemon(name="floatzel", moves=["flamethrower"])
