@@ -94,12 +94,14 @@ class PokemonPlayerGameState:
 
             if info["attacker"] == my_id:
                 # We attacked, infer data about defending pokemon
-                results, combinations = self.results_attacking(info)
-                self.update_atk_inference(info, results, combinations)
+                if info.get("move_hits", True):
+                    results, combinations = self.results_attacking(info)
+                    self.update_atk_inference(info, results, combinations)
             else:
                 # Just got attacked, infer data about attacking pokemon
-                results, combinations = self.results_defending(info)
-                self.update_def_inference(info, results, combinations)
+                if info.get("move_hits", True):
+                    results, combinations = self.results_defending(info)
+                    self.update_def_inference(info, results, combinations)
 
                 # We're the defender, just learned about a move
                 opp_name = self.opp_gamestate["data"]["active"]["name"]
