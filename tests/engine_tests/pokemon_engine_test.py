@@ -271,6 +271,45 @@ def test_2ndary_status():
     assert p_eng.game_state["player2"]["active"].status is None
 
 
+def test_accuracy():
+    """Test to check for accuracy being taken into account."""
+    # < 0.5% chance of all the hydro pumps hitting
+    num_misses = 0
+    for _ in range(12):
+        exploud = Pokemon(name="exploud", moves=["hydropump"])
+        floatzel = Pokemon(name="floatzel", moves=["hydropump"])
+        player1 = PokemonAgent([exploud])
+        player2 = PokemonAgent([floatzel])
+
+        player_move = ("ATTACK", 0)
+
+        p_eng = PokemonEngine()
+        p_eng.initialize_battle(player1, player2)
+        for turn_info in p_eng.run_single_turn(player_move, player_move, player1, player2)[1]:
+            if not turn_info["move_hits"]:
+                num_misses += 1
+
+    assert num_misses > 0
+
+    # All the flamethrowers should hit
+    num_misses = 0
+    for _ in range(50):
+        exploud = Pokemon(name="exploud", moves=["flamethrower"])
+        floatzel = Pokemon(name="floatzel", moves=["flamethrower"])
+        player1 = PokemonAgent([exploud])
+        player2 = PokemonAgent([floatzel])
+
+        player_move = ("ATTACK", 0)
+
+        p_eng = PokemonEngine()
+        p_eng.initialize_battle(player1, player2)
+        for turn_info in p_eng.run_single_turn(player_move, player_move, player1, player2)[1]:
+            if not turn_info["move_hits"]:
+                num_misses += 1
+
+    assert num_misses == 0
+
+
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
@@ -278,3 +317,4 @@ test_run_infinite()
 test_heal()
 test_status_dmg()
 test_secondary_effects()
+test_accuracy()

@@ -136,6 +136,11 @@ def test_infer_investment():
     test_infer_attacking(ppgs1, new_info)
     test_infer_speed_investment()
 
+    # Test with misses
+    ppgs1 = PokemonPlayerGameState()
+    ppgs1.update_gamestate(gamestate, opp_gamestate)
+    test_infer_miss(ppgs1)
+
 
 def test_infer_defending(ppgs2, new_info):
     """Make sure opponent attack investment is properly inferred."""
@@ -241,6 +246,29 @@ def test_infer_speed_slower(player, new_info):
 
     assert speed_inference[1] == player.gamestate["active"].speed
     assert speed_inference[0] == 176
+
+
+def test_infer_miss(player_gs):
+    """Infer on a miss."""
+    new_info = [{'type': 'ATTACK',
+                 'move': MOVE_DATA["hydropump"],
+                 'critical_hit': False,
+                 'damage': 0,
+                 'pct_damage': 0.0,
+                 'attacker': "player2",
+                 'defender': "player1",
+                 'atk_poke': 'spinda',
+                 'def_poke': 'magikarp', 'move_hits': False}]
+
+    original_investment = player_gs.opp_gamestate["investment"]
+    player_gs.new_info(new_info, "player1")
+
+    # Got new move info
+    assert "spinda" in player_gs.opp_gamestate["moves"]
+    assert player_gs.opp_gamestate["moves"]["spinda"]
+
+    # Did not do any inference on investment
+    assert player_gs.opp_gamestate["investment"] == original_investment
 
 
 basic_test()
