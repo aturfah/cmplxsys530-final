@@ -138,24 +138,28 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                             if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
                                 # We attack first, then opponent attacks
                                 if p_outc[2]:
+                                    # Check if we miss
                                     opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
                                 if opp_gs["data"]["active"]["pct_hp"] > 0 and o_outc[2]:
+                                    # Check that opponent is still alive and doesn't miss
                                     my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
                             else:
                                 # Opponent attacks first, then us
                                 if o_outc[2]:
+                                    # Check if opponent misses
                                     my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
 
                                 if my_gs["active"].current_hp > 0 and p_outc[2]:
+                                    # Check that we are still alive and don't miss
                                     opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
                         elif p_opt[0] == "ATTACK" and p_outc[2]:
-                            # Only we attack
+                            # Only we attack, and we don't miss
                             opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
                         elif o_opt[0] == "ATTACK" and o_outc[2]:
-                            # Only opponent attacks
+                            # Only opponent attacks, and doesn't miss
                             my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
 
                         # Apply status damage
@@ -172,6 +176,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                         my_posn = calc_position_helper(my_gs) + 0.01
                         opp_posn = calc_opp_position_helper(opp_gs) + 0.01
 
+                        # Weighted update of the position
                         total_position += (my_posn / opp_posn) * \
                                           (player_weights[p_ind] * opp_weights[o_ind])
 
