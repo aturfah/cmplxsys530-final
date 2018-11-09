@@ -119,16 +119,14 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 # Calculate outcomes based on possible misses
                 opp_outcomes, opp_weights = self.calc_move_outcomes(o_opt, False)
 
-                print(player_outcomes)
-                print(player_weights)
-                print(opp_outcomes)
-                print(opp_weights)
-                print("\n")
-
                 for p_ind in range(len(player_outcomes)):
                     for o_ind in range(len(opp_outcomes)):
                         my_gs = deepcopy(self.game_state.gamestate)
                         opp_gs = deepcopy(self.game_state.opp_gamestate)
+
+                        print(player_outcomes[p_ind], player_weights[p_ind])
+                        print(opp_outcomes[o_ind], opp_weights[o_ind])
+                        print("\n")
 
                         # Player Switches
                         if p_opt[0] == "SWITCH":
