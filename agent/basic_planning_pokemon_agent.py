@@ -114,6 +114,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             # Calculate outcomes based on possible misses
             player_outcomes, player_weights = self.calc_move_outcomes(p_opt, True)
 
+            # Calculate average position given opponent's possible moves
             for o_opt in opp_opts:
                 # Calculate outcomes based on possible misses
                 opp_outcomes, opp_weights = self.calc_move_outcomes(o_opt, False)
@@ -124,54 +125,56 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 print(opp_weights)
                 print("\n")
 
-                # Calculate average position given opponent's possible moves
-                my_gs = deepcopy(self.game_state.gamestate)
-                opp_gs = deepcopy(self.game_state.opp_gamestate)
+                for p_ind in range(len(player_outcomes)):
+                    for o_ind in range(len(opp_outcomes)):
+                        my_gs = deepcopy(self.game_state.gamestate)
+                        opp_gs = deepcopy(self.game_state.opp_gamestate)
 
-                # Player Switches
-                if p_opt[0] == "SWITCH":
-                    my_gs = update_gs_switch(my_gs, p_opt)
+                        # Player Switches
+                        if p_opt[0] == "SWITCH":
+                            my_gs = update_gs_switch(my_gs, p_opt)
 
-                # Opponent Switches
-                if o_opt[0] == "SWITCH":
-                    opp_gs = update_gs_switch(opp_gs, o_opt, False)
+                        # Opponent Switches
+                        if o_opt[0] == "SWITCH":
+                            opp_gs = update_gs_switch(opp_gs, o_opt, False)
 
-                # Attacking
-                if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
-                    # Figure out who is faster
-                    if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
-                        # We attack first, then opponent attacks
-                        opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+                        # Attacking
+                        if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
+                            # Figure out who is faster
+                            if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
+                                # We attack first, then opponent attacks
+                                opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
-                        if opp_gs["data"]["active"]["pct_hp"] > 0:
-                            my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
-                    else:
-                        # Opponent attacks first, then us
-                        my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+                                if opp_gs["data"]["active"]["pct_hp"] > 0:
+                                    my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+                            else:
+                                # Opponent attacks first, then us
+                                my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
 
-                        if my_gs["active"].current_hp > 0:
+                                if my_gs["active"].current_hp > 0:
+                                    opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+
+                        elif p_opt[0] == "ATTACK":
+                            # Only we attack
                             opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
-                elif p_opt[0] == "ATTACK":
-                    # Only we attack
-                    opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+                        elif o_opt[0] == "ATTACK":
+                            # Only opponent attacks
+                            my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
 
-                elif o_opt[0] == "ATTACK":
-                    # Only opponent attacks
-                    my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+                        # Apply status damage
+                        my_gs["active"].current_hp -= my_gs["active"].current_hp * \
+                            calculate_status_damage(my_gs["active"])
+                        opp_gs["data"]["active"]["pct_hp"] -= \
+                            calculate_status_damage(opp_gs["data"]["active"])
 
-                # Apply status damage
-                my_gs["active"].current_hp -= my_gs["active"].current_hp * \
-                    calculate_status_damage(my_gs["active"])
-                opp_gs["data"]["active"]["pct_hp"] -= \
-                    calculate_status_damage(opp_gs["data"]["active"])
+                        # Control for damage falling below zero
+                        my_gs["active"].current_hp = max(my_gs["active"].current_hp, 0)
+                        opp_gs["data"]["active"]["pct_hp"] = max(opp_gs["data"]["active"]["pct_hp"], 0.0)
 
-                # Control for damage falling below zero
-                my_gs["active"].current_hp = max(my_gs["active"].current_hp, 0)
-                opp_gs["data"]["active"]["pct_hp"] = max(opp_gs["data"]["active"]["pct_hp"], 0.0)
+                        my_posn = calc_position_helper(my_gs) + 0.01
+                        opp_posn = calc_opp_position_helper(opp_gs) + 0.01
 
-                my_posn = calc_position_helper(my_gs) + 0.01
-                opp_posn = calc_opp_position_helper(opp_gs) + 0.01
                 total_position += my_posn / opp_posn
 
             # Calculate expected position for this move
