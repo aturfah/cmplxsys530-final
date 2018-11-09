@@ -172,8 +172,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                         my_posn = calc_position_helper(my_gs) + 0.01
                         opp_posn = calc_opp_position_helper(opp_gs) + 0.01
 
-                        total_position += (player_weights[p_ind] * opp_weights[o_ind]) * \
-                                        my_posn / opp_posn
+                        total_position += (my_posn / opp_posn) * \
+                                          (player_weights[p_ind] * opp_weights[o_ind])
 
             # Calculate expected position for this move
             avg_position = total_position / len(opp_opts)
@@ -375,7 +375,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
             acc = chosen_move["accuracy"]
             if not isinstance(acc, bool) and acc < 100:
-                outcome_weights = [(1.0 * val) for val in [acc, 100 - acc]]
+                outcome_weights = [(1.0 * val)/100 for val in [acc, 100 - acc]]
                 possible_outcomes = [move_opt + (val == acc, ) for val in [acc, 100 - acc]]
 
         return possible_outcomes, outcome_weights
