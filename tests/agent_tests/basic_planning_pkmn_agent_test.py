@@ -150,6 +150,17 @@ def test_move_accuracy():
     assert move[0] == "ATTACK"
     assert move[1] == 1
 
+    # Damage test
+    # Floatzel uses Hydro Pump because it'll out-damage tackle
+    opp_stunfisk.current_hp = opp_stunfisk.max_hp
+    floatzel.current_hp = floatzel.max_hp
+    player_gs, opp_gs = init_gamestates(floatzel, opp_stunfisk)
+    bppa = init_bppa_acc(floatzel, player_gs, opp_gs)
+    move = bppa.make_move()
+
+    assert move[0] == "ATTACK"
+    assert move[1] == 1
+
 
 def init_bppa_acc(floatzel, player_gs, opp_gs):
     """Initialize a BasicPlanningPokemonAgent for accuracy tests."""
