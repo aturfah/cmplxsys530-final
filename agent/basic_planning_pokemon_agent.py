@@ -119,13 +119,13 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 # Calculate outcomes based on possible misses
                 opp_outcomes, opp_weights = self.calc_move_outcomes(o_opt, False)
 
-                for p_ind in range(len(player_outcomes)):
-                    for o_ind in range(len(opp_outcomes)):
+                for p_ind, p_outc in enumerate(player_outcomes):
+                    for o_ind, o_outc in enumerate(opp_outcomes):
                         my_gs = deepcopy(self.game_state.gamestate)
                         opp_gs = deepcopy(self.game_state.opp_gamestate)
 
-                        print(player_outcomes[p_ind], player_weights[p_ind])
-                        print(opp_outcomes[o_ind], opp_weights[o_ind])
+                        print(p_outc, player_weights[p_ind])
+                        print(o_outc, opp_weights[o_ind])
                         print("\n")
 
                         # Player Switches
@@ -141,22 +141,24 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                             # Figure out who is faster
                             if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
                                 # We attack first, then opponent attacks
-                                opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+                                if p_outc[2]:
+                                    opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
-                                if opp_gs["data"]["active"]["pct_hp"] > 0:
+                                if opp_gs["data"]["active"]["pct_hp"] > 0 and o_outc[2]:
                                     my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
                             else:
                                 # Opponent attacks first, then us
-                                my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+                                if o_outc[2]:
+                                    my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
 
-                                if my_gs["active"].current_hp > 0:
+                                if my_gs["active"].current_hp > 0 and p_outc[2]:
                                     opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
-                        elif p_opt[0] == "ATTACK":
+                        elif p_opt[0] == "ATTACK" and p_outc[2]:
                             # Only we attack
                             opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
-                        elif o_opt[0] == "ATTACK":
+                        elif o_opt[0] == "ATTACK" and o_outc[2]:
                             # Only opponent attacks
                             my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
 
