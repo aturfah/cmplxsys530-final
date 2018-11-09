@@ -184,6 +184,6 @@ def init_gamestates(player_poke, opp_poke):
 
 
 test_generate_possibilities()
-# test_make_move()
+test_make_move()
 test_determine_faster()
 test_move_accuracy()
