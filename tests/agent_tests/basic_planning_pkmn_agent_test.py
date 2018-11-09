@@ -128,11 +128,33 @@ def test_move_accuracy():
     bppa.update_gamestate(player_gs, opp_gs)
     bppa.init_opp_gamestate(opp_gs["team"], opp_gs["active"])
 
+    # Floatzel uses tackle because it guarantees to kill
     move = bppa.make_move()
     assert move[0] == "ATTACK"
     assert move[1] == 1
 
+    # Bisharp Test (priority)
+    floatzel = Pokemon(name="floatzel", moves=["hydropump", "aquajet"])
+    opp_skunk = Pokemon(name="skuntank", moves=["suckerpunch"])
+    floatzel.current_hp = 1
+    opp_skunk.current_hp = 1
+
+    opp_gs = {}
+    opp_gs["team"] = []
+    opp_gs["active"] = opp_skunk
+    opp_gs = anonymize_gamestate_helper(opp_gs)
+
+    bppa = BasicPlanningPokemonAgent(tier="pu", team=[floatzel])
+    bppa.update_gamestate(player_gs, opp_gs)
+    bppa.init_opp_gamestate(opp_gs["team"], opp_gs["active"])
+
+    # Floatzel uses aqua jet because it outprioritizes SP
+    move = bppa.make_move()
+    assert move[0] == "ATTACK"
+    assert move[1] == 1
+
+
 test_generate_possibilities()
-test_make_move()
+# test_make_move()
 test_determine_faster()
 test_move_accuracy()
