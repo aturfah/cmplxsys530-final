@@ -399,7 +399,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         """
         # pylint: disable=R0201
         # This needs to be over-ridden by chold class
-        if len(args):
+        if args:
             raise RuntimeWarning("Args is ignored.")
 
         my_posn = calc_position_helper(kwargs["my_gs"]) + 0.01
