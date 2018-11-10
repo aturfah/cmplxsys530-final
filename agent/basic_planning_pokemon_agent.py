@@ -173,12 +173,11 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                         opp_gs["data"]["active"]["pct_hp"] = max(opp_gs["data"]["active"]["pct_hp"],
                                                                  0.0)
 
-                        my_posn = calc_position_helper(my_gs) + 0.01
-                        opp_posn = calc_opp_position_helper(opp_gs) + 0.01
-
                         # Weighted update of the position
-                        total_position += (my_posn / opp_posn) * \
-                                          (player_weights[p_ind] * opp_weights[o_ind])
+                        total_position += self.position_func(my_gs=my_gs,
+                                                             opp_gs=opp_gs,
+                                                             player_weight=player_weights[p_ind],
+                                                             opp_weight=opp_weights[o_ind])
 
             # Calculate expected position for this move
             avg_position = total_position / len(opp_opts)
@@ -384,6 +383,30 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 possible_outcomes = [move_opt + (val == acc, ) for val in [acc, 100 - acc]]
 
         return possible_outcomes, outcome_weights
+
+    def position_func(self, *args, **kwargs):
+        """
+        Determine battle position for game state, given the probabilities.
+
+        Args:
+            my_gs (dict):
+            opp_gs (dict):
+            player_weight (float):
+            opp_weight (float):
+
+        Returns:
+            Factor for this outcome's weight in the move choice.
+        """
+        # pylint: disable=R0201
+        # This needs to be over-ridden by chold class
+        if len(args):
+            raise RuntimeWarning("Args is ignored.")
+
+        my_posn = calc_position_helper(kwargs["my_gs"]) + 0.01
+        opp_posn = calc_opp_position_helper(kwargs["opp_gs"]) + 0.01
+
+        return (my_posn / opp_posn) * (kwargs["player_weight"] * kwargs["opp_weight"])
+
 
 
 def atk_param_combinations(active_poke, opp_params, move):
