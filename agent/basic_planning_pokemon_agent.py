@@ -362,30 +362,6 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         return (my_posn / opp_posn) * (kwargs["player_weight"] * kwargs["opp_weight"])
 
-    def handle_logic_both_attacking(self, my_gs, opp_gs, p_opt, o_opt, p_outc, o_outc):
-        """Placeholder Docstring."""
-        # Figure out who is faster
-        if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
-            # We attack first, then opponent attacks
-            if p_outc[2]:
-                # Check if we miss
-                opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
-
-            if opp_gs["data"]["active"]["pct_hp"] > 0 and o_outc[2]:
-                # Check that opponent is still alive and doesn't miss
-                my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
-        else:
-            # Opponent attacks first, then us
-            if o_outc[2]:
-                # Check if opponent misses
-                my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
-
-            if my_gs["active"].current_hp > 0 and p_outc[2]:
-                # Check that we are still alive and don't miss
-                opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
-
-        return my_gs, opp_gs
-
     def apply_moves(self, p_opt, o_opt, p_outc, o_outc):
         """
         Generate gamestates given the player moves and outcomes.
@@ -415,9 +391,24 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Attacking
         if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
-            my_gs, opp_gs = self.handle_logic_both_attacking(my_gs, opp_gs,
-                                                             p_opt, o_opt,
-                                                             p_outc, o_outc)
+            if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
+                # We attack first, then opponent attacks
+                if p_outc[2]:
+                    # Check if we miss
+                    opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+
+                if opp_gs["data"]["active"]["pct_hp"] > 0 and o_outc[2]:
+                    # Check that opponent is still alive and doesn't miss
+                    my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+            else:
+                # Opponent attacks first, then us
+                if o_outc[2]:
+                    # Check if opponent misses
+                    my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+
+                if my_gs["active"].current_hp > 0 and p_outc[2]:
+                    # Check that we are still alive and don't miss
+                    opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
 
         elif p_opt[0] == "ATTACK" and p_outc[2]:
             # Only we attack, and we don't miss
