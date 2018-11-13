@@ -396,9 +396,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         Returns:
             Factor for this outcome's weight in the move choice.
+
         """
         # pylint: disable=R0201
-        # This needs to be over-ridden by chold class
+        # This needs to be over-ridden by child class
         if args:
             raise RuntimeWarning("Args is ignored.")
 
@@ -406,7 +407,6 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         opp_posn = calc_opp_position_helper(kwargs["opp_gs"]) + 0.01
 
         return (my_posn / opp_posn) * (kwargs["player_weight"] * kwargs["opp_weight"])
-
 
 
 def atk_param_combinations(active_poke, opp_params, move):
