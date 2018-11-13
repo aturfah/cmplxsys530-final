@@ -124,7 +124,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                         my_gs = deepcopy(self.game_state.gamestate)
                         opp_gs = deepcopy(self.game_state.opp_gamestate)
 
-                        my_gs, opp_gs = self.apply_moves()
+                        my_gs, opp_gs = self.apply_moves(my_gs, opp_gs,
+                                                         p_opt, o_opt,
+                                                         p_outc, o_outc)
 
                         # Weighted update of the position
                         total_position += self.position_func(my_gs=my_gs,
@@ -420,6 +422,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         opp_gs["data"]["active"]["pct_hp"] = max(opp_gs["data"]["active"]["pct_hp"], 0.0)
 
         return my_gs, opp_gs
+
 
 def atk_param_combinations(active_poke, opp_params, move):
     """
