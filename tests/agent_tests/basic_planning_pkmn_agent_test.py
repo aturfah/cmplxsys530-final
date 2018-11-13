@@ -169,6 +169,7 @@ def init_bppa_acc(floatzel, player_gs, opp_gs):
     bppa.init_opp_gamestate(opp_gs["team"], opp_gs["active"])
     return bppa
 
+
 def init_gamestates(player_poke, opp_poke):
     """Initialize player and opponent gamestates."""
     player_gs = {}
