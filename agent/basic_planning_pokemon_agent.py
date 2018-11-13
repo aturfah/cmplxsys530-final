@@ -107,68 +107,41 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             Player move that optimizes the battle_position function for this agent.
 
         """
-        optimal_opt = None
-        maximal_position = -1
+        # pylint: disable=R0914
+        # Most variables come from for loops
+
+        optimal_move = None
+        optimal_posn = -1
         for p_opt in player_opts:
             total_position = 0
+            # Calculate outcomes based on possible misses
+            player_outcomes, player_weights = self.calc_move_outcomes(p_opt, True)
+
+            # Calculate average position given opponent's possible moves
             for o_opt in opp_opts:
-                # Calculate average position given opponent's possible moves
-                my_gs = deepcopy(self.game_state.gamestate)
-                opp_gs = deepcopy(self.game_state.opp_gamestate)
+                # Calculate outcomes based on possible misses
+                opp_outcomes, opp_weights = self.calc_move_outcomes(o_opt, False)
 
-                # Player Switches
-                if p_opt[0] == "SWITCH":
-                    my_gs = update_gs_switch(my_gs, p_opt)
+                for p_ind, p_outc in enumerate(player_outcomes):
+                    for o_ind, o_outc in enumerate(opp_outcomes):
+                        # Calculate the outcome given the move
+                        my_gs, opp_gs = self.apply_moves(p_opt, o_opt,
+                                                         p_outc, o_outc)
 
-                # Opponent Switches
-                if o_opt[0] == "SWITCH":
-                    opp_gs = update_gs_switch(opp_gs, o_opt, False)
-
-                # Attacking
-                if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
-                    # Figure out who is faster
-                    if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
-                        # We attack first, then opponent attacks
-                        opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
-
-                        if opp_gs["data"]["active"]["pct_hp"] > 0:
-                            my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
-                    else:
-                        # Opponent attacks first, then us
-                        my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
-
-                        if my_gs["active"].current_hp > 0:
-                            opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
-
-                elif p_opt[0] == "ATTACK":
-                    # Only we attack
-                    opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
-
-                elif o_opt[0] == "ATTACK":
-                    # Only opponent attacks
-                    my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
-
-                # Apply status damage
-                my_gs["active"].current_hp -= my_gs["active"].current_hp * \
-                    calculate_status_damage(my_gs["active"])
-                opp_gs["data"]["active"]["pct_hp"] -= \
-                    calculate_status_damage(opp_gs["data"]["active"])
-
-                # Control for damage falling below zero
-                my_gs["active"].current_hp = max(my_gs["active"].current_hp, 0)
-                opp_gs["data"]["active"]["pct_hp"] = max(opp_gs["data"]["active"]["pct_hp"], 0.0)
-
-                my_posn = calc_position_helper(my_gs) + 0.01
-                opp_posn = calc_opp_position_helper(opp_gs) + 0.01
-                total_position += my_posn / opp_posn
+                        # Weighted update of the position
+                        total_position += self.position_func(my_gs=my_gs,
+                                                             opp_gs=opp_gs,
+                                                             player_weight=player_weights[p_ind],
+                                                             opp_weight=opp_weights[o_ind])
 
             # Calculate expected position for this move
+            # Update if 'better' move
             avg_position = total_position / len(opp_opts)
-            if avg_position > maximal_position:
-                optimal_opt = p_opt
-                maximal_position = avg_position
+            if avg_position > optimal_posn:
+                optimal_move = p_opt
+                optimal_posn = avg_position
 
-        return optimal_opt
+        return optimal_move
 
     def attacking_dmg_range(self, my_gs, opp_gs, p_opt):
         """
@@ -338,6 +311,126 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Moves of different priority will always go in priority order
         return p_move["priority"] > o_move["priority"]
+
+    def calc_move_outcomes(self, move_opt, player_flag=True):
+        """
+        For a move, generate possible outcomes.
+
+        Considers Hit/Miss.
+
+        Args:
+            player_flag (bool): Whether to use player or opponent's gamestate.
+
+        Returns:
+            List of possible outcomes and their weights.
+
+        """
+        possible_outcomes = [move_opt + (True, )]
+        outcome_weights = [1]
+        if move_opt[0] == "ATTACK":
+            if player_flag:
+                chosen_move = self.game_state.gamestate["active"].moves[move_opt[1]]
+            else:
+                chosen_move = MOVE_DATA[move_opt[1]]
+
+            acc = chosen_move["accuracy"]
+            if not isinstance(acc, bool) and acc < 100:
+                outcome_weights = [(1.0 * val)/100 for val in [acc, 100 - acc]]
+                possible_outcomes = [move_opt + (val == acc, ) for val in [acc, 100 - acc]]
+
+        return possible_outcomes, outcome_weights
+
+    def position_func(self, *args, **kwargs):
+        """
+        Determine battle position for game state, given the probabilities.
+
+        Args:
+            my_gs (dict):
+            opp_gs (dict):
+            player_weight (float):
+            opp_weight (float):
+
+        Returns:
+            Factor for this outcome's weight in the move choice.
+
+        """
+        # pylint: disable=R0201
+        # This needs to be over-ridden by child class
+        if args:
+            raise RuntimeWarning("Args is ignored.")
+
+        my_posn = calc_position_helper(kwargs["my_gs"]) + 0.01
+        opp_posn = calc_opp_position_helper(kwargs["opp_gs"]) + 0.01
+
+        return (my_posn / opp_posn) * (kwargs["player_weight"] * kwargs["opp_weight"])
+
+    def apply_moves(self, p_opt, o_opt, p_outc, o_outc):
+        """
+        Generate gamestates given the player moves and outcomes.
+
+        Args:
+            p_opt (tuple): Player move of form ATTACK/SWITCH with
+                position of attack/pokemon to switch to.
+            o_opt (tuple): Player move of form ATTACK/SWITCH with
+                position of attack/pokemon to switch to.
+            p_outc (tuple): Pair with info on missing/hitting.
+            o_outc (tuple): Pair with info on missing/hitting.
+
+        Returns:
+            Two dictionaries with player/opponent gamestates after these moves.
+
+        """
+        my_gs = deepcopy(self.game_state.gamestate)
+        opp_gs = deepcopy(self.game_state.opp_gamestate)
+
+        # Player Switches
+        if p_opt[0] == "SWITCH":
+            my_gs = update_gs_switch(my_gs, p_opt)
+
+        # Opponent Switches
+        if o_opt[0] == "SWITCH":
+            opp_gs = update_gs_switch(opp_gs, o_opt, False)
+
+        # Attacking
+        if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
+            if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
+                # We attack first, then opponent attacks
+                if p_outc[2]:
+                    # Check if we miss
+                    opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+
+                if opp_gs["data"]["active"]["pct_hp"] > 0 and o_outc[2]:
+                    # Check that opponent is still alive and doesn't miss
+                    my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+            else:
+                # Opponent attacks first, then us
+                if o_outc[2]:
+                    # Check if opponent misses
+                    my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+
+                if my_gs["active"].current_hp > 0 and p_outc[2]:
+                    # Check that we are still alive and don't miss
+                    opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+
+        elif p_opt[0] == "ATTACK" and p_outc[2]:
+            # Only we attack, and we don't miss
+            opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+
+        elif o_opt[0] == "ATTACK" and o_outc[2]:
+            # Only opponent attacks, and doesn't miss
+            my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+
+        # Apply status damage
+        my_gs["active"].current_hp -= my_gs["active"].current_hp * \
+            calculate_status_damage(my_gs["active"])
+        opp_gs["data"]["active"]["pct_hp"] -= \
+            calculate_status_damage(opp_gs["data"]["active"])
+
+        # Control for damage falling below zero
+        my_gs["active"].current_hp = max(my_gs["active"].current_hp, 0)
+        opp_gs["data"]["active"]["pct_hp"] = max(opp_gs["data"]["active"]["pct_hp"], 0.0)
+
+        return my_gs, opp_gs
 
 
 def atk_param_combinations(active_poke, opp_params, move):
