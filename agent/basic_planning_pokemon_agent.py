@@ -121,11 +121,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
                 for p_ind, p_outc in enumerate(player_outcomes):
                     for o_ind, o_outc in enumerate(opp_outcomes):
-                        my_gs = deepcopy(self.game_state.gamestate)
-                        opp_gs = deepcopy(self.game_state.opp_gamestate)
-
-                        my_gs, opp_gs = self.apply_moves(my_gs, opp_gs,
-                                                         p_opt, o_opt,
+                        my_gs, opp_gs = self.apply_moves(p_opt, o_opt,
                                                          p_outc, o_outc)
 
                         # Weighted update of the position
@@ -387,8 +383,11 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         return my_gs, opp_gs
 
-    def apply_moves(self, my_gs, opp_gs, p_opt, o_opt, p_outc, o_outc):
+    def apply_moves(self, p_opt, o_opt, p_outc, o_outc):
         """Placeholder Docstring."""
+        my_gs = deepcopy(self.game_state.gamestate)
+        opp_gs = deepcopy(self.game_state.opp_gamestate)
+
         # Player Switches
         if p_opt[0] == "SWITCH":
             my_gs = update_gs_switch(my_gs, p_opt)
