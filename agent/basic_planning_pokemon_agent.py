@@ -110,7 +110,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         # pylint: disable=R0914
         # Most variables come from for loops
 
-        optimal_move_posn = [None, -1]
+        optimal_move = None
+        optimal_posn = -1
         for p_opt in player_opts:
             total_position = 0
             # Calculate outcomes based on possible misses
@@ -136,10 +137,11 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             # Calculate expected position for this move
             # Update if 'better' move
             avg_position = total_position / len(opp_opts)
-            if avg_position > optimal_move_posn[1]:
-                optimal_move_posn = [p_opt, avg_position]
+            if avg_position > optimal_posn:
+                optimal_move = p_opt
+                optimal_posn = avg_position
 
-        return optimal_move_posn[0]
+        return optimal_move
 
     def attacking_dmg_range(self, my_gs, opp_gs, p_opt):
         """
