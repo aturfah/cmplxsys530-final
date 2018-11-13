@@ -121,6 +121,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
                 for p_ind, p_outc in enumerate(player_outcomes):
                     for o_ind, o_outc in enumerate(opp_outcomes):
+                        # Calculate the outcome given the move
                         my_gs, opp_gs = self.apply_moves(p_opt, o_opt,
                                                          p_outc, o_outc)
 
@@ -131,6 +132,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                                                              opp_weight=opp_weights[o_ind])
 
             # Calculate expected position for this move
+            # Update if 'better' move
             avg_position = total_position / len(opp_opts)
             if avg_position > optimal_move_posn[1]:
                 optimal_move_posn = [p_opt, avg_position]
