@@ -124,38 +124,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                         my_gs = deepcopy(self.game_state.gamestate)
                         opp_gs = deepcopy(self.game_state.opp_gamestate)
 
-                        # Player Switches
-                        if p_opt[0] == "SWITCH":
-                            my_gs = update_gs_switch(my_gs, p_opt)
-
-                        # Opponent Switches
-                        if o_opt[0] == "SWITCH":
-                            opp_gs = update_gs_switch(opp_gs, o_opt, False)
-
-                        # Attacking
-                        if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
-                            my_gs, opp_gs = self.handle_logic_both_attacking(my_gs, opp_gs,
-                                                                             p_opt, o_opt,
-                                                                             p_outc, o_outc)
-
-                        elif p_opt[0] == "ATTACK" and p_outc[2]:
-                            # Only we attack, and we don't miss
-                            opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
-
-                        elif o_opt[0] == "ATTACK" and o_outc[2]:
-                            # Only opponent attacks, and doesn't miss
-                            my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
-
-                        # Apply status damage
-                        my_gs["active"].current_hp -= my_gs["active"].current_hp * \
-                            calculate_status_damage(my_gs["active"])
-                        opp_gs["data"]["active"]["pct_hp"] -= \
-                            calculate_status_damage(opp_gs["data"]["active"])
-
-                        # Control for damage falling below zero
-                        my_gs["active"].current_hp = max(my_gs["active"].current_hp, 0)
-                        opp_gs["data"]["active"]["pct_hp"] = max(opp_gs["data"]["active"]["pct_hp"],
-                                                                 0.0)
+                        my_gs, opp_gs = self.apply_moves()
 
                         # Weighted update of the position
                         total_position += self.position_func(my_gs=my_gs,
@@ -393,7 +362,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return (my_posn / opp_posn) * (kwargs["player_weight"] * kwargs["opp_weight"])
 
     def handle_logic_both_attacking(self, my_gs, opp_gs, p_opt, o_opt, p_outc, o_outc):
-        """Placeholder."""
+        """Placeholder Docstring."""
         # Figure out who is faster
         if self.determine_faster(my_gs, opp_gs, p_opt, o_opt):
             # We attack first, then opponent attacks
@@ -413,6 +382,42 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             if my_gs["active"].current_hp > 0 and p_outc[2]:
                 # Check that we are still alive and don't miss
                 opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+
+        return my_gs, opp_gs
+
+    def apply_moves(self, my_gs, opp_gs, p_opt, o_opt, p_outc, o_outc):
+        """Placeholder Docstring."""
+        # Player Switches
+        if p_opt[0] == "SWITCH":
+            my_gs = update_gs_switch(my_gs, p_opt)
+
+        # Opponent Switches
+        if o_opt[0] == "SWITCH":
+            opp_gs = update_gs_switch(opp_gs, o_opt, False)
+
+        # Attacking
+        if p_opt[0] == "ATTACK" and o_opt[0] == "ATTACK":
+            my_gs, opp_gs = self.handle_logic_both_attacking(my_gs, opp_gs,
+                                                             p_opt, o_opt,
+                                                             p_outc, o_outc)
+
+        elif p_opt[0] == "ATTACK" and p_outc[2]:
+            # Only we attack, and we don't miss
+            opp_gs = self.update_opp_gs_atk(my_gs, opp_gs, p_opt)
+
+        elif o_opt[0] == "ATTACK" and o_outc[2]:
+            # Only opponent attacks, and doesn't miss
+            my_gs = self.update_my_gs_def(my_gs, opp_gs, o_opt)
+
+        # Apply status damage
+        my_gs["active"].current_hp -= my_gs["active"].current_hp * \
+            calculate_status_damage(my_gs["active"])
+        opp_gs["data"]["active"]["pct_hp"] -= \
+            calculate_status_damage(opp_gs["data"]["active"])
+
+        # Control for damage falling below zero
+        my_gs["active"].current_hp = max(my_gs["active"].current_hp, 0)
+        opp_gs["data"]["active"]["pct_hp"] = max(opp_gs["data"]["active"]["pct_hp"], 0.0)
 
         return my_gs, opp_gs
 
