@@ -107,8 +107,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             Player move that optimizes the battle_position function for this agent.
 
         """
-        optimal_move_posn = [None, -1]
+        # pylint: disable=R0914
+        # Most variables come from for loops
 
+        optimal_move_posn = [None, -1]
         for p_opt in player_opts:
             total_position = 0
             # Calculate outcomes based on possible misses
