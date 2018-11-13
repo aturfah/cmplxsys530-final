@@ -107,8 +107,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             Player move that optimizes the battle_position function for this agent.
 
         """
-        optimal_opt = None
-        maximal_position = -1
+        optimal_move_posn = [None, -1]
+
         for p_opt in player_opts:
             total_position = 0
             # Calculate outcomes based on possible misses
@@ -132,11 +132,10 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
             # Calculate expected position for this move
             avg_position = total_position / len(opp_opts)
-            if avg_position > maximal_position:
-                optimal_opt = p_opt
-                maximal_position = avg_position
+            if avg_position > optimal_move_posn[1]:
+                optimal_move_posn = [p_opt, avg_position]
 
-        return optimal_opt
+        return optimal_move_posn[0]
 
     def attacking_dmg_range(self, my_gs, opp_gs, p_opt):
         """
