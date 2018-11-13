@@ -387,7 +387,21 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         return my_gs, opp_gs
 
     def apply_moves(self, p_opt, o_opt, p_outc, o_outc):
-        """Placeholder Docstring."""
+        """
+        Generate gamestates given the player moves and outcomes.
+
+        Args:
+            p_opt (tuple): Player move of form ATTACK/SWITCH with
+                position of attack/pokemon to switch to.
+            o_opt (tuple): Player move of form ATTACK/SWITCH with
+                position of attack/pokemon to switch to.
+            p_outc (tuple): Pair with info on missing/hitting.
+            o_outc (tuple): Pair with info on missing/hitting.
+
+        Returns:
+            Two dictionaries with player/opponent gamestates after these moves.
+
+        """
         my_gs = deepcopy(self.game_state.gamestate)
         opp_gs = deepcopy(self.game_state.opp_gamestate)
 
