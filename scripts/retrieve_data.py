@@ -12,8 +12,8 @@ if __name__ == "__main__":
         for level in LEVELS:
             print("\t{}-{}".format(tier, level))
             raw_html = requests.get(BASE_URL.format(tier=tier, level=level)).content
-            file_ = open("raw_data/gen7{tier}-{level}.json".format(tier=tier,
-                                                                   level=level), mode='wb')
+            file_ = open("data/usage/gen7{tier}-{level}.json".format(tier=tier,
+                                                                     level=level), mode='wb')
             file_.write(raw_html)
             file_.close()
 
