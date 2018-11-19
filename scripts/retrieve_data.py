@@ -1,6 +1,24 @@
 """ Script to pull in gen7pu data """
-import requests
 from datetime import datetime, timedelta
+import requests
+
+def monthdelta(date, delta):
+    """
+    Get the day <delta> months back.
+
+    Args:
+        date (datetime): Datetime to be calculated from.
+        delta (int): Amount to change month by.
+
+    Returns:
+        datetime object <delta> months back
+
+    """
+    m, y = (date.month+delta) % 12, date.year + ((date.month)+delta-1) // 12
+    if not m: m = 12
+    d = min(date.day, [31,
+        29 if y%4==0 and not y%400==0 else 28,31,30,31,30,31,31,30,31,30,31][m-1])
+    return date.replace(day=d,month=m, year=y)
 
 
 def get_url_base(lag=1):
@@ -15,10 +33,14 @@ def get_url_base(lag=1):
 
     """
     current_time = datetime.today().replace(day=1)
-    current_time = current_time - timedelta(months=lag)
+    current_time = current_time - timedelta(1)
     time_str = current_time.strftime("%Y-%m")
     url_base = "http://www.smogon.com/stats/{month}/chaos".format(month=time_str)
-    print(requests.get(url_base))
+
+    # Verify that we have data for the previous month
+    if requests.get(url_base).status_code != 200:
+        return get_url_base(lag=lag+1)
+
     return url_base
 
 
@@ -29,7 +51,6 @@ if __name__ == "__main__":
     LEVELS = [0, 1500, 1630, 1760]
     OU_LEVELS = [0, 1500, 1695, 1825]
 
-    raise RuntimeError("DOOT")
 
     for tier in TIERS:
         for ind, level in enumerate(LEVELS):
