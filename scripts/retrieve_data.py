@@ -1,4 +1,4 @@
-""" Script to pull in gen7pu data """
+"""Script to pull in PS usage data."""
 from datetime import datetime
 import requests
 
