@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 import requests
 
-def monthdelta(date, delta):
+def monthdelta(delta):
     """
     Get the day <delta> months back.
 
@@ -14,6 +14,7 @@ def monthdelta(date, delta):
         datetime object <delta> months back
 
     """
+    date = datetime.today()
     month, year = (date.month+delta) % 12, date.year + ((date.month)+delta-1) // 12
     if not month:
         month = 12
@@ -34,8 +35,7 @@ def get_url_base(lag=1):
         Month <lag> months behind in YYYY-MM format.
 
     """
-    current_time = datetime.today().replace(day=1)
-    current_time = current_time - timedelta(1)
+    current_time = monthdelta(lag)
     time_str = current_time.strftime("%Y-%m")
     url_base = "http://www.smogon.com/stats/{month}/chaos".format(month=time_str)
 
