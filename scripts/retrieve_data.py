@@ -18,13 +18,13 @@ def monthdelta(delta):
     month, year = (date.month+delta) % 12, date.year + ((date.month)+delta-1) // 12
     if not month:
         month = 12
-    date = min(date.day, [31,
+    day = min(date.day, [31,
                           29 if year%4==0 and not year%400 == 0 else 28,
                           31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month-1])
-    return date.replace(day=date,month=month, year=year)
+    return date.replace(day=day, month=month, year=year)
 
 
-def get_url_base(lag=1):
+def get_url_base(lag=-1):
     """
     Get the month to use for the data.
 
@@ -36,12 +36,14 @@ def get_url_base(lag=1):
 
     """
     current_time = monthdelta(lag)
+    print(current_time)
     time_str = current_time.strftime("%Y-%m")
     url_base = "http://www.smogon.com/stats/{month}/chaos".format(month=time_str)
 
     # Verify that we have data for the previous month
     if requests.get(url_base).status_code != 200:
-        return get_url_base(lag=lag+1)
+        print("DOOT")
+        return get_url_base(lag=lag-1)
 
     return url_base
 
