@@ -2,6 +2,7 @@
 from datetime import datetime
 import requests
 
+
 def monthdelta(delta):
     """
     Get the day <delta> months back.
