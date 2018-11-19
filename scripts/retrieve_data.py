@@ -53,7 +53,6 @@ if __name__ == "__main__":
     LEVELS = [0, 1500, 1630, 1760]
     OU_LEVELS = [0, 1500, 1695, 1825]
 
-
     for tier in TIERS:
         for ind, level in enumerate(LEVELS):
             if tier == "ou":
