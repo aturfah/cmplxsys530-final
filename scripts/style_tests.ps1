@@ -1,12 +1,12 @@
 # Script to run code style tests
 
 if (!$args) {
-    $modules = "agent", "battle_engine", "interface", "ladder", "file_manager", "pokemon_helpers", "simulation", "stats", "tests"
+    $modules = "agent", "battle_engine", "interface", "ladder", "file_manager", "pokemon_helpers", "scripts", "simulation", "stats", "tests"
 }
 else {
     $modules = $args
 }
-    
+
 
 foreach ($module in $modules) {
     Write-Output "Module: $module"
