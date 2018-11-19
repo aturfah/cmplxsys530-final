@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
     for tier in TIERS:
         for level in LEVELS:
-            print("\tTier:{} | Level:{}".format(tier, level))
+            print("\tFetching {}-{}".format(tier, level))
             raw_html = requests.get(BASE_URL.format(tier=tier, level=level)).content
             file_ = open("data/usage/gen7{tier}-{level}.json".format(tier=tier,
                                                                      level=level), mode='wb')
