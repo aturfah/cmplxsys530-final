@@ -1,5 +1,5 @@
 """ Script to pull in gen7pu data """
-from datetime import datetime, timedelta
+from datetime import datetime
 import requests
 
 def monthdelta(delta):
@@ -19,8 +19,8 @@ def monthdelta(delta):
     if not month:
         month = 12
     day = min(date.day, [31,
-                          29 if year%4==0 and not year%400 == 0 else 28,
-                          31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month-1])
+                         29 if year % 4 == 0 and not year % 400 == 0 else 28,
+                         31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month-1])
     return date.replace(day=day, month=month, year=year)
 
 
@@ -36,7 +36,6 @@ def get_url_base(lag=-1):
 
     """
     current_time = monthdelta(lag)
-    print(current_time)
     time_str = current_time.strftime("%Y-%m")
     url_base = "http://www.smogon.com/stats/{month}/chaos".format(month=time_str)
 
