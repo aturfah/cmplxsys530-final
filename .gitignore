@@ -3,3 +3,4 @@ _env/
 .vscode/*
 /logs
 ~*.*
+data/usage/*.json
