@@ -49,7 +49,7 @@ def get_url_base(lag=-1):
 if __name__ == "__main__":
     print("Starting Data Retreival")
     TIERS = ["ou", "uu", "ru", "nu", "pu"]
-    BASE_URL = "{url_base}/gen7{tier}-{level}.json".format(url_base=get_url_base())
+    BASE_URL = "{url_base}/gen7{tier}-{level}.json".replace("{url_base}", get_url_base())
     LEVELS = [0, 1500, 1630, 1760]
     OU_LEVELS = [0, 1500, 1695, 1825]
 
