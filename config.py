@@ -133,7 +133,7 @@ for filename in [name for name in listdir("data/usage/") if isfile(join("data/us
         tier = None
         if "pu" in filename:
             tier = "pu"
-        if "1630" not in filename:
+        if "pu-1630" not in filename:
             continue
         USAGE_STATS["pu"] = json.load(usage_file)["data"]
 TEMP_DICT = {}
