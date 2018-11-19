@@ -14,11 +14,13 @@ def monthdelta(date, delta):
         datetime object <delta> months back
 
     """
-    m, y = (date.month+delta) % 12, date.year + ((date.month)+delta-1) // 12
-    if not m: m = 12
-    d = min(date.day, [31,
-        29 if y%4==0 and not y%400==0 else 28,31,30,31,30,31,31,30,31,30,31][m-1])
-    return date.replace(day=d,month=m, year=y)
+    month, year = (date.month+delta) % 12, date.year + ((date.month)+delta-1) // 12
+    if not month:
+        month = 12
+    date = min(date.day, [31,
+                          29 if year%4==0 and not year%400 == 0 else 28,
+                          31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month-1])
+    return date.replace(day=date,month=month, year=year)
 
 
 def get_url_base(lag=1):
