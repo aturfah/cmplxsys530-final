@@ -41,7 +41,6 @@ def get_url_base(lag=-1):
 
     # Verify that we have data for the previous month
     if requests.get(url_base).status_code != 200:
-        print("DOOT")
         return get_url_base(lag=lag-1)
 
     return url_base
