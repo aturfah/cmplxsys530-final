@@ -310,6 +310,28 @@ def test_accuracy():
     assert num_misses == 0
 
 
+def test_volatile_status():
+    """Test to ensure volatile statuses work."""
+    test_vs_switch()
+
+def test_vs_switch():
+    """Test that volatile statuses are reset upon switching."""
+    exploud = Pokemon(name="exploud", moves=["tackle"])
+    floatzel = Pokemon(name="floatzel", moves=["tackle"])
+    player1 = PokemonAgent([exploud])
+    player2 = PokemonAgent([floatzel])
+
+    player_move = ("SWITCH", 0)
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    p_eng.game_state["player1"]["active"].volatile_status["test"] = True
+    p_eng.game_state["player2"]["active"].volatile_status["test"] = True
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    assert not p_eng.game_state["player1"]["active"].volatile_status
+    assert not p_eng.game_state["player2"]["active"].volatile_status
+
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
@@ -318,3 +340,4 @@ test_heal()
 test_status_dmg()
 test_secondary_effects()
 test_accuracy()
+test_volatile_status()
