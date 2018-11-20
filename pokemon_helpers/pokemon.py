@@ -80,6 +80,7 @@ class Pokemon:
         self.increase_stat = None
         self.set_stats(nature, evs)
         self.boosts = default_boosts()
+        self.volatile_status = {}
 
     def set_stats(self, nature, evs):
         """
