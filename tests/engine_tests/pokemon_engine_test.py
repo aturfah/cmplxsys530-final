@@ -167,10 +167,10 @@ def test_secondary_effects():
 def test_opp_2ndary_stat_change():
     """Test secondary effects that involve opponent's stat changes."""
     spinda = Pokemon(name="spinda", moves=["lowsweep"])
-    spinda_target = Pokemon(name="spinda", moves=["synthesis"])
+    scyther_target = Pokemon(name="scyther", moves=["synthesis"])
 
     player1 = PokemonAgent([spinda])
-    player2 = PokemonAgent([spinda_target])
+    player2 = PokemonAgent([scyther_target])
     player_move = ("ATTACK", 0)
 
     p_eng = PokemonEngine()
@@ -318,9 +318,9 @@ def test_volatile_status():
 def test_vs_switch():
     """Test that volatile statuses are reset upon switching."""
     player1 = PokemonAgent([Pokemon(name="exploud", moves=["tackle"]),
-                            Pokemon(name="exploud", moves=["tackle"])])
+                            Pokemon(name="spinda", moves=["tackle"])])
     player2 = PokemonAgent([Pokemon(name="floatzel", moves=["tackle"]),
-                            Pokemon(name="floatzel", moves=["tackle"])])
+                            Pokemon(name="magikarp", moves=["tackle"])])
 
     # Initialize the game
     p_eng = PokemonEngine()
