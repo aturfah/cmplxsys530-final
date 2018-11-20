@@ -241,6 +241,7 @@ class PokemonEngine():
         """
         # Reset boosts
         self.game_state[player]["active"].boosts = default_boosts()
+        self.game_state[player]["active"].volatile_status = {}
 
         # If toxic-ed, reset the turn counter
         if self.game_state[player]["active"].status == TOX_STATUS:
