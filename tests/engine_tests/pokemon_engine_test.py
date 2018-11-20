@@ -322,15 +322,17 @@ def test_vs_switch():
     player2 = PokemonAgent([Pokemon(name="floatzel", moves=["tackle"]),
                             Pokemon(name="floatzel", moves=["tackle"])])
 
-    player_move = ("SWITCH", 0)
-
+    # Initialize the game
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player2)
     p_eng.game_state["player1"]["active"].volatile_status["test"] = True
     p_eng.game_state["player2"]["active"].volatile_status["test"] = True
 
+    # Run the switch
+    player_move = ("SWITCH", 0)
     p_eng.run_single_turn(player_move, player_move, player1, player2)
 
+    # Check volatile status reset
     assert not p_eng.game_state["player1"]["team"][0].volatile_status
     assert not p_eng.game_state["player2"]["team"][0].volatile_status
 
