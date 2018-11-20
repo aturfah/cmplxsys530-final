@@ -2,6 +2,7 @@
 Final Project for Complex Systems 530 WN18
 
 [Link to project proposal.](writeup/proposal/proposal.md)
+
 [Link to final report](writeup/final_report/TurfahAli_CMPLXSYS530_report.pdf)
 
 # Project Description
@@ -10,7 +11,10 @@ This is an agent-based simulation for competitive Pokémon battles. Each agent i
 The framework used can be used to implement any turn-based two-player game. In addition to Pokémon, Rock Paper Scissors is also implemented with appropriate agents.
 
 # Quickstart
-**FILL ME IN**
+1. Install the requirements with `pip install -r requirements.txt`.
+2. Pull down the Pokemon Showdown usage data with `python scripts/retrieve_data.py`.
+3. Run the sample Pokémon simulation with `python run_simulation.py -f`, and select the `sample_simulations/sample_pokemon.yaml` file.
+4. Once completed, run `python visualize_results.py -m elo`, and select the `logs/PKMNPlayers_....csv` file to see the elo rankings over the course of the simulation.
 
 
 # Module Description
