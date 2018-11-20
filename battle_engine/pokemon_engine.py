@@ -239,7 +239,7 @@ class PokemonEngine():
             The information about the switch that was just performed.
 
         """
-        # Reset boosts
+        # Reset boosts and volatile status
         self.game_state[player]["active"].boosts = default_boosts()
         self.game_state[player]["active"].volatile_status = {}
 
