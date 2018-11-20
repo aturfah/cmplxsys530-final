@@ -1,10 +1,6 @@
 # cmplxsys530-final
 Final Project for Complex Systems 530 WN18
 
-[Link to project proposal.](writeup/proposal/proposal.md)
-
-[Link to final report](writeup/final_report/TurfahAli_CMPLXSYS530_report.pdf)
-
 ## Project Description
 
 This is an agent-based simulation for competitive Pokémon battles. Each agent in the simulation is a player, with a team. These agents are matched either randomly or by their Elo ranking, based on the pool of players available. 
@@ -15,7 +11,6 @@ The framework used can be used to implement any turn-based two-player game. In a
 2. Pull down the Pokemon Showdown usage data with `python scripts/retrieve_data.py`.
 3. Run the sample Pokémon simulation with `python run_simulation.py -f`, and select the `sample_simulations/sample_pokemon.yaml` file.
 4. Once completed, run `python visualize_results.py -m elo`, and select the `logs/PKMNPlayers_....csv` file to see the elo rankings over the course of the simulation.
-
 
 ## Module Description
 **agent** - Contains classes for agents in the simulations <br/>
@@ -32,3 +27,8 @@ The framework used can be used to implement any turn-based two-player game. In a
 **stats** - Contains functions to calculate statistics from and plots of the logs <br/>
 **tests** - Contains unit test cases <br/>
 **writeup** - Contains assignment submissions <br/>
+
+## Writeup Links
+[Link to project proposal.](writeup/proposal/proposal.md)
+
+[Link to final report](writeup/final_report/TurfahAli_CMPLXSYS530_report.pdf)
