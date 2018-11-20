@@ -314,12 +314,13 @@ def test_volatile_status():
     """Test to ensure volatile statuses work."""
     test_vs_switch()
 
+
 def test_vs_switch():
     """Test that volatile statuses are reset upon switching."""
-    exploud = Pokemon(name="exploud", moves=["tackle"])
-    floatzel = Pokemon(name="floatzel", moves=["tackle"])
-    player1 = PokemonAgent([exploud])
-    player2 = PokemonAgent([floatzel])
+    player1 = PokemonAgent([Pokemon(name="exploud", moves=["tackle"]),
+                            Pokemon(name="exploud", moves=["tackle"])])
+    player2 = PokemonAgent([Pokemon(name="floatzel", moves=["tackle"]),
+                            Pokemon(name="floatzel", moves=["tackle"])])
 
     player_move = ("SWITCH", 0)
 
@@ -327,10 +328,12 @@ def test_vs_switch():
     p_eng.initialize_battle(player1, player2)
     p_eng.game_state["player1"]["active"].volatile_status["test"] = True
     p_eng.game_state["player2"]["active"].volatile_status["test"] = True
+
     p_eng.run_single_turn(player_move, player_move, player1, player2)
 
-    assert not p_eng.game_state["player1"]["active"].volatile_status
-    assert not p_eng.game_state["player2"]["active"].volatile_status
+    assert not p_eng.game_state["player1"]["team"][0].volatile_status
+    assert not p_eng.game_state["player2"]["team"][0].volatile_status
+
 
 test_run()
 test_run_multiple_moves()
