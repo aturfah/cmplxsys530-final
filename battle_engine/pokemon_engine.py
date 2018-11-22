@@ -353,9 +353,9 @@ class PokemonEngine():
                     def_poke.volatile_status[move["volatileStatus"]] += 1
             elif "self" in move and "volatileStatus" in move["self"]:
                 if move["self"]["volatileStatus"] not in atk_poke.volatile_status:
-                    atk_poke.volatile_status[move["volatileStatus"]] = 1
+                    atk_poke.volatile_status[move["self"]["volatileStatus"]] = 1
                 else:
-                    atk_poke.volatile_status[move["volatileStatus"]] += 1
+                    atk_poke.volatile_status[move["self"]["volatileStatus"]] += 1
 
 
             # Move Secondary effects
