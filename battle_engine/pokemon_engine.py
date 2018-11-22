@@ -345,6 +345,19 @@ class PokemonEngine():
                     for stat in move["boosts"]:
                         def_poke.boosts[stat] += move["boosts"][stat]
 
+            # Primary Volatile effects
+            if "volatileStatus" in move:
+                if move["volatileStatus"] not in def_poke.volatileStatus:
+                    def_poke["volatileStatus"][move["volatileStatus"]] = 1
+                else:
+                    def_poke["volatileStatus"][move["volatileStatus"]] += 1
+            elif "self" in move and "volatileStatus" in move["self"]:
+                if move["volatileStatus"] not in atk_poke.volatileStatus:
+                    atk_poke["volatileStatus"][move["volatileStatus"]] = 1
+                else:
+                    atk_poke["volatileStatus"][move["volatileStatus"]] += 1
+
+
             # Move Secondary effects
             if damage != 0 and move.get("secondary", {}):
                 secondary_effects = move["secondary"]
@@ -598,6 +611,8 @@ def secondary_effect_logic(target_poke, secondary_effects):
 
         if not type_immunity:
             target_poke.status = secondary_effects["status"]
+
+
 
 
 def apply_status_damage(pokemon):
