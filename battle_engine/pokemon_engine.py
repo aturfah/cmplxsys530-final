@@ -349,13 +349,10 @@ class PokemonEngine():
             if "volatileStatus" in move:
                 if move["volatileStatus"] not in def_poke.volatile_status:
                     def_poke.volatile_status[move["volatileStatus"]] = 0
-                else:
-                    def_poke.volatile_status[move["volatileStatus"]] += 1
+
             elif "self" in move and "volatileStatus" in move["self"]:
                 if move["self"]["volatileStatus"] not in atk_poke.volatile_status:
                     atk_poke.volatile_status[move["self"]["volatileStatus"]] = 0
-                else:
-                    atk_poke.volatile_status[move["self"]["volatileStatus"]] += 1
 
             # Move Secondary effects
             if damage != 0 and move.get("secondary", {}):
@@ -375,6 +372,10 @@ class PokemonEngine():
             for stat in def_poke.boosts:
                 def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
                 def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
+
+        # Increment VolatileStatus counter for attack Pokemon
+        for vol_status in atk_poke.volatile_status:
+            atk_poke.volatile_status[vol_status] += 1
 
         results = {}
         results["type"] = "ATTACK"
