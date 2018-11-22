@@ -313,6 +313,7 @@ def test_accuracy():
 def test_volatile_status():
     """Test to ensure volatile statuses work."""
     test_vs_switch()
+    test_primary_vs()
 
 
 def test_vs_switch():
@@ -335,6 +336,11 @@ def test_vs_switch():
     # Check volatile status reset
     assert not p_eng.game_state["player1"]["team"][0].volatile_status
     assert not p_eng.game_state["player2"]["team"][0].volatile_status
+
+
+def test_primary_vs():
+    """Test that primary volatileStatus is set properly."""
+    pass
 
 
 test_run()
