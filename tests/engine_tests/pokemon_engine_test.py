@@ -340,7 +340,19 @@ def test_vs_switch():
 
 def test_primary_vs():
     """Test that primary volatileStatus is set properly."""
-    pass
+    player1 = PokemonAgent([Pokemon(name="spinda", moves=["confuseray"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["uproar"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    # Check volatile status applied
+    assert p_eng.game_state["player2"]["active"].volatile_status
+    assert p_eng.game_state["player2"]["active"].volatile_status["confusion"] == 1
+    assert p_eng.game_state["player2"]["active"].volatile_status["uproar"] == 1
 
 
 test_run()
