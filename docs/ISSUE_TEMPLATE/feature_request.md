@@ -1,4 +1,6 @@
 # Enhancement Issue Template
+blocked by <issue_number>
+
 _Description of feature_
 
 _Implementation details_
