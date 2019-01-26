@@ -1,6 +1,13 @@
 """Script to pull in PS usage data."""
+import os
 from datetime import datetime
+
 import requests
+
+
+def prepare_folders():
+    """Create folders to store data (if not already present)."""
+    pass
 
 
 def monthdelta(delta):
@@ -54,6 +61,7 @@ if __name__ == "__main__":
     LEVELS = [0, 1500, 1630, 1760]
     OU_LEVELS = [0, 1500, 1695, 1825]
 
+    prepare_folders()
     for tier in TIERS:
         for ind, level in enumerate(LEVELS):
             if tier == "ou":
