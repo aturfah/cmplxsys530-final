@@ -6,8 +6,9 @@ import requests
 
 
 def prepare_folders():
-    """Create folders to store data (if not already present)."""
-    pass
+    """Create folders to store usage data (if not already present)."""
+    if not os.path.exists("data/usage"):
+        os.makedirs("data/usage")
 
 
 def monthdelta(delta):
