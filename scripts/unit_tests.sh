@@ -4,7 +4,12 @@ if [ "'$*'" != "''" ]; then
     # If arguments provided, use them
     while [ "$1" != "" ]; do
         dir_name="tests/$1"
-        find $dir_name -iname '*.py' ! -name "__init__.py"  -exec python3 -m {} \;
+        files=$(find $dir_name -iname '*.py' ! -name "__init__.py");
+        for file_name in $(echo $files | tr " " "\n");do
+            temp_var=${file_name////.}
+            temp_var=${temp_var/.py/ }
+            python3 -m $temp_var
+        done
         shift;
     done;
 else 
