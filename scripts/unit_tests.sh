@@ -3,7 +3,8 @@
 if [ "'$*'" != "''" ]; then
     # If arguments provided, use them
     while [ "$1" != "" ]; do
-        echo "$1";
+        dir_name="tests/$1"
+        find $dir_name -iname '*.py' ! -name "__init__.py"  -exec python3 -m {} \;
         shift;
     done;
 else 
