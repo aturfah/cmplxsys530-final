@@ -1,5 +1,7 @@
 """Unit tests for pokemon engine."""
 
+from math import floor
+
 from agent.basic_pokemon_agent import PokemonAgent
 from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
@@ -370,17 +372,19 @@ def test_substitute_vs():
 
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player2)
-
+    sub_hp = floor(p_eng.game_state["player1"]["active"].max_hp / 4.0)
 
     player_move = ("ATTACK", 0)
     player2_move = ("SWITCH", 0)
     p_eng.run_single_turn(player_move, player2_move, player1, player2)
 
-    print(p_eng.game_state["player1"]["active"].to_json())
-
     assert p_eng.game_state["player1"]["active"].volatile_status
     assert "substitute" in p_eng.game_state["player1"]["active"].volatile_status
-    print(p_eng.game_state["player1"]["active"].volatile_status)
+
+    assert p_eng.game_state["player1"]["active"].volatile_status["substitute"] == sub_hp
+    assert p_eng.game_state["player1"]["active"].max_hp == \
+        sub_hp + p_eng.game_state["player1"]["active"].current_hp
+
 
 
 test_run()
