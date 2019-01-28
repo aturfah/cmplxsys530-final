@@ -317,6 +317,7 @@ def test_volatile_status():
     test_vs_switch()
     test_primary_vs()
     test_substitute_vs()
+    test_lockedmove_vs()
 
 
 def test_vs_switch():
@@ -397,8 +398,11 @@ def test_lockedmove_vs():
     player_move = ("ATTACK", 0)
     p_eng.run_single_turn(player_move, player_move, player1, player2)
 
-    print(p_eng.game_state["player1"]["active"].volatile_status)
     assert p_eng.game_state["player1"]["active"].volatile_status
+    assert "lockedmove" in p_eng.game_state["player1"]["active"].volatile_status
+    assert p_eng.game_state["player1"]["active"].volatile_status["lockedmove"]["counter"] == 1
+    assert p_eng.game_state["player1"]["active"].volatile_status["lockedmove"]["move"] == \
+        p_eng.game_state["player1"]["active"].moves[0]
 
 
 test_run()
