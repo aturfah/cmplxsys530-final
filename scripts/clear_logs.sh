@@ -1,2 +1,3 @@
 # Delete all log files
-echo "Hello World!"
+rm -rf logs/
+mkdir logs/
