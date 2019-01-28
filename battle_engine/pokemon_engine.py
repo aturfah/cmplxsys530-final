@@ -352,7 +352,7 @@ class PokemonEngine():
 
             elif "self" in move and "volatileStatus" in move["self"]:
                 if move["self"]["volatileStatus"] not in atk_poke.volatile_status:
-                    if move["volatileStatus"] == "substitute":
+                    if move["self"]["volatileStatus"] == "substitute":
                         atk_poke.volatile_status["substitute"] = 1.0 * atk_poke.max_hp / 4
                     else:
                         atk_poke.volatile_status[move["self"]["volatileStatus"]] = 0
@@ -378,7 +378,7 @@ class PokemonEngine():
 
         # Increment VolatileStatus counter for attack Pokemon
         for vol_status in atk_poke.volatile_status:
-            if vol_stats != "substitute":
+            if vol_status != "substitute":
                 atk_poke.volatile_status[vol_status] += 1
 
         results = {}
