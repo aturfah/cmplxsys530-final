@@ -386,6 +386,20 @@ def test_substitute_vs():
         sub_hp + p_eng.game_state["player1"]["active"].current_hp
 
 
+def test_lockedmove_vs():
+    """Make sure lockedmove is handled properly."""
+    player1 = PokemonAgent([Pokemon(name="dragonite", moves=["outrage"])])
+    player2 = PokemonAgent([Pokemon(name="aggron", moves=["recover"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    print(p_eng.game_state["player1"]["active"].volatile_status)
+    assert p_eng.game_state["player1"]["active"].volatile_status
+
 
 test_run()
 test_run_multiple_moves()
