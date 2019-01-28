@@ -347,15 +347,14 @@ class PokemonEngine():
 
             # Primary Volatile effects
             if "volatileStatus" in move:
+                if move["volatileStatus"] == "substitute":
+                    atk_poke.volatile_status["substitute"] = 1.0 * atk_poke.max_hp / 4
+
                 if move["volatileStatus"] not in def_poke.volatile_status:
                     def_poke.volatile_status[move["volatileStatus"]] = 0
-
             elif "self" in move and "volatileStatus" in move["self"]:
                 if move["self"]["volatileStatus"] not in atk_poke.volatile_status:
-                    if move["self"]["volatileStatus"] == "substitute":
-                        atk_poke.volatile_status["substitute"] = 1.0 * atk_poke.max_hp / 4
-                    else:
-                        atk_poke.volatile_status[move["self"]["volatileStatus"]] = 0
+                    atk_poke.volatile_status[move["self"]["volatileStatus"]] = 0
 
             # Move Secondary effects
             if damage != 0 and move.get("secondary", {}):
