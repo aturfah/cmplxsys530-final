@@ -358,7 +358,12 @@ class PokemonEngine():
 
             elif "self" in move and "volatileStatus" in move["self"]:
                 if move["self"]["volatileStatus"] not in atk_poke.volatile_status:
-                    atk_poke.volatile_status[move["self"]["volatileStatus"]] = 0
+                    if move["self"]["volatileStatus"] == "lockedmove":
+                        atk_poke.vol_status["lockedmove"] = {}
+                        atk_poke.vol_status["lockedmove"]["counter"] = 0
+                        atk_poke.vol_status["lockedmove"]["move"] = move
+                    else:
+                        atk_poke.volatile_status[move["self"]["volatileStatus"]] = 0
 
             # Move Secondary effects
             if damage != 0 and move.get("secondary", {}):
