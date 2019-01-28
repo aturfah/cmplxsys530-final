@@ -6,10 +6,12 @@ if [ "'$*'" != "''" ]; then
         dir_name="tests/$1"
         files=$(find $dir_name -iname '*.py' ! -name "__init__.py");
         for file_name in $(echo $files | tr " " "\n");do
+            echo "Running $file_name"
             temp_var=${file_name////.}
             temp_var=${temp_var/.py/ }
             python3 -m $temp_var
         done
+        echo ""
         shift;
     done;
 else 
