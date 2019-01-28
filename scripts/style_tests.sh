@@ -1,10 +1,17 @@
 # Script to run code style tests
 
-
 if [ "'$*'" != "''" ]; then
     # If arguments provided, use them
     while [ "$1" != "" ]; do
-        echo "Received: ${1}" && shift;
+        echo "Module: ${1}";
+        echo "## pycodestyle";
+        pycodestyle ${1} --max-line-length 100
+        echo "## pydocstyle";
+        pydocstyle ${1}
+        echo "## pylint";
+        pylint ${1} --rcfile pylintrc
+        echo ""
+        shift;
     done;
 else 
     # Default to test all modules
