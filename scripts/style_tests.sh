@@ -16,5 +16,5 @@ if [ "'$*'" != "''" ]; then
 else 
     # Default to test all modules
     MODULES=("agent" "battle_engine" "interface" "ladder" "file_manager" "pokemon_helpers" "scripts" "simulation" "stats" "tests")
-    ./scripts/style_tests.sh  "${MODULES[@]}"
+    ./scripts/style_tests.sh "${MODULES[@]}"
 fi;
