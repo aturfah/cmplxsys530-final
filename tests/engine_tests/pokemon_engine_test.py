@@ -314,6 +314,7 @@ def test_volatile_status():
     """Test to ensure volatile statuses work."""
     test_vs_switch()
     test_primary_vs()
+    test_substitute_vs()
 
 
 def test_vs_switch():
@@ -359,6 +360,26 @@ def test_primary_vs():
     assert p_eng.game_state["player2"]["active"].volatileStatus
     assert p_eng.game_state["player2"]["active"].volatile_status["confusion"] == 1
     assert p_eng.game_state["player2"]["active"].volatile_status["uproar"] == 2
+
+
+def test_substitute_vs():
+    """Make sure substitute is handled properly."""
+    player1 = PokemonAgent([Pokemon(name="exploud", moves=["substitute"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["tackle"]),
+                            Pokemon(name="magikarp", moves=["tackle"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+
+    player_move = ("ATTACK", 0)
+    player2_move = ("SWITCH", 0)
+    p_eng.run_single_turn(player_move, player2_move, player1, player2)
+
+    assert p_eng.game_state["player1"]["active"].volatile_status
+    assert "substitute" in p_eng.game_state["player1"]["active"].volatile_status
+    print(p_eng.game_state["player1"]["active"].volatile_status)
+
 
 test_run()
 test_run_multiple_moves()
