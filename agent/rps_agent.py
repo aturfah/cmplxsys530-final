@@ -74,7 +74,7 @@ class RPSAgent(BaseAgent):
 
         To be defined by subclass.
         """
-        raise RuntimeError("IMPLEMENT ME!!!")
+        raise RuntimeError("IMPLEMENT ME!!! Agent {}".format(self.id))
 
     def print_info(self):
         """Print the info on this player."""
