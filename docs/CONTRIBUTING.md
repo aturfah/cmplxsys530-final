@@ -12,7 +12,7 @@
 Minus very small things (ex" updating `requirements.txt`), all changes should have corresponding issue(s) and pull request(s). These should follow the templates specified in the `docs/` directory.
 
 ## Issue & Pull Request Labels
-The labels on issues and PRs help identify the nature of the work that needs to be done. The labels are broken up into four main categories: flags, scope, status, and type. Except for `status` labels, the issue and its corresponding pull request(s) should share the same labels. The status, type, and scope labels are all necessary labels for an issue.
+The labels on issues and PRs help identify the nature of the work that needs to be done. The labels are broken up into four main categories: flags, scope, status, and type. Except for `status` labels, the issue and its corresponding pull request(s) should share the same labels. The status, type, and scope labels are all necessary labels for an issue. Please check out [the issue labels section](https://github.com/aturfah/cmplxsys530-final/labels) of the github repository for the available labels and their meaning.
 
 ### Flag Labels
 Labels prefixed with `flag` are meant to indicate some special meaning about an issue. These can be `high priority` issues, `duplicate` issues, etc. 
