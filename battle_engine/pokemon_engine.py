@@ -239,8 +239,9 @@ class PokemonEngine():
             The information about the switch that was just performed.
 
         """
-        # Reset boosts
+        # Reset boosts and volatile status
         self.game_state[player]["active"].boosts = default_boosts()
+        self.game_state[player]["active"].volatile_status = {}
 
         # If toxic-ed, reset the turn counter
         if self.game_state[player]["active"].status == TOX_STATUS:
@@ -344,6 +345,26 @@ class PokemonEngine():
                     for stat in move["boosts"]:
                         def_poke.boosts[stat] += move["boosts"][stat]
 
+            # Primary Volatile effects
+            if "volatileStatus" in move:
+                if move["volatileStatus"] == "Substitute":
+                    substitute_hp = floor(atk_poke.max_hp / 4.0)
+                    if atk_poke.current_hp > substitute_hp:
+                        atk_poke.volatile_status["substitute"] = floor(atk_poke.max_hp / 4.0)
+                        atk_poke.current_hp -= substitute_hp
+
+                elif move["volatileStatus"] not in def_poke.volatile_status:
+                    def_poke.volatile_status[move["volatileStatus"]] = 0
+
+            elif "self" in move and "volatileStatus" in move["self"]:
+                if move["self"]["volatileStatus"] not in atk_poke.volatile_status:
+                    if move["self"]["volatileStatus"] == "lockedmove":
+                        atk_poke.volatile_status["lockedmove"] = {}
+                        atk_poke.volatile_status["lockedmove"]["counter"] = 0
+                        atk_poke.volatile_status["lockedmove"]["move"] = move
+                    else:
+                        atk_poke.volatile_status[move["self"]["volatileStatus"]] = 0
+
             # Move Secondary effects
             if damage != 0 and move.get("secondary", {}):
                 secondary_effects = move["secondary"]
@@ -362,6 +383,13 @@ class PokemonEngine():
             for stat in def_poke.boosts:
                 def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
                 def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
+
+        # Increment VolatileStatus counter for attack Pokemon
+        for vol_status in atk_poke.volatile_status:
+            if vol_status == "lockedmove":
+                atk_poke.volatile_status[vol_status]["counter"] += 1
+            elif vol_status != "substitute":
+                atk_poke.volatile_status[vol_status] += 1
 
         results = {}
         results["type"] = "ATTACK"

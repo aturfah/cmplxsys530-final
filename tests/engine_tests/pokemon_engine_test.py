@@ -1,5 +1,7 @@
 """Unit tests for pokemon engine."""
 
+from math import floor
+
 from agent.basic_pokemon_agent import PokemonAgent
 from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
@@ -167,10 +169,10 @@ def test_secondary_effects():
 def test_opp_2ndary_stat_change():
     """Test secondary effects that involve opponent's stat changes."""
     spinda = Pokemon(name="spinda", moves=["lowsweep"])
-    spinda_target = Pokemon(name="spinda", moves=["synthesis"])
+    scyther_target = Pokemon(name="scyther", moves=["synthesis"])
 
     player1 = PokemonAgent([spinda])
-    player2 = PokemonAgent([spinda_target])
+    player2 = PokemonAgent([scyther_target])
     player_move = ("ATTACK", 0)
 
     p_eng = PokemonEngine()
@@ -310,6 +312,99 @@ def test_accuracy():
     assert num_misses == 0
 
 
+def test_volatile_status():
+    """Test to ensure volatile statuses work."""
+    test_vs_switch()
+    test_primary_vs()
+    test_substitute_vs()
+    test_lockedmove_vs()
+
+
+def test_vs_switch():
+    """Test that volatile statuses are reset upon switching."""
+    player1 = PokemonAgent([Pokemon(name="exploud", moves=["tackle"]),
+                            Pokemon(name="spinda", moves=["tackle"])])
+    player2 = PokemonAgent([Pokemon(name="floatzel", moves=["tackle"]),
+                            Pokemon(name="magikarp", moves=["tackle"])])
+
+    # Initialize the game
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    p_eng.game_state["player1"]["active"].volatile_status["test"] = True
+    p_eng.game_state["player2"]["active"].volatile_status["test"] = True
+
+    # Run the switch
+    player_move = ("SWITCH", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    # Check volatile status reset
+    assert not p_eng.game_state["player1"]["team"][0].volatile_status
+    assert not p_eng.game_state["player2"]["team"][0].volatile_status
+
+
+def test_primary_vs():
+    """Test that primary volatileStatus is set properly."""
+    player1 = PokemonAgent([Pokemon(name="spinda", moves=["confuseray"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["uproar"], nature="timid")])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    # Check volatile status applied
+    assert p_eng.game_state["player2"]["active"].volatile_status
+    assert p_eng.game_state["player2"]["active"].volatile_status["confusion"] == 0
+    assert p_eng.game_state["player2"]["active"].volatile_status["uproar"] == 1
+
+    # Increment counter
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert p_eng.game_state["player2"]["active"].volatile_status
+    assert p_eng.game_state["player2"]["active"].volatile_status["confusion"] == 1
+    assert p_eng.game_state["player2"]["active"].volatile_status["uproar"] == 2
+
+
+def test_substitute_vs():
+    """Make sure substitute is handled properly."""
+    player1 = PokemonAgent([Pokemon(name="exploud", moves=["substitute"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["tackle"]),
+                            Pokemon(name="magikarp", moves=["tackle"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    sub_hp = floor(p_eng.game_state["player1"]["active"].max_hp / 4.0)
+
+    player_move = ("ATTACK", 0)
+    player2_move = ("SWITCH", 0)
+    p_eng.run_single_turn(player_move, player2_move, player1, player2)
+
+    assert p_eng.game_state["player1"]["active"].volatile_status
+    assert "substitute" in p_eng.game_state["player1"]["active"].volatile_status
+
+    assert p_eng.game_state["player1"]["active"].volatile_status["substitute"] == sub_hp
+    assert p_eng.game_state["player1"]["active"].max_hp == \
+        sub_hp + p_eng.game_state["player1"]["active"].current_hp
+
+
+def test_lockedmove_vs():
+    """Make sure lockedmove is handled properly."""
+    player1 = PokemonAgent([Pokemon(name="dragonite", moves=["outrage"])])
+    player2 = PokemonAgent([Pokemon(name="aggron", moves=["recover"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    assert p_eng.game_state["player1"]["active"].volatile_status
+    assert "lockedmove" in p_eng.game_state["player1"]["active"].volatile_status
+    assert p_eng.game_state["player1"]["active"].volatile_status["lockedmove"]["counter"] == 1
+    assert p_eng.game_state["player1"]["active"].volatile_status["lockedmove"]["move"] == \
+        p_eng.game_state["player1"]["active"].moves[0]
+
+
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
@@ -318,3 +413,4 @@ test_heal()
 test_status_dmg()
 test_secondary_effects()
 test_accuracy()
+test_volatile_status()
