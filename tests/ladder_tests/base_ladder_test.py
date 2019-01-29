@@ -2,7 +2,6 @@
 
 from agent.base_agent import BaseAgent
 from ladder.base_ladder import BaseLadder
-from battle_engine.coinflip import CoinFlipEngine
 
 
 def test_add():

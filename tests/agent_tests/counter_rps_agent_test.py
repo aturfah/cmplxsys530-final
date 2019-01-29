@@ -53,4 +53,4 @@ def test_update_info():
 test_init()
 test_make_move()
 test_reset_state()
-test_update_info
+test_update_info()

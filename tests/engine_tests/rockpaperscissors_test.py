@@ -25,12 +25,12 @@ def test_param_validation():
         pass
 
 
-def test_basic_results(RPS):
+def test_basic_results(rps_engine):
     """
     Test that RPS results are still valid.
 
     Args:
-        RPS (RPSEngine): Engine to use for this test.
+        rps_engine (RPSEngine): Engine to use for this test.
 
     """
     rock_player = RPSAgent(strategy_in="rock")
@@ -38,24 +38,24 @@ def test_basic_results(RPS):
     scissors_player = RPSAgent(strategy_in="scissors")
 
     # Rock beats Scissors
-    rs_outcome = RPS.run(rock_player, scissors_player)
+    rs_outcome = rps_engine.run(rock_player, scissors_player)
     assert rs_outcome == 1
     # Rock loses to Paper
-    rp_outcome = RPS.run(rock_player, paper_player)
+    rp_outcome = rps_engine.run(rock_player, paper_player)
     assert rp_outcome == 0
 
     # Paper beats Rock
-    pr_outcome = RPS.run(paper_player, rock_player)
+    pr_outcome = rps_engine.run(paper_player, rock_player)
     assert pr_outcome == 1
     # Paper loses to Scissors
-    ps_outcome = RPS.run(paper_player, scissors_player)
+    ps_outcome = rps_engine.run(paper_player, scissors_player)
     assert ps_outcome == 0
 
     # Scissors beats Paper
-    sp_outcome = RPS.run(scissors_player, paper_player)
+    sp_outcome = rps_engine.run(scissors_player, paper_player)
     assert sp_outcome == 1
     # Scissors loses to Rock
-    sr_outcome = RPS.run(scissors_player, rock_player)
+    sr_outcome = rps_engine.run(scissors_player, rock_player)
     assert sr_outcome == 0
 
 

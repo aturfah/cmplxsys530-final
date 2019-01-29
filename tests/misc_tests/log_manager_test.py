@@ -73,7 +73,7 @@ def test_reader_basic():
     log_reader = LogReader(prefix=TEST_ID)
 
     # We have found a file
-    assert len(log_reader.files)
+    assert log_reader.files
     # It matches the header we use
     assert log_reader.header == HEADER
     # The data has the same number of columns

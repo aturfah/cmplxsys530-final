@@ -278,6 +278,10 @@ class PokemonEngine():
         # Disable too many branches
         # I don't think there's a better way to do this
 
+        # pylint: disable=R0914
+        # Disable too many variables
+        # Bite me I need these variables until I split this out
+
         # pylint: disable=R0915
         # Disable too many statements
         # Right now I don't have everything implemented, so I'll
