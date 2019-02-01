@@ -30,6 +30,8 @@ class BaseLadder:
             game (battle_engine): Game to be played on this ladder.
             K_in (int): K value to be used for calculating elo changes
                 on this ladder.
+            selection_size (int): Number of players to use as potential
+            matches (before choosing randomly).
 
         """
         self.player_pool = []
