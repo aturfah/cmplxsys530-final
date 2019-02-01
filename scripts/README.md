@@ -20,6 +20,11 @@
 - `scipts/clear_logs.ps1` _OR_ `scripts/clear_logs.sh`
 - Deletes all files from the `logs` directory
 
+## Running Interface
+- `scipts/run_interface.ps1` _OR_ `scripts/run_interface.sh`
+- Runs a local server to play against an agent
+- Server is at `localhost:5000`
+
 ## Fetching Usage Data
 - `python scripts/retrieve_data.py`
 - Gets the data for all tiers at all usage levels.
