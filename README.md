@@ -9,8 +9,8 @@ The framework used can be used to implement any turn-based two-player game. In a
 ## Quickstart
 1. Install the requirements with `pip install -r requirements.txt`.
 2. Pull down the Pokemon Showdown usage data with `python scripts/retrieve_data.py`.
-3. Run the sample Pokémon simulation with `python run_simulation.py -f`, and select the `sample_simulations/sample_pokemon.yaml` file.
-4. Once completed, run `python visualize_results.py -m elo`, and select the `logs/PKMNPlayers_....csv` file to see the elo rankings over the course of the simulation.
+3. Run the sample Pokémon simulation with `python scripts/run_simulation.py -f`, and select the `sample_simulations/sample_pokemon.yaml` file.
+4. Once completed, run `python scripts/visualize_results.py -m elo`, and select the `logs/PKMNPlayers_....csv` file to see the elo rankings over the course of the simulation.
 
 ## Module Description
 **agent** - Contains classes for agents in the simulations <br/>
