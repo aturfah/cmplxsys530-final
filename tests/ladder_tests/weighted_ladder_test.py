@@ -145,8 +145,8 @@ def test_selection_size():
     assert len(lad.get_candidate_matches(base_player)) == 15
 
 
-# test_match_basic()
-# test_match_func()
-# test_run_game()
-# test_get_players_sorted()
+test_match_basic()
+test_match_func()
+test_run_game()
+test_get_players_sorted()
 test_selection_size()
