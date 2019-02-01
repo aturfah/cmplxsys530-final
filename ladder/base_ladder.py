@@ -103,13 +103,9 @@ class BaseLadder:
 
         candidate_opponents = self.get_candidate_matches(player)
 
-        raise RuntimeError("DOOT")
-        # opponent_index = randint(len(candidate_opponents))
-        # opponent_pair = candidate_opponents[opponent_index]
-        # opponent_pair = sorted(self.player_pool,
-        #                        key=lambda val: self.match_func(player, val),
-        #                        reverse=True)[0]
-        # opponent = opponent_pair[0]
+        opponent_choice = randint(0, len(candidate_opponents)-1)
+        opponent_pair = candidate_opponents[opponent_choice]
+        opponent = opponent_pair[0]
         opponent_ind = self.player_pool.index(opponent_pair)
         del self.player_pool[opponent_ind]
 
