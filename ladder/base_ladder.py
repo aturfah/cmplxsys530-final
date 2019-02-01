@@ -135,9 +135,6 @@ class BaseLadder:
                                      key=lambda val: self.match_func(player, val),
                                      reverse=True)[:min(self.selection_size, len(self.player_pool))]
 
-        if not isinstance(candidate_opponents, list):
-            candidate_opponents = [candidate_opponents]
-
         return candidate_opponents
 
     def match_func(self, player1, player2_pair):
