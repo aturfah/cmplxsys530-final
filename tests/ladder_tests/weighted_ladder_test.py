@@ -112,7 +112,6 @@ def test_get_players_sorted():
     assert (player1.num_losses == 0 and player2.num_losses == 1)
 
 
-
 def test_selection_size():
     """Test that selection size works properly."""
     # Initialization
