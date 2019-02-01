@@ -2,6 +2,7 @@
 import sys
 import os
 # Hack to add parent directory to path
+# This is duplicated code but I can't avoid it
 for loc in sys.path:
     if os.path.abspath(__file__).startswith(loc):
         parent_dir = "/".join(loc.split("/")[:-1])
