@@ -1,4 +1,5 @@
 # Commands/Scripts
+_Note these scripts should be run from the project root directory_
 ## Running Simulations
 - `scripts/run_simulation.py`
 - Runs a specified simulation and outputs log files to the `logs/` directory
