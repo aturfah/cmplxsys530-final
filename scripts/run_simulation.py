@@ -10,15 +10,15 @@ for loc in sys.path:
 
 # pylint: disable=C0413
 # Have to manipulate syspath
-from tkinter import Tk  # noqa: <error>
-from tkinter.filedialog import askopenfile  # noqa: <error>
+from tkinter import Tk  # noqa
+from tkinter.filedialog import askopenfile  # noqa
 
-import click  # noqa: <error>
-import yaml  # noqa: <error>
+import click  # noqa
+import yaml  # noqa
 
-from simulation.cf_simulation import CFSimulation  # noqa: <error>
-from simulation.rps_simulation import RPSSimulation  # noqa: <error>
-from simulation.pkmn_simulation import PokemonSimulation  # noqa: <error>
+from simulation.cf_simulation import CFSimulation  # noqa
+from simulation.rps_simulation import RPSSimulation  # noqa
+from simulation.pkmn_simulation import PokemonSimulation  # noqa
 
 
 @click.command()

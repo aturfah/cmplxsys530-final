@@ -10,14 +10,14 @@ for loc in sys.path:
 
 # pylint: disable=C0413
 # Have to manipulate syspath
-from tkinter import Tk  # noqa: <error>
-from tkinter.filedialog import askopenfilenames  # noqa: <error>
+from tkinter import Tk  # noqa
+from tkinter.filedialog import askopenfilenames  # noqa
 
-import click  # noqa: <error>
+import click  # noqa
 
-from file_manager.log_reader import LogReader  # noqa: <error>
-from stats import plot  # noqa: <error>
-from stats import calc  # noqa: <error>
+from file_manager.log_reader import LogReader  # noqa
+from stats import plot  # noqa
+from stats import calc  # noqa
 
 
 @click.command()
