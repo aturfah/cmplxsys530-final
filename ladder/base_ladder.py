@@ -16,11 +16,13 @@ class BaseLadder:
         num_turns (int): Number of games that have been played.
         k_value (int): K value to be used for calculating elo changes
             on this ladder.
+        selection_size (int): Number of players to use as potential
+            matches (before choosing randomly).
         thread_lock (Lock): Lock used in multithreaded simulations.
 
     """
 
-    def __init__(self, game=None, K_in=32):
+    def __init__(self, game=None, K_in=32, selection_size=1):
         """
         Initialize a ladder for a specific game.
 
@@ -34,6 +36,7 @@ class BaseLadder:
         self.game_engine = game
         self.num_turns = 0
         self.k_value = K_in
+        self.selection_size = selection_size
         self.thread_lock = Lock()
 
     def add_player(self, player):
