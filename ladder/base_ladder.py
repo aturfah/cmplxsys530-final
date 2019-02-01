@@ -103,7 +103,6 @@ class BaseLadder:
 
         candidate_opponents = self.get_candidate_matches(player)
 
-
         raise RuntimeError("DOOT")
         # opponent_index = randint(len(candidate_opponents))
         # opponent_pair = candidate_opponents[opponent_index]
@@ -119,7 +118,6 @@ class BaseLadder:
         self.num_turns += 1
         return (player, opponent)
 
-
     def get_candidate_matches(self, player):
         """
         Get the selection of players who are closest to <player>.
@@ -129,6 +127,7 @@ class BaseLadder:
 
         Returns:
             List of length self.selection_size of potential opponents.
+
         """
         # Select that player's opponent (based on weighting function)
         candidate_opponents = sorted(self.player_pool,
