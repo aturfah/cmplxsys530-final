@@ -112,7 +112,33 @@ def test_get_players_sorted():
     assert (player1.num_losses == 0 and player2.num_losses == 1)
 
 
-test_match_basic()
-test_match_func()
-test_run_game()
-test_get_players_sorted()
+
+def test_selection_size():
+    """Test that selection size works properly."""
+    # Initialization
+    lad = WeightedLadder()
+    assert lad.selection_size == 1
+
+    # Populate ladder
+    base_player = BaseAgent()
+    base_player.elo = 1030
+    lad.add_player(base_player)
+    for ind in range(15):
+        new_player = BaseAgent()
+        new_player.elo = 1000 + ind
+        lad.add_player(new_player)
+
+    # Only getting pool of one player
+    print(lad.get_candidate_matches(base_player))
+
+    assert len(lad.get_candidate_matches(base_player)) == 1
+
+    lad.selection_size = 5
+    assert len(lad.get_candidate_matches) == 5
+
+
+# test_match_basic()
+# test_match_func()
+# test_run_game()
+# test_get_players_sorted()
+test_selection_size()

@@ -32,16 +32,5 @@ def test_no_duplicates():
     assert False
 
 
-def test_selection_size():
-    """Test that selection size works properly."""
-    # Initialization
-    lad = BaseLadder(selection_size=5)
-    assert lad.selection_size == 5
-
-    lad = BaseLadder()
-    assert lad.selection_size == 1
-
-
 test_add()
 test_no_duplicates()
-test_selection_size()
