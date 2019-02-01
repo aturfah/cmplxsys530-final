@@ -1,4 +1,11 @@
 # Commands/Scripts
+## Running Simulations
+- `scripts/run_simulation.py`
+- Runs a specified simulation and outputs log files to the `logs/` directory
+- Common usage
+  - `scripts/run_simulation.py -f` Runs the simulation with parameters specified in the chosen file
+  - `scripts/run_simulation.py -h` Prints the help message for this script, including explanations for parameters
+
 ## Unit Tests
 - `scripts/unit_tests.ps1 <testing_subdirectory>` _OR_ `scripts/unit_tests.sh <testing_subdirectory>`
 - Runs all the test python files from the `tests/` directory
