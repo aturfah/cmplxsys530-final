@@ -132,8 +132,11 @@ class BaseLadder:
         """
         # Select that player's opponent (based on weighting function)
         candidate_opponents = sorted(self.player_pool,
-                               key=lambda val: self.match_func(player, val),
-                               reverse=True)[:min(5, len(self.player_pool))]
+                                     key=lambda val: self.match_func(player, val),
+                                     reverse=True)[:min(self.selection_size, len(self.player_pool))]
+
+        if not isinstance(candidate_opponents, list):
+            candidate_opponents = [candidate_opponents]
 
         return candidate_opponents
 
