@@ -101,17 +101,16 @@ class BaseLadder:
         player = self.player_pool[player_ind][0]
         del self.player_pool[player_ind]
 
-        # Select that player's opponent (based on weighting function)
-        # candidate_opponents = sorted(self.player_pool,
-        #                        key=lambda val: self.match_func(player, val),
-        #                        reverse=True)[:min(5, len(self.player_pool))]
+        candidate_opponents = self.get_candidate_matches(player)
 
+
+        raise RuntimeError("DOOT")
         # opponent_index = randint(len(candidate_opponents))
         # opponent_pair = candidate_opponents[opponent_index]
-        opponent_pair = sorted(self.player_pool,
-                               key=lambda val: self.match_func(player, val),
-                               reverse=True)[0]
-        opponent = opponent_pair[0]
+        # opponent_pair = sorted(self.player_pool,
+        #                        key=lambda val: self.match_func(player, val),
+        #                        reverse=True)[0]
+        # opponent = opponent_pair[0]
         opponent_ind = self.player_pool.index(opponent_pair)
         del self.player_pool[opponent_ind]
 
@@ -119,6 +118,24 @@ class BaseLadder:
 
         self.num_turns += 1
         return (player, opponent)
+
+
+    def get_candidate_matches(self, player):
+        """
+        Get the selection of players who are closest to <player>.
+
+        Args:
+            player (BaseAgent): Player for whom we are matching.
+
+        Returns:
+            List of length self.selection_size of potential opponents.
+        """
+        # Select that player's opponent (based on weighting function)
+        candidate_opponents = sorted(self.player_pool,
+                               key=lambda val: self.match_func(player, val),
+                               reverse=True)[:min(5, len(self.player_pool))]
+
+        return candidate_opponents
 
     def match_func(self, player1, player2_pair):
         """IMPLEMENT IN CHILD CLASS."""
