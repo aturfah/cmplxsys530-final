@@ -16,11 +16,13 @@ class BaseLadder:
         num_turns (int): Number of games that have been played.
         k_value (int): K value to be used for calculating elo changes
             on this ladder.
+        selection_size (int): Number of players to use as potential
+            matches (before choosing randomly).
         thread_lock (Lock): Lock used in multithreaded simulations.
 
     """
 
-    def __init__(self, game=None, K_in=32):
+    def __init__(self, game=None, K_in=32, selection_size=1):
         """
         Initialize a ladder for a specific game.
 
@@ -28,12 +30,15 @@ class BaseLadder:
             game (battle_engine): Game to be played on this ladder.
             K_in (int): K value to be used for calculating elo changes
                 on this ladder.
+            selection_size (int): Number of players to use as potential
+            matches (before choosing randomly).
 
         """
         self.player_pool = []
         self.game_engine = game
         self.num_turns = 0
         self.k_value = K_in
+        self.selection_size = selection_size
         self.thread_lock = Lock()
 
     def add_player(self, player):
@@ -96,16 +101,10 @@ class BaseLadder:
         player = self.player_pool[player_ind][0]
         del self.player_pool[player_ind]
 
-        # Select that player's opponent (based on weighting function)
-        # candidate_opponents = sorted(self.player_pool,
-        #                        key=lambda val: self.match_func(player, val),
-        #                        reverse=True)[:min(5, len(self.player_pool))]
+        candidate_opponents = self.get_candidate_matches(player)
 
-        # opponent_index = randint(len(candidate_opponents))
-        # opponent_pair = candidate_opponents[opponent_index]
-        opponent_pair = sorted(self.player_pool,
-                               key=lambda val: self.match_func(player, val),
-                               reverse=True)[0]
+        opponent_choice = randint(0, len(candidate_opponents)-1)
+        opponent_pair = candidate_opponents[opponent_choice]
         opponent = opponent_pair[0]
         opponent_ind = self.player_pool.index(opponent_pair)
         del self.player_pool[opponent_ind]
@@ -114,6 +113,24 @@ class BaseLadder:
 
         self.num_turns += 1
         return (player, opponent)
+
+    def get_candidate_matches(self, player):
+        """
+        Get the selection of players who are closest to <player>.
+
+        Args:
+            player (BaseAgent): Player for whom we are matching.
+
+        Returns:
+            List of length self.selection_size of potential opponents.
+
+        """
+        # Select that player's opponent (based on weighting function)
+        candidate_opponents = sorted(self.player_pool,
+                                     key=lambda val: self.match_func(player, val),
+                                     reverse=True)[:min(self.selection_size, len(self.player_pool))]
+
+        return candidate_opponents
 
     def match_func(self, player1, player2_pair):
         """IMPLEMENT IN CHILD CLASS."""

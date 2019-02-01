@@ -7,7 +7,7 @@ from ladder.base_ladder import BaseLadder
 class RandomLadder(BaseLadder):
     """Ladder that matches players randomly."""
 
-    def __init__(self, game=None, K_in=32):
+    def __init__(self, game=None, K_in=32, selection_size=1):
         """
         Initialize a ladder for a specific game.
 
@@ -17,7 +17,7 @@ class RandomLadder(BaseLadder):
                 on this ladder.
 
         """
-        super().__init__(game=game, K_in=K_in)
+        super().__init__(game=game, K_in=K_in, selection_size=selection_size)
 
     def match_func(self, player1, player2_pair):
         """
