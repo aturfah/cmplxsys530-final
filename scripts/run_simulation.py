@@ -1,13 +1,25 @@
 """Script to run a ladder simulation."""
-from tkinter import Tk
-from tkinter.filedialog import askopenfile
+import sys
+import os
+# Hack to add parent directory to path
+# This is duplicated code but I can't avoid it
+for loc in sys.path:
+    if os.path.abspath(__file__).startswith(loc):
+        parent_dir = "/".join(loc.split("/")[:-1])
+        sys.path.append(parent_dir)
+        break
 
-import click
-import yaml
+# pylint: disable=C0413
+# Have to manipulate syspath
+from tkinter import Tk  # noqa
+from tkinter.filedialog import askopenfile  # noqa
 
-from simulation.cf_simulation import CFSimulation
-from simulation.rps_simulation import RPSSimulation
-from simulation.pkmn_simulation import PokemonSimulation
+import click  # noqa
+import yaml  # noqa
+
+from simulation.cf_simulation import CFSimulation  # noqa
+from simulation.rps_simulation import RPSSimulation  # noqa
+from simulation.pkmn_simulation import PokemonSimulation  # noqa
 
 
 @click.command()
@@ -21,7 +33,7 @@ from simulation.pkmn_simulation import PokemonSimulation
 @click.option("-ss", "--selection_size", default=1)
 @click.argument("proportions", nargs=-1)
 def run(**kwargs):
-    """
+    r"""
     Run the simulation.
 
     Arguments are as follows:\n

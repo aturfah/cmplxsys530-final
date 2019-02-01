@@ -1,12 +1,24 @@
 """Methods to visualize the results of simulations."""
-from tkinter import Tk
-from tkinter.filedialog import askopenfilenames
+import sys
+import os
+# Hack to add parent directory to path
+# This is duplicated code but I can't avoid it
+for loc in sys.path:
+    if os.path.abspath(__file__).startswith(loc):
+        parent_dir = "/".join(loc.split("/")[:-1])
+        sys.path.append(parent_dir)
+        break
 
-import click
+# pylint: disable=C0413
+# Have to manipulate syspath
+from tkinter import Tk  # noqa
+from tkinter.filedialog import askopenfilenames  # noqa
 
-from file_manager.log_reader import LogReader
-from stats import plot
-from stats import calc
+import click  # noqa
+
+from file_manager.log_reader import LogReader  # noqa
+from stats import plot  # noqa
+from stats import calc  # noqa
 
 
 @click.command()
