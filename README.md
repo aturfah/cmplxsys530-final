@@ -22,7 +22,7 @@ The framework used can be used to implement any turn-based two-player game. In a
 **ladder** - Contains classes for the player matching scheme <br/>
 **pokemon_helpers** - Contains helpers for the Pokémon simulations <br/>
 **sample_simulations** - Contains pre-built simulation configs <br/>
-[**scripts**](scripts/README.md) - Contains miscellaneous scripts to handle files and run tests <br/>
+[**scripts**](scripts/) - Contains miscellaneous scripts to handle files and run tests <br/>
 **simulations** - Contains classes for the individual simulations <br/>
 **stats** - Contains functions to calculate statistics from and plots of the logs <br/>
 **tests** - Contains unit test cases <br/>
