@@ -3,6 +3,7 @@
 
 class BaseMove:
     """Base class for all moves."""
+
     def __init__(self):
         """
         Initialize a move.
