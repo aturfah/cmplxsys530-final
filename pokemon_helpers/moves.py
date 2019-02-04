@@ -4,15 +4,20 @@
 class BaseMove:
     """Base class for all moves."""
 
+    # pylint: disable=R0902
+    # I need all these attributes.
+
     def __init__(self, **kwargs):
         """
         Initialize a move.
 
         Arguments are defined by config.
         """
+        # pylint: disable=R0915
+        # I need to define these arguments
         self.is_viable = kwargs.get("isViable")
         self.on_base_power_priority = kwargs.get("onBasePowerPriority")
-        self._id = kwargs.get("id")
+        self.id = kwargs.get("id") #  pylint: disable=C0103
         self.num = kwargs.get("num")
         self._self = kwargs.get("self")
         self.recoil = kwargs.get("recoil")
