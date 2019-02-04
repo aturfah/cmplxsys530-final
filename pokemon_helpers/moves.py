@@ -61,7 +61,7 @@ class BaseMove:
         self.no_metrenome = kwargs.get("noMetrenome")
         self.self_switch = kwargs.get("selfSwitch")
         self.heal = kwargs.get("heal")
-        self.stealsBoosts = kwargs.get("stealsBoosts")
+        self.steals_boosts = kwargs.get("stealsBoosts")
         self.desc = kwargs.get("desc")
         self.accuracy = kwargs.get("accuracy")
         self.damage = kwargs.get("damage")
