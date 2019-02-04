@@ -73,3 +73,54 @@ class BaseMove:
         self.secondaries = kwargs.get("secondaries")
         self.is_z = kwargs.get("isZ")
         self.self_boost = kwargs.get("selfBoost")
+
+    def get(self, key, default=None):
+        """
+        Extend __getitem__ to have defaults.
+
+        Args:
+            key (str): Attribute of this object to get.
+            default: What to return if there is no such key.
+
+        Returns:
+            Value of this object's key, if it exists. If not, return value
+                specified in default.
+
+        """
+        if self.__contains__(key):
+            return self.__getitem__(key)
+
+        return default
+
+    def __contains__(self, key):
+        """
+        Define 'in' operator on this object.
+
+        Args:
+            key (str): Attribute to theck this object for.
+
+        Returns:
+            True if this object has 'key' as an attribute.
+
+        """
+        try:
+            self.__getattribute__(key)
+        except AttributeError:
+            return False
+
+        return True
+
+    def __getitem__(self, key):
+        """
+        Define [] operating on this object.
+
+        Args:
+            key (str): Attribute of this object to get.
+
+        Returns:
+            Value of this object's key.
+
+        """
+        if key == "baseStats":
+            key = "base_stats"
+        return self.__getattribute__(key)
