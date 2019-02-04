@@ -12,7 +12,7 @@ class BaseMove:
         """
         self.is_viable = kwargs.get("isViable")
         self.on_base_power_priority = kwargs.get("onBasePowerPriority")
-        self.id = kwargs.get("id")
+        self._id = kwargs.get("id")
         self.num = kwargs.get("num")
         self._self = kwargs.get("self")
         self.recoil = kwargs.get("recoil")
@@ -20,7 +20,7 @@ class BaseMove:
         self.is_future_move = kwargs.get("isFutureMove")
         self.side_condition = kwargs.get("sideCondition")
         self.secondary = kwargs.get("secondary")
-        self.pp = kwargs.get("pp")
+        self.power_points = kwargs.get("pp")
         self.thaws_target = kwargs.get("thawsTarget")
         self.z_move_effect = kwargs.get("zMoveEffect")
         if self.z_move_effect is None:
