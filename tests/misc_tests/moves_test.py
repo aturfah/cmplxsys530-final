@@ -13,4 +13,10 @@ def test_base_init():
     assert bm2.num == -1
 
 
+def test_brakcet_op():
+    """Test that [] works on BaseMove."""
+    bm1 = BaseMove(**{})
+    assert bm1.name == bm1["name"] == bm1.get("name")
+
 test_base_init()
+test_brakcet_op()
