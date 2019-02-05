@@ -20,5 +20,8 @@ def test_brakcet_op():
     assert "name" in bm1
 
 
+def test_calculate_damage():
+    """Test that damage is calculated properly."""
+
 test_base_init()
 test_brakcet_op()
