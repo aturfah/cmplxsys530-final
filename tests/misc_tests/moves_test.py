@@ -5,6 +5,7 @@ from pokemon_helpers.pokemon import Pokemon
 
 from config import MOVE_DATA
 
+
 def test_base_init():
     """Test the initialization of a BaseMove class."""
     # Default initialization, everything is None
@@ -41,9 +42,10 @@ def test_calculate_modifier():
     regirock = Pokemon(name="regirock", moves=["selfdestruct"])
 
     assert tackle.calculate_modifier(exploud, gengar) == 0  # No Effect
-    assert tackle.calculate_modifier(exploud, floatzel) == 1.5 # STAB
-    assert tackle.calculate_modifier(floatzel, regirock) == 0.5 # Not Very Effective
-    assert tackle.calculate_modifier(exploud, regirock) == 0.75 # Multiply together
+    assert tackle.calculate_modifier(exploud, floatzel) == 1.5  # STAB
+    assert tackle.calculate_modifier(floatzel, regirock) == 0.5  # Not Very Effective
+    assert tackle.calculate_modifier(exploud, regirock) == 0.75  # Multiply together
+
 
 test_base_init()
 test_brakcet_op()
