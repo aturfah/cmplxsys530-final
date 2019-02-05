@@ -17,6 +17,7 @@ def test_brakcet_op():
     """Test that [] works on BaseMove."""
     bm1 = BaseMove(**{})
     assert bm1.name == bm1["name"] == bm1.get("name")
+    assert "name" in bm1
 
 
 test_base_init()
