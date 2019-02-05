@@ -84,7 +84,7 @@ class BaseMove:
         self.is_z = kwargs.get("isZ")
         self.self_boost = kwargs.get("selfBoost")
 
-    def calculate_damage(self, attacker, defender):
+    def calculate_damage(self, attacker, defender, testing=False):
         """
         Calculate damage of a move.
 
@@ -118,13 +118,16 @@ class BaseMove:
         # Damage Modifier
         modifier = self.calculate_modifier(attacker, defender)
 
-        # Critical Hit
-        if random() < 0.0625:
-            critical_hit = True
-            modifier = modifier * 1.5
+        # Only apply crits & random range when not testing
+        if not testing:
+            # Critical Hit
+            if random() < 0.0625:
+                critical_hit = True
+                modifier = modifier * 1.5
 
-        # Random Damage range
-        modifier = modifier * uniform(0.85, 1.00)
+            # Random Damage range
+            modifier = modifier * uniform(0.85, 1.00)
+
         damage = floor(damage*modifier)
 
         return (damage, critical_hit)
@@ -157,8 +160,6 @@ class BaseMove:
                 modifier = modifier * WEAKNESS_CHART[def_type][self.type]
 
         return modifier
-
-
 
     def get(self, key, default=None):
         """
