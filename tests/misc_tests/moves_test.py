@@ -47,7 +47,36 @@ def test_calculate_modifier():
     assert tackle.calculate_modifier(exploud, regirock) == 0.75  # Multiply together
 
 
+def test_check_hit():
+    """Test that move accuracy is calculated properly."""
+    hydro_pump = BaseMove(**MOVE_DATA["hydropump"])
+    aerial_ace = BaseMove(**MOVE_DATA["aerialace"])
+    sheer_cold = BaseMove(**MOVE_DATA["sheercold"])
+    fire_punch = BaseMove(**MOVE_DATA["firepunch"])
+    num_trials = 500
+
+    num_hp_hits = 0
+    num_sc_hits = 0
+    num_aa_hits = 0
+    num_fp_hits = 0
+    for _ in range(num_trials):
+        if hydro_pump.check_hit():
+            num_hp_hits += 1
+        if sheer_cold.check_hit():
+            num_sc_hits += 1
+        if aerial_ace.check_hit():
+            num_aa_hits += 1
+        if fire_punch.check_hit():
+            num_fp_hits += 1
+
+    assert num_hp_hits < num_trials  # Hydro Pump ssometimes miss (80% Accuracy)
+    assert num_aa_hits == num_trials  # Aerial Ace should never miss (T/F case)
+    assert num_sc_hits < num_hp_hits  # Sheer Cold should rarely hit (30% Accuracy)
+    assert num_fp_hits == num_trials    # Fire Punch also shouldn't miss
+
+
 test_base_init()
 test_brakcet_op()
 test_calculate_damage()
 test_calculate_modifier()
+test_check_hit()
