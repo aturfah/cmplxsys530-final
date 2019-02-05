@@ -18,5 +18,6 @@ def test_brakcet_op():
     bm1 = BaseMove(**{})
     assert bm1.name == bm1["name"] == bm1.get("name")
 
+
 test_base_init()
 test_brakcet_op()
