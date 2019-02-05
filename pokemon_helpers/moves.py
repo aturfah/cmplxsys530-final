@@ -6,6 +6,7 @@ from random import random
 
 from config import WEAKNESS_CHART
 
+
 class BaseMove:
     """Base class for all moves."""
 
@@ -22,7 +23,7 @@ class BaseMove:
         # I need to define these arguments
         self.is_viable = kwargs.get("isViable")
         self.on_base_power_priority = kwargs.get("onBasePowerPriority")
-        self.id = kwargs.get("id") #  pylint: disable=C0103
+        self.id = kwargs.get("id")  # pylint: disable=C0103
         self.num = kwargs.get("num")
         self._self = kwargs.get("self")
         self.recoil = kwargs.get("recoil")
@@ -131,7 +132,6 @@ class BaseMove:
         damage = floor(damage*modifier)
 
         return (damage, critical_hit)
-
 
     def calculate_modifier(self, attacker, defender):
         """
