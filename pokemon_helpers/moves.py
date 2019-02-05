@@ -161,6 +161,14 @@ class BaseMove:
 
         return modifier
 
+    def check_hit(self):
+        """Check if the move hits."""
+        move_acc = self.accuracy
+        if isinstance(move_acc, bool):
+            return move_acc
+
+        return 100*random() < move_acc
+
     def get(self, key, default=None):
         """
         Extend __getitem__ to have defaults.
@@ -211,3 +219,11 @@ class BaseMove:
         if key == "baseStats":
             key = "base_stats"
         return self.__getattribute__(key)
+
+
+class OHKOMove(BaseMove):
+    """Class for OHKO moves."""
+
+    def calculate_damage(self, attacker, defender, testing=False):
+        """Damage for an OHKO move is the target's HP."""
+        return defender.current_hp, False
