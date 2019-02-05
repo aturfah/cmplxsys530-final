@@ -1,5 +1,10 @@
 """Classes defining Pokemon moves."""
 
+from math import floor
+from random import uniform
+from random import random
+
+from config import WEAKNESS_CHART
 
 class BaseMove:
     """Base class for all moves."""
@@ -96,22 +101,22 @@ class BaseMove:
         damage = 0
         critical_hit = False
         # Status moves do no damage
-        if move["category"] == "Status":
+        if self.category == "Status":
             return damage, critical_hit
 
         # Calculate actual damage
         damage = floor(2*attacker["level"]/5 + 2)
-        damage = damage * move["basePower"]
-        if move["category"] == "Physical":
+        damage = damage * self.base_power
+        if self.category == "Physical":
             damage = floor(damage * attacker.effective_stat("atk")) / \
                 defender.effective_stat("def")
-        elif move["category"] == "Special":
+        elif self.category == "Special":
             damage = floor(damage * attacker.effective_stat("spa")) / \
                 defender.effective_stat("spd")
         damage = floor(damage/50) + 2
 
         # Damage Modifier
-        modifier = calculate_modifier(move, attacker, defender)
+        modifier = self.calculate_modifier(attacker, defender)
 
         # Critical Hit
         if random() < 0.0625:
@@ -143,13 +148,13 @@ class BaseMove:
         modifier = 1
 
         # STAB Modifier
-        if move["type"] in attacker["types"]:
+        if self.type in attacker["types"]:
             modifier = modifier * 1.5
 
         # Weakness modifier
         for def_type in defender["types"]:
-            if move["type"] in WEAKNESS_CHART[def_type]:
-                modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
+            if self.type in WEAKNESS_CHART[def_type]:
+                modifier = modifier * WEAKNESS_CHART[def_type][self.type]
 
         return modifier
 
