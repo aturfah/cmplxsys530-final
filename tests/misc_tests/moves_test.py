@@ -1,8 +1,8 @@
 """Test script for Moves."""
 
-from pokemon_helpers.moves import BaseMove
 from pokemon_helpers.pokemon import Pokemon
 
+from pokemon_helpers.moves import BaseMove, OHKOMove
 from config import MOVE_DATA
 
 
@@ -75,8 +75,18 @@ def test_check_hit():
     assert num_fp_hits == num_trials    # Fire Punch also shouldn't miss
 
 
+def test_ohko_move():
+    """Test that OHKO moves do target's current HP worth of damage."""
+    sheer_cold = OHKOMove(**MOVE_DATA["sheercold"])
+    exploud = Pokemon(name="exploud", moves=["return"])
+    floatzel = Pokemon(name="floatzel", moves=["shadowball"])
+
+    assert sheer_cold.calculate_damage(exploud, floatzel)[0] == floatzel.current_hp
+
+
 test_base_init()
 test_brakcet_op()
 test_calculate_damage()
 test_calculate_modifier()
 test_check_hit()
+test_ohko_move()
