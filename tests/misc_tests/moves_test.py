@@ -108,7 +108,7 @@ def test_opp_2ndary_stat_change():
     assert scyther_target.boosts["spe"] == -6
 
     # Test that if on damage happens, stat drops don't
-    # Ex: Poison Move to Steel-Type
+    # Ex: Fighting move to Ghost-type
     gengar_target = Pokemon(name="gengar", moves=["synthesis"])
 
     low_sweep.apply_secondary_effect(spinda, gengar_target)
