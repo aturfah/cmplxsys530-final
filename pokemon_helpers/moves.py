@@ -4,7 +4,7 @@ from math import floor
 from random import uniform
 from random import random
 
-from config import WEAKNESS_CHART
+from config import WEAKNESS_CHART, STATUS_IMMUNITIES
 
 
 class BaseMove:
@@ -161,6 +161,17 @@ class BaseMove:
 
         return modifier
 
+    def apply_secondary_effect(self, attacker, defender):
+        """
+        Apply secondary effects of this move.
+
+        Args:
+            move (dict): Information on the move being used.
+            attacker (Pokemon): The pokemon using the attack.
+            defender (Pokemon): The pokemon that is recieving the attack.
+
+        """
+
     def check_hit(self):
         """Check if the move hits."""
         move_acc = self.accuracy
@@ -227,3 +238,36 @@ class OHKOMove(BaseMove):
     def calculate_damage(self, attacker, defender, testing=False):
         """Damage for an OHKO move is the target's HP."""
         return defender.current_hp, False
+
+class SecondaryEffectMove(BaseMove):
+    """Class for moves with secondary effects."""
+
+    def apply_secondary_effect(self, attacker, defender):
+        """Apply secondary effects for this move."""
+        secondary_effects = self.secondary
+        if uniform(0, 100) < secondary_effects["chance"]:
+            # Apply secondary effect to player
+            if "self" in secondary_effects:
+                secondary_effect_logic(attacker, secondary_effects["self"])
+
+            # Apply secondary effects to the opponent
+            secondary_effect_logic(defender, secondary_effects)
+
+
+def secondary_effect_logic(target_poke, secondary_effects):
+    """Apply secondary effect logic to a player's pokemon."""
+    # Apply boosts
+    if "boosts" in secondary_effects:
+        for stat in secondary_effects["boosts"]:
+            target_poke.boosts[stat] += secondary_effects["boosts"][stat]
+
+    # Apply status effects
+    if "status" in secondary_effects and target_poke.status is None:
+        # Check for type immunity
+        type_immunity = False
+        for type_ in target_poke.types:
+            if type_ in STATUS_IMMUNITIES[secondary_effects["status"]]:
+                type_immunity = True
+
+        if not type_immunity:
+            target_poke.status = secondary_effects["status"]
