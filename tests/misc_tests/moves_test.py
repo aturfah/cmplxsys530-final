@@ -88,7 +88,7 @@ def test_secondary_effects():
     """Main testing driver for secondary effects."""
     test_opp_2ndary_stat_change()
     test_player_2ndary_stat_changes()
-    #test_2ndary_status()
+    test_2ndary_status()
 
 
 def test_opp_2ndary_stat_change():
@@ -140,45 +140,35 @@ def test_player_2ndary_stat_changes():
     assert spinda.boosts["atk"] == 0
 
 
-# def test_2ndary_status():
-    # """Status effects as secondary effect."""
-    # spinda = Pokemon(name="spinda", moves=["nuzzle", "inferno"])
-    # charizard_target = Pokemon(name="charizard", moves=["synthesis", "recover"])
+def test_2ndary_status():
+    """Status effects as secondary effect."""
+    spinda = Pokemon(name="spinda", moves=["nuzzle", "inferno"])
+    charizard_target = Pokemon(name="charizard", moves=["synthesis", "recover"])
 
-    # player1 = PokemonAgent([spinda])
-    # player2 = PokemonAgent([charizard_target])
-    # player_first_move = ("ATTACK", 0)
+    nuzzle = SecondaryEffectMove(**MOVE_DATA["nuzzle"])
+    inferno = SecondaryEffectMove(**MOVE_DATA["inferno"])
 
-    # p_eng = PokemonEngine()
-    # p_eng.initialize_battle(player1, player2)
+    # Assert that Muk gets paralyzed
+    nuzzle.apply_secondary_effect(spinda, charizard_target)
+    assert charizard_target.status == PAR_STATUS
 
-    # # Assert that Muk gets paralyzed
-    # p_eng.run_single_turn(player_first_move, player_first_move, player1, player2)
-    # assert p_eng.game_state["player2"]["active"].status == PAR_STATUS
+    # Assert that if there's another status effect, it
+    # cannot be overwritten
+    charizard_target.status = PSN_STATUS
+    nuzzle.apply_secondary_effect(spinda, charizard_target)
+    assert charizard_target.status == PSN_STATUS
 
-    # # Assert that if there's another status effect, it
-    # # cannot be overwritten
-    # charizard_target.status = PSN_STATUS
-    # p_eng.initialize_battle(player1, player2)
-    # p_eng.run_single_turn(player_first_move, player_first_move, player1, player2)
-    # assert p_eng.game_state["player2"]["active"].status == PSN_STATUS
+    # Assert that the type immunities are respected
+    charizard_target.status = None
 
-    # # Assert that the type immunities are respected
-    # charizard_target.status = None
+    inferno.apply_secondary_effect(spinda, charizard_target)
+    assert charizard_target.status is None
 
-    # player_second_move = ("ATTACK", 1)
-    # p_eng.initialize_battle(player1, player2)
+    # Assert that if no damage, no status effect
+    trapinch_target = Pokemon(name="trapinch", moves=["synthesis"])
 
-    # p_eng.run_single_turn(player_second_move, player_second_move, player1, player2)
-    # assert p_eng.game_state["player2"]["active"].status is None
-
-    # # Assert that if no damage, no status effect
-    # trapinch_target = Pokemon(name="trapinch", moves=["synthesis"])
-    # player3 = PokemonAgent([trapinch_target])
-    # p_eng.initialize_battle(player1, player3)
-
-    # p_eng.run_single_turn(player_first_move, player_first_move, player1, player3)
-    # assert p_eng.game_state["player2"]["active"].status is None
+    nuzzle.apply_secondary_effect(spinda, trapinch_target)
+    assert trapinch_target.status is None
 
 test_base_init()
 test_brakcet_op()
