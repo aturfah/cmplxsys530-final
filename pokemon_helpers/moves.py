@@ -245,8 +245,8 @@ class SecondaryEffectMove(BaseMove):
 
     def apply_secondary_effect(self, attacker, defender):
         """Apply secondary effects for this move."""
-        # Check for type immunity (will be told by damage)
-        if self.calculate_damage(attacker, defender) == 0:
+        # Check for type immunity (will be told by damage modifier)
+        if self.calculate_modifier(attacker, defender) == 0:
             return
 
         secondary_effects = self.secondary
