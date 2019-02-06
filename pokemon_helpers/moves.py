@@ -168,7 +168,16 @@ class BaseMove:
         Apply secondary effects of this move.
 
         Args:
-            move (dict): Information on the move being used.
+            attacker (Pokemon): The pokemon using the attack.
+            defender (Pokemon): The pokemon that is recieving the attack.
+
+        """
+
+    def apply_boosts(self, attacker, defender):
+        """
+        Apply primary boosting effect of move.
+
+        Args:
             attacker (Pokemon): The pokemon using the attack.
             defender (Pokemon): The pokemon that is recieving the attack.
 
