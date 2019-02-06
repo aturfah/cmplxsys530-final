@@ -239,6 +239,7 @@ class OHKOMove(BaseMove):
         """Damage for an OHKO move is the target's HP."""
         return defender.current_hp, False
 
+
 class SecondaryEffectMove(BaseMove):
     """Class for moves with secondary effects."""
 
