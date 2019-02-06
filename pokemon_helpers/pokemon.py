@@ -216,6 +216,23 @@ class Pokemon:
         """Return JSON serializable version of self."""
         return self.__dict__
 
+    def set_boost(self, stat, stages):
+        """
+        Increments the boosts for <stat> by <stages>
+
+        Args:
+            stat (str): Stat for which to apply the boosts
+            stages (int): Number of stages to increase or decrease
+                stat by.
+
+        """
+        # Apply changes
+        self.boosts[stat] += stages
+
+        # Control boosts going out of range
+        self.boosts[stat] = min(self.boosts[stat], 6)
+        self.boosts[stat] = max(self.boosts[stat], -6)
+
 
 def default_boosts():
     """Generate dictionary with default boost levels."""
