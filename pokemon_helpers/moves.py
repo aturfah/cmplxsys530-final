@@ -84,6 +84,8 @@ class BaseMove:
         self.secondaries = kwargs.get("secondaries")
         self.is_z = kwargs.get("isZ")
         self.self_boost = kwargs.get("selfBoost")
+        self.boosts = kwargs.get("boosts")
+        self.target = kwargs.get("target")
 
     def calculate_damage(self, attacker, defender, testing=False):
         """
@@ -257,6 +259,19 @@ class SecondaryEffectMove(BaseMove):
 
             # Apply secondary effects to the opponent
             secondary_effect_logic(defender, secondary_effects)
+
+
+class BoostingMove(BaseMove):
+    """Class for Boosting Moves."""
+
+    def apply_boosts(self, attacker, defender):
+        """Apply boosting (primary) effect of move."""
+        if self.target == "self":
+            for stat in self.boosts:
+                attacker.set_boost(stat, self.boosts[stat])
+        else:
+            for stat in self.boosts:
+                defender.set_boost(stat, self.boosts[stat])
 
 
 def secondary_effect_logic(target_poke, secondary_effects):
