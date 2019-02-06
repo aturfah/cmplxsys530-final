@@ -183,10 +183,19 @@ def test_boosting_moves():
     swords_dance.apply_boosts(spinda, charizard_target)
     assert spinda.boosts["atk"] == 2
 
+    # Cannot increase own stats beyond +6
+    for _ in range(10):
+        swords_dance.apply_boosts(spinda, charizard_target)
+    assert spinda.boosts["atk"] == 6
+
     # Decrease opponents' stats
     leer.apply_boosts(spinda, charizard_target)
     assert charizard_target.boosts["def"] == -1
 
+    # Cannot decrease stats beyond -6
+    for _ in range(10):
+        leer.apply_boosts(spinda, charizard_target)
+    assert charizard_target.boosts["def"] == -6
 
 test_base_init()
 test_brakcet_op()
