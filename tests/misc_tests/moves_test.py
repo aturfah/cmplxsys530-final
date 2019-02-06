@@ -2,7 +2,7 @@
 
 from pokemon_helpers.pokemon import Pokemon
 
-from pokemon_helpers.moves import BaseMove, OHKOMove, SecondaryEffectMove
+from pokemon_helpers.moves import BaseMove, OHKOMove, SecondaryEffectMove, BoostingMove
 from config import (MOVE_DATA, PAR_STATUS, PSN_STATUS)
 
 
@@ -170,6 +170,24 @@ def test_2ndary_status():
     nuzzle.apply_secondary_effect(spinda, trapinch_target)
     assert trapinch_target.status is None
 
+
+def test_boosting_moves():
+    """Test boosting moves work properly."""
+    swords_dance = BoostingMove(**MOVE_DATA["swordsdance"])
+    leer = BoostingMove(**MOVE_DATA["leer"])
+
+    spinda = Pokemon(name="spinda", moves=["nuzzle", "inferno"])
+    charizard_target = Pokemon(name="charizard", moves=["synthesis", "recover"])
+
+    # Increase own stats
+    swords_dance.apply_boosts(spinda, charizard_target)
+    assert spinda.boosts["atk"] == 2
+
+    # Decrease opponents' stats
+    leer.apply_boosts(spinda, charizard_target)
+    assert charizard_target.boosts["def"] == -1
+
+
 test_base_init()
 test_brakcet_op()
 test_calculate_damage()
@@ -177,3 +195,4 @@ test_calculate_modifier()
 test_check_hit()
 test_ohko_move()
 test_secondary_effects()
+test_boosting_moves()
