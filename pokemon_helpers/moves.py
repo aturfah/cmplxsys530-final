@@ -245,6 +245,10 @@ class SecondaryEffectMove(BaseMove):
 
     def apply_secondary_effect(self, attacker, defender):
         """Apply secondary effects for this move."""
+        # Check for type immunity (will be told by damage)
+        if self.calculate_damage(attacker, defender) == 0:
+            return
+
         secondary_effects = self.secondary
         if uniform(0, 100) < secondary_effects["chance"]:
             # Apply secondary effect to player
@@ -260,7 +264,7 @@ def secondary_effect_logic(target_poke, secondary_effects):
     # Apply boosts
     if "boosts" in secondary_effects:
         for stat in secondary_effects["boosts"]:
-            target_poke.boosts[stat] += secondary_effects["boosts"][stat]
+            target_poke.set_boost(stat, secondary_effects["boosts"][stat])
 
     # Apply status effects
     if "status" in secondary_effects and target_poke.status is None:
