@@ -3,7 +3,7 @@
 from pokemon_helpers.pokemon import Pokemon
 
 from pokemon_helpers.moves import BaseMove, OHKOMove, SecondaryEffectMove
-from config import (MOVE_DATA, PAR_STATUS, PSN_STATUS, TOX_STATUS)
+from config import (MOVE_DATA, PAR_STATUS, PSN_STATUS)
 
 
 def test_base_init():

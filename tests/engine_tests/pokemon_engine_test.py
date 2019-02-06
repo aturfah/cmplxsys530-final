@@ -6,7 +6,7 @@ from agent.basic_pokemon_agent import PokemonAgent
 from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import PokemonEngine
 
-from config import (PAR_STATUS, PSN_STATUS, TOX_STATUS)
+from config import (PSN_STATUS, TOX_STATUS)
 
 
 def test_run():
@@ -297,6 +297,5 @@ test_run_multiple_pokemon()
 test_run_infinite()
 test_heal()
 test_status_dmg()
-test_secondary_effects()
 test_accuracy()
 test_volatile_status()
