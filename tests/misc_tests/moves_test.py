@@ -87,7 +87,7 @@ def test_ohko_move():
 def test_secondary_effects():
     """Main testing driver for secondary effects."""
     test_opp_2ndary_stat_change()
-    #test_player_2ndary_stat_changes()
+    test_player_2ndary_stat_changes()
     #test_2ndary_status()
 
 
@@ -115,37 +115,29 @@ def test_opp_2ndary_stat_change():
     assert gengar_target.boosts["spe"] == 0
 
 
-# def test_player_2ndary_stat_changes():
-#     """Test for secondary stat changes to self."""
-#     spinda = Pokemon(name="spinda", moves=["poweruppunch"])
-#     scyther_target = Pokemon(name="scyther", moves=["synthesis"])
+def test_player_2ndary_stat_changes():
+    """Test for secondary stat changes to self."""
+    spinda = Pokemon(name="spinda", moves=["poweruppunch"])
+    scyther_target = Pokemon(name="scyther", moves=["synthesis"])
 
-#     player1 = PokemonAgent([spinda])
-#     player2 = PokemonAgent([scyther_target])
-#     player_move = ("ATTACK", 0)
+    powerup_punch = SecondaryEffectMove(**MOVE_DATA["poweruppunch"])
 
-#     p_eng = PokemonEngine()
-#     p_eng.initialize_battle(player1, player2)
+    # Assert that spinda's attack is +1
+    powerup_punch.apply_secondary_effect(spinda, scyther_target)
+    assert spinda.boosts["atk"] == 1
 
-#     # Assert that spinda's attack is +1
-#     p_eng.run_single_turn(player_move, player_move, player1, player2)
-#     assert p_eng.game_state["player1"]["active"].boosts["atk"] == 1
+    # Assert that stat doesn't get higher than +6
+    for _ in range(10):
+        powerup_punch.apply_secondary_effect(spinda, scyther_target)
+    assert spinda.boosts["atk"] == 6
 
-#     # Assert that stat doesn't get higher than +6
-#     for _ in range(10):
-#         p_eng.run_single_turn(player_move, player_move, player1, player2)
-#     assert p_eng.game_state["player1"]["active"].boosts["atk"] == 6
+    # Test that if on damage happens, stat drops don't
+    # Ex: Fighting move to Ghost-type
+    gengar_target = Pokemon(name="gengar", moves=["synthesis"])
+    spinda.boosts["atk"] = 0
 
-#     # Test that if on damage happens, stat drops don't
-#     # Ex: Fighting move to Ghost-type
-#     gengar_target = Pokemon(name="gengar", moves=["synthesis"])
-#     player3 = PokemonAgent([gengar_target])
-
-#     p_eng = PokemonEngine()
-#     p_eng.initialize_battle(player1, player3)
-#     p_eng.run_single_turn(player_move, player_move, player1, player3)
-
-#     assert p_eng.game_state["player1"]["active"].boosts["atk"] == 0
+    powerup_punch.apply_secondary_effect(spinda, gengar_target)
+    assert spinda.boosts["atk"] == 0
 
 
 # def test_2ndary_status():
