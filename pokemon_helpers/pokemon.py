@@ -218,7 +218,7 @@ class Pokemon:
 
     def set_boost(self, stat, stages):
         """
-        Increments the boosts for <stat> by <stages>
+        Increments the boosts for <stat> by <stages>.
 
         Args:
             stat (str): Stat for which to apply the boosts
