@@ -451,7 +451,7 @@
 		},
 		"secondary": {
 			"chance": 10,
-			"_self": {
+			"self": {
 				"boosts": {
 					"atk": 1,
 					"def": 1,
@@ -1973,7 +1973,7 @@
 		},
 		"secondary": {
 			"chance": 70,
-			"_self": {
+			"self": {
 				"boosts": {
 					"spa": 1
 				}
@@ -3106,7 +3106,7 @@
 		},
 		"secondary": {
 			"chance": 50,
-			"_self": {
+			"self": {
 				"boosts": {
 					"def": 2
 				}
@@ -4624,7 +4624,7 @@
 		},
 		"secondary": {
 			"chance": 50,
-			"_self": {
+			"self": {
 				"boosts": {
 					"spa": 1
 				}
@@ -4925,7 +4925,7 @@
 		},
 		"secondary": {
 			"chance": 100,
-			"_self": {
+			"self": {
 				"boosts": {
 					"spe": 1
 				}
@@ -9448,7 +9448,7 @@
 		},
 		"secondary": {
 			"chance": 10,
-			"_self": {
+			"self": {
 				"boosts": {
 					"atk": 1
 				}
@@ -9509,7 +9509,7 @@
 		},
 		"secondary": {
 			"chance": 20,
-			"_self": {
+			"self": {
 				"boosts": {
 					"atk": 1
 				}
@@ -10587,7 +10587,7 @@
 		},
 		"secondary": {
 			"chance": 10,
-			"_self": {
+			"self": {
 				"boosts": {
 					"atk": 1,
 					"def": 1,
@@ -11464,7 +11464,7 @@
 		},
 		"secondary": {
 			"chance": 100,
-			"_self": {
+			"self": {
 				"boosts": {
 					"atk": 1
 				}
@@ -13749,7 +13749,7 @@
 		},
 		"secondary": {
 			"chance": 10,
-			"_self": {
+			"self": {
 				"boosts": {
 					"atk": 1,
 					"def": 1,
@@ -14979,7 +14979,7 @@
 		},
 		"secondary": {
 			"chance": 10,
-			"_self": {
+			"self": {
 				"boosts": {
 					"def": 1
 				}
