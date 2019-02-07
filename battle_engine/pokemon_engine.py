@@ -360,14 +360,14 @@ class PokemonEngine():
                 elif move["volatileStatus"] not in def_poke.volatile_status:
                     def_poke.volatile_status[move["volatileStatus"]] = 0
 
-            elif "self" in move and "volatileStatus" in move["self"]:
-                if move["self"]["volatileStatus"] not in atk_poke.volatile_status:
-                    if move["self"]["volatileStatus"] == "lockedmove":
+            elif "_self" in move and "volatileStatus" in move["_self"]:
+                if move["_self"]["volatileStatus"] not in atk_poke.volatile_status:
+                    if move["_self"]["volatileStatus"] == "lockedmove":
                         atk_poke.volatile_status["lockedmove"] = {}
                         atk_poke.volatile_status["lockedmove"]["counter"] = 0
                         atk_poke.volatile_status["lockedmove"]["move"] = move
                     else:
-                        atk_poke.volatile_status[move["self"]["volatileStatus"]] = 0
+                        atk_poke.volatile_status[move["_self"]["volatileStatus"]] = 0
 
             # Move Secondary effects
             if damage != 0 and move.get("secondary", {}):
