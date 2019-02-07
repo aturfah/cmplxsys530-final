@@ -183,6 +183,16 @@ class BaseMove:
 
         """
 
+    def apply_volatile_status(self, attacker, defender):
+        """
+        Apply volatile status of this move.
+
+        Args:
+            attacker (Pokemon): The pokemon using the attack.
+            defender (Pokemon): The pokemon that is recieving the attack.
+
+        """
+
     def check_hit(self):
         """Check if the move hits."""
         move_acc = self.accuracy
@@ -281,6 +291,13 @@ class BoostingMove(BaseMove):
         else:
             for stat in self.boosts:
                 defender.set_boost(stat, self.boosts[stat])
+
+
+class VolatileStatusMove(BaseMove):
+    """Class for moves with VOlatile Status."""
+
+    def apply_volatile_status(self, attacker, defender):
+        """Apply volatile status of this move."""
 
 
 def secondary_effect_logic(target_poke, secondary_effects):
