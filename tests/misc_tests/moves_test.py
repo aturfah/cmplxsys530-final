@@ -208,7 +208,7 @@ def test_volatile_status():
     """Test to ensure volatile statuses work."""
     test_primary_vs()
     test_substitute_vs()
-    # test_lockedmove_vs()
+    test_lockedmove_vs()
 
 
 def test_primary_vs():
@@ -247,22 +247,18 @@ def test_substitute_vs():
     assert exploud.max_hp == sub_hp + exploud.current_hp
 
 
-# def test_lockedmove_vs():
-#     """Make sure lockedmove is handled properly."""
-#     player1 = PokemonAgent([Pokemon(name="dragonite", moves=["outrage"])])
-#     player2 = PokemonAgent([Pokemon(name="aggron", moves=["recover"])])
+def test_lockedmove_vs():
+    """Make sure lockedmove is handled properly."""
+    dragonite = Pokemon(name="dragonite", moves=["outrage"])
+    aggron_target = Pokemon(name="aggron", moves=["recover"])
 
-#     p_eng = PokemonEngine()
-#     p_eng.initialize_battle(player1, player2)
+    outrage = VolatileStatusMove(**MOVE_DATA["outrage"])
+    outrage.apply_volatile_status(dragonite, aggron_target)
 
-#     player_move = ("ATTACK", 0)
-#     p_eng.run_single_turn(player_move, player_move, player1, player2)
-
-#     assert p_eng.game_state["player1"]["active"].volatile_status
-#     assert "lockedmove" in p_eng.game_state["player1"]["active"].volatile_status
-#     assert p_eng.game_state["player1"]["active"].volatile_status["lockedmove"]["counter"] == 1
-#     assert p_eng.game_state["player1"]["active"].volatile_status["lockedmove"]["move"] == \
-#         p_eng.game_state["player1"]["active"].moves[0]
+    assert dragonite.volatile_status
+    assert "lockedmove" in dragonite.volatile_status
+    assert dragonite.volatile_status["lockedmove"]["move"] == outrage
+    assert dragonite.volatile_status["lockedmove"]["counter"] == 0
 
 
 
