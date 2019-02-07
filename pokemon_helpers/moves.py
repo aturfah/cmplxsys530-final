@@ -298,6 +298,22 @@ class VolatileStatusMove(BaseMove):
 
     def apply_volatile_status(self, attacker, defender):
         """Apply volatile status of this move."""
+        # Handle volatile status targeted at opponent (and substitute)
+        if self.volatile_status == "Substitute":
+            substitute_hp = floor(attacker.max_hp / 4.0)
+            if attacker.current_hp > substitute_hp:
+                attacker.volatile_status["substitute"] = substitute_hp
+                attacker.current_hp -= substitute_hp
+            elif self.volatile_status not in defender.volatile_status:
+                defender.volatile_status[self.volatile_status] = 0
+        elif self._self and "volatileStatus" in self._self:
+            if self._self["volatileStatus"] not in attacker.volatile_status:
+                if self._self["volatileStatus"] == "lockedmove":
+                    attacker.volatile_status["lockedmove"] = {}
+                    attacker.volatile_status["lockedmove"]["counter"] = 0
+                    attacker.volatile_status["lockedmove"]["move"] = self
+                else:
+                    attacker.volatile_status[self._self["volatileStatus"]] = 0
 
 
 def secondary_effect_logic(target_poke, secondary_effects):
