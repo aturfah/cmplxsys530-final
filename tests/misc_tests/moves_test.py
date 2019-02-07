@@ -261,8 +261,6 @@ def test_lockedmove_vs():
     assert dragonite.volatile_status["lockedmove"]["counter"] == 0
 
 
-
-
 test_base_init()
 test_brakcet_op()
 test_calculate_damage()
