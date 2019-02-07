@@ -1,8 +1,14 @@
 """Test script for Moves."""
 
+from math import floor
+
 from pokemon_helpers.pokemon import Pokemon
 
-from pokemon_helpers.moves import BaseMove, OHKOMove, SecondaryEffectMove, BoostingMove, VolatileStatusMove
+from pokemon_helpers.moves import (BaseMove,
+                                   OHKOMove,
+                                   SecondaryEffectMove,
+                                   BoostingMove,
+                                   VolatileStatusMove)
 from config import (MOVE_DATA, PAR_STATUS, PSN_STATUS)
 
 
@@ -201,7 +207,7 @@ def test_boosting_moves():
 def test_volatile_status():
     """Test to ensure volatile statuses work."""
     test_primary_vs()
-    # test_substitute_vs()
+    test_substitute_vs()
     # test_lockedmove_vs()
 
 
@@ -222,26 +228,23 @@ def test_primary_vs():
     assert chimchar_uproar.volatile_status["uproar"] == 0
 
 
-# def test_substitute_vs():
-#     """Make sure substitute is handled properly."""
-#     player1 = PokemonAgent([Pokemon(name="exploud", moves=["substitute"])])
-#     player2 = PokemonAgent([Pokemon(name="spinda", moves=["tackle"]),
-#                             Pokemon(name="magikarp", moves=["tackle"])])
+def test_substitute_vs():
+    """Make sure substitute is handled properly."""
+    exploud = Pokemon(name="exploud", moves=["substitute"])
+    spinda_target = Pokemon(name="spinda", moves=["tackle"])
 
-#     p_eng = PokemonEngine()
-#     p_eng.initialize_battle(player1, player2)
-#     sub_hp = floor(p_eng.game_state["player1"]["active"].max_hp / 4.0)
+    substitute = VolatileStatusMove(**MOVE_DATA["substitute"])
 
-#     player_move = ("ATTACK", 0)
-#     player2_move = ("SWITCH", 0)
-#     p_eng.run_single_turn(player_move, player2_move, player1, player2)
+    sub_hp = floor(exploud.max_hp / 4.0)
+    substitute.apply_volatile_status(exploud, spinda_target)
 
-#     assert p_eng.game_state["player1"]["active"].volatile_status
-#     assert "substitute" in p_eng.game_state["player1"]["active"].volatile_status
+    # Make sure volatile status applied
+    assert exploud.volatile_status
+    assert "substitute" in exploud.volatile_status
 
-#     assert p_eng.game_state["player1"]["active"].volatile_status["substitute"] == sub_hp
-#     assert p_eng.game_state["player1"]["active"].max_hp == \
-#         sub_hp + p_eng.game_state["player1"]["active"].current_hp
+    # Make sure substitute calculated properly.
+    assert exploud.volatile_status["substitute"] == sub_hp
+    assert exploud.max_hp == sub_hp + exploud.current_hp
 
 
 # def test_lockedmove_vs():
