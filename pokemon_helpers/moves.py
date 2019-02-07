@@ -306,6 +306,8 @@ class VolatileStatusMove(BaseMove):
                 attacker.current_hp -= substitute_hp
             elif self.volatile_status not in defender.volatile_status:
                 defender.volatile_status[self.volatile_status] = 0
+
+        # Handle applying volatile statuses to the attacker
         elif self._self and "volatileStatus" in self._self:
             if self._self["volatileStatus"] not in attacker.volatile_status:
                 if self._self["volatileStatus"] == "lockedmove":
