@@ -335,3 +335,17 @@ def secondary_effect_logic(target_poke, secondary_effects):
 
         if not type_immunity:
             target_poke.status = secondary_effects["status"]
+
+
+def generate_move(move_config):
+    """
+    Dynamically generate a Move's class given its config.
+
+
+    Args:
+        move_config (dict): JSON config for move from moves.json
+
+    """
+    print(move_config)
+
+    raise RuntimeError("DOOT")
