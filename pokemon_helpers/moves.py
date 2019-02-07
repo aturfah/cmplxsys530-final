@@ -25,7 +25,7 @@ class BaseMove:
         self.on_base_power_priority = kwargs.get("onBasePowerPriority")
         self.id = kwargs.get("id")  # pylint: disable=C0103
         self.num = kwargs.get("num")
-        self._self = kwargs.get("self")
+        self._self = kwargs.get("_self")
         self.recoil = kwargs.get("recoil")
         self.no_sketch = kwargs.get("noSketch")
         self.is_future_move = kwargs.get("isFutureMove")
