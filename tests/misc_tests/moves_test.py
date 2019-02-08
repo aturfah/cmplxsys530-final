@@ -8,7 +8,8 @@ from pokemon_helpers.moves import (BaseMove,
                                    OHKOMove,
                                    SecondaryEffectMove,
                                    BoostingMove,
-                                   VolatileStatusMove)
+                                   VolatileStatusMove,
+                                   generate_move)
 from config import (MOVE_DATA, PAR_STATUS, PSN_STATUS)
 
 
@@ -261,6 +262,19 @@ def test_lockedmove_vs():
     assert dragonite.volatile_status["lockedmove"]["counter"] == 0
 
 
+def test_generate_move():
+    """Test that the generate_move function properly generates a move."""
+    uproar_config = MOVE_DATA["uproar"] # Volatile Status
+    confuseray_config = MOVE_DATA["confuseray"] # Volatile Status
+    swordsdance_config = MOVE_DATA["swordsdance"] # Boosting Move
+    lowsweep_config = MOVE_DATA["lowsweep"] # Secondary Effects
+    pup_config = MOVE_DATA["poweruppunch"] # Boosting 2ndary effect
+    nuzzle_config = MOVE_DATA["nuzzle"] # Status 2ndary effect
+    sheercold_config = MOVE_DATA["sheercold"] # OHKO move
+
+    uproar_move = generate_move(uproar_config)
+
+
 test_base_init()
 test_brakcet_op()
 test_calculate_damage()
@@ -270,3 +284,4 @@ test_ohko_move()
 test_secondary_effects()
 test_boosting_moves()
 test_volatile_status()
+test_generate_move()
