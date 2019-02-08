@@ -264,28 +264,28 @@ def test_lockedmove_vs():
 
 def test_generate_move():
     """Test that the generate_move function properly generates a move."""
-    tackle_config = MOVE_DATA["tackle"]
-    uproar_config = MOVE_DATA["uproar"] # Volatile Status
-    confuseray_config = MOVE_DATA["confuseray"] # Volatile Status
     swordsdance_config = MOVE_DATA["swordsdance"] # Boosting Move
     lowsweep_config = MOVE_DATA["lowsweep"] # Secondary Effects
     pup_config = MOVE_DATA["poweruppunch"] # Boosting 2ndary effect
     nuzzle_config = MOVE_DATA["nuzzle"] # Status 2ndary effect
-    sheercold_config = MOVE_DATA["sheercold"] # OHKO move
 
-    spinda_attacker = Pokemon(name="spinda", moves=["nuzzle", "inferno"])
-    chimchar_defender = Pokemon(name="spinda", moves=["uproar"], nature="timid")
+    # spinda_attacker = Pokemon(name="spinda", moves=["nuzzle", "inferno"])
+    # chimchar_defender = Pokemon(name="spinda", moves=["uproar"], nature="timid")
 
     # Test regular move is only a BaseMove
-    tackle_move = generate_move(tackle_config)
+    tackle_move = generate_move(MOVE_DATA["tackle"])
     assert tackle_move.__class__.__bases__ == (BaseMove, )
 
     # Test a move that has secondary effects is only SecondaryEffectMove
-    uproar_move = generate_move(uproar_config)
-    confuseray_move = generate_move(confuseray_config)
+    uproar_move = generate_move(MOVE_DATA["uproar"])
+    confuseray_move = generate_move(MOVE_DATA["confuseray"])
 
     assert uproar_move.__class__.__bases__ == (SecondaryEffectMove, )
     assert confuseray_move.__class__.__bases__ == (SecondaryEffectMove, )
+
+    # Test OHKO moves
+    sheercold_move = generate_move(OVE_DATA["sheercold"])
+    assert sheercold_move.__class__.__bases__ == (OHKOMove, )
 
 test_base_init()
 test_brakcet_op()
