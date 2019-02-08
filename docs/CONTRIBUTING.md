@@ -25,3 +25,9 @@ Labels prefixed with `status` indicate the current state of an issue; is work on
 
 ### Type Labels
 Labels prefixed with `type` indicate what type of work is to be done. This admittedly isn't always apparent from the start. For example, if in order for a new feature to be implemented a seperate chunk of code needs to be rewritten, does this count as `refactor` or `new feature`? These are meant to provide some idea of the code thats going to be written, and guage its impact (one would be worried if a `type:refactor` issue was being pulled in without significant testing).
+
+## Code Conventions
+- The code style enforced is in the `pylintrc`
+- Exceptions and overrides can be made on a case-by-case basis
+- This repository uses Google-style docstrings
+- As a general rule of thumb, if you don't think you'll remember what a block of code does in a week, add comments
