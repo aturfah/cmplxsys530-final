@@ -291,6 +291,7 @@ def test_generate_move():
     assert pup_move.__class__.__bases__ == (SecondaryEffectMove, )
     assert nuzzle_move.__class__.__bases__ == (SecondaryEffectMove, )
 
+
 test_base_init()
 test_brakcet_op()
 test_calculate_damage()
