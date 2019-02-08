@@ -351,8 +351,10 @@ def generate_move(move_config):
 
     classes = [BaseMove]
 
-    if "secondary" in move_config and move_config["secondary"]:
+    if move_config.get("secondary"):
         classes.append(SecondaryEffectMove)
+    if move_config.get("ohko"):
+        classes.append(OHKOMove)
 
     # Remove BaseMove if another class defined
     if len(classes) > 1:
