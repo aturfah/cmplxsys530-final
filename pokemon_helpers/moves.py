@@ -341,7 +341,6 @@ def generate_move(move_config):
     """
     Dynamically generate a Move's class given its config.
 
-
     Args:
         move_config (dict): JSON config for move from moves.json
 
