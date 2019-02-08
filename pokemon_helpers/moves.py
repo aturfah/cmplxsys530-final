@@ -351,8 +351,9 @@ def generate_move(move_config):
 
     classes = [BaseMove]
 
-    if move_config.get("secondary"):
-        classes.append(SecondaryEffectMove)
+    if move_config.get("volatileStatus") or move_config.get("_self", {}).get("volatileStatus"):
+        classes.append(VolatileStatusMove)
+
     if move_config.get("ohko"):
         classes.append(OHKOMove)
 

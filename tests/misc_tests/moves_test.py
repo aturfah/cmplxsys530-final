@@ -276,15 +276,15 @@ def test_generate_move():
     tackle_move = generate_move(MOVE_DATA["tackle"])
     assert tackle_move.__class__.__bases__ == (BaseMove, )
 
-    # Test a move that has secondary effects is only SecondaryEffectMove
+    # Test a move that has Volatile Status is only SecondaryEffectMove
     uproar_move = generate_move(MOVE_DATA["uproar"])
     confuseray_move = generate_move(MOVE_DATA["confuseray"])
 
-    assert uproar_move.__class__.__bases__ == (SecondaryEffectMove, )
-    assert confuseray_move.__class__.__bases__ == (SecondaryEffectMove, )
+    assert uproar_move.__class__.__bases__ == (VolatileStatusMove, )
+    assert confuseray_move.__class__.__bases__ == (VolatileStatusMove, )
 
     # Test OHKO moves
-    sheercold_move = generate_move(OVE_DATA["sheercold"])
+    sheercold_move = generate_move(MOVE_DATA["sheercold"])
     assert sheercold_move.__class__.__bases__ == (OHKOMove, )
 
 test_base_init()
