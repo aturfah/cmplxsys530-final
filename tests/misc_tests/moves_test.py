@@ -285,7 +285,7 @@ def test_generate_move():
 
     # Test Secondary Effect moves
     lowsweep_move = generate_move(MOVE_DATA["lowsweep"])
-    pup_move = generate_move(MOVE_DATA["pup_config"])
+    pup_move = generate_move(MOVE_DATA["poweruppunch"])
     nuzzle_move = generate_move(MOVE_DATA["nuzzle"])
     assert lowsweep_move.__class__.__bases__ == (SecondaryEffectMove, )
     assert pup_move.__class__.__bases__ == (SecondaryEffectMove, )
