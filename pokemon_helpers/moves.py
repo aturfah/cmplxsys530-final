@@ -347,5 +347,8 @@ def generate_move(move_config):
 
     """
     print(move_config)
+    output = None
 
     raise RuntimeError("DOOT")
+
+    return output
