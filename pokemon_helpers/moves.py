@@ -7,7 +7,7 @@ from random import random
 from config import WEAKNESS_CHART, STATUS_IMMUNITIES
 
 
-class BaseMove:
+class BaseMove():
     """Base class for all moves."""
 
     # pylint: disable=R0902
@@ -349,6 +349,18 @@ def generate_move(move_config):
     print(move_config)
     output = None
 
-    raise RuntimeError("DOOT")
+    classes = [BaseMove]
+
+    if "secondary" in move_config and move_config["secondary"]:
+        classes.append(SecondaryEffectMove)
+
+    # Remove BaseMove if another class defined
+    if len(classes) > 1:
+        classes.remove(BaseMove)
+
+    class NewClass(*classes):
+        """Dynamically define a class inheriting from chosen classes above."""
+
+    output = NewClass(**move_config)
 
     return output
