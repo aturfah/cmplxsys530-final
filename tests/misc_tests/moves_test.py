@@ -283,9 +283,14 @@ def test_generate_move():
     assert uproar_move.__class__.__bases__ == (VolatileStatusMove, )
     assert confuseray_move.__class__.__bases__ == (VolatileStatusMove, )
 
+    # Test Boosting Moves are only BoostingMove
+    sd_move = generate_move(MOVE_DATA["swordsdance"])
+    assert sd_move.__class__.__bases__ == (BoostingMove, )
+
     # Test OHKO moves
     sheercold_move = generate_move(MOVE_DATA["sheercold"])
     assert sheercold_move.__class__.__bases__ == (OHKOMove, )
+
 
 test_base_init()
 test_brakcet_op()

@@ -346,9 +346,7 @@ def generate_move(move_config):
         move_config (dict): JSON config for move from moves.json
 
     """
-    print(move_config)
     output = None
-
     classes = [BaseMove]
 
     if move_config.get("volatileStatus") or move_config.get("_self", {}).get("volatileStatus"):
@@ -356,6 +354,9 @@ def generate_move(move_config):
 
     if move_config.get("ohko"):
         classes.append(OHKOMove)
+
+    if move_config.get("boosts"):
+        classes.append(BoostingMove)
 
     # Remove BaseMove if another class defined
     if len(classes) > 1:
