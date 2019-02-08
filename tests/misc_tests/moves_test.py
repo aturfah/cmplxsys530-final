@@ -264,14 +264,6 @@ def test_lockedmove_vs():
 
 def test_generate_move():
     """Test that the generate_move function properly generates a move."""
-    swordsdance_config = MOVE_DATA["swordsdance"] # Boosting Move
-    lowsweep_config = MOVE_DATA["lowsweep"] # Secondary Effects
-    pup_config = MOVE_DATA["poweruppunch"] # Boosting 2ndary effect
-    nuzzle_config = MOVE_DATA["nuzzle"] # Status 2ndary effect
-
-    # spinda_attacker = Pokemon(name="spinda", moves=["nuzzle", "inferno"])
-    # chimchar_defender = Pokemon(name="spinda", moves=["uproar"], nature="timid")
-
     # Test regular move is only a BaseMove
     tackle_move = generate_move(MOVE_DATA["tackle"])
     assert tackle_move.__class__.__bases__ == (BaseMove, )
@@ -291,6 +283,13 @@ def test_generate_move():
     sheercold_move = generate_move(MOVE_DATA["sheercold"])
     assert sheercold_move.__class__.__bases__ == (OHKOMove, )
 
+    # Test Secondary Effect moves
+    lowsweep_move = generate_move(MOVE_DATA["lowsweep"])
+    pup_move = generate_move(MOVE_DATA["pup_config"])
+    nuzzle_move = generate_move(MOVE_DATA["nuzzle"])
+    assert lowsweep_move.__class__.__bases__ == (SecondaryEffectMove, )
+    assert pup_move.__class__.__bases__ == (SecondaryEffectMove, )
+    assert nuzzle_move.__class__.__bases__ == (SecondaryEffectMove, )
 
 test_base_init()
 test_brakcet_op()
