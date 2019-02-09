@@ -12,7 +12,7 @@ from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS, TOX_STATUS)
 
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
-from pokemon_helpers.calculate import calculate_status_damage, calculate_damage
+from pokemon_helpers.calculate import calculate_status_damage
 
 
 class PokemonEngine():
@@ -320,10 +320,10 @@ class PokemonEngine():
         # Check if the move even hit...
         damage = 0
         critical_hit = False
-        move_hits = check_hit(move)
+        move_hits = move.check_hit()
         if move_hits:
             # Do Damage
-            damage, critical_hit = calculate_damage(move, atk_poke, def_poke)
+            damage, critical_hit = move.calculate_damage(atk_poke, def_poke)
             def_poke.current_hp -= damage
 
             # Thaw opponent if applicable
@@ -592,24 +592,6 @@ class PokemonEngine():
             new_line["move"] = turn["move"]["id"]
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
-
-
-def check_hit(move):
-    """
-    Check whether or not a move hits.
-
-    Args:
-        move (dict): The move in question.
-
-    Returns:
-        True/False depending on whether or not the move hits.
-
-    """
-    move_acc = move.get("accuracy")
-    if isinstance(move_acc, bool):
-        return move_acc
-
-    return 100*random() < move_acc
 
 
 def secondary_effect_logic(target_poke, secondary_effects):
