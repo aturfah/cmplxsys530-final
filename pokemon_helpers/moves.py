@@ -86,6 +86,7 @@ class BaseMove():
         self.self_boost = kwargs.get("selfBoost")
         self.boosts = kwargs.get("boosts")
         self.target = kwargs.get("target")
+        self.priority = kwargs.get("priority")
 
     def calculate_damage(self, attacker, defender, testing=False):
         """
