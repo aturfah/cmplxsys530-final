@@ -21,6 +21,7 @@ class BaseMove():
         """
         # pylint: disable=R0915
         # I need to define these arguments
+        self.flags = kwargs.get("flags")
         self.is_viable = kwargs.get("isViable")
         self.on_base_power_priority = kwargs.get("onBasePowerPriority")
         self.id = kwargs.get("id")  # pylint: disable=C0103
