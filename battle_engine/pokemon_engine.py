@@ -332,7 +332,7 @@ class PokemonEngine():
 
             # Healing
             if "heal" in move["flags"]:
-                if "heal" in move:
+                if "heal" in move and move["heal"]:
                     heal_factor = move["heal"][0]/move["heal"][1]
                 else:
                     heal_factor = 0.5
@@ -340,34 +340,9 @@ class PokemonEngine():
                 # No overheal
                 atk_poke.current_hp = min(atk_poke.max_hp, atk_poke.current_hp + heal_amount)
 
-            # Stat boosts (for boosting moves)
-            if "boosts" in move:
-                if move["target"] == "self":
-                    for stat in move["boosts"]:
-                        atk_poke.boosts[stat] += move["boosts"][stat]
-                else:
-                    for stat in move["boosts"]:
-                        def_poke.boosts[stat] += move["boosts"][stat]
-
-            # Primary Volatile effects
-            if "volatileStatus" in move:
-                if move["volatileStatus"] == "Substitute":
-                    substitute_hp = floor(atk_poke.max_hp / 4.0)
-                    if atk_poke.current_hp > substitute_hp:
-                        atk_poke.volatile_status["substitute"] = floor(atk_poke.max_hp / 4.0)
-                        atk_poke.current_hp -= substitute_hp
-
-                elif move["volatileStatus"] not in def_poke.volatile_status:
-                    def_poke.volatile_status[move["volatileStatus"]] = 0
-
-            elif "_self" in move and "volatileStatus" in move["_self"]:
-                if move["_self"]["volatileStatus"] not in atk_poke.volatile_status:
-                    if move["_self"]["volatileStatus"] == "lockedmove":
-                        atk_poke.volatile_status["lockedmove"] = {}
-                        atk_poke.volatile_status["lockedmove"]["counter"] = 0
-                        atk_poke.volatile_status["lockedmove"]["move"] = move
-                    else:
-                        atk_poke.volatile_status[move["_self"]["volatileStatus"]] = 0
+            move.apply_boosts(atk_poke, def_poke)
+            move.apply_volatile_status(atk_poke, def_poke)
+            move.apply_secondary_effect(atk_poke, def_poke)
 
             # Move Secondary effects
             if damage != 0 and move.get("secondary", {}):
