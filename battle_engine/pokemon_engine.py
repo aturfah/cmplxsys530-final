@@ -344,17 +344,6 @@ class PokemonEngine():
             move.apply_volatile_status(atk_poke, def_poke)
             move.apply_secondary_effect(atk_poke, def_poke)
 
-            # Move Secondary effects
-            if damage != 0 and move.get("secondary", {}):
-                secondary_effects = move["secondary"]
-                if uniform(0, 100) < secondary_effects["chance"]:
-                    # Apply secondary effect to player
-                    if "self" in secondary_effects:
-                        secondary_effect_logic(atk_poke, secondary_effects["self"])
-
-                    # Apply secondary effects to the opponent
-                    secondary_effect_logic(def_poke, secondary_effects)
-
             # Floor/Ceiling boosts
             for stat in atk_poke.boosts:
                 atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
