@@ -6,7 +6,7 @@ from config import MOVE_DATA
 
 from pokemon_helpers.pokemon import Pokemon
 from pokemon_helpers.pkmn_player_gamestate import PokemonPlayerGameState
-
+from pokemon_helpers.moves import generate_move
 
 def basic_test():
     """Test initializing and accessing of attributes."""
@@ -123,7 +123,7 @@ def test_infer_investment():
     # Set the new info
     new_info = {}
     new_info["type"] = "ATTACK"
-    new_info["move"] = MOVE_DATA["tackle"]
+    new_info["move"] = generate_move(MOVE_DATA["tackle"])
     new_info["attacker"] = "player1"
     new_info["defender"] = "player2"
     new_info["pct_damage"] = 27
@@ -210,7 +210,7 @@ def test_infer_speed_investment():
 
     new_info = {}
     new_info["type"] = "ATTACK"
-    new_info["move"] = MOVE_DATA["tackle"]
+    new_info["move"] = generate_move(MOVE_DATA["tackle"])
     new_info["attacker"] = "player2"
     new_info["defender"] = "player1"
     new_info["pct_damage"] = 27
@@ -251,7 +251,7 @@ def test_infer_speed_slower(player, new_info):
 def test_infer_miss(player_gs):
     """Infer on a miss."""
     new_info = [{'type': 'ATTACK',
-                 'move': MOVE_DATA["hydropump"],
+                 'move': generate_move(MOVE_DATA["hydropump"]),
                  'critical_hit': False,
                  'damage': 0,
                  'pct_damage': 0.0,
