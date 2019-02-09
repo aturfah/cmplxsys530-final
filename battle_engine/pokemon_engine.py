@@ -344,14 +344,6 @@ class PokemonEngine():
             move.apply_volatile_status(atk_poke, def_poke)
             move.apply_secondary_effect(atk_poke, def_poke)
 
-            # Floor/Ceiling boosts
-            for stat in atk_poke.boosts:
-                atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
-                atk_poke.boosts[stat] = max(atk_poke.boosts[stat], -6)
-            for stat in def_poke.boosts:
-                def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
-                def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
-
         # Increment VolatileStatus counter for attack Pokemon
         for vol_status in atk_poke.volatile_status:
             if vol_status == "lockedmove":
