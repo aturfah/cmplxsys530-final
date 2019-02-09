@@ -359,6 +359,9 @@ def generate_move(move_config):
     if move_config.get("boosts"):
         classes.append(BoostingMove)
 
+    if move_config.get("secondary"):
+        classes.append(SecondaryEffectMove)
+
     # Remove BaseMove if another class defined
     if len(classes) > 1:
         classes.remove(BaseMove)
