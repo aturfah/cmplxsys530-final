@@ -9,7 +9,7 @@ from config import USAGE_STATS, POKEMON_DATA, MOVE_DATA
 from config import (PAR_STATUS)
 from pokemon_helpers.calculate import calc_boost_factor
 from pokemon_helpers.calculate import calculate_status_damage
-
+from pokemon_helpers.moves import generate_move
 
 class BasicPlanningPokemonAgent(PokemonAgent):
     """
@@ -199,7 +199,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         """
         p_poke = my_gs["active"]
-        o_move = MOVE_DATA[o_opt[1]]
+        o_move = generate_move(MOVE_DATA[o_opt[1]])
         o_poke_name = opp_gs["data"]["active"]["name"]
         o_poke = POKEMON_DATA[o_poke_name]
         o_poke["status"] = opp_gs["data"]["active"]["status"]
@@ -291,7 +291,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         o_poke_name = opp_gs["data"]["active"]["name"]
 
         p_move = p_poke.moves[p_opt[1]]
-        o_move = MOVE_DATA[o_opt[1]]
+        o_move = generate_move(MOVE_DATA[o_opt[1]])
 
         # Same priority is decided by speed
         if p_move["priority"] == o_move["priority"]:
@@ -331,7 +331,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             if player_flag:
                 chosen_move = self.game_state.gamestate["active"].moves[move_opt[1]]
             else:
-                chosen_move = MOVE_DATA[move_opt[1]]
+                chosen_move = generate_move(MOVE_DATA[move_opt[1]])
 
             acc = chosen_move["accuracy"]
             if not isinstance(acc, bool) and acc < 100:
