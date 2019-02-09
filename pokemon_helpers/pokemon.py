@@ -9,7 +9,7 @@ from config import (PAR_STATUS, BRN_STATUS)
 
 from pokemon_helpers.calculate import calculate_hp_stat
 from pokemon_helpers.calculate import calculate_stat
-
+from pokemon_helpers.moves import generate_move
 
 class Pokemon:
     """The pokemon class."""
@@ -70,7 +70,7 @@ class Pokemon:
         self.level = level
         self.moves = []
         for move in moves:
-            self.moves.append(MOVE_DATA[move])
+            self.moves.append(generate_move(MOVE_DATA[move]))
         self.types = POKEMON_DATA[self.name]["types"]
         self.base_stats = POKEMON_DATA[self.name]["baseStats"]
         self.dex_num = POKEMON_DATA[self.name]["num"]
