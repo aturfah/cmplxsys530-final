@@ -11,6 +11,7 @@ from pokemon_helpers.calculate import calc_boost_factor
 from pokemon_helpers.calculate import calculate_status_damage
 from pokemon_helpers.moves import generate_move
 
+
 class BasicPlanningPokemonAgent(PokemonAgent):
     """
     Class for PokemonAgent who calculates the next move by maximizing some function.

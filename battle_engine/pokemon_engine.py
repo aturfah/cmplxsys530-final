@@ -4,7 +4,6 @@ from math import floor
 from copy import deepcopy
 from uuid import uuid4
 
-from random import uniform
 from random import random
 
 from config import STATUS_IMMUNITIES
@@ -286,7 +285,6 @@ class PokemonEngine():
         # Disable too many statements
         # Right now I don't have everything implemented, so I'll
         # wait until then to fully break this out.
-        # TODO: Break these out into own functions eventually
 
         if attacker == "player1":
             defender = "player2"

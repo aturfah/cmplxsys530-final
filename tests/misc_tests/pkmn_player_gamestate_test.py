@@ -8,6 +8,7 @@ from pokemon_helpers.pokemon import Pokemon
 from pokemon_helpers.pkmn_player_gamestate import PokemonPlayerGameState
 from pokemon_helpers.moves import generate_move
 
+
 def basic_test():
     """Test initializing and accessing of attributes."""
     ppgs = PokemonPlayerGameState()
