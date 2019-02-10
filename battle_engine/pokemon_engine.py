@@ -4,7 +4,6 @@ from math import floor
 from copy import deepcopy
 from uuid import uuid4
 
-from random import uniform
 from random import random
 
 from config import STATUS_IMMUNITIES
@@ -12,7 +11,7 @@ from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS, TOX_STATUS)
 
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
-from pokemon_helpers.calculate import calculate_status_damage, calculate_damage
+from pokemon_helpers.calculate import calculate_status_damage
 
 
 class PokemonEngine():
@@ -286,7 +285,6 @@ class PokemonEngine():
         # Disable too many statements
         # Right now I don't have everything implemented, so I'll
         # wait until then to fully break this out.
-        # TODO: Break these out into own functions eventually
 
         if attacker == "player1":
             defender = "player2"
@@ -320,10 +318,10 @@ class PokemonEngine():
         # Check if the move even hit...
         damage = 0
         critical_hit = False
-        move_hits = check_hit(move)
+        move_hits = move.check_hit()
         if move_hits:
             # Do Damage
-            damage, critical_hit = calculate_damage(move, atk_poke, def_poke)
+            damage, critical_hit = move.calculate_damage(atk_poke, def_poke)
             def_poke.current_hp -= damage
 
             # Thaw opponent if applicable
@@ -332,7 +330,7 @@ class PokemonEngine():
 
             # Healing
             if "heal" in move["flags"]:
-                if "heal" in move:
+                if "heal" in move and move["heal"]:
                     heal_factor = move["heal"][0]/move["heal"][1]
                 else:
                     heal_factor = 0.5
@@ -340,53 +338,9 @@ class PokemonEngine():
                 # No overheal
                 atk_poke.current_hp = min(atk_poke.max_hp, atk_poke.current_hp + heal_amount)
 
-            # Stat boosts (for boosting moves)
-            if "boosts" in move:
-                if move["target"] == "self":
-                    for stat in move["boosts"]:
-                        atk_poke.boosts[stat] += move["boosts"][stat]
-                else:
-                    for stat in move["boosts"]:
-                        def_poke.boosts[stat] += move["boosts"][stat]
-
-            # Primary Volatile effects
-            if "volatileStatus" in move:
-                if move["volatileStatus"] == "Substitute":
-                    substitute_hp = floor(atk_poke.max_hp / 4.0)
-                    if atk_poke.current_hp > substitute_hp:
-                        atk_poke.volatile_status["substitute"] = floor(atk_poke.max_hp / 4.0)
-                        atk_poke.current_hp -= substitute_hp
-
-                elif move["volatileStatus"] not in def_poke.volatile_status:
-                    def_poke.volatile_status[move["volatileStatus"]] = 0
-
-            elif "self" in move and "volatileStatus" in move["self"]:
-                if move["self"]["volatileStatus"] not in atk_poke.volatile_status:
-                    if move["self"]["volatileStatus"] == "lockedmove":
-                        atk_poke.volatile_status["lockedmove"] = {}
-                        atk_poke.volatile_status["lockedmove"]["counter"] = 0
-                        atk_poke.volatile_status["lockedmove"]["move"] = move
-                    else:
-                        atk_poke.volatile_status[move["self"]["volatileStatus"]] = 0
-
-            # Move Secondary effects
-            if damage != 0 and move.get("secondary", {}):
-                secondary_effects = move["secondary"]
-                if uniform(0, 100) < secondary_effects["chance"]:
-                    # Apply secondary effect to player
-                    if "self" in secondary_effects:
-                        secondary_effect_logic(atk_poke, secondary_effects["self"])
-
-                    # Apply secondary effects to the opponent
-                    secondary_effect_logic(def_poke, secondary_effects)
-
-            # Floor/Ceiling boosts
-            for stat in atk_poke.boosts:
-                atk_poke.boosts[stat] = min(atk_poke.boosts[stat], 6)
-                atk_poke.boosts[stat] = max(atk_poke.boosts[stat], -6)
-            for stat in def_poke.boosts:
-                def_poke.boosts[stat] = min(def_poke.boosts[stat], 6)
-                def_poke.boosts[stat] = max(def_poke.boosts[stat], -6)
+            move.apply_boosts(atk_poke, def_poke)
+            move.apply_volatile_status(atk_poke, def_poke)
+            move.apply_secondary_effect(atk_poke, def_poke)
 
         # Increment VolatileStatus counter for attack Pokemon
         for vol_status in atk_poke.volatile_status:
@@ -592,24 +546,6 @@ class PokemonEngine():
             new_line["move"] = turn["move"]["id"]
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
-
-
-def check_hit(move):
-    """
-    Check whether or not a move hits.
-
-    Args:
-        move (dict): The move in question.
-
-    Returns:
-        True/False depending on whether or not the move hits.
-
-    """
-    move_acc = move.get("accuracy")
-    if isinstance(move_acc, bool):
-        return move_acc
-
-    return 100*random() < move_acc
 
 
 def secondary_effect_logic(target_poke, secondary_effects):

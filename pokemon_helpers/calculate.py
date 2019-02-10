@@ -1,8 +1,6 @@
 """Module for Pokemon Helpers calculations."""
 
 from math import floor
-from random import uniform
-from random import random
 
 from config import POKEMON_DATA
 from config import WEAKNESS_CHART
@@ -184,49 +182,3 @@ def calculate_modifier(move, attacker, defender):
             modifier = modifier * WEAKNESS_CHART[def_type][move["type"]]
 
     return modifier
-
-
-def calculate_damage(move, attacker, defender):
-    """
-    Calculate damage of a move.
-
-    Args:
-        move (dict): Information on the move being used.
-        attacker (Pokemon): The pokemon using the attack.
-        defender (Pokemon): The pokemon that is recieving the attack.
-
-    Returns:
-        The damage dealt by this move, as well as a flag whether or not
-            the attack resulted in a critical hit.
-
-    """
-    damage = 0
-    critical_hit = False
-    # Status moves do no damage
-    if move["category"] == "Status":
-        return damage, critical_hit
-
-    # Calculate actual damage
-    damage = floor(2*attacker["level"]/5 + 2)
-    damage = damage * move["basePower"]
-    if move["category"] == "Physical":
-        damage = floor(damage * attacker.effective_stat("atk")) / \
-            defender.effective_stat("def")
-    elif move["category"] == "Special":
-        damage = floor(damage * attacker.effective_stat("spa")) / \
-            defender.effective_stat("spd")
-    damage = floor(damage/50) + 2
-
-    # Damage Modifier
-    modifier = calculate_modifier(move, attacker, defender)
-
-    # Critical Hit
-    if random() < 0.0625:
-        critical_hit = True
-        modifier = modifier * 1.5
-
-    # Random Damage range
-    modifier = modifier * uniform(0.85, 1.00)
-    damage = floor(damage*modifier)
-
-    return (damage, critical_hit)

@@ -1162,7 +1162,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "mustrecharge"
 		},
 		"secondary": false,
@@ -2209,7 +2209,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"def": -1,
 				"spd": -1
@@ -3429,7 +3429,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"spa": -2
 			}
@@ -3458,7 +3458,7 @@
 			"mirror": 1,
 			"distance": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"def": -1,
 				"spd": -1
@@ -5117,7 +5117,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"spa": -2
 			}
@@ -5511,7 +5511,7 @@
 			"mirror": 1,
 			"nonsky": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "mustrecharge"
 		},
 		"secondary": false,
@@ -5879,7 +5879,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "mustrecharge"
 		},
 		"secondary": false,
@@ -6361,7 +6361,7 @@
 			"mirror": 1,
 			"punch": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"spe": -1
 			}
@@ -7424,7 +7424,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "mustrecharge"
 		},
 		"secondary": false,
@@ -7489,7 +7489,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "mustrecharge"
 		},
 		"secondary": false,
@@ -7541,7 +7541,7 @@
 			"authentic": 1
 		},
 		"breaksProtect": true,
-		"self": {
+		"_self": {
 			"boosts": {
 				"def": -1
 			}
@@ -7751,7 +7751,7 @@
 			"mirror": 1,
 			"punch": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"spe": -1
 			}
@@ -8431,7 +8431,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"spa": -2
 			}
@@ -10641,7 +10641,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "lockedmove"
 		},
 		"secondary": false,
@@ -10666,7 +10666,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"spa": -2
 			}
@@ -10890,7 +10890,7 @@
 			"mirror": 1,
 			"dance": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "lockedmove"
 		},
 		"secondary": false,
@@ -11557,7 +11557,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "mustrecharge"
 		},
 		"secondary": false,
@@ -11732,7 +11732,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"spa": -2
 			}
@@ -12068,7 +12068,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "rage"
 		},
 		"onBeforeMovePriority": 100,
@@ -12545,7 +12545,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "mustrecharge"
 		},
 		"secondary": false,
@@ -12746,7 +12746,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "mustrecharge"
 		},
 		"secondary": false,
@@ -12849,7 +12849,7 @@
 			1,
 			2
 		],
-		"self": {
+		"_self": {
 			"volatileStatus": "roost"
 		},
 		"effect": {
@@ -15527,7 +15527,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"atk": -1,
 				"def": -1
@@ -16235,7 +16235,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "lockedmove"
 		},
 		"secondary": false,
@@ -16902,7 +16902,7 @@
 			"sound": 1,
 			"authentic": 1
 		},
-		"self": {
+		"_self": {
 			"volatileStatus": "uproar"
 		},
 		"effect": {
@@ -16932,7 +16932,7 @@
 			"protect": 1,
 			"mirror": 1
 		},
-		"self": {
+		"_self": {
 			"boosts": {
 				"spe": -1,
 				"def": -1,
