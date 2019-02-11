@@ -164,6 +164,17 @@ def test_match_error():
     except RuntimeError:
         pass
 
+    # Originally enough players, but not enough afterwards
+    for _ in range(2):
+        lad.add_player(BaseAgent())
+
+    try:
+        lad.match_players()  # 3 players in pool
+        lad.match_players()  # Only 1 player in pool
+        assert False
+    except RuntimeError:
+        pass
+
 
 test_match_basic()
 test_match_func()
