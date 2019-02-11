@@ -1,13 +1,25 @@
 """Script to run a ladder simulation."""
-from tkinter import Tk
-from tkinter.filedialog import askopenfile
+import sys
+import os
+# Hack to add parent directory to path
+# This is duplicated code but I can't avoid it
+for loc in sys.path:
+    if os.path.abspath(__file__).startswith(loc):
+        parent_dir = "/".join(loc.split("/")[:-1])
+        sys.path.append(parent_dir)
+        break
 
-import click
-import yaml
+# pylint: disable=C0413
+# Have to manipulate syspath
+from tkinter import Tk  # noqa
+from tkinter.filedialog import askopenfile  # noqa
 
-from simulation.cf_simulation import CFSimulation
-from simulation.rps_simulation import RPSSimulation
-from simulation.pkmn_simulation import PokemonSimulation
+import click  # noqa
+import yaml  # noqa
+
+from simulation.cf_simulation import CFSimulation  # noqa
+from simulation.rps_simulation import RPSSimulation  # noqa
+from simulation.pkmn_simulation import PokemonSimulation  # noqa
 
 
 @click.command()
@@ -18,32 +30,36 @@ from simulation.pkmn_simulation import PokemonSimulation
 @click.option("-dd", "--data_delay", default=10)
 @click.option("-l", "--ladder", default=0)
 @click.option("-f", "--file", is_flag=True)
+@click.option("-ss", "--selection_size", default=1)
 @click.argument("proportions", nargs=-1)
 def run(**kwargs):
-    """
+    r"""
     Run the simulation.
 
     Arguments are as follows:\n
-    --file/-f:          Read arguments from file.\n
-    --num_games/-ng:    Number of games to simulate.\n
-                            Default is 5000\n
-    --num_rounds/-nr:   Number of rounds ber game in Multi-Turn RPS.\n
-                            Default is 3.\n
-    --num_playeres/-np: Number of agents in the simulation.\n
-                            Default is 10.\n
-    --proportions/-p:   Proportions for RPS Simulations.\n
-                            5 Values corresponding to RPSUC respectively.\n
-    --ladder/-l:        Which ladder matching to use. Options are:\n
-                            [0] Weighted (default)\n
-                            [1] Random\n
-    --game_choice/-g:  Choice of game to play. Options are:\n
-                            [0] Coin Flip\n
-                            [1] Balanced Population RPS\n
-                            [2] Skewed Population RPS\n
-                            [3] Multi-Turn RPS\n
-                            [4] Pokemon Simulation\n
-    --data_delay/-dd:   Number of iterations between generating data.\n
-                            Default is 10\n
+    --file/-f:           Read arguments from file.\n
+    --num_games/-ng:     Number of games to simulate.\n
+                             Default is 5000\n
+    --num_rounds/-nr:    Number of rounds ber game in Multi-Turn RPS.\n
+                             Default is 3.\n
+    --num_playeres/-np:  Number of agents in the simulation.\n
+                             Default is 10.\n
+    --proportions/-p:    Proportions for RPS Simulations.\n
+                             5 Values corresponding to RPSUC respectively.\n
+    --ladder/-l:         Which ladder matching to use. Options are:\n
+                             [0] Weighted (default)\n
+                             [1] Random\n
+    --game_choice/-g:   Choice of game to play. Options are:\n
+                             [0] Coin Flip\n
+                             [1] Balanced Population RPS\n
+                             [2] Skewed Population RPS\n
+                             [3] Multi-Turn RPS\n
+                             [4] Pokemon Simulation\n
+    --data_delay/-dd:    Number of iterations between generating data.\n
+                             Default is 10\n
+    --selection_size/-s: Number of players to put in the pool for candidate\n
+                             opponents. Default is 1.
+
     """
     if kwargs.get("file"):
         params = read_file()
@@ -65,6 +81,7 @@ def run(**kwargs):
     params["ladder_choice"] = int(params.get("ladder", None))
     params["num_rounds"] = int(params.get("num_rounds", None))
     params["multithread"] = int(params.get("multithread", 0))
+    params["selection_size"] = int(params.get("selection_size", 1))
 
     if not params["proportions"] and (game_choice in [2, 3]) and not params.get("config"):
         raise RuntimeError("No proportions specified.")

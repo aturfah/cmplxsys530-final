@@ -54,7 +54,7 @@ class DamageStatCalc():
         d_hp = self.estimate_dmg_val(defender["baseStats"]["hp"], is_hp=True, **hp_params)
         d_def = self.estimate_dmg_val(defender["baseStats"][move_cat[1]], **def_params)
 
-        max_dmg = d_atk * modifier * move["basePower"]
+        max_dmg = d_atk * modifier * move["base_power"]
         max_dmg = max_dmg / (d_hp * d_def)
 
         # Burned attackers have their damage halved

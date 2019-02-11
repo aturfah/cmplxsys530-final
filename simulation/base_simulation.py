@@ -34,7 +34,8 @@ class BaseSimulation():
         self.num_games = kwargs["num_games"]
         self.game = kwargs["game"]
         self.ladder_choice = kwargs["ladder_choice"]
-        self.ladder = LADDER_CHOICES[self.ladder_choice](self.game)
+        self.ladder = LADDER_CHOICES[self.ladder_choice](self.game,
+                                                         selection_size=kwargs["selection_size"])
 
         self.prefix = kwargs.get("prefix", "")
         self.init_player_log_writer()

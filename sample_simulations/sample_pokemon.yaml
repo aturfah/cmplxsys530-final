@@ -2,9 +2,11 @@
 # 60 Players
 # 15,000 Games
 # Multithreaded
+# Candidate pool of 10 players
 
 game_choice: 4
 num_players: 60
 num_games: 15000
 multithread: 1
+selection_size: 10
 config: "sample_simulations/sim_configs/sample_pkmn_config.json"

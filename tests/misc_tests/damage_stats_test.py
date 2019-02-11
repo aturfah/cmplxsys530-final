@@ -2,6 +2,7 @@
 
 from pokemon_helpers.pokemon import Pokemon
 from pokemon_helpers.damage_stats import DamageStatCalc
+from pokemon_helpers.moves import generate_move
 
 from config import MOVE_DATA
 from config import POKEMON_DATA
@@ -54,7 +55,7 @@ def range_no_params():
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
     defender = Pokemon(name="spinda", moves=["tackle"])
-    move = MOVE_DATA["tackle"]
+    move = generate_move(MOVE_DATA["tackle"])
     params = {}
     params["atk"] = {}
     params["def"] = {}
@@ -65,7 +66,7 @@ def range_no_params():
     assert dmg_range[1] == 20
 
     attacker = Pokemon(name="floatzel", moves=["watergun"])
-    move = MOVE_DATA['watergun']
+    move = generate_move(MOVE_DATA['watergun'])
     dmg_range = dsc.calculate_range(move, attacker, defender, params)
     assert dmg_range[0] == 21
     assert dmg_range[1] == 26
@@ -82,7 +83,7 @@ def range_atk_params():
 
     attacker = POKEMON_DATA["spinda"]
     defender = POKEMON_DATA["spinda"]
-    move = MOVE_DATA["tackle"]
+    move = generate_move(MOVE_DATA["tackle"])
 
     params = {}
     params["atk"] = {}
@@ -113,7 +114,7 @@ def range_def_params():
 
     attacker = POKEMON_DATA["spinda"]
     defender = POKEMON_DATA["spinda"]
-    move = MOVE_DATA["tackle"]
+    move = generate_move(MOVE_DATA["tackle"])
 
     params = {}
     params["atk"] = {}
@@ -138,7 +139,7 @@ def range_hp_params():
 
     attacker = POKEMON_DATA["spinda"]
     defender = POKEMON_DATA["spinda"]
-    move = MOVE_DATA["tackle"]
+    move = generate_move(MOVE_DATA["tackle"])
 
     params = {}
     params["atk"] = {}
@@ -159,7 +160,7 @@ def range_boosts():
     params["atk"] = {}
     params["def"] = {}
     params["hp"] = {}
-    move = MOVE_DATA["tackle"]
+    move = generate_move(MOVE_DATA["tackle"])
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
     defender = Pokemon(name="spinda", moves=["tackle"])
@@ -184,7 +185,7 @@ def range_status():
     params["atk"] = {}
     params["def"] = {}
     params["hp"] = {}
-    move = MOVE_DATA["tackle"]
+    move = generate_move(MOVE_DATA["tackle"])
 
     attacker = Pokemon(name="spinda", moves=["tackle"])
     defender = Pokemon(name="spinda", moves=["tackle"])

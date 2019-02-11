@@ -121,7 +121,13 @@ def battle(main_sim, battle_queue, output_queue, type_queue, start_time):
     """
     while not battle_queue.empty():
         battle_queue.get()
-        results = main_sim.ladder.run_game()
+        results = None
+        while results is None:
+            try:
+                results = main_sim.ladder.run_game()
+            except RuntimeError as rte:
+                print(rte, main_sim.ladder.thread_lock.locked())
+
         output_queue.put(results)
         if battle_queue.qsize() % main_sim.data_delay == 0:
             type_queue.put(calculate_avg_elo(main_sim.ladder))

@@ -159,14 +159,14 @@ def test_toxic_dmg():
         int(1 + prev_hp - 2*p_eng.game_state["player2"]["active"].max_hp/16)
 
 
-def test_secondary_effects():
+def test_engine_secondary_effects():
     """Main testing driver for secondary effects."""
-    test_opp_2ndary_stat_change()
-    test_player_2ndary_stat_changes()
-    test_2ndary_status()
+    test_engine_opp_2ndary_stat_change()
+    test_engine_player_2ndary_stat_changes()
+    test_engine_2ndary_status()
 
 
-def test_opp_2ndary_stat_change():
+def test_engine_opp_2ndary_stat_change():
     """Test secondary effects that involve opponent's stat changes."""
     spinda = Pokemon(name="spinda", moves=["lowsweep"])
     scyther_target = Pokemon(name="scyther", moves=["synthesis"])
@@ -199,7 +199,7 @@ def test_opp_2ndary_stat_change():
     assert p_eng.game_state["player2"]["active"].boosts["spe"] == 0
 
 
-def test_player_2ndary_stat_changes():
+def test_engine_player_2ndary_stat_changes():
     """Test for secondary stat changes to self."""
     spinda = Pokemon(name="spinda", moves=["poweruppunch"])
     scyther_target = Pokemon(name="scyther", moves=["synthesis"])
@@ -232,7 +232,7 @@ def test_player_2ndary_stat_changes():
     assert p_eng.game_state["player1"]["active"].boosts["atk"] == 0
 
 
-def test_2ndary_status():
+def test_engine_2ndary_status():
     """Status effects as secondary effect."""
     spinda = Pokemon(name="spinda", moves=["nuzzle", "inferno"])
     charizard_target = Pokemon(name="charizard", moves=["synthesis", "recover"])
@@ -411,6 +411,6 @@ test_run_multiple_pokemon()
 test_run_infinite()
 test_heal()
 test_status_dmg()
-test_secondary_effects()
+test_engine_secondary_effects()
 test_accuracy()
 test_volatile_status()
