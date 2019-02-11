@@ -144,8 +144,41 @@ def test_selection_size():
     assert len(lad.get_candidate_matches(base_player)) == 15
 
 
+def test_match_error():
+    """Ensure RuntimeError is thrown when no players available to match."""
+    lad = WeightedLadder()
+    ba1 = BaseAgent(id_in="Ba1")
+
+    # Error thrown when no players available
+    try:
+        lad.match_players()
+        assert False
+    except RuntimeError:
+        pass
+
+    # Error thrown when only one player available
+    lad.add_player(ba1)
+    try:
+        lad.match_players()
+        assert False
+    except RuntimeError:
+        pass
+
+    # Originally enough players, but not enough afterwards
+    for _ in range(2):
+        lad.add_player(BaseAgent())
+
+    try:
+        lad.match_players()  # 3 players in pool
+        lad.match_players()  # Only 1 player in pool
+        assert False
+    except RuntimeError:
+        pass
+
+
 test_match_basic()
 test_match_func()
 test_run_game()
 test_get_players_sorted()
 test_selection_size()
+test_match_error()
