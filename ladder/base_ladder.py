@@ -93,8 +93,17 @@ class BaseLadder:
         Returns:
             A pair of players matched by the ladder's match_func.
 
+        Raises:
+            RuntimeError: If either no players in the pool or
+                only a single player available.
+
         """
         self.thread_lock.acquire()
+
+        # Check if no players ready
+        if not self.player_pool or len(self.player_pool) == 1:
+            self.thread_lock.release()
+            raise RuntimeError("No players left in pool.")
 
         # Select a random player
         player_ind = randint(a=0, b=(len(self.player_pool)-1))
