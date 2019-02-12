@@ -69,7 +69,7 @@ class PokemonAgent(BaseAgent):
 
         """
         response = ()
-        active_can_switch, moves = self.game_state["active"].possible_moves()
+        active_can_switch, moves = self.game_state.gamestate["active"].possible_moves()
         can_switch = len(self.game_state.gamestate["team"]) > 0 and active_can_switch
 
         if can_switch and random() < 0.5:
