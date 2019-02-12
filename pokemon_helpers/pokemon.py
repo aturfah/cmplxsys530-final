@@ -242,6 +242,13 @@ class Pokemon:
             List of possible moves, and boolean if it can switch.
 
         """
+        can_switch = True
+        possible_moves = []
+
+        for move in self.moves:
+            possible_moves.append(('ATTACK', self.moves.index(move)))
+
+        return can_switch, possible_moves
 
 
 def default_boosts():
