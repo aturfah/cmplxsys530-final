@@ -77,9 +77,9 @@ class PokemonAgent(BaseAgent):
             switch = int(switch)
             response = "SWITCH", switch
         else:
-            move = uniform(0, len(moves))
-            move = int(move)
-            response = "ATTACK", move
+            move_ind = uniform(0, len(moves))
+            move_ind = int(move_ind)
+            response = moves[move_ind]
 
         return response
 
