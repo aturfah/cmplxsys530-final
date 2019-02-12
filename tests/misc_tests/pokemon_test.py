@@ -212,6 +212,16 @@ def test_get_method():
     assert pkmn.get("DOOT") is None
 
 
+def test_possible_moves():
+    """Make sure possible_moves works properly."""
+    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"], level=50)
+    poke_can_switch, moves = pkmn.possible_moves()
+
+    assert poke_can_switch
+    assert moves
+    assert len(moves) == 2
+
+
 test_init()
 test_param_validation()
 test_stats_calculation()
@@ -219,3 +229,4 @@ test_getitem_validation()
 test_effective_stats()
 test_status()
 test_get_method()
+test_possible_moves()
