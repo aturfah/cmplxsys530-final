@@ -234,6 +234,15 @@ class Pokemon:
         self.boosts[stat] = min(self.boosts[stat], 6)
         self.boosts[stat] = max(self.boosts[stat], -6)
 
+    def possible_moves(self):
+        """
+        Generate possible attacks this pokemon can make.
+
+        Returns:
+            List of possible moves, and boolean if it can switch.
+
+        """
+
 
 def default_boosts():
     """Generate dictionary with default boost levels."""
