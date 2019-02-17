@@ -6,7 +6,6 @@ from uuid import uuid4
 
 from random import random
 
-from config import STATUS_IMMUNITIES
 from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS, TOX_STATUS)
 
 from file_manager.log_writer import LogWriter
@@ -546,25 +545,6 @@ class PokemonEngine():
             new_line["move"] = turn["move"]["id"]
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
-
-
-def secondary_effect_logic(target_poke, secondary_effects):
-    """Apply secondary effect logic to a player's pokemon."""
-    # Apply boosts
-    if "boosts" in secondary_effects:
-        for stat in secondary_effects["boosts"]:
-            target_poke.boosts[stat] += secondary_effects["boosts"][stat]
-
-    # Apply status effects
-    if "status" in secondary_effects and target_poke.status is None:
-        # Check for type immunity
-        type_immunity = False
-        for type_ in target_poke.types:
-            if type_ in STATUS_IMMUNITIES[secondary_effects["status"]]:
-                type_immunity = True
-
-        if not type_immunity:
-            target_poke.status = secondary_effects["status"]
 
 
 def apply_status_damage(pokemon):
