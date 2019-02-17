@@ -5,12 +5,12 @@ from math import floor
 from config import MOVE_DATA
 from config import POKEMON_DATA
 from config import NATURES
-from config import (PAR_STATUS, BRN_STATUS)
+from config import (PAR_STATUS, BRN_STATUS, TOX_STATUS)
 
 from pokemon_helpers.calculate import calculate_hp_stat
 from pokemon_helpers.calculate import calculate_stat
 from pokemon_helpers.moves import generate_move
-
+from pokemon_helpers.calculate import calculate_status_damage
 
 class Pokemon:
     """The pokemon class."""
@@ -161,6 +161,19 @@ class Pokemon:
         val = floor(val)
 
         return val
+
+    def apply_status_damage(self):
+        """Apply damage for status conditions when appropriate."""
+        if self.status is None:
+            return
+
+        dmg_pct = calculate_status_damage(self)
+        if self.status == TOX_STATUS:
+            # Increment toxic counter
+            self.status_turns += 1
+
+        self.current_hp -= floor(self.max_hp*dmg_pct)
+
 
     def get(self, key, default=None):
         """
