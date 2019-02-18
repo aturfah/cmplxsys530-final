@@ -6,12 +6,10 @@ from uuid import uuid4
 
 from random import random
 
-from config import STATUS_IMMUNITIES
 from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS, TOX_STATUS)
 
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
-from pokemon_helpers.calculate import calculate_status_damage
 
 
 class PokemonEngine():
@@ -149,8 +147,8 @@ class PokemonEngine():
                 info["attacker"] = player_id_dict[info.get("attacker")]
                 info["defender"] = player_id_dict[info.get("defender")]
 
-        apply_status_damage(self.game_state["player1"]["active"])
-        apply_status_damage(self.game_state["player2"]["active"])
+        self.game_state["player1"]["active"].apply_status_damage()
+        self.game_state["player2"]["active"].apply_status_damage()
 
         player1.new_info(turn_info)
         player2.new_info(turn_info)
@@ -546,44 +544,6 @@ class PokemonEngine():
             new_line["move"] = turn["move"]["id"]
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
-
-
-def secondary_effect_logic(target_poke, secondary_effects):
-    """Apply secondary effect logic to a player's pokemon."""
-    # Apply boosts
-    if "boosts" in secondary_effects:
-        for stat in secondary_effects["boosts"]:
-            target_poke.boosts[stat] += secondary_effects["boosts"][stat]
-
-    # Apply status effects
-    if "status" in secondary_effects and target_poke.status is None:
-        # Check for type immunity
-        type_immunity = False
-        for type_ in target_poke.types:
-            if type_ in STATUS_IMMUNITIES[secondary_effects["status"]]:
-                type_immunity = True
-
-        if not type_immunity:
-            target_poke.status = secondary_effects["status"]
-
-
-def apply_status_damage(pokemon):
-    """
-    Apply damage for status conditions when appropriate.
-
-    Args:
-        pokemon (Pokemon): The pokemon that this damage is calculated for.
-
-    """
-    if pokemon.status is None:
-        return
-
-    dmg_pct = calculate_status_damage(pokemon)
-    if pokemon.status == TOX_STATUS:
-        # Increment toxic counter
-        pokemon.status_turns += 1
-
-    pokemon.current_hp -= floor(pokemon.max_hp*dmg_pct)
 
 
 def anonymize_gamestate_helper(data):

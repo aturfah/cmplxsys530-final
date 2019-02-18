@@ -222,6 +222,15 @@ def test_possible_moves():
     assert len(moves) == 2
 
 
+def status_dmg_test():
+    """Test Status Damage applied correctly."""
+    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"], level=50)
+    pkmn.status = BRN_STATUS
+
+    pkmn.apply_status_damage()
+    assert pkmn.max_hp > pkmn.current_hp
+
+
 test_init()
 test_param_validation()
 test_stats_calculation()
@@ -230,3 +239,4 @@ test_effective_stats()
 test_status()
 test_get_method()
 test_possible_moves()
+status_dmg_test()
