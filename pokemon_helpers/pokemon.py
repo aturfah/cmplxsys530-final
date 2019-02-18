@@ -12,6 +12,7 @@ from pokemon_helpers.calculate import calculate_stat
 from pokemon_helpers.moves import generate_move
 from pokemon_helpers.calculate import calculate_status_damage
 
+
 class Pokemon:
     """The pokemon class."""
 
@@ -173,7 +174,6 @@ class Pokemon:
             self.status_turns += 1
 
         self.current_hp -= floor(self.max_hp*dmg_pct)
-
 
     def get(self, key, default=None):
         """
