@@ -9,6 +9,7 @@ from pokemon_helpers.moves import (BaseMove,
                                    SecondaryEffectMove,
                                    BoostingMove,
                                    VolatileStatusMove,
+                                   HealingMove,
                                    generate_move)
 from config import (MOVE_DATA, PAR_STATUS, PSN_STATUS)
 
@@ -282,6 +283,10 @@ def test_generate_move():
     # Test OHKO moves
     sheercold_move = generate_move(MOVE_DATA["sheercold"])
     assert sheercold_move.__class__.__bases__ == (OHKOMove, )
+
+    # Test Healing moves
+    synthesis_move = generate_move(MOVE_DATA["synthesis"])
+    assert synthesis_move.__class__.__bases__ == (HealingMove, )
 
     # Test Secondary Effect moves
     lowsweep_move = generate_move(MOVE_DATA["lowsweep"])
