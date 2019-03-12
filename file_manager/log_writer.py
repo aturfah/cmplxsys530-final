@@ -113,7 +113,6 @@ def generate_file(filename, directory):
 
     """
     if not exists(join(config.LOG_DIR, directory)):
-        print("MAKING: {}".format(join(config.LOG_DIR, directory)))
         makedirs(join(config.LOG_DIR, directory))
 
     if directory:
