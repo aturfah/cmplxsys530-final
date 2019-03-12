@@ -1,5 +1,6 @@
 """Log Manager Class."""
-from os.path import join
+from os.path import join, exists
+from os import makedirs
 
 from csv import writer
 
@@ -20,7 +21,7 @@ class LogWriter():
 
     """
 
-    def __init__(self, header, prefix=None):
+    def __init__(self, header, directory="", prefix=None):
         """
         Initialize LogWriter for a simulation.
 
@@ -42,7 +43,7 @@ class LogWriter():
             raise AttributeError("Header cannot be empty")
 
         self.filename = generate_filename(prefix)
-        self.output_file = generate_file(self.filename)
+        self.output_file = generate_file(self.filename, directory)
         self.output_csv = writer(self.output_file)
 
         self.header = header
@@ -100,7 +101,7 @@ def generate_filename(prefix):
     return filename
 
 
-def generate_file(filename):
+def generate_file(filename, directory):
     """
     Generate the file that will be used.
 
@@ -111,5 +112,13 @@ def generate_file(filename):
         File object with the name <filename>.
 
     """
-    file_ = join(config.LOG_DIR, filename)
+    if not exists(join(config.LOG_DIR, directory)):
+        print("MAKING: {}".format(join(config.LOG_DIR, directory)))
+        makedirs(join(config.LOG_DIR, directory))
+
+    if directory:
+        file_ = join(config.LOG_DIR, directory, filename)
+    else:
+        file_ = join(config.LOG_DIR, filename)
+
     return open(file_, mode="w", newline="")
