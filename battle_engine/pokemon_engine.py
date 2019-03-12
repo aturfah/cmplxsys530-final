@@ -1,6 +1,5 @@
 """Engine to run the turn of a pokemon game."""
 
-from math import floor
 from copy import deepcopy
 from uuid import uuid4
 
