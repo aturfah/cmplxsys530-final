@@ -1,5 +1,6 @@
 """Class for simulation that everything inherits from."""
 
+from uuid import uuid4
 from time import time
 import json
 
@@ -28,8 +29,10 @@ class BaseSimulation():
             ladder_choice (int): Whether to use WeightedLadder (0) or RandomLadder (1)
                 for ladder matching.
             prefix (str): Prefix to use for these filenames.
+            directory (str): Directory in which to store simulation results.
 
         """
+        self.directory = kwargs.get("directory", uuid4())
         self.num_players = kwargs["num_players"]
         self.num_games = kwargs["num_games"]
         self.game = kwargs["game"]
@@ -75,7 +78,7 @@ class BaseSimulation():
 
         log_prefix = "{}Players".format(self.prefix)
 
-        self.player_log_writer = LogWriter(header, prefix=log_prefix)
+        self.player_log_writer = LogWriter(header, self.directory, prefix=log_prefix)
 
     def print_progress_bar(self, iter_num, start_time):
         """
