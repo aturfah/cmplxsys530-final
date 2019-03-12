@@ -32,7 +32,7 @@ class BaseSimulation():
             directory (str): Directory in which to store simulation results.
 
         """
-        self.directory = kwargs.get("directory", uuid4())
+        self.directory = kwargs.get("directory", str(uuid4()))
         self.num_players = kwargs["num_players"]
         self.num_games = kwargs["num_games"]
         self.game = kwargs["game"]
