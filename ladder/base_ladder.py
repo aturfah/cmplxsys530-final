@@ -113,13 +113,13 @@ class BaseLadder:
         del available_players[available_ind]
         player.in_game = True
 
+        # Get that player's opponent
         candidate_opponents = self.get_candidate_matches(player, available_players)
 
         opponent_choice = randint(0, len(candidate_opponents)-1)
         opponent_pair = candidate_opponents[opponent_choice]
         opponent = opponent_pair[0]
-        opponent_ind = self.player_pool.index(opponent_pair)
-        del self.player_pool[opponent_ind]
+        opponent.in_game = True
 
         self.thread_lock.release()
 
