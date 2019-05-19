@@ -16,20 +16,16 @@ def test_add():
     assert len(lad.player_pool) == 2
 
 
-def test_no_duplicates():
+def test_duplicate_add():
     """Test that same player cannot exist twice on ladder."""
     lad = BaseLadder()
     ba1 = BaseAgent()
     lad.add_player(ba1)
 
-    try:
-        lad.add_player(ba1)
-    except ValueError:
-        # Ladder throws a ValueError if a duplicate player exists
-        # We want to be here
-        return
+    lad.num_turns = 50
 
-    assert False
+    lad.add_player(ba1)
+    assert lad.player_pool[0][1] == 50
 
 
 def test_available_players():
@@ -51,5 +47,5 @@ def test_available_players():
 
 
 test_add()
-test_no_duplicates()
+test_duplicate_add()
 test_available_players()
