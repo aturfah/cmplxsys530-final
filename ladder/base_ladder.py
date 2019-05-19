@@ -54,6 +54,7 @@ class BaseLadder:
         # Check that player is not already in the pool
         for player_tuple in self.player_pool:
             if player_tuple[0].id == player.id:
+                player.in_game = False
                 self.player_pool.remove(player_tuple)
 
         # Add the player to the pool
