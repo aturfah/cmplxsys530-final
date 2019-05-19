@@ -12,6 +12,7 @@ class BaseAgent():
         elo (int): Elo ranking for this agent.
         num_wins (int): Number of games won.
         num_losses (int): Number of games lost.
+        in_game (bool): If player is currently in a game.
 
     """
 
@@ -37,6 +38,7 @@ class BaseAgent():
         self.elo = 1000
         self.num_wins = 0
         self.num_losses = 0
+        self.in_game = False
 
     def hello(self):
         """Test Method."""
