@@ -138,9 +138,10 @@ class BaseLadder:
 
         """
         # Select that player's opponent (based on weighting function)
-        candidate_opponents = sorted(self.player_pool,
+        match_pool = self.available_players()
+        candidate_opponents = sorted(match_pool,
                                      key=lambda val: self.match_func(player, val),
-                                     reverse=True)[:min(self.selection_size, len(self.player_pool))]
+                                     reverse=True)[:min(self.selection_size, len(match_pool))]
 
         return candidate_opponents
 
@@ -158,6 +159,7 @@ class BaseLadder:
 
         """
         player, opp = self.match_players()
+
         player_copy = deepcopy(player)
         opp_copy = deepcopy(opp)
 
