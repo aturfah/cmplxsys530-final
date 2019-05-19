@@ -52,9 +52,10 @@ class BaseLadder:
         self.thread_lock.acquire()
 
         # Check that player is not already in the pool
-        for player_, _ in self.player_pool:
-            if player_.id == player.id:
-                raise ValueError("Player already in pool")
+        for player_tuple in self.player_pool:
+            if player_tuple[0].id == player.id:
+                player.in_game = False
+                self.player_pool.remove(player_tuple)
 
         # Add the player to the pool
         self.player_pool.append((
@@ -100,44 +101,54 @@ class BaseLadder:
         """
         self.thread_lock.acquire()
 
+        available_players = self.available_players()
+
         # Check if no players ready
-        if not self.player_pool or len(self.player_pool) == 1:
+        if not available_players or len(available_players) == 1:
             self.thread_lock.release()
             raise RuntimeError("No players left in pool.")
 
         # Select a random player
-        player_ind = randint(a=0, b=(len(self.player_pool)-1))
-        player = self.player_pool[player_ind][0]
-        del self.player_pool[player_ind]
+        available_ind = randint(a=0, b=(len(available_players)-1))
+        player = available_players[available_ind][0]
+        del available_players[available_ind]
+        player.in_game = True
 
-        candidate_opponents = self.get_candidate_matches(player)
+        # Get that player's opponent
+        candidate_opponents = self.get_candidate_matches(player, available_players)
 
         opponent_choice = randint(0, len(candidate_opponents)-1)
         opponent_pair = candidate_opponents[opponent_choice]
         opponent = opponent_pair[0]
-        opponent_ind = self.player_pool.index(opponent_pair)
-        del self.player_pool[opponent_ind]
+        opponent.in_game = True
 
         self.thread_lock.release()
 
         self.num_turns += 1
         return (player, opponent)
 
-    def get_candidate_matches(self, player):
+    def get_candidate_matches(self, player, available_players=None):
         """
         Get the selection of players who are closest to <player>.
 
         Args:
             player (BaseAgent): Player for whom we are matching.
+            match_pool (list): List of players from whom to choose.
 
         Returns:
             List of length self.selection_size of potential opponents.
 
         """
         # Select that player's opponent (based on weighting function)
-        candidate_opponents = sorted(self.player_pool,
+        match_pool = None
+        if available_players is None:
+            match_pool = self.available_players()
+        else:
+            match_pool = available_players
+
+        candidate_opponents = sorted(match_pool,
                                      key=lambda val: self.match_func(player, val),
-                                     reverse=True)[:min(self.selection_size, len(self.player_pool))]
+                                     reverse=True)[:min(self.selection_size, len(match_pool))]
 
         return candidate_opponents
 
@@ -155,6 +166,7 @@ class BaseLadder:
 
         """
         player, opp = self.match_players()
+
         player_copy = deepcopy(player)
         opp_copy = deepcopy(opp)
 
@@ -163,16 +175,16 @@ class BaseLadder:
         outcome = temp_engine.run(player, opp)
 
         if outcome == 1:
-            self.update_players(player, opp)
+            self.update_player_stats(player, opp)
         else:
-            self.update_players(opp, player)
+            self.update_player_stats(opp, player)
 
         self.add_player(player)
         self.add_player(opp)
 
         return (outcome, player_copy, opp_copy)
 
-    def update_players(self, winner, loser):
+    def update_player_stats(self, winner, loser):
         """
         Update values for winner and loser.
 
@@ -187,3 +199,12 @@ class BaseLadder:
         winner.num_wins += 1
         loser.elo = new_loser_elo
         loser.num_losses += 1
+
+    def available_players(self):
+        """Return list of players available to match."""
+        available_players = []
+        for player_tuple in self.player_pool:
+            if not player_tuple[0].in_game:
+                available_players.append(player_tuple)
+
+        return available_players

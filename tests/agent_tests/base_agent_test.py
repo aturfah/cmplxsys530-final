@@ -10,6 +10,7 @@ def test_init():
     assert ba1.num_wins == 0
     assert ba1.num_losses == 0
     assert ba1.type == "Pew"
+    assert ba1.in_game is False
 
 
 def test_win_loss():
