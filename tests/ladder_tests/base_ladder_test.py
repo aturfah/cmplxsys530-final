@@ -47,7 +47,7 @@ def test_available_players():
     ba1.in_game = True
     available_players = lad.available_players()
     assert len(available_players) == 1
-    assert available_players[0] == 1
+    assert available_players[0] == (ba2, 0)
 
 
 test_add()
