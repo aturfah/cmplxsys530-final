@@ -187,3 +187,14 @@ class BaseLadder:
         winner.num_wins += 1
         loser.elo = new_loser_elo
         loser.num_losses += 1
+
+    def available_players(self):
+        """Return list of players available to match."""
+        available_indexes = []
+        num_players = len(self.player_pool)
+        for player_ind in range(num_players):
+            if not self.player_pool[player_ind].in_game:
+                available_indexes.append(player_ind)
+
+        print(available_indexes)
+        return available_indexes
