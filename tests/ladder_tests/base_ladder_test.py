@@ -32,5 +32,22 @@ def test_no_duplicates():
     assert False
 
 
+def test_available_players():
+    """Test that available players picks out players not in games."""
+    lad = BaseLadder()
+    ba1 = BaseAgent()
+    ba2 = BaseAgent()
+
+    # No players are in games, so all available
+    lad.add_player(ba1)
+    lad.add_player(ba2)
+    assert len(lad.available_players()) == 2
+
+    # One player is taken
+    ba1.in_game = True
+    assert len(lad.available_players()) == 1
+
+
 test_add()
 test_no_duplicates()
+test_available_players()
