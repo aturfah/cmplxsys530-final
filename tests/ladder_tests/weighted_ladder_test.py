@@ -2,7 +2,6 @@
 
 from agent.base_agent import BaseAgent
 from ladder.weighted_ladder import WeightedLadder
-from battle_engine.coinflip import CoinFlipEngine
 
 def test_match_func():
     """Test the match_func to make sure it works."""
@@ -30,32 +29,6 @@ def test_match_func():
 
     # Higher elo players got matched together
     assert (match2.id == ba1.id or match2.id == ba2.id)
-
-
-def test_get_players_sorted():
-    """Run get_players with sorted flag to true."""
-    # Set up variables
-    ba1 = BaseAgent()
-    ba2 = BaseAgent()
-    cfe = CoinFlipEngine()
-    lad = WeightedLadder(cfe)
-
-    # Add players to the ladder
-    lad.add_player(ba1)
-    lad.add_player(ba2)
-
-    # Run the game
-    lad.run_game()
-
-    # Check that the results are sorted in ascending elo
-    players = lad.get_players(sort=True)
-
-    player1 = players[0]
-    player2 = players[1]
-
-    assert player1.elo > player2.elo
-    assert (player1.num_wins == 1 and player2.num_wins == 0)
-    assert (player1.num_losses == 0 and player2.num_losses == 1)
 
 
 def test_selection_size():
@@ -91,5 +64,4 @@ def test_selection_size():
 
 
 test_match_func()
-test_get_players_sorted()
 test_selection_size()
