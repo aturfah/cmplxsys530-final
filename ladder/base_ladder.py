@@ -193,8 +193,7 @@ class BaseLadder:
         available_indexes = []
         num_players = len(self.player_pool)
         for player_ind in range(num_players):
-            if not self.player_pool[player_ind].in_game:
+            if not self.player_pool[player_ind][0].in_game:
                 available_indexes.append(player_ind)
 
-        print(available_indexes)
         return available_indexes
