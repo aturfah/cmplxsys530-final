@@ -48,7 +48,7 @@ def test_match_basic():
     _ = lad.match_players()
 
     # Assert that players get removed from ladder
-    assert not lad.player_pool
+    assert not lad.available_players()
     assert lad.num_turns == 1
 
 
