@@ -110,10 +110,10 @@ class BaseLadder:
         # Select a random player
         available_ind = randint(a=0, b=(len(available_players)-1))
         player = available_players[available_ind][0]
-        # del self.player_pool[player_ind]
+        del available_players[available_ind]
         player.in_game = True
 
-        candidate_opponents = self.get_candidate_matches(player)
+        candidate_opponents = self.get_candidate_matches(player, available_players)
 
         opponent_choice = randint(0, len(candidate_opponents)-1)
         opponent_pair = candidate_opponents[opponent_choice]
@@ -126,19 +126,25 @@ class BaseLadder:
         self.num_turns += 1
         return (player, opponent)
 
-    def get_candidate_matches(self, player):
+    def get_candidate_matches(self, player, available_players=None):
         """
         Get the selection of players who are closest to <player>.
 
         Args:
             player (BaseAgent): Player for whom we are matching.
+            match_pool (list): List of players from whom to choose.
 
         Returns:
             List of length self.selection_size of potential opponents.
 
         """
         # Select that player's opponent (based on weighting function)
-        match_pool = self.available_players()
+        match_pool = None
+        if available_players is None:
+            match_pool = self.available_players()
+        else:
+            match_pool = available_players
+
         candidate_opponents = sorted(match_pool,
                                      key=lambda val: self.match_func(player, val),
                                      reverse=True)[:min(self.selection_size, len(match_pool))]
