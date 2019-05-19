@@ -2,7 +2,7 @@
 
 from agent.base_agent import BaseAgent
 from ladder.base_ladder import BaseLadder
-
+from tests.ladder_tests.ladder_test_helpers import mock_match_func
 
 def test_add():
     """Basic test for ladder add_player method."""
@@ -46,6 +46,31 @@ def test_available_players():
     assert available_players[0] == (ba2, 0)
 
 
+def test_match_basic():
+    """Test that match functions properly."""
+    # Set up variables
+    lad = BaseLadder()
+    ba1 = BaseAgent()
+    ba2 = BaseAgent()
+
+    # Use fake match function
+    lad.match_func = mock_match_func
+
+    # Add the players to the ladder
+    lad.add_player(ba1)
+    lad.add_player(ba2)
+
+    # Generate a match (should be ba1 and ba2)
+    _ = lad.match_players()
+
+    # Assert that players get removed from player pool
+    assert not lad.available_players()
+    assert lad.num_turns == 1
+    for player, _ in lad.player_pool:
+        assert player.in_game
+
+
 test_add()
 test_duplicate_add()
 test_available_players()
+test_match_basic()

@@ -33,27 +33,6 @@ def test_match_func():
     assert (match2.id == ba1.id or match2.id == ba2.id)
 
 
-def test_match_basic():
-    """Test that match functions properly."""
-    # Set up variables
-    lad = WeightedLadder()
-    ba1 = BaseAgent()
-    ba2 = BaseAgent()
-
-    # Add the players to the ladder
-    lad.add_player(ba1)
-    lad.add_player(ba2)
-
-    # Generate a match (should be ba1 and ba2)
-    _ = lad.match_players()
-
-    # Assert that players get removed from player pool
-    assert not lad.available_players()
-    assert lad.num_turns == 1
-    for player, _ in lad.player_pool:
-        assert player.in_game
-
-
 def test_run_game():
     """Test run_game functions properly."""
     # Set up variables
@@ -178,7 +157,6 @@ def test_match_error():
         pass
 
 
-test_match_basic()
 test_match_func()
 test_run_game()
 test_get_players_sorted()
