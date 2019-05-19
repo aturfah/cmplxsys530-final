@@ -47,9 +47,11 @@ def test_match_basic():
     # Generate a match (should be ba1 and ba2)
     _ = lad.match_players()
 
-    # Assert that players get removed from ladder
+    # Assert that players get removed from player pool
     assert not lad.available_players()
     assert lad.num_turns == 1
+    for player, _ in lad.player_pool:
+        assert player.in_game
 
 
 def test_run_game():
