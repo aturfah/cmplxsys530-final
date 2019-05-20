@@ -206,12 +206,3 @@ class BaseLadder:
         winner.num_wins += 1
         loser.elo = new_loser_elo
         loser.num_losses += 1
-
-    def available_players(self):
-        """Return list of players available to match."""
-        available_players = []
-        for player_tuple in self.player_pool:
-            if not player_tuple[0].in_game:
-                available_players.append(player_tuple)
-
-        return available_players
