@@ -37,17 +37,19 @@ def test_available_players():
     lad = BaseLadder()
     ba1 = BaseAgent()
     ba2 = BaseAgent()
+    ba3 = BaseAgent()
+    lad.match_func = mock_match_func
 
     # No players are in games, so all available
     lad.add_player(ba1)
     lad.add_player(ba2)
-    assert len(lad.available_players()) == 2
+    lad.add_player(ba3)
+    assert len(lad.available_player_pool) == 3
 
     # One player is taken
-    ba1.in_game = True
-    available_players = lad.available_players()
-    assert len(available_players) == 1
-    assert available_players[0] == (ba2, 0)
+    _, _ = lad.match_players()
+    assert len(lad.available_player_pool) == 1
+    assert lad.available_player_pool[0] in [(ba2, 0), (ba3, 0), (ba1, 0)]
 
 
 def test_match_basic():
