@@ -28,6 +28,7 @@ def test_duplicate_add():
 
     lad.add_player(ba1)
     assert lad.player_pool[0][1] == 50
+    assert len(lad.player_pool) == 1
 
 
 def test_available_players():
