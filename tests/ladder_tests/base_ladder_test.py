@@ -16,7 +16,7 @@ def test_add():
     lad.add_player(ba2)
 
     assert len(lad.player_pool) == 2
-    assert len(lad.available_player_pool) == len(lad.player_pool)
+    assert len(lad.available_players) == len(lad.player_pool)
 
 
 def test_duplicate_add():
@@ -44,12 +44,12 @@ def test_available_players():
     lad.add_player(ba1)
     lad.add_player(ba2)
     lad.add_player(ba3)
-    assert len(lad.available_player_pool) == 3
+    assert len(lad.available_players) == 3
 
     # One player is taken
     _, _ = lad.match_players()
-    assert len(lad.available_player_pool) == 1
-    assert lad.available_player_pool[0] in [(ba2, 0), (ba3, 0), (ba1, 0)]
+    assert len(lad.available_players) == 1
+    assert lad.available_players[0] in [(ba2, 0), (ba3, 0), (ba1, 0)]
 
 
 def test_match_basic():
@@ -70,7 +70,7 @@ def test_match_basic():
     _ = lad.match_players()
 
     # Assert that players get removed from player pool
-    assert not lad.available_player_pool
+    assert not lad.available_players
     assert lad.num_turns == 1
     for player, _ in lad.player_pool:
         assert player.in_game

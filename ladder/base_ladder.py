@@ -11,7 +11,7 @@ class BaseLadder:
     The class for the ladder.
 
     Attributes:
-        player_pool (list): List of players in the pool.
+        player_pool (list): List of players on this ladder.
         game_engine (battle_engine): Engine to run the game.
         num_turns (int): Number of games that have been played.
         k_value (int): K value to be used for calculating elo changes
@@ -19,6 +19,7 @@ class BaseLadder:
         selection_size (int): Number of players to use as potential
             matches (before choosing randomly).
         thread_lock (Lock): Lock used in multithreaded simulations.
+        available_players (list): List of players not currently in a game.
 
     """
 
@@ -35,7 +36,7 @@ class BaseLadder:
 
         """
         self.player_pool = []
-        self.available_player_pool = []
+        self.available_players = []
         self.game_engine = game
         self.num_turns = 0
         self.k_value = K_in
@@ -60,7 +61,7 @@ class BaseLadder:
 
                 # Try to remove from available_players
                 try:
-                    self.available_player_pool.remove(player_tuple)
+                    self.available_players.remove(player_tuple)
                 except ValueError:
                     # Value not found
                     pass
@@ -70,7 +71,7 @@ class BaseLadder:
             player,
             self.num_turns
         ))
-        self.available_player_pool.append((
+        self.available_players.append((
             player,
             self.num_turns
         ))
@@ -114,14 +115,14 @@ class BaseLadder:
         self.thread_lock.acquire()
 
         # Check if no players ready
-        if not self.available_player_pool or len(self.available_player_pool) == 1:
+        if not self.available_players or len(self.available_players) == 1:
             self.thread_lock.release()
             raise RuntimeError("No players left in pool.")
 
         # Select a random player
-        available_ind = randint(a=0, b=(len(self.available_player_pool)-1))
-        player = self.available_player_pool[available_ind][0]
-        del self.available_player_pool[available_ind]
+        available_ind = randint(a=0, b=(len(self.available_players)-1))
+        player = self.available_players[available_ind][0]
+        del self.available_players[available_ind]
         player.in_game = True
 
         # Get that player's opponent
@@ -129,7 +130,7 @@ class BaseLadder:
 
         opponent_choice = randint(0, len(candidate_opponents)-1)
         opponent_pair = candidate_opponents[opponent_choice]
-        self.available_player_pool.remove(opponent_pair)
+        self.available_players.remove(opponent_pair)
         opponent = opponent_pair[0]
         opponent.in_game = True
 
@@ -151,7 +152,7 @@ class BaseLadder:
 
         """
         # Select that player's opponent (based on weighting function)
-        match_pool = self.available_player_pool
+        match_pool = self.available_players
 
         candidate_opponents = sorted(match_pool,
                                      key=lambda val: self.match_func(player, val),
