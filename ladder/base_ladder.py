@@ -113,24 +113,23 @@ class BaseLadder:
         """
         self.thread_lock.acquire()
 
-        available_players = self.available_players()
-
         # Check if no players ready
-        if not available_players or len(available_players) == 1:
+        if not self.available_player_pool or len(self.available_player_pool) == 1:
             self.thread_lock.release()
             raise RuntimeError("No players left in pool.")
 
         # Select a random player
-        available_ind = randint(a=0, b=(len(available_players)-1))
-        player = available_players[available_ind][0]
-        del available_players[available_ind]
+        available_ind = randint(a=0, b=(len(self.available_player_pool)-1))
+        player = self.available_player_pool[available_ind][0]
+        del self.available_player_pool[available_ind]
         player.in_game = True
 
         # Get that player's opponent
-        candidate_opponents = self.get_candidate_matches(player, available_players)
+        candidate_opponents = self.get_candidate_matches(player)
 
         opponent_choice = randint(0, len(candidate_opponents)-1)
         opponent_pair = candidate_opponents[opponent_choice]
+        self.available_player_pool.remove(opponent_pair)
         opponent = opponent_pair[0]
         opponent.in_game = True
 
@@ -139,7 +138,7 @@ class BaseLadder:
         self.num_turns += 1
         return (player, opponent)
 
-    def get_candidate_matches(self, player, available_players=None):
+    def get_candidate_matches(self, player):
         """
         Get the selection of players who are closest to <player>.
 
@@ -152,11 +151,7 @@ class BaseLadder:
 
         """
         # Select that player's opponent (based on weighting function)
-        match_pool = None
-        if available_players is None:
-            match_pool = self.available_players()
-        else:
-            match_pool = available_players
+        match_pool = self.available_player_pool
 
         candidate_opponents = sorted(match_pool,
                                      key=lambda val: self.match_func(player, val),
