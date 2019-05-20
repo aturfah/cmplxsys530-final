@@ -32,3 +32,5 @@ The framework used can be used to implement any turn-based two-player game. In a
 [Link to project proposal.](writeup/proposal/proposal.md)
 
 [Link to final report](writeup/final_report/TurfahAli_CMPLXSYS530_report.pdf)
+
+[Link to release for final report](releases/tag/v1.2.1)
