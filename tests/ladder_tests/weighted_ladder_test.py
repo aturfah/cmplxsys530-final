@@ -3,6 +3,7 @@
 from agent.base_agent import BaseAgent
 from ladder.weighted_ladder import WeightedLadder
 
+
 def test_match_func():
     """Test the match_func to make sure it works."""
     # Set up variables

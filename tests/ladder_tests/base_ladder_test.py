@@ -5,6 +5,7 @@ from battle_engine.coinflip import CoinFlipEngine
 from ladder.base_ladder import BaseLadder
 from tests.ladder_tests.ladder_test_helpers import mock_match_func
 
+
 def test_add():
     """Basic test for ladder add_player method."""
     lad = BaseLadder()
