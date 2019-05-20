@@ -70,7 +70,7 @@ def test_match_basic():
     _ = lad.match_players()
 
     # Assert that players get removed from player pool
-    assert not lad.available_players()
+    assert not lad.available_player_pool
     assert lad.num_turns == 1
     for player, _ in lad.player_pool:
         assert player.in_game
