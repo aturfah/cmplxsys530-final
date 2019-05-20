@@ -35,6 +35,7 @@ class BaseLadder:
 
         """
         self.player_pool = []
+        self.available_player_pool = []
         self.game_engine = game
         self.num_turns = 0
         self.k_value = K_in
@@ -59,6 +60,10 @@ class BaseLadder:
 
         # Add the player to the pool
         self.player_pool.append((
+            player,
+            self.num_turns
+        ))
+        self.available_player_pool.append((
             player,
             self.num_turns
         ))
