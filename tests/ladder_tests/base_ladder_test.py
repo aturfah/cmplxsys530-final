@@ -16,6 +16,7 @@ def test_add():
     lad.add_player(ba2)
 
     assert len(lad.player_pool) == 2
+    assert len(lad.available_player_pool) == len(lad.player_pool)
 
 
 def test_duplicate_add():
