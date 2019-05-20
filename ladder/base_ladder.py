@@ -11,7 +11,7 @@ class BaseLadder:
     The class for the ladder.
 
     Attributes:
-        player_pool (list): List of players in the pool.
+        player_pool (list): List of players on this ladder.
         game_engine (battle_engine): Engine to run the game.
         num_turns (int): Number of games that have been played.
         k_value (int): K value to be used for calculating elo changes
@@ -19,6 +19,7 @@ class BaseLadder:
         selection_size (int): Number of players to use as potential
             matches (before choosing randomly).
         thread_lock (Lock): Lock used in multithreaded simulations.
+        available_players (list): List of players not currently in a game.
 
     """
 
@@ -35,6 +36,7 @@ class BaseLadder:
 
         """
         self.player_pool = []
+        self.available_players = []
         self.game_engine = game
         self.num_turns = 0
         self.k_value = K_in
@@ -57,8 +59,19 @@ class BaseLadder:
                 player.in_game = False
                 self.player_pool.remove(player_tuple)
 
-        # Add the player to the pool
+                # Try to remove from available_players
+                try:
+                    self.available_players.remove(player_tuple)
+                except ValueError:
+                    # Value not found
+                    pass
+
+        # Add the player to the pools
         self.player_pool.append((
+            player,
+            self.num_turns
+        ))
+        self.available_players.append((
             player,
             self.num_turns
         ))
@@ -101,24 +114,23 @@ class BaseLadder:
         """
         self.thread_lock.acquire()
 
-        available_players = self.available_players()
-
         # Check if no players ready
-        if not available_players or len(available_players) == 1:
+        if not self.available_players or len(self.available_players) == 1:
             self.thread_lock.release()
             raise RuntimeError("No players left in pool.")
 
         # Select a random player
-        available_ind = randint(a=0, b=(len(available_players)-1))
-        player = available_players[available_ind][0]
-        del available_players[available_ind]
+        available_ind = randint(a=0, b=(len(self.available_players)-1))
+        player = self.available_players[available_ind][0]
+        del self.available_players[available_ind]
         player.in_game = True
 
         # Get that player's opponent
-        candidate_opponents = self.get_candidate_matches(player, available_players)
+        candidate_opponents = self.get_candidate_matches(player)
 
         opponent_choice = randint(0, len(candidate_opponents)-1)
         opponent_pair = candidate_opponents[opponent_choice]
+        self.available_players.remove(opponent_pair)
         opponent = opponent_pair[0]
         opponent.in_game = True
 
@@ -127,7 +139,7 @@ class BaseLadder:
         self.num_turns += 1
         return (player, opponent)
 
-    def get_candidate_matches(self, player, available_players=None):
+    def get_candidate_matches(self, player):
         """
         Get the selection of players who are closest to <player>.
 
@@ -140,11 +152,7 @@ class BaseLadder:
 
         """
         # Select that player's opponent (based on weighting function)
-        match_pool = None
-        if available_players is None:
-            match_pool = self.available_players()
-        else:
-            match_pool = available_players
+        match_pool = self.available_players
 
         candidate_opponents = sorted(match_pool,
                                      key=lambda val: self.match_func(player, val),
@@ -199,12 +207,3 @@ class BaseLadder:
         winner.num_wins += 1
         loser.elo = new_loser_elo
         loser.num_losses += 1
-
-    def available_players(self):
-        """Return list of players available to match."""
-        available_players = []
-        for player_tuple in self.player_pool:
-            if not player_tuple[0].in_game:
-                available_players.append(player_tuple)
-
-        return available_players
