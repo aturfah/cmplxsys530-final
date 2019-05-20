@@ -58,7 +58,14 @@ class BaseLadder:
                 player.in_game = False
                 self.player_pool.remove(player_tuple)
 
-        # Add the player to the pool
+                # Try to remove from available_players
+                try:
+                    self.available_player_pool.remove(player_tuple)
+                except ValueError:
+                    # Value not found
+                    pass
+
+        # Add the player to the pools
         self.player_pool.append((
             player,
             self.num_turns
