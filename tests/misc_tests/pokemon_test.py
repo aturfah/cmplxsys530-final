@@ -231,6 +231,17 @@ def status_dmg_test():
     assert pkmn.max_hp > pkmn.current_hp
 
 
+def test_set_vs():
+    """Test set_volatile setting done properly."""
+    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"], level=50)
+
+    pkmn.set_volatile_status('doot', 8)
+    assert pkmn.volatile_status == {'doot': 8}
+
+    pkmn.set_volatile_status('doot', ['doot', 'pew'])
+    assert pkmn.volatile_status == {'doot': 8}
+
+
 test_init()
 test_param_validation()
 test_stats_calculation()
@@ -240,3 +251,4 @@ test_status()
 test_get_method()
 test_possible_moves()
 status_dmg_test()
+test_set_vs()
