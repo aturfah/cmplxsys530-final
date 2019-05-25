@@ -5,7 +5,9 @@ from uuid import uuid4
 
 from random import random
 
-from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS, TOX_STATUS)
+from config import (PAR_STATUS, FRZ_STATUS,
+                    SLP_STATUS, TOX_STATUS,
+                    SINGLE_TURN_VS, TWO_TURN_VS)
 
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
@@ -178,6 +180,18 @@ class PokemonEngine():
 
             if update:
                 self.update_gamestates(player1, player2)
+
+        # Remove volatile statuses if turn is passed
+        for poke in [self.game_state["player1"]["active"], self.game_state["player2"]["active"]]:
+            if poke is None:
+                continue
+
+            active_vs = list(poke.volatile_status.keys())
+            for vol_status in active_vs:
+                if vol_status in SINGLE_TURN_VS:
+                    del poke.volatile_status[vol_status]
+                elif vol_status in TWO_TURN_VS and poke.volatile_status[vol_status] == 2:
+                    del poke.volatile_status[vol_status]
 
         return outcome, turn_info
 
