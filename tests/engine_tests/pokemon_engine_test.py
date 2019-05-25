@@ -319,6 +319,7 @@ def test_volatile_status():
     test_substitute_vs()
     test_lockedmove_vs()
     test_clear_1turn_vs()
+    test_clear_2turn_vs()
 
 
 def test_vs_switch():
@@ -425,6 +426,27 @@ def test_lockedmove_vs():
     assert p_eng.game_state["player1"]["active"].volatile_status["lockedmove"]["move"] == \
         p_eng.game_state["player1"]["active"].moves[0]
 
+
+def test_clear_2turn_vs():
+    """Test that certain volatile statuses are cleared at the end of 2 turns."""
+    player1 = PokemonAgent([Pokemon(name="regigigas", moves=["laserfocus"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["blastburn"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Neither laser focus nor blast burn cleared
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert p_eng.game_state["player1"]["active"].volatile_status
+    assert "laserfocus" in p_eng.game_state["player1"]["active"].volatile_status
+    assert p_eng.game_state["player2"]["active"].volatile_status
+    assert "mustrecharge" in p_eng.game_state["player2"]["active"].volatile_status
+
+    # Cleared after 2 turns
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert not p_eng.game_state["player1"]["active"].volatile_status
+    assert not p_eng.game_state["player2"]["active"].volatile_status
 
 test_run()
 test_run_multiple_moves()
