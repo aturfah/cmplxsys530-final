@@ -367,6 +367,11 @@ def secondary_effect_logic(target_poke, secondary_effects):
         if not type_immunity:
             target_poke.status = secondary_effects["status"]
 
+    # Apply secondary volatile status
+    secondary_vs = secondary_effects.get("volatileStatus", None)
+    if secondary_vs is not None and secondary_vs not in target_poke.volatile_status:
+        target_poke.volatile_status[secondary_vs] = 0
+
 
 def generate_move(move_config):
     """
