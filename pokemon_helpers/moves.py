@@ -310,15 +310,12 @@ class VolatileStatusMove(BaseMove):
 
     def apply_volatile_status(self, attacker, defender):
         """Apply volatile status of this move."""
-        # Handle volatile status targeted at opponent (and substitute)
+        # Handle Substitute
         if self.volatile_status == "Substitute":
             substitute_hp = floor(attacker.max_hp / 4.0)
             if attacker.current_hp > substitute_hp:
                 attacker.set_volatile_status("substitute", substitute_hp)
                 attacker.current_hp -= substitute_hp
-        elif self.volatile_status and self.volatile_status not in defender.volatile_status:
-            defender.set_volatile_status(self.volatile_status)
-
         # Handle applying volatile statuses to the attacker
         elif self._self and "volatileStatus" in self._self:
             if self._self["volatileStatus"] not in attacker.volatile_status:
@@ -329,6 +326,12 @@ class VolatileStatusMove(BaseMove):
                     })
                 else:
                     attacker.set_volatile_status(self._self["volatileStatus"])
+        elif self.target == "self" and self.volatile_status:
+            attacker.set_volatile_status(self.volatile_status)
+        # Handle applying volatile status to defending pokemon
+        elif self.volatile_status and self.volatile_status not in defender.volatile_status:
+            defender.set_volatile_status(self.volatile_status)
+
 
 
 class HealingMove(BaseMove):
