@@ -314,20 +314,21 @@ class VolatileStatusMove(BaseMove):
         if self.volatile_status == "Substitute":
             substitute_hp = floor(attacker.max_hp / 4.0)
             if attacker.current_hp > substitute_hp:
-                attacker.volatile_status["substitute"] = substitute_hp
+                attacker.set_volatile_status("substitute", substitute_hp)
                 attacker.current_hp -= substitute_hp
         elif self.volatile_status and self.volatile_status not in defender.volatile_status:
-            defender.volatile_status[self.volatile_status] = 0
+            defender.set_volatile_status(self.volatile_status, 0)
 
         # Handle applying volatile statuses to the attacker
         elif self._self and "volatileStatus" in self._self:
             if self._self["volatileStatus"] not in attacker.volatile_status:
                 if self._self["volatileStatus"] == "lockedmove":
-                    attacker.volatile_status["lockedmove"] = {}
-                    attacker.volatile_status["lockedmove"]["counter"] = 0
-                    attacker.volatile_status["lockedmove"]["move"] = self
+                    attacker.set_volatile_status("lockedmove", {
+                        "counter": 0,
+                        "move": self
+                    })
                 else:
-                    attacker.volatile_status[self._self["volatileStatus"]] = 0
+                    attacker.set_volatile_status(self._self["volatileStatus"], 0)
 
 
 class HealingMove(BaseMove):
