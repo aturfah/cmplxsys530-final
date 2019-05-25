@@ -212,6 +212,7 @@ def test_volatile_status():
     test_primary_vs()
     test_substitute_vs()
     test_lockedmove_vs()
+    test_primary_vs_edges()
 
 
 def test_primary_vs():
@@ -249,6 +250,33 @@ def test_2ndary_vs():
 
     assert num_flinch > 0
     assert num_flinch < num_runs
+
+
+def test_primary_vs_edges():
+    """Test volatile statuse edge cases."""
+    attract = VolatileStatusMove(**MOVE_DATA["attract"])
+    automotize = VolatileStatusMove(**MOVE_DATA["autotomize"])
+    bane_bunk = VolatileStatusMove(**MOVE_DATA["banefulbunker"])
+
+    defend = Pokemon(name="torkoal", moves=["synthesis"])
+    attack = Pokemon(name="chimchar", moves=["ironhead"])
+
+    attract.apply_volatile_status(attack, defend)
+    assert attack.volatile_status == {}
+    assert "attract" in defend.volatile_status
+
+    attack.volatile_status = {}
+    defend.volatile_status = {}
+    automotize.apply_volatile_status(attack, defend)
+    assert "automotize" in attack.volatile_status
+    assert defend.volatile_status == {}
+
+    attack.volatile_status = {}
+    defend.volatile_status = {}
+    bane_bunk.apply_volatile_status(attack, defend)
+    assert "banefulbunker" in attack.volatile_status
+    assert defend.volatile_status == {}
+
 
 
 def test_substitute_vs():
