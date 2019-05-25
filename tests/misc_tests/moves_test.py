@@ -268,7 +268,7 @@ def test_primary_vs_edges():
     attack.volatile_status = {}
     defend.volatile_status = {}
     automotize.apply_volatile_status(attack, defend)
-    assert "automotize" in attack.volatile_status
+    assert "autotomize" in attack.volatile_status
     assert defend.volatile_status == {}
 
     attack.volatile_status = {}
