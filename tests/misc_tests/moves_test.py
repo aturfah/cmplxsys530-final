@@ -97,6 +97,7 @@ def test_secondary_effects():
     test_opp_2ndary_stat_change()
     test_player_2ndary_stat_changes()
     test_2ndary_status()
+    test_2ndary_vs()
 
 
 def test_opp_2ndary_stat_change():
@@ -228,6 +229,26 @@ def test_primary_vs():
     assert chimchar_uproar.volatile_status
     assert chimchar_uproar.volatile_status["confusion"] == 0
     assert chimchar_uproar.volatile_status["uproar"] == 0
+
+
+def test_2ndary_vs():
+    """Test volatile statusses that occur as secondary effects."""
+    num_runs = 500
+    num_flinch = 0
+
+    torkoal_defend = Pokemon(name="torkoal", moves=["synthesis"])
+    chimchar_attak = Pokemon(name="chimchar", moves=["ironhead"])
+
+    iron_head = SecondaryEffectMove(**MOVE_DATA["ironhead"])
+
+    for _ in range(num_runs):
+        torkoal_defend.volatile_status = {}
+        iron_head.apply_secondary_effect(chimchar_attak, torkoal_defend)
+        if "flinch" in torkoal_defend.volatile_status:
+            num_flinch += 1
+
+    assert num_flinch > 0
+    assert num_flinch < num_runs
 
 
 def test_substitute_vs():
