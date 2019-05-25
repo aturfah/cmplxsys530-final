@@ -158,3 +158,31 @@ STATUS_IMMUNITIES = {
     PSN_STATUS: ["Poison", "Steel"],
     TOX_STATUS: ["Poison", "Steel"]
 }
+
+# Volatile Statuses
+SINGLE_TURN_VS = [
+    "flinch",
+    "followme",
+    "grudge",
+    "banefulbunker",
+    "protect",
+    "electrify",
+    "endure",
+    "kingsshield",
+    "powder",
+    "ragepowder",
+    "roost",
+    "snatch",
+    "spikyshield",
+    "spotlight",
+    "magiccoat",
+    "rage"
+]
+TWO_TURN_VS = [
+    "mustrecharge",
+    "charge",
+    "defensecurl",
+    "miracleeye",
+    "yawn",
+    "laserfocus"
+]
