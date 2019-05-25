@@ -317,7 +317,7 @@ class VolatileStatusMove(BaseMove):
                 attacker.set_volatile_status("substitute", substitute_hp)
                 attacker.current_hp -= substitute_hp
         elif self.volatile_status and self.volatile_status not in defender.volatile_status:
-            defender.set_volatile_status(self.volatile_status, 0)
+            defender.set_volatile_status(self.volatile_status)
 
         # Handle applying volatile statuses to the attacker
         elif self._self and "volatileStatus" in self._self:
@@ -328,7 +328,7 @@ class VolatileStatusMove(BaseMove):
                         "move": self
                     })
                 else:
-                    attacker.set_volatile_status(self._self["volatileStatus"], 0)
+                    attacker.set_volatile_status(self._self["volatileStatus"])
 
 
 class HealingMove(BaseMove):
