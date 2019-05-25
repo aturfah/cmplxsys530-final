@@ -263,6 +263,13 @@ class Pokemon:
 
         return can_switch, possible_moves
 
+    def set_volatile_status(self, status_key, status_value=0):
+        """Set this pokemon's volatile status."""
+        if status_key in self.volatile_status:
+            return
+
+        self.volatile_status[status_key] = status_value
+
 
 def default_boosts():
     """Generate dictionary with default boost levels."""
