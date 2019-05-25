@@ -318,6 +318,7 @@ def test_volatile_status():
     test_primary_vs()
     test_substitute_vs()
     test_lockedmove_vs()
+    test_clear_1turn_vs()
 
 
 def test_vs_switch():
@@ -363,6 +364,26 @@ def test_primary_vs():
     assert p_eng.game_state["player2"]["active"].volatile_status
     assert p_eng.game_state["player2"]["active"].volatile_status["confusion"] == 1
     assert p_eng.game_state["player2"]["active"].volatile_status["uproar"] == 2
+
+
+def test_clear_1turn_vs():
+    """Test that certain volatile statuses are cleared at the end of a turn."""
+    player1 = PokemonAgent([Pokemon(name="regigigas", moves=["banefulbunker"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["uproar"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Baneful bunker cleared after turn, uproar is not
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert not p_eng.game_state["player1"]["active"].volatile_status
+    assert p_eng.game_state["player2"]["active"].volatile_status
+
+    # So is flinch
+    p_eng.game_state["player1"]["active"].volatile_status["flinch"] = 0
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert not p_eng.game_state["player1"]["active"].volatile_status
 
 
 def test_substitute_vs():
