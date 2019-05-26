@@ -317,6 +317,9 @@ class PokemonEngine():
             else:
                 atk_poke.status_counter += 1
                 return None
+        # Check for flinch
+        if "flinch" in atk_poke.volatile_status:
+            return None
 
         # Check if the move even hit...
         damage = 0
