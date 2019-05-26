@@ -349,6 +349,8 @@ class PokemonEngine():
         for vol_status in atk_poke.volatile_status:
             if vol_status == "lockedmove":
                 atk_poke.volatile_status[vol_status]["counter"] += 1
+            elif vol_status == "torment":
+                atk_poke.volatile_status[vol_status] = move
             elif vol_status != "substitute":
                 atk_poke.volatile_status[vol_status] += 1
 
