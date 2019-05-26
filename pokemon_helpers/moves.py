@@ -316,6 +316,9 @@ class VolatileStatusMove(BaseMove):
             if attacker.current_hp > substitute_hp:
                 attacker.set_volatile_status("substitute", substitute_hp)
                 attacker.current_hp -= substitute_hp
+        # Handle Torment (default to None)
+        if self.volatile_status == "torment":
+            defender.volatile_status = None
         # Handle applying volatile statuses to the attacker
         elif self._self and "volatileStatus" in self._self:
             if self._self["volatileStatus"] not in attacker.volatile_status:
