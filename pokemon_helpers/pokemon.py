@@ -261,8 +261,16 @@ class Pokemon:
         invalid_moves = set()
         # Calculate invalid moves
         if "torment" in self.volatile_status:
+            # Cannot repeat same move under torment
             invalid_moves.add(self.volatile_status["torment"])
+        if "taunt" in self.volatile_status:
+            # Cannot use status moves under taunt
+            for move in self.moves:
+                if move.category == "Status":
+                    invalid_moves.add(move)
 
+
+        # Based on invalid moves, generate possible moves
         for move in self.moves:
             if move not in invalid_moves:
                 possible_moves.append(('ATTACK', self.moves.index(move)))
