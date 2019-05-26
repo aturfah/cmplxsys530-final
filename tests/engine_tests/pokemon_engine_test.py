@@ -453,7 +453,7 @@ def test_clear_2turn_vs():
 def test_vs_torment():
     """Test that torment works properly."""
     player1 = PokemonAgent([Pokemon(name="ninjask", moves=["synthesis", "softboiled"])])
-    player2 = PokemonAgent([Pokemon(name="spinda", moves=["torment"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["torment", "earthquake"])])
 
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player2)
@@ -467,9 +467,13 @@ def test_vs_torment():
 
     # Torment is first move
     p_eng.run_single_turn(attack0, attack0, player1, player2)
-    print("\t", p_eng.game_state["player1"]["active"].volatile_status["torment"])
     assert p_eng.game_state["player1"]["active"].volatile_status["torment"] == \
         p_eng.game_state["player1"]["active"].moves[0]
+
+    # Torment is second move
+    p_eng.run_single_turn(attack1, attack1, player1, player2)
+    assert p_eng.game_state["player1"]["active"].volatile_status["torment"] == \
+        p_eng.game_state["player1"]["active"].moves[1]
 
     assert False == True
 
