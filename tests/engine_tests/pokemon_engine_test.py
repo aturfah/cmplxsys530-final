@@ -321,6 +321,7 @@ def test_volatile_status():
     test_clear_1turn_vs()
     test_clear_2turn_vs()
     test_vs_torment()
+    test_vs_attack()
 
 
 def test_vs_switch():
@@ -474,6 +475,21 @@ def test_vs_torment():
     p_eng.run_single_turn(attack1, attack1, player1, player2)
     assert p_eng.game_state["player1"]["active"].volatile_status["torment"] == \
         p_eng.game_state["player1"]["active"].moves[1]
+
+
+def test_vs_attack():
+    """Test that volatile status accounted for n attacking."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["synthesis", "softboiled"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["softboiled"])])
+    player1.team[0].volatile_status["taunt"] = 0
+    player2.team[0].volatile_status["flinch"] = 0
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Cannot attack when flinching
+    assert p_eng.attack("player1", player1.team[0].moves[0]) is None
+    assert p_eng.attack("player2", player2.team[0].moves[0]) is None
 
 
 test_run()
