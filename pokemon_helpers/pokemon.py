@@ -258,9 +258,10 @@ class Pokemon:
         can_switch = True
         possible_moves = []
 
-        invalid_moves = []
+        invalid_moves = set()
         # Calculate invalid moves
-
+        if "torment" in self.volatile_status:
+            invalid_moves.add(self.volatile_status["torment"])
 
         for move in self.moves:
             if move not in invalid_moves:
