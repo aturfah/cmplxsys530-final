@@ -9,6 +9,7 @@ from pokemon_helpers.moves import (BaseMove,
                                    SecondaryEffectMove,
                                    BoostingMove,
                                    VolatileStatusMove,
+                                   HealingMove,
                                    generate_move)
 from config import (MOVE_DATA, PAR_STATUS, PSN_STATUS)
 
@@ -283,6 +284,10 @@ def test_generate_move():
     sheercold_move = generate_move(MOVE_DATA["sheercold"])
     assert sheercold_move.__class__.__bases__ == (OHKOMove, )
 
+    # Test Healing moves
+    synthesis_move = generate_move(MOVE_DATA["synthesis"])
+    assert synthesis_move.__class__.__bases__ == (HealingMove, )
+
     # Test Secondary Effect moves
     lowsweep_move = generate_move(MOVE_DATA["lowsweep"])
     pup_move = generate_move(MOVE_DATA["poweruppunch"])
@@ -290,6 +295,32 @@ def test_generate_move():
     assert lowsweep_move.__class__.__bases__ == (SecondaryEffectMove, )
     assert pup_move.__class__.__bases__ == (SecondaryEffectMove, )
     assert nuzzle_move.__class__.__bases__ == (SecondaryEffectMove, )
+
+
+def test_healing():
+    """Make sure healing is applied."""
+    ivysaur = Pokemon(name="ivysaur", moves=["synthesis"])
+    floatzel = Pokemon(name="floatzel", moves=["watergun"])
+
+    ivysaur.current_hp = 1
+    floatzel.current_hp = 1
+
+    synthesis = HealingMove(**MOVE_DATA["synthesis"])
+    heal_pulse = HealingMove(**MOVE_DATA["healpulse"])
+
+    # Ivysaur uses Synthesis
+    synthesis.apply_healing(ivysaur, floatzel)
+    assert ivysaur.current_hp == 1 + int(ivysaur.max_hp / 2)
+    assert floatzel.current_hp == 1
+
+    # Ivysaur uses Heal Pulse on Floatzel
+    heal_pulse.apply_healing(ivysaur, floatzel)
+    assert ivysaur.current_hp == 1 + int(ivysaur.max_hp / 2)
+    assert floatzel.current_hp == 1 + int(ivysaur.max_hp / 2)
+
+    # No Overheal
+    synthesis.apply_healing(ivysaur, floatzel)
+    assert ivysaur.current_hp == ivysaur.max_hp
 
 
 test_base_init()
@@ -302,3 +333,4 @@ test_secondary_effects()
 test_boosting_moves()
 test_volatile_status()
 test_generate_move()
+test_healing()

@@ -11,7 +11,7 @@ class BaseLadder:
     The class for the ladder.
 
     Attributes:
-        player_pool (list): List of players in the pool.
+        player_pool (list): List of players on this ladder.
         game_engine (battle_engine): Engine to run the game.
         num_turns (int): Number of games that have been played.
         k_value (int): K value to be used for calculating elo changes
@@ -19,6 +19,7 @@ class BaseLadder:
         selection_size (int): Number of players to use as potential
             matches (before choosing randomly).
         thread_lock (Lock): Lock used in multithreaded simulations.
+        available_players (list): List of players not currently in a game.
 
     """
 
@@ -35,6 +36,7 @@ class BaseLadder:
 
         """
         self.player_pool = []
+        self.available_players = []
         self.game_engine = game
         self.num_turns = 0
         self.k_value = K_in
@@ -52,12 +54,24 @@ class BaseLadder:
         self.thread_lock.acquire()
 
         # Check that player is not already in the pool
-        for player_, _ in self.player_pool:
-            if player_.id == player.id:
-                raise ValueError("Player already in pool")
+        for player_tuple in self.player_pool:
+            if player_tuple[0].id == player.id:
+                player.in_game = False
+                self.player_pool.remove(player_tuple)
 
-        # Add the player to the pool
+                # Try to remove from available_players
+                try:
+                    self.available_players.remove(player_tuple)
+                except ValueError:
+                    # Value not found
+                    pass
+
+        # Add the player to the pools
         self.player_pool.append((
+            player,
+            self.num_turns
+        ))
+        self.available_players.append((
             player,
             self.num_turns
         ))
@@ -101,22 +115,24 @@ class BaseLadder:
         self.thread_lock.acquire()
 
         # Check if no players ready
-        if not self.player_pool or len(self.player_pool) == 1:
+        if not self.available_players or len(self.available_players) == 1:
             self.thread_lock.release()
             raise RuntimeError("No players left in pool.")
 
         # Select a random player
-        player_ind = randint(a=0, b=(len(self.player_pool)-1))
-        player = self.player_pool[player_ind][0]
-        del self.player_pool[player_ind]
+        available_ind = randint(a=0, b=(len(self.available_players)-1))
+        player = self.available_players[available_ind][0]
+        del self.available_players[available_ind]
+        player.in_game = True
 
+        # Get that player's opponent
         candidate_opponents = self.get_candidate_matches(player)
 
         opponent_choice = randint(0, len(candidate_opponents)-1)
         opponent_pair = candidate_opponents[opponent_choice]
+        self.available_players.remove(opponent_pair)
         opponent = opponent_pair[0]
-        opponent_ind = self.player_pool.index(opponent_pair)
-        del self.player_pool[opponent_ind]
+        opponent.in_game = True
 
         self.thread_lock.release()
 
@@ -129,15 +145,18 @@ class BaseLadder:
 
         Args:
             player (BaseAgent): Player for whom we are matching.
+            match_pool (list): List of players from whom to choose.
 
         Returns:
             List of length self.selection_size of potential opponents.
 
         """
         # Select that player's opponent (based on weighting function)
-        candidate_opponents = sorted(self.player_pool,
+        match_pool = self.available_players
+
+        candidate_opponents = sorted(match_pool,
                                      key=lambda val: self.match_func(player, val),
-                                     reverse=True)[:min(self.selection_size, len(self.player_pool))]
+                                     reverse=True)[:min(self.selection_size, len(match_pool))]
 
         return candidate_opponents
 
@@ -155,6 +174,7 @@ class BaseLadder:
 
         """
         player, opp = self.match_players()
+
         player_copy = deepcopy(player)
         opp_copy = deepcopy(opp)
 
@@ -163,16 +183,16 @@ class BaseLadder:
         outcome = temp_engine.run(player, opp)
 
         if outcome == 1:
-            self.update_players(player, opp)
+            self.update_player_stats(player, opp)
         else:
-            self.update_players(opp, player)
+            self.update_player_stats(opp, player)
 
         self.add_player(player)
         self.add_player(opp)
 
         return (outcome, player_copy, opp_copy)
 
-    def update_players(self, winner, loser):
+    def update_player_stats(self, winner, loser):
         """
         Update values for winner and loser.
 

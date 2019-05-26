@@ -69,7 +69,7 @@ class PokemonSimulation(BaseLoggingSimulation):
         for conf in self.config:
             header.append(conf["agent_type"])
 
-        self.type_log_writer = LogWriter(header, prefix="PKMNTypes")
+        self.type_log_writer = LogWriter(header, prefix="PKMNTypes", directory=self.directory)
 
     def run(self):
         """Run this simulation."""

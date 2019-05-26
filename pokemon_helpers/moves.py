@@ -195,6 +195,16 @@ class BaseMove():
 
         """
 
+    def apply_healing(self, attacker, defender):
+        """
+        Healing effects for a move.
+
+        Args:
+            attacker (Pokemon): The pokemon using the attack.
+            defender (Pokemon): The pokemon that is recieving the attack.
+
+        """
+
     def check_hit(self):
         """Check if the move hits."""
         move_acc = self.accuracy
@@ -320,6 +330,25 @@ class VolatileStatusMove(BaseMove):
                     attacker.volatile_status[self._self["volatileStatus"]] = 0
 
 
+class HealingMove(BaseMove):
+    """Class for Healing Moves."""
+
+    def apply_healing(self, attacker, defender):
+        """Healing effects for a move."""
+        if "heal" in self and self["heal"]:
+            heal_factor = self["heal"][0]/self["heal"][1]
+        else:
+            heal_factor = 0.5
+
+        heal_amount = floor(heal_factor * attacker.max_hp)
+
+        # No overheal
+        if self.get("target") == "any":
+            defender.current_hp = min(defender.max_hp, defender.current_hp + heal_amount)
+        else:
+            attacker.current_hp = min(attacker.max_hp, attacker.current_hp + heal_amount)
+
+
 def secondary_effect_logic(target_poke, secondary_effects):
     """Apply secondary effect logic to a player's pokemon."""
     # Apply boosts
@@ -361,6 +390,9 @@ def generate_move(move_config):
 
     if move_config.get("secondary"):
         classes.append(SecondaryEffectMove)
+
+    if move_config.get("flags", {}).get("heal"):
+        classes.append(HealingMove)
 
     # Remove BaseMove if another class defined
     if len(classes) > 1:

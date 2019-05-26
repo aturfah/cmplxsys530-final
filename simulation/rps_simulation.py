@@ -115,4 +115,4 @@ class RPSSimulation(BaseLoggingSimulation):
             if self.proportions[4] != 0:
                 header.append("counter")
 
-        self.type_log_writer = LogWriter(header, prefix="RPSTypes")
+        self.type_log_writer = LogWriter(header, prefix="RPSTypes", directory=self.directory)

@@ -69,16 +69,17 @@ class PokemonAgent(BaseAgent):
 
         """
         response = ()
-        can_switch = len(self.game_state.gamestate["team"]) > 0
+        active_can_switch, moves = self.game_state.gamestate["active"].possible_moves()
+        can_switch = len(self.game_state.gamestate["team"]) > 0 and active_can_switch
 
         if can_switch and random() < 0.5:
             switch = uniform(0, len(self.game_state.gamestate["team"]))
             switch = int(switch)
             response = "SWITCH", switch
         else:
-            move = uniform(0, len(self.game_state.gamestate["active"].moves))
-            move = int(move)
-            response = "ATTACK", move
+            move_ind = uniform(0, len(moves))
+            move_ind = int(move_ind)
+            response = moves[move_ind]
 
         return response
 
