@@ -229,7 +229,7 @@ def test_possible_moves():
     assert len(moves) == 1
     assert moves[0] == ("ATTACK", 1)
 
-    # Only 1 move, should raise a NotImplementedError
+    # No Vamid Moves, should raise a NotImplementedError
     pkmn.moves = pkmn.moves[:1]
     try:
         _, _ = pkmn.possible_moves()
