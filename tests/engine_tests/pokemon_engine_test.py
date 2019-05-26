@@ -475,7 +475,6 @@ def test_vs_torment():
     assert p_eng.game_state["player1"]["active"].volatile_status["torment"] == \
         p_eng.game_state["player1"]["active"].moves[1]
 
-    assert False == True
 
 test_run()
 test_run_multiple_moves()
