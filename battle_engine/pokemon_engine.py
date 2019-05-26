@@ -182,16 +182,8 @@ class PokemonEngine():
                 self.update_gamestates(player1, player2)
 
         # Remove volatile statuses if turn is passed
-        for poke in [self.game_state["player1"]["active"], self.game_state["player2"]["active"]]:
-            if poke is None:
-                continue
-
-            active_vs = list(poke.volatile_status.keys())
-            for vol_status in active_vs:
-                if vol_status in SINGLE_TURN_VS:
-                    del poke.volatile_status[vol_status]
-                elif vol_status in TWO_TURN_VS and poke.volatile_status[vol_status] == 2:
-                    del poke.volatile_status[vol_status]
+        remove_end_of_turn_vs(self.game_state["player1"]["active"])
+        remove_end_of_turn_vs(self.game_state["player2"]["active"])
 
         return outcome, turn_info
 
@@ -551,6 +543,25 @@ class PokemonEngine():
             new_line["move"] = turn["move"]["id"]
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
+
+
+def remove_end_of_turn_vs(poke):
+    """
+    Remove Volatile Statusses at the end of a turn (if appropriate)
+
+    Args:
+        poke (Pokemon): Pokemon for whom to remove the VS's
+
+    """
+    if poke is None:
+        return
+
+    active_vs = list(poke.volatile_status.keys())
+    for vol_status in active_vs:
+        if vol_status in SINGLE_TURN_VS:
+            del poke.volatile_status[vol_status]
+        elif vol_status in TWO_TURN_VS and poke.volatile_status[vol_status] == 2:
+            del poke.volatile_status[vol_status]
 
 
 def anonymize_gamestate_helper(data):
