@@ -316,9 +316,6 @@ class VolatileStatusMove(BaseMove):
             if attacker.current_hp > substitute_hp:
                 attacker.set_volatile_status("substitute", substitute_hp)
                 attacker.current_hp -= substitute_hp
-        # Handle Torment (default to None)
-        if self.volatile_status == "torment" and "torment" not in defender.volatile_status:
-            defender.volatile_status[self.volatile_status] = None
         # Handle applying volatile statuses to the attacker
         elif self._self and "volatileStatus" in self._self:
             if self._self["volatileStatus"] not in attacker.volatile_status:
@@ -333,7 +330,12 @@ class VolatileStatusMove(BaseMove):
             attacker.set_volatile_status(self.volatile_status)
         # Handle applying volatile status to defending pokemon
         elif self.volatile_status and self.volatile_status not in defender.volatile_status:
-            defender.set_volatile_status(self.volatile_status)
+            # Handle Torment (default to None)
+            if self.volatile_status == "torment":
+                defender.set_volatile_status(self.volatile_status, None)
+            # All other cases
+            else:
+                defender.set_volatile_status(self.volatile_status)
 
 
 
