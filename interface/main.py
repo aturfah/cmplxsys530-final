@@ -104,12 +104,17 @@ def make_move():
     response["turn_info"] = turn_info
     response["outcome"] = outcome
 
+    # Make moves in turn_info JSON serializable
+    for turn_datum in turn_info:
+        turn_datum["move"] = turn_datum["move"].to_json()
+
     if not outcome["finished"]:
         response["gamestate"] = PLAYER.game_state.to_json()
-        response["player_active"] = ENGINE.game_state["player1"]["active"].__dict__
-        response["opp_active"] = ENGINE.game_state["player2"]["active"].__dict__
+        response["player_active"] = ENGINE.game_state["player1"]["active"].to_json()
+        response["opp_active"] = ENGINE.game_state["player2"]["active"].to_json()
         response["player_opts"] = process_opts(PLAYER, PLAYER.generate_possibilities()[0])
 
+    print(response)
     return jsonify(response)
 
 
