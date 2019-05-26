@@ -270,7 +270,7 @@ class PokemonEngine():
         Args:
             attacker (str): The player ("player1" or "player2")
                 who is attacking.
-            move (dict): The data for the move that is being done.
+            move (Move): The data for the move that is being done.
 
         Returns:
             List of the information on the attack that was just done.
@@ -319,6 +319,9 @@ class PokemonEngine():
                 return None
         # Check for flinch
         if "flinch" in atk_poke.volatile_status:
+            return None
+        # Check for Taunt when status move chosen
+        if "taunt" in atk_poke.volatile_status and move["category"] == "Status":
             return None
 
         # Check if the move even hit...
