@@ -269,7 +269,6 @@ class Pokemon:
                 if move.category == "Status":
                     invalid_moves.add(move)
 
-
         # Based on invalid moves, generate possible moves
         for move in self.moves:
             if move not in invalid_moves:

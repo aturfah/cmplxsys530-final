@@ -547,7 +547,7 @@ class PokemonEngine():
 
 def remove_end_of_turn_vs(poke):
     """
-    Remove Volatile Statusses at the end of a turn (if appropriate)
+    Remove Volatile Statusses at the end of a turn (if appropriate).
 
     Args:
         poke (Pokemon): Pokemon for whom to remove the VS's
