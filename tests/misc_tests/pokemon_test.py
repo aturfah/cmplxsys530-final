@@ -214,7 +214,7 @@ def test_get_method():
 
 def test_possible_moves():
     """Make sure possible_moves works properly."""
-    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"], level=50)
+    pkmn = Pokemon(name="spinda", moves=["tackle", "teeterdance"], level=50)
     poke_can_switch, moves = pkmn.possible_moves()
 
     assert poke_can_switch
@@ -223,19 +223,26 @@ def test_possible_moves():
 
     # Test torment where pokemon can make more than 1 move
     pkmn.volatile_status["torment"] = pkmn.moves[0]
-    poke_can_switch, moves = pkmn.possible_moves()
-    assert poke_can_switch
+    _, moves = pkmn.possible_moves()
     assert moves
     assert len(moves) == 1
     assert moves[0] == ("ATTACK", 1)
 
-    # No Vamid Moves, should raise a NotImplementedError
+    # No Valid Moves, should raise a NotImplementedError
     pkmn.moves = pkmn.moves[:1]
     try:
         _, _ = pkmn.possible_moves()
         assert False
     except NotImplementedError:
         pass
+
+    # Taunt does not allow pokemon to use status moves
+    pkmn = Pokemon(name="spinda", moves=["tackle", "teeterdance"], level=50)
+    pkmn.volatile_status["taunt"] = 0
+    _, moves = pkmn.possible_moves()
+    assert moves
+    assert len(moves) == 1
+    assert moves[0] == ("ATTACK", 0)
 
 
 def status_dmg_test():
