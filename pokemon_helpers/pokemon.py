@@ -258,8 +258,17 @@ class Pokemon:
         can_switch = True
         possible_moves = []
 
+        invalid_moves = []
+        # Calculate invalid moves
+
+
         for move in self.moves:
-            possible_moves.append(('ATTACK', self.moves.index(move)))
+            if move not in invalid_moves:
+                possible_moves.append(('ATTACK', self.moves.index(move)))
+
+        # No valid moves
+        if not possible_moves:
+            raise RuntimeError("NO VALID MOVES")
 
         return can_switch, possible_moves
 
