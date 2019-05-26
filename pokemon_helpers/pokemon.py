@@ -269,7 +269,7 @@ class Pokemon:
 
         # No valid moves
         if not possible_moves:
-            raise RuntimeError("NO VALID MOVES")
+            raise NotImplementedError("Should Struggle, not implemented yet")
 
         return can_switch, possible_moves
 
