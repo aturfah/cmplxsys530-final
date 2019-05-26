@@ -338,7 +338,6 @@ class VolatileStatusMove(BaseMove):
                 defender.set_volatile_status(self.volatile_status)
 
 
-
 class HealingMove(BaseMove):
     """Class for Healing Moves."""
 

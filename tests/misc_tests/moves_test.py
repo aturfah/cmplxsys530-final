@@ -278,7 +278,6 @@ def test_primary_vs_edges():
     assert defend.volatile_status == {}
 
 
-
 def test_substitute_vs():
     """Make sure substitute is handled properly."""
     exploud = Pokemon(name="exploud", moves=["substitute"])
