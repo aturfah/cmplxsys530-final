@@ -213,6 +213,10 @@ class BaseMove():
 
         return 100*random() < move_acc
 
+    def to_json(self):
+        """Return JSON serializable version of self."""
+        return self.__dict__
+
     def get(self, key, default=None):
         """
         Extend __getitem__ to have defaults.

@@ -228,7 +228,15 @@ class Pokemon:
 
     def to_json(self):
         """Return JSON serializable version of self."""
-        return self.__dict__
+        output_dict = dict(self.__dict__)
+
+        serialized_moves = []
+        for move in output_dict["moves"]:
+            serialized_moves.append(move.to_json())
+
+        output_dict["moves"] = serialized_moves
+
+        return output_dict
 
     def set_boost(self, stat, stages):
         """
