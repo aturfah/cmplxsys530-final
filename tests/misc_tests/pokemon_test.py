@@ -221,6 +221,14 @@ def test_possible_moves():
     assert moves
     assert len(moves) == 2
 
+    # Test torment
+    pkmn.volatile_status["torment"] = pkmn.moves[0]
+    poke_can_switch, moves = pkmn.possible_moves()
+    assert poke_can_switch
+    assert moves
+    assert len(moves) == 1
+    assert moves[0] == pkmn.moves[1]
+
 
 def status_dmg_test():
     """Test Status Damage applied correctly."""
