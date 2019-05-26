@@ -1,5 +1,6 @@
 """Class defining an Engine's Game State."""
 
+from copy import deepcopy
 from config import POKEMON_DATA
 
 from pokemon_helpers.pokemon import Pokemon
@@ -428,7 +429,13 @@ class PokemonPlayerGameState:
         output["player"]["team"] = [pkmn.to_json() for pkmn in self.gamestate["team"]]
 
         # Add opponent's info
-        output["opponent"] = self.opp_gamestate
+        output["opponent"] = deepcopy(self.opp_gamestate)
+        for poke_moves in output["opponent"]["moves"]:
+            temp_arr = []
+            for move in output["opponent"]["moves"][poke_moves]:
+                temp_arr.append(move.to_json())
+
+            output["opponent"]["moves"][poke_moves] = temp_arr
 
         return output
 
