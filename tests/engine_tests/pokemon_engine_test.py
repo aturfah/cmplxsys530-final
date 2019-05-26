@@ -320,6 +320,7 @@ def test_volatile_status():
     test_lockedmove_vs()
     test_clear_1turn_vs()
     test_clear_2turn_vs()
+    test_vs_torment()
 
 
 def test_vs_switch():
@@ -447,6 +448,30 @@ def test_clear_2turn_vs():
     p_eng.run_single_turn(player_move, player_move, player1, player2)
     assert not p_eng.game_state["player1"]["active"].volatile_status
     assert not p_eng.game_state["player2"]["active"].volatile_status
+
+
+def test_vs_torment():
+    """Test that torment works properly."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["synthesis", "softboiled"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["torment"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    attack0 = ("ATTACK", 0)
+    attack1 = ("ATTACK", 1)
+
+    # Initially Torment is None
+    p_eng.run_single_turn(attack0, attack0, player1, player2)
+    assert p_eng.game_state["player1"]["active"].volatile_status
+    assert "torment" in p_eng.game_state["player1"]["active"].volatile_status
+
+    # Torment is first move
+    p_eng.run_single_turn(attack0, attack0, player1, player2)
+    print("\t", p_eng.game_state["player1"]["active"].volatile_status["torment"])
+    assert p_eng.game_state["player1"]["active"].volatile_status["torment"] == \
+        p_eng.game_state["player1"]["active"].moves[0]
+
+    assert False == True
 
 test_run()
 test_run_multiple_moves()
