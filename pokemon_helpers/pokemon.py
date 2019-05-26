@@ -269,6 +269,7 @@ class Pokemon:
 
         # No valid moves
         if not possible_moves:
+            # TODO: Implement Struggle Logic
             raise NotImplementedError("Should Struggle, not implemented yet")
 
         return can_switch, possible_moves
