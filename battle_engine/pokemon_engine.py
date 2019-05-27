@@ -329,10 +329,12 @@ class PokemonEngine():
             if atk_poke.volatile_status["confusion"] > 4 or random() > 0.33:
                 del atk_poke.volatile_status["confusion"]
 
-            # Attacker hits themself in confusion
-            atk_poke.current_hp -= atk_poke.confusion_damage()
+            # Check if attacker hits themself in confusion
+            if random() > 0.5:
+                damage, _ = atk_poke.confusion_damage()
+                atk_poke.current_hp -= damage
 
-            return None
+                return None
 
         # Check if the move even hit...
         damage = 0
