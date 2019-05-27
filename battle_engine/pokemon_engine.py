@@ -342,6 +342,9 @@ class PokemonEngine():
                 atk_poke.current_hp -= damage
 
                 could_move = False
+        # Check for attract
+        if "attract" in atk_poke.volatile_status and random() < 0.5:
+            could_move = False
 
         if move_hits and could_move:
             # Do Damage
