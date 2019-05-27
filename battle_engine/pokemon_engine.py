@@ -297,16 +297,23 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
+
+        # Set up variables for damage
+        damage = 0
+        critical_hit = False
+        move_hits = move.check_hit()
+        could_move = True
+
         # Check for paralysis
         if atk_poke.status == PAR_STATUS and random() < 0.25:
-            return None
+            could_move = False
         # Check for freeze
         if atk_poke.status == FRZ_STATUS:
             # Check for player thaw
             if random() < 0.2 or move["type"] == "fire" or move["id"] == "scald":
                 atk_poke.status = None
             else:
-                return None
+                could_move = False
         # Check for sleep
         if atk_poke.status == SLP_STATUS:
             # Check for player wake up
@@ -316,13 +323,13 @@ class PokemonEngine():
             # Increment sleep counter
             else:
                 atk_poke.status_counter += 1
-                return None
+                could_move = False
         # Check for flinch
         if "flinch" in atk_poke.volatile_status:
-            return None
+            could_move = False
         # Check for Taunt when status move chosen
         if "taunt" in atk_poke.volatile_status and move["category"] == "Status":
-            return None
+            could_move = False
         # Check for confusion
         if "confusion" in atk_poke.volatile_status:
             # Check if confusion wears off
@@ -330,17 +337,13 @@ class PokemonEngine():
                 del atk_poke.volatile_status["confusion"]
 
             # Check if attacker hits themself in confusion
-            if random() > 0.5:
+            elif random() > 0.5:
                 damage, _ = atk_poke.confusion_damage()
                 atk_poke.current_hp -= damage
 
-                return None
+                could_move = False
 
-        # Check if the move even hit...
-        damage = 0
-        critical_hit = False
-        move_hits = move.check_hit()
-        if move_hits:
+        if move_hits and could_move:
             # Do Damage
             damage, critical_hit = move.calculate_damage(atk_poke, def_poke)
             def_poke.current_hp -= damage
@@ -364,6 +367,9 @@ class PokemonEngine():
             elif vol_status != "substitute":
                 atk_poke.volatile_status[vol_status] += 1
 
+        if not could_move:
+            return None
+
         results = {}
         results["type"] = "ATTACK"
         results["move"] = move
@@ -376,6 +382,8 @@ class PokemonEngine():
         results["def_poke"] = def_poke.name
         results["move_hits"] = move_hits
         return [results]
+
+
 
     def turn_both_attack(self, move1, move2):
         """
