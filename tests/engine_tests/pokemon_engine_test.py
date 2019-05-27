@@ -321,7 +321,8 @@ def test_volatile_status():
     test_clear_1turn_vs()
     test_clear_2turn_vs()
     test_vs_torment()
-    test_vs_attack()
+    test_vs_flinch_taunt()
+    test_vs_attract()
 
 
 def test_vs_switch():
@@ -477,7 +478,7 @@ def test_vs_torment():
         p_eng.game_state["player1"]["active"].moves[1]
 
 
-def test_vs_attack():
+def test_vs_flinch_taunt():
     """Test that volatile status accounted for n attacking."""
     player1 = PokemonAgent([Pokemon(name="ninjask", moves=["synthesis", "softboiled"])])
     player2 = PokemonAgent([Pokemon(name="spinda", moves=["softboiled"])])
@@ -487,9 +488,28 @@ def test_vs_attack():
     p_eng = PokemonEngine()
     p_eng.initialize_battle(player1, player2)
 
-    # Cannot attack when flinching
+    # Cannot use status when taunted
     assert p_eng.attack("player1", player1.team[0].moves[0]) is None
+    # Cannot attack while Flinching
     assert p_eng.attack("player2", player2.team[0].moves[0]) is None
+
+
+def test_vs_attract():
+    """Check that attract works."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["synthesis", "softboiled"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["softboiled"])])
+
+    player1.team[0].volatile_status["attract"] = 0
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    num_attract = 0
+    for _ in range(500):
+        if p_eng.attack("player1", player1.team[0].moves[0]) is None:
+            num_attract += 1
+
+    assert num_attract > 0
 
 
 test_run()
