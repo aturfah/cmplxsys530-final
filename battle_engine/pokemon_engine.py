@@ -323,6 +323,16 @@ class PokemonEngine():
         # Check for Taunt when status move chosen
         if "taunt" in atk_poke.volatile_status and move["category"] == "Status":
             return None
+        # Check for confusion
+        if "confusion" in atk_poke.volatile_status:
+            # Check if confusion wears off
+            if atk_poke.volatile_status["confusion"] > 4 or random() > 0.33:
+                del atk_poke.volatile_status["confusion"]
+
+            # Attacker hits themself in confusion
+            atk_poke.current_hp -= atk_poke.confusion_damage()
+
+            return None
 
         # Check if the move even hit...
         damage = 0

@@ -296,6 +296,16 @@ class Pokemon:
 
         self.volatile_status[status_key] = status_value
 
+    def confusion_damage(self):
+        """Calculate confusion damage."""
+        confusion_config = {
+            "type": None,
+            "category": "Physical",
+            "basePower": 40
+        }
+        confusion_move = generate_move(confusion_config)
+
+        return confusion_move.calculate_damage(self, self, True)
 
 def default_boosts():
     """Generate dictionary with default boost levels."""
