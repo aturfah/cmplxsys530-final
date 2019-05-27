@@ -265,6 +265,17 @@ def test_set_vs():
     assert pkmn.volatile_status == {'doot': 8}
 
 
+def test_confusion_damage():
+    """Test damage done in confusion."""
+    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"])
+
+    damage, critical_hit = pkmn.confusion_damage()
+
+    assert damage == 35
+    assert not critical_hit
+
+    assert False
+
 test_init()
 test_param_validation()
 test_stats_calculation()
@@ -275,3 +286,4 @@ test_get_method()
 test_possible_moves()
 status_dmg_test()
 test_set_vs()
+test_confusion_damage()
