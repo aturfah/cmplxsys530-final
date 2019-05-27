@@ -274,8 +274,6 @@ def test_confusion_damage():
     assert damage == 35
     assert not critical_hit
 
-    assert False
-
 test_init()
 test_param_validation()
 test_stats_calculation()
