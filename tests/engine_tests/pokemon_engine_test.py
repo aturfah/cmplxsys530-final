@@ -323,6 +323,7 @@ def test_volatile_status():
     test_vs_torment()
     test_vs_flinch_taunt()
     test_vs_attract()
+    test_duration_vs()
 
 
 def test_vs_switch():
@@ -510,6 +511,24 @@ def test_vs_attract():
             num_attract += 1
 
     assert num_attract > 0
+
+
+def test_duration_vs():
+    """Test that volatile statuses with specified durations only last that long."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["healblock"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["growl"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    # Has not worn off
+    assert p_eng.game_state["player2"]["active"].volatile_status.get("healblock")
+    for _ in range(5):
+        p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    assert not p_eng.game_state["player2"]["active"].volatile_status
 
 
 test_run()
