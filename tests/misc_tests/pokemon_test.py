@@ -244,6 +244,14 @@ def test_possible_moves():
     assert len(moves) == 1
     assert moves[0] == ("ATTACK", 0)
 
+    # Heal Block prevents healing moves
+    pkmn = Pokemon(name="spinda", moves=["softboiled", "tackle"])
+    pkmn.volatile_status["healblock"] = 0
+    _, moves = pkmn.possible_moves()
+    assert moves
+    assert len(moves) == 1
+    assert moves[0] == ("ATTACK", 1)
+
 
 def status_dmg_test():
     """Test Status Damage applied correctly."""

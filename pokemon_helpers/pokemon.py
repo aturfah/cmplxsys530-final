@@ -276,6 +276,11 @@ class Pokemon:
             for move in self.moves:
                 if move.category == "Status":
                     invalid_moves.add(move)
+        if "healblock" in self.volatile_status:
+            # Cannot use healing moves under healblock
+            for move in self.moves:
+                if move.heal is not None:
+                    invalid_moves.add(move)
 
         # Based on invalid moves, generate possible moves
         for move in self.moves:
