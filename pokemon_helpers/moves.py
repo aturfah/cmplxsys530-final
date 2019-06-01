@@ -337,6 +337,12 @@ class VolatileStatusMove(BaseMove):
             # Handle Torment (default to None)
             if self.volatile_status == "torment":
                 defender.set_volatile_status(self.volatile_status, None)
+            # Moves with effect
+            if self.effect:
+                vol_stat = {}
+                vol_stat["effect"] = self.effect
+                vol_stat["counter"] = 0
+                defender.set_volatile_status(self.volatile_status, vol_stat)
             # All other cases
             else:
                 defender.set_volatile_status(self.volatile_status)

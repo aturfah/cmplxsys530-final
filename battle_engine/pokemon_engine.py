@@ -367,6 +367,9 @@ class PokemonEngine():
                 atk_poke.volatile_status[vol_status]["counter"] += 1
             elif vol_status == "torment":
                 atk_poke.volatile_status[vol_status] = move
+            elif isinstance(atk_poke.volatile_status[vol_status], dict) and \
+                atk_poke.volatile_status[vol_status].get("counter") is not None:
+                atk_poke.volatile_status[vol_status]["counter"] += 1
             elif vol_status != "substitute":
                 atk_poke.volatile_status[vol_status] += 1
 
@@ -587,11 +590,20 @@ def remove_end_of_turn_vs(poke):
 
     active_vs = list(poke.volatile_status.keys())
     for vol_status in active_vs:
-        if vol_status in SINGLE_TURN_VS:
-            del poke.volatile_status[vol_status]
+        delete_flag = False
+        if isinstance(poke.volatile_status[vol_status], dict) and\
+            "counter" in poke.volatile_status[vol_status]:
+            num_turns = poke.volatile_status[vol_status]["counter"]
+            if "duration" in poke.volatile_status[vol_status].get("effect", {}):
+                if num_turns > poke.volatile_status[vol_status]["effect"]["duration"]:
+                    delete_flag = True
+        elif vol_status in SINGLE_TURN_VS:
+            delete_flag = True
         elif vol_status in TWO_TURN_VS and poke.volatile_status[vol_status] == 2:
-            del poke.volatile_status[vol_status]
+            delete_flag = True
 
+        if delete_flag:
+            del poke.volatile_status[vol_status]
 
 def anonymize_gamestate_helper(data):
     """

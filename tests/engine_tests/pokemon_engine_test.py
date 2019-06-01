@@ -360,13 +360,13 @@ def test_primary_vs():
 
     # Check volatile status applied
     assert p_eng.game_state["player2"]["active"].volatile_status
-    assert p_eng.game_state["player2"]["active"].volatile_status["smackdown"] == 0
+    assert p_eng.game_state["player2"]["active"].volatile_status["smackdown"]["counter"] == 0
     assert p_eng.game_state["player2"]["active"].volatile_status["uproar"] == 1
 
     # Increment counter
     p_eng.run_single_turn(player_move, player_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].volatile_status
-    assert p_eng.game_state["player2"]["active"].volatile_status["smackdown"] == 1
+    assert p_eng.game_state["player2"]["active"].volatile_status["smackdown"]["counter"] == 1
     assert p_eng.game_state["player2"]["active"].volatile_status["uproar"] == 2
 
 
