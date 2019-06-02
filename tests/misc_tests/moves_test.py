@@ -41,6 +41,29 @@ def test_calculate_damage():
     assert damage == 78
 
 
+def test_calculate_damage_laserfocus():
+    """Test that Laser Focus guarantees a crit."""
+    tackle = BaseMove(**MOVE_DATA["tackle"])
+    exploud = Pokemon(name="exploud", moves=["return"])
+    floatzel = Pokemon(name="floatzel", moves=["shadowball"])
+
+    # TODO: Break out testing logic to be no_crits and no_variance
+    num_runs = 500
+    non_laserfocus_dmg = 0
+    laserfocus_dmg = 0
+    for _ in range(num_runs):
+        damage, _ = tackle.calculate_damage(exploud, floatzel, True)
+        non_laserfocus_dmg += damage
+
+    exploud.volatile_status["laserfocus"] = 0
+    for _ in range(num_runs):
+        damage, _ = tackle.calculate_damage(exploud, floatzel)
+        laserfocus_dmg += damage
+
+    # Proxy for not actually having a way to enforce no range
+    assert non_laserfocus_dmg * 1.3 < laserfocus_dmg
+
+
 def test_calculate_modifier():
     """Test that modifier is calculated properly."""
     tackle = BaseMove(**MOVE_DATA["tackle"])
@@ -374,6 +397,7 @@ def test_healing():
 test_base_init()
 test_brakcet_op()
 test_calculate_damage()
+test_calculate_damage_laserfocus()
 test_calculate_modifier()
 test_check_hit()
 test_ohko_move()
