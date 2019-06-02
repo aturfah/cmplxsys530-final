@@ -126,7 +126,7 @@ class BaseMove():
         # Only apply crits & random range when not testing
         if not testing:
             # Critical Hit
-            if random() < 0.0625:
+            if random() < 0.0625 or "laserfocus" in attacker.volatile_status:
                 critical_hit = True
                 modifier = modifier * 1.5
 
