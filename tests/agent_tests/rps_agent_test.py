@@ -55,7 +55,7 @@ def test_make_move():
     assert rps_scissors.make_move() == 2
 
 
-set_logging_level("DEBUG")
+set_logging_level()
 
 basic_test()
 test_validate_strategy()
