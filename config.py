@@ -170,12 +170,10 @@ def set_logging_level(new_log_level=None):
     """
     if isinstance(new_log_level, int):
         # Set as integer value
-        logging.basicConfig(level=getattr(logging, new_log_level))
-    if isinstance(new_log_level, str):
+        logging.basicConfig(level=new_log_level)
+    elif isinstance(new_log_level, str):
         # Map string to integer
         logging.basicConfig(level=getattr(logging, new_log_level.upper()))
     else:
         # Default to Warning
         logging.basicConfig(level=30)
-
-set_logging_level()
