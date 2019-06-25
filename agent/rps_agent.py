@@ -62,8 +62,9 @@ class RPSAgent(BaseAgent):
             Move corresponding to R, P, or S as defined by the strategy.
 
         """
+        logging.info("RPSAgent:make_move:%s", self.id)
         num = random()
-        logging.debug("RPSAgent:%s:make_move:Move %s", self.id, num)
+        logging.debug("RPSAgent:make_move:%s:Move %s", self.id, num)
         for i in range(3):
             threshold = sum(self.strategy[:i + 1])
             logging.debug("RPSAgent:make_move:%s:Move Choice %s", self.id, i)

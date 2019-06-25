@@ -41,6 +41,7 @@ class AdjustingRPSAgent(RPSAgent):
                 [R, P, S] -> [0, 1, 2] respectively
 
         """
+        logging.info("AdjustingRPSAgent:update_info:%s", self.id)
         opp_move = kwargs.get("opp_move")
 
         logging.debug("AdjustingRPSAgent:update_info:%s:Original Counts: %s", self.id, self.counts)
