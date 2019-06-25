@@ -1,7 +1,5 @@
 """Unit tests for Rock/Paper/Scissors agent."""
 
-import logging
-
 from agent.rps_agent import RPSAgent
 from config import set_logging_level
 
@@ -57,7 +55,7 @@ def test_make_move():
     assert rps_scissors.make_move() == 2
 
 
-set_logging_level(logging.DEBUG)
+set_logging_level("DEBUG")
 
 basic_test()
 test_validate_strategy()
