@@ -58,6 +58,7 @@ def test_update_info_and_reset():
     assert arps_weight.strategy == [1/3, 1/3, 1/3]
     assert arps_weight.counts == [3, 3, 3]
 
+
 set_logging_level()
 
 test_init()

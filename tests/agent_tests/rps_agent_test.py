@@ -3,6 +3,7 @@
 from agent.rps_agent import RPSAgent
 from config import set_logging_level
 
+
 def basic_test():
     """Test basic functionality."""
     # Test constructor
@@ -45,7 +46,7 @@ def test_agent_type():
 def test_make_move():
     """Test make_move method."""
     rps_rock = RPSAgent(id_in='rps_rock', strategy_in=[1, 0, 0])
-    rps_paper = RPSAgent(id_in='rps_paper',strategy_in=[0, 1, 0])
+    rps_paper = RPSAgent(id_in='rps_paper', strategy_in=[0, 1, 0])
     rps_scissors = RPSAgent(id_in='rps_scissors', strategy_in=[0, 0, 1])
     rps_random = RPSAgent(id_in='rps_random')
 
