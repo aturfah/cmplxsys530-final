@@ -1,5 +1,6 @@
 """Agent class for Rock/Paper/Scissors."""
 from random import random
+import logging
 
 from agent.base_agent import BaseAgent
 
@@ -64,6 +65,7 @@ class RPSAgent(BaseAgent):
         num = random()
         for i in range(3):
             if num < sum(self.strategy[:i + 1]):
+                logging.info("RPSAgent %s made move %s", self.id, i)
                 return i
 
         raise RuntimeError("Something went wrong with strategy selection")
