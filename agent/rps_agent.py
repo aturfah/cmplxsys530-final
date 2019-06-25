@@ -66,7 +66,7 @@ class RPSAgent(BaseAgent):
         logging.debug("RPSAgent:%s:Move %s", self.id, num)
         for i in range(3):
             threshold = sum(self.strategy[:i + 1])
-            logging.debug("RPSAgent:%s:MoveChoice %s", self.id, i)
+            logging.debug("RPSAgent:%s:Move Choice %s", self.id, i)
             logging.debug("RPSAgent:%s:Threshold %s", self.id, threshold)
             if num < threshold:
                 logging.info("RPSAgent %s made move %s", self.id, i)
