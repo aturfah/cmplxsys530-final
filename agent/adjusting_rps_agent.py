@@ -43,8 +43,8 @@ class AdjustingRPSAgent(RPSAgent):
         """
         opp_move = kwargs.get("opp_move")
 
-        logging.debug("AdjustingRPSAgent:%s:update_info:Original Counts: %s", self.id, self.counts)
-        logging.debug("AdjustingRPSAgent:%s:update_info:Original Strategy: %s",
+        logging.debug("AdjustingRPSAgent:update_info:%s:Original Counts: %s", self.id, self.counts)
+        logging.debug("AdjustingRPSAgent:update_info:%s:Original Strategy: %s",
                       self.id,
                       self.strategy)
 
@@ -54,8 +54,8 @@ class AdjustingRPSAgent(RPSAgent):
         # Update the strategy
         self.strategy = [val/sum(self.counts) for val in self.counts]
 
-        logging.debug("AdjustingRPSAgent:%s:update_info:Opp Move: %s", self.id, opp_move)
-        logging.debug("AdjustingRPSAgent:%s:update_info:Updated Counts: %s", self.id, self.counts)
-        logging.debug("AdjustingRPSAgent:%s:update_info:Updated Strategy: %s",
+        logging.debug("AdjustingRPSAgent:update_info:%s:Opp Move: %s", self.id, opp_move)
+        logging.debug("AdjustingRPSAgent:update_info:%s:Updated Counts: %s", self.id, self.counts)
+        logging.debug("AdjustingRPSAgent:update_info:%s:Updated Strategy: %s",
                       self.id,
                       self.strategy)
