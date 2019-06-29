@@ -2,7 +2,7 @@
 import os
 from os import listdir
 from os.path import isfile, join
-
+import logging
 import json
 
 # Log file directory
@@ -158,3 +158,22 @@ STATUS_IMMUNITIES = {
     PSN_STATUS: ["Poison", "Steel"],
     TOX_STATUS: ["Poison", "Steel"]
 }
+
+# Logging default set to warning
+def set_logging_level(new_log_level=None):
+    """
+    Define logging level (to be used in tests).
+
+    Args:
+        new_log_level (str or int): New logging level to use
+
+    """
+    if isinstance(new_log_level, int):
+        # Set as integer value
+        logging.basicConfig(level=new_log_level)
+    elif isinstance(new_log_level, str):
+        # Map string to integer
+        logging.basicConfig(level=getattr(logging, new_log_level.upper()))
+    else:
+        # Default to Warning
+        logging.basicConfig(level=30)
