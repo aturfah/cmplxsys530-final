@@ -370,7 +370,7 @@ class PokemonEngine():
             elif isinstance(atk_poke.volatile_status[vol_status], dict) and \
                 atk_poke.volatile_status[vol_status].get("counter") is not None:
                 atk_poke.volatile_status[vol_status]["counter"] += 1
-            elif vol_status != "substitute":
+            elif vol_status not in ["substitute", "autotomize"]:
                 atk_poke.volatile_status[vol_status] += 1
 
         if not could_move:
