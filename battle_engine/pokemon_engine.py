@@ -297,7 +297,6 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
-
         # Set up variables for damage
         damage = 0
         critical_hit = False
@@ -388,8 +387,6 @@ class PokemonEngine():
         results["def_poke"] = def_poke.name
         results["move_hits"] = move_hits
         return [results]
-
-
 
     def turn_both_attack(self, move1, move2):
         """
@@ -604,6 +601,7 @@ def remove_end_of_turn_vs(poke):
 
         if delete_flag:
             del poke.volatile_status[vol_status]
+
 
 def anonymize_gamestate_helper(data):
     """
