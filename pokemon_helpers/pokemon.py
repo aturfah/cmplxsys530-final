@@ -76,6 +76,7 @@ class Pokemon:
         self.types = POKEMON_DATA[self.name]["types"]
         self.base_stats = POKEMON_DATA[self.name]["baseStats"]
         self.dex_num = POKEMON_DATA[self.name]["num"]
+        self.weight = POKEMON_DATA[self.name]["weightkg"]
         self.status = None
         self.status_turns = 0
         self.evs = evs
@@ -313,8 +314,8 @@ class Pokemon:
         return confusion_move.calculate_damage(self, self, True)
 
     def get_weight(self):
-        """Get this pokemon's weight."""
-        raise NotImplementedError("DOOT")
+        """Get this pokemon's weight in KG."""
+        return self.weight
 
 def default_boosts():
     """Generate dictionary with default boost levels."""
