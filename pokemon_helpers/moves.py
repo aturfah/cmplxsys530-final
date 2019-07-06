@@ -331,7 +331,14 @@ class VolatileStatusMove(BaseMove):
                 else:
                     attacker.set_volatile_status(self._self["volatileStatus"])
         elif self.target == "self" and self.volatile_status:
-            attacker.set_volatile_status(self.volatile_status)
+            if self.volatile_status == "autotomize":
+                if "autotomize" in attacker.volatile_status:
+                    attacker.set_volatile_status(self.volatile_status,
+                                                 attacker.volatile_status[self.volatile_status] + 1)
+                else:
+                    attacker.set_volatile_status(self.volatile_status, 1)
+            else:
+                attacker.set_volatile_status(self.volatile_status)
         # Handle applying volatile status to defending pokemon
         elif self.volatile_status and self.volatile_status not in defender.volatile_status:
             # Handle Torment (default to None)
