@@ -321,6 +321,7 @@ class Pokemon:
         # User's weight cannot go below 0.1 KG
         return max(mod_weight, 0.1)
 
+
 def default_boosts():
     """Generate dictionary with default boost levels."""
     boost_dict = {}
