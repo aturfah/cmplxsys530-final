@@ -415,6 +415,7 @@ def test_autotomize_increment():
     autotomize.apply_volatile_status(aggron, ivysaur)
     assert aggron.volatile_status["autotomize"] == 2
 
+
 def test_autotomize_effect():
     """Test that aututomize reduces weight."""
     autotomize = VolatileStatusMove(**MOVE_DATA["autotomize"])
@@ -426,6 +427,12 @@ def test_autotomize_effect():
 
     autotomize.apply_volatile_status(aggron, ivysaur)
     assert aggron.get_weight() == og_weight - 100
+
+    autotomize.apply_volatile_status(aggron, ivysaur)
+    assert aggron.get_weight() == og_weight - 200
+
+    autotomize.apply_volatile_status(ivysaur, aggron)
+    assert ivysaur.get_weight() == 0.1
 
 
 test_base_init()
