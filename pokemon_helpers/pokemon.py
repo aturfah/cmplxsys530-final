@@ -312,6 +312,10 @@ class Pokemon:
 
         return confusion_move.calculate_damage(self, self, True)
 
+    def get_weight(self):
+        """Get this pokemon's weight."""
+        raise NotImplementedError("DOOT")
+
 def default_boosts():
     """Generate dictionary with default boost levels."""
     boost_dict = {}
