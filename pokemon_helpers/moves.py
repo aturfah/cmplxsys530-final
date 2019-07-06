@@ -331,6 +331,7 @@ class VolatileStatusMove(BaseMove):
                 else:
                     attacker.set_volatile_status(self._self["volatileStatus"])
         elif self.target == "self" and self.volatile_status:
+            # Handle Autotomize
             if self.volatile_status == "autotomize":
                 if "autotomize" in attacker.volatile_status:
                     attacker.set_volatile_status(self.volatile_status,
@@ -341,18 +342,7 @@ class VolatileStatusMove(BaseMove):
                 attacker.set_volatile_status(self.volatile_status)
         # Handle applying volatile status to defending pokemon
         elif self.volatile_status and self.volatile_status not in defender.volatile_status:
-            # Handle Torment (default to None)
-            if self.volatile_status == "torment":
-                defender.set_volatile_status(self.volatile_status, None)
-            # Moves with effect
-            if self.effect:
-                vol_stat = {}
-                vol_stat["effect"] = self.effect
-                vol_stat["counter"] = 0
-                defender.set_volatile_status(self.volatile_status, vol_stat)
-            # All other cases
-            else:
-                defender.set_volatile_status(self.volatile_status)
+            apply_volatile_status_defender(self, defender)
 
 
 class HealingMove(BaseMove):
@@ -434,3 +424,19 @@ def generate_move(move_config):
     output = NewClass(**move_config)
 
     return output
+
+
+def apply_volatile_status_defender(move, defender):
+    """Apply the volatile statuse effect to the defender."""
+    # Handle Torment (default to None)
+    if move.volatile_status == "torment":
+        defender.set_volatile_status(move.volatile_status, None)
+    # Moves with effect
+    if move.effect:
+        vol_stat = {}
+        vol_stat["effect"] = move.effect
+        vol_stat["counter"] = 0
+        defender.set_volatile_status(move.volatile_status, vol_stat)
+    # All other cases
+    else:
+        defender.set_volatile_status(move.volatile_status)
