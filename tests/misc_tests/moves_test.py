@@ -396,13 +396,15 @@ def test_healing():
 
 def test_autotomize():
     """Test that automotize works."""
-    autotomize = BaseMove(**MOVE_DATA["autotomize"])
+    autotomize = VolatileStatusMove(**MOVE_DATA["autotomize"])
     ivysaur = Pokemon(name="ivysaur", moves=["synthesis"])
     aggron = Pokemon(name="aggron", moves=["synthesis"])
+    og_weight = aggron.get_weight()
 
-    ivysaur.get_weight()
-    aggron.get_weight()
+    assert og_weight > ivysaur.get_weight()
 
+    autotomize.apply_volatile_status(aggron, ivysaur)
+    assert aggron.get_weight == og_weight - 100
 
 test_base_init()
 test_brakcet_op()
