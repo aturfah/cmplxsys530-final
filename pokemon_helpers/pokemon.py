@@ -297,7 +297,7 @@ class Pokemon:
 
     def set_volatile_status(self, status_key, status_value=0):
         """Set this pokemon's volatile status."""
-        if status_key in self.volatile_status:
+        if status_key in self.volatile_status and status_key != "autotomize":
             return
 
         self.volatile_status[status_key] = status_value
@@ -314,7 +314,7 @@ class Pokemon:
         return confusion_move.calculate_damage(self, self, True)
 
     def get_weight(self):
-        """Get this pokemon's weight in KG."""
+        """Return this pokemon's weight in KG."""
         return self.weight
 
 def default_boosts():
