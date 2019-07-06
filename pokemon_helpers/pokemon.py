@@ -315,7 +315,11 @@ class Pokemon:
 
     def get_weight(self):
         """Return this pokemon's weight in KG."""
-        return self.weight
+        autotomize_modifier = self.volatile_status.get("autotomize", 0)
+        mod_weight = self.weight - 100 * autotomize_modifier
+
+        # User's weight cannot go below 0.1 KG
+        return max(mod_weight, 0.1)
 
 def default_boosts():
     """Generate dictionary with default boost levels."""
