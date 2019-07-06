@@ -394,6 +394,16 @@ def test_healing():
     assert ivysaur.current_hp == ivysaur.max_hp
 
 
+def test_autotomize():
+    """Test that automotize works."""
+    autotomize = BaseMove(**MOVE_DATA["autotomize"])
+    ivysaur = Pokemon(name="ivysaur", moves=["synthesis"])
+    aggron = Pokemon(name="aggron", moves=["synthesis"])
+
+    ivysaur.get_weight()
+    aggron.get_weight()
+
+
 test_base_init()
 test_brakcet_op()
 test_calculate_damage()
@@ -406,3 +416,4 @@ test_boosting_moves()
 test_volatile_status()
 test_generate_move()
 test_healing()
+test_autotomize()
