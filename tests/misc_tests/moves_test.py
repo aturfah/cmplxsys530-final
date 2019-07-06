@@ -396,6 +396,27 @@ def test_healing():
 
 def test_autotomize():
     """Test that automotize works."""
+    test_autotomize_increment()
+    test_autotomize_effect()
+
+
+def test_autotomize_increment():
+    """Test that autotomize increments the counter when used repeatedly."""
+    autotomize = VolatileStatusMove(**MOVE_DATA["autotomize"])
+    aggron = Pokemon(name="aggron", moves=["synthesis"])
+    ivysaur = Pokemon(name="ivysaur", moves=["synthesis"])
+
+    assert "autotomize" not in aggron.volatile_status
+    autotomize.apply_volatile_status(aggron, ivysaur)
+
+    assert "autotomize" in aggron.volatile_status
+    assert aggron.volatile_status["autotomize"] == 1
+
+    autotomize.apply_volatile_status(aggron, ivysaur)
+    assert aggron.volatile_status["autotomize"] == 2
+
+def test_autotomize_effect():
+    """Test that aututomize reduces weight."""
     autotomize = VolatileStatusMove(**MOVE_DATA["autotomize"])
     ivysaur = Pokemon(name="ivysaur", moves=["synthesis"])
     aggron = Pokemon(name="aggron", moves=["synthesis"])
@@ -404,7 +425,8 @@ def test_autotomize():
     assert og_weight > ivysaur.get_weight()
 
     autotomize.apply_volatile_status(aggron, ivysaur)
-    assert aggron.get_weight == og_weight - 100
+    assert aggron.get_weight() == og_weight - 100
+
 
 test_base_init()
 test_brakcet_op()
