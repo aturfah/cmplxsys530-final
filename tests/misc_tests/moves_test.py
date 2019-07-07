@@ -423,14 +423,18 @@ def test_autotomize_effect():
     aggron = Pokemon(name="aggron", moves=["synthesis"])
     og_weight = aggron.get_weight()
 
+    # Aggron heavier than Ivysaur
     assert og_weight > ivysaur.get_weight()
 
+    # First autotomize reduces weight by 100
     autotomize.apply_volatile_status(aggron, ivysaur)
     assert aggron.get_weight() == og_weight - 100
 
+    # Repeated use of Autotomize continues to lower weight
     autotomize.apply_volatile_status(aggron, ivysaur)
     assert aggron.get_weight() == og_weight - 200
 
+    # Weight cannot go lower than 0.1 KG
     autotomize.apply_volatile_status(ivysaur, aggron)
     assert ivysaur.get_weight() == 0.1
 
