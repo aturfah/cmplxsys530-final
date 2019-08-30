@@ -297,8 +297,12 @@ def test_endofturn_volatile_status_effects():
         "aquaring": 1
     }
     pkmn.apply_endofturn_volatile_status_effects()
-    print(pkmn.current_hp, pkmn.max_hp)
     assert pkmn.current_hp == 17
+
+    # HP change does not go over Max HP
+    pkmn.current_hp = 260
+    pkmn.apply_endofturn_volatile_status_effects()
+    assert pkmn.current_hp == pkmn.max_hp
 
 
 test_init()
