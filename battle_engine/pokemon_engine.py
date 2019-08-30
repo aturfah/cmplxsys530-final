@@ -148,8 +148,14 @@ class PokemonEngine():
                 info["attacker"] = player_id_dict[info.get("attacker")]
                 info["defender"] = player_id_dict[info.get("defender")]
 
+        # TODO: Verify exact order these come in
+        # TODO: Check for fainting 
         self.game_state["player1"]["active"].apply_status_damage()
         self.game_state["player2"]["active"].apply_status_damage()
+
+        self.game_state["player1"]["active"].apply_endofturn_volatile_status_effects()
+        self.game_state["player2"]["active"].apply_endofturn_volatile_status_effects()
+
 
         player1.new_info(turn_info)
         player2.new_info(turn_info)
