@@ -332,8 +332,9 @@ class Pokemon:
         if "aquaring" in self.volatile_status:
             hp_change += floor(self.max_hp * 1/16)
 
+        # Adjust HP, make sure don't overflow
         self.current_hp += hp_change
-        self.current_hp = min((self.current_hp, self.max_hp))
+        self.current_hp -= max((self.current_hp - self.max_hp, 0))
 
 
 def default_boosts():
