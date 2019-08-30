@@ -531,6 +531,23 @@ def test_duration_vs():
     assert not p_eng.game_state["player2"]["active"].volatile_status
 
 
+def test_vs_endofturn_effects():
+    """Test that end of turn effects are applied."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["growl"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["aquaring"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    p_eng.game_state["player2"]["active"].current_hp = 1
+
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    # Aquaring heals
+    assert p_eng.game_state["player2"]["active"].volatile_status.get("aquaring")
+    assert p_eng.game_state["player2"]["active"].current_hp > 1
+
+
 test_run()
 test_run_multiple_moves()
 test_run_multiple_pokemon()
