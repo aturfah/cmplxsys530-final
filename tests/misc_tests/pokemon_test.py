@@ -282,6 +282,25 @@ def test_confusion_damage():
     assert damage == 35
     assert not critical_hit
 
+
+def test_endofturn_volatile_status_effects():
+    """Test that end of turn vs effects are properly applied."""
+    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"])
+    pkmn.current_hp = 1
+
+    # If no VS, HP does not change
+    pkmn.apply_endofturn_volatile_status_effects()
+    assert pkmn.current_hp == 1
+
+    # If aquaring, HP changes
+    pkmn.volatile_status = {
+        "aquaring": 1
+    }
+    pkmn.apply_endofturn_volatile_status_effects()
+    print(pkmn.current_hp, pkmn.max_hp)
+    assert pkmn.current_hp == 17
+
+
 test_init()
 test_param_validation()
 test_stats_calculation()
@@ -293,3 +312,4 @@ test_possible_moves()
 status_dmg_test()
 test_set_vs()
 test_confusion_damage()
+test_endofturn_volatile_status_effects()
