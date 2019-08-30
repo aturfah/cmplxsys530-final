@@ -321,6 +321,20 @@ class Pokemon:
         # User's weight cannot go below 0.1 KG
         return max(mod_weight, 0.1)
 
+    def apply_endofturn_volatile_status_effects(self):
+        """
+        Apply end-of-turn effects from volatile statusses.
+
+        If a volatile status activates its effect at the end of a turn,
+        its effect is applied here.
+        """
+        hp_change = 0
+        if "aquaring" in self.volatile_status:
+            hp_change += floor(self.max_hp * 1/16)
+
+        self.current_hp += hp_change
+        self.current_hp = min((self.current_hp, self.max_hp))
+
 
 def default_boosts():
     """Generate dictionary with default boost levels."""
