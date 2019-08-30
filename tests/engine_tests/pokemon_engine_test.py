@@ -324,6 +324,7 @@ def test_volatile_status():
     test_vs_flinch_taunt()
     test_vs_attract()
     test_duration_vs()
+    test_vs_endofturn_effects()
 
 
 def test_vs_switch():
