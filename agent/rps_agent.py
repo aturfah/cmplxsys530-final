@@ -75,7 +75,7 @@ class RPSAgent(BaseAgent):
 
         raise RuntimeError("Something went wrong with strategy selection")
 
-    def update_info(self, *args, **kwargs):
+    def update_info(self, *_, **__):
         """
         Update player with new information.
 
