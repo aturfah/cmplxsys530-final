@@ -25,7 +25,7 @@ class BaseAgent():
             type (str): "Type" for this agent, has meaning in
                 identifying agent subclasses
         """
-        if "id_in" not in kwargs:
+        if kwargs.get("id_in") is None:
             self.id = uuid4()  # pylint: disable=C0103
         else:
             self.id = kwargs["id_in"]  # pylint: disable=C0103
