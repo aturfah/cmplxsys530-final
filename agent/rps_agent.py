@@ -1,5 +1,6 @@
 """Agent class for Rock/Paper/Scissors."""
 from random import random
+import logging
 
 from agent.base_agent import BaseAgent
 
@@ -61,9 +62,15 @@ class RPSAgent(BaseAgent):
             Move corresponding to R, P, or S as defined by the strategy.
 
         """
+        logging.info("RPSAgent:make_move:%s", self.id)
         num = random()
+        logging.debug("RPSAgent:make_move:%s:Move %s", self.id, num)
         for i in range(3):
-            if num < sum(self.strategy[:i + 1]):
+            threshold = sum(self.strategy[:i + 1])
+            logging.debug("RPSAgent:make_move:%s:Move Choice %s", self.id, i)
+            logging.debug("RPSAgent:make_move:%s:Threshold %s", self.id, threshold)
+            if num < threshold:
+                logging.info("RPSAgent %s made move %s", self.id, i)
                 return i
 
         raise RuntimeError("Something went wrong with strategy selection")

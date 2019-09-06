@@ -1,6 +1,7 @@
 """RPS Agent who updates based on all games played."""
 
 from copy import deepcopy
+import logging
 
 from agent.rps_agent import RPSAgent
 
@@ -40,10 +41,22 @@ class AdjustingRPSAgent(RPSAgent):
                 [R, P, S] -> [0, 1, 2] respectively
 
         """
+        logging.info("AdjustingRPSAgent:update_info:%s", self.id)
         opp_move = kwargs.get("opp_move")
+
+        logging.debug("AdjustingRPSAgent:update_info:%s:Original Counts: %s", self.id, self.counts)
+        logging.debug("AdjustingRPSAgent:update_info:%s:Original Strategy: %s",
+                      self.id,
+                      self.strategy)
 
         # Add weight to the move beating the opponent's last move
         self.counts[(opp_move + 1) % 3] += 1
 
         # Update the strategy
         self.strategy = [val/sum(self.counts) for val in self.counts]
+
+        logging.debug("AdjustingRPSAgent:update_info:%s:Opp Move: %s", self.id, opp_move)
+        logging.debug("AdjustingRPSAgent:update_info:%s:Updated Counts: %s", self.id, self.counts)
+        logging.debug("AdjustingRPSAgent:update_info:%s:Updated Strategy: %s",
+                      self.id,
+                      self.strategy)
