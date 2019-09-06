@@ -318,6 +318,13 @@ def test_volatile_status():
     test_primary_vs()
     test_substitute_vs()
     test_lockedmove_vs()
+    test_clear_1turn_vs()
+    test_clear_2turn_vs()
+    test_vs_torment()
+    test_vs_flinch_taunt()
+    test_vs_attract()
+    test_duration_vs()
+    test_vs_endofturn_effects()
 
 
 def test_vs_switch():
@@ -344,7 +351,7 @@ def test_vs_switch():
 
 def test_primary_vs():
     """Test that primary volatileStatus is set properly."""
-    player1 = PokemonAgent([Pokemon(name="spinda", moves=["confuseray"])])
+    player1 = PokemonAgent([Pokemon(name="spinda", moves=["smackdown"])])
     player2 = PokemonAgent([Pokemon(name="spinda", moves=["uproar"], nature="timid")])
 
     p_eng = PokemonEngine()
@@ -355,14 +362,34 @@ def test_primary_vs():
 
     # Check volatile status applied
     assert p_eng.game_state["player2"]["active"].volatile_status
-    assert p_eng.game_state["player2"]["active"].volatile_status["confusion"] == 0
+    assert p_eng.game_state["player2"]["active"].volatile_status["smackdown"]["counter"] == 0
     assert p_eng.game_state["player2"]["active"].volatile_status["uproar"] == 1
 
     # Increment counter
     p_eng.run_single_turn(player_move, player_move, player1, player2)
     assert p_eng.game_state["player2"]["active"].volatile_status
-    assert p_eng.game_state["player2"]["active"].volatile_status["confusion"] == 1
+    assert p_eng.game_state["player2"]["active"].volatile_status["smackdown"]["counter"] == 1
     assert p_eng.game_state["player2"]["active"].volatile_status["uproar"] == 2
+
+
+def test_clear_1turn_vs():
+    """Test that certain volatile statuses are cleared at the end of a turn."""
+    player1 = PokemonAgent([Pokemon(name="regigigas", moves=["banefulbunker"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["uproar"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Baneful bunker cleared after turn, uproar is not
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert not p_eng.game_state["player1"]["active"].volatile_status
+    assert p_eng.game_state["player2"]["active"].volatile_status
+
+    # So is flinch
+    p_eng.game_state["player1"]["active"].volatile_status["flinch"] = 0
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert not p_eng.game_state["player1"]["active"].volatile_status
 
 
 def test_substitute_vs():
@@ -403,6 +430,123 @@ def test_lockedmove_vs():
     assert p_eng.game_state["player1"]["active"].volatile_status["lockedmove"]["counter"] == 1
     assert p_eng.game_state["player1"]["active"].volatile_status["lockedmove"]["move"] == \
         p_eng.game_state["player1"]["active"].moves[0]
+
+
+def test_clear_2turn_vs():
+    """Test that certain volatile statuses are cleared at the end of 2 turns."""
+    player1 = PokemonAgent([Pokemon(name="regigigas", moves=["laserfocus"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["blastburn"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Neither laser focus nor blast burn cleared
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert p_eng.game_state["player1"]["active"].volatile_status
+    assert "laserfocus" in p_eng.game_state["player1"]["active"].volatile_status
+    assert p_eng.game_state["player2"]["active"].volatile_status
+    assert "mustrecharge" in p_eng.game_state["player2"]["active"].volatile_status
+
+    # Cleared after 2 turns
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    assert not p_eng.game_state["player1"]["active"].volatile_status
+    assert not p_eng.game_state["player2"]["active"].volatile_status
+
+
+def test_vs_torment():
+    """Test that torment works properly."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["synthesis", "softboiled"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["torment", "earthquake"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    attack0 = ("ATTACK", 0)
+    attack1 = ("ATTACK", 1)
+
+    # Initially Torment is None
+    p_eng.run_single_turn(attack0, attack0, player1, player2)
+    assert p_eng.game_state["player1"]["active"].volatile_status
+    assert "torment" in p_eng.game_state["player1"]["active"].volatile_status
+
+    # Torment is first move
+    p_eng.run_single_turn(attack0, attack0, player1, player2)
+    assert p_eng.game_state["player1"]["active"].volatile_status["torment"] == \
+        p_eng.game_state["player1"]["active"].moves[0]
+
+    # Torment is second move
+    p_eng.run_single_turn(attack1, attack1, player1, player2)
+    assert p_eng.game_state["player1"]["active"].volatile_status["torment"] == \
+        p_eng.game_state["player1"]["active"].moves[1]
+
+
+def test_vs_flinch_taunt():
+    """Test that volatile status accounted for n attacking."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["synthesis", "softboiled"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["softboiled"])])
+    player1.team[0].volatile_status["taunt"] = 0
+    player2.team[0].volatile_status["flinch"] = 0
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    # Cannot use status when taunted
+    assert p_eng.attack("player1", player1.team[0].moves[0]) is None
+    # Cannot attack while Flinching
+    assert p_eng.attack("player2", player2.team[0].moves[0]) is None
+
+
+def test_vs_attract():
+    """Check that attract works."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["synthesis", "softboiled"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["softboiled"])])
+
+    player1.team[0].volatile_status["attract"] = 0
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    num_attract = 0
+    for _ in range(500):
+        if p_eng.attack("player1", player1.team[0].moves[0]) is None:
+            num_attract += 1
+
+    assert num_attract > 0
+
+
+def test_duration_vs():
+    """Test that volatile statuses with specified durations only last that long."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["healblock"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["growl"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+    # Has not worn off
+    assert p_eng.game_state["player2"]["active"].volatile_status.get("healblock")
+    for _ in range(5):
+        p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    assert not p_eng.game_state["player2"]["active"].volatile_status
+
+
+def test_vs_endofturn_effects():
+    """Test that end of turn effects are applied."""
+    player1 = PokemonAgent([Pokemon(name="ninjask", moves=["growl"])])
+    player2 = PokemonAgent([Pokemon(name="spinda", moves=["aquaring"])])
+
+    p_eng = PokemonEngine()
+    p_eng.initialize_battle(player1, player2)
+    p_eng.game_state["player2"]["active"].current_hp = 1
+
+    player_move = ("ATTACK", 0)
+    p_eng.run_single_turn(player_move, player_move, player1, player2)
+
+    # Aquaring heals
+    assert p_eng.game_state["player2"]["active"].volatile_status.get("aquaring")
+    assert p_eng.game_state["player2"]["active"].current_hp > 1
 
 
 test_run()

@@ -41,6 +41,29 @@ def test_calculate_damage():
     assert damage == 78
 
 
+def test_calculate_damage_laserfocus():
+    """Test that Laser Focus guarantees a crit."""
+    tackle = BaseMove(**MOVE_DATA["tackle"])
+    exploud = Pokemon(name="exploud", moves=["return"])
+    floatzel = Pokemon(name="floatzel", moves=["shadowball"])
+
+    # TODO: Break out testing logic to be no_crits and no_variance
+    num_runs = 500
+    non_laserfocus_dmg = 0
+    laserfocus_dmg = 0
+    for _ in range(num_runs):
+        damage, _ = tackle.calculate_damage(exploud, floatzel, True)
+        non_laserfocus_dmg += damage
+
+    exploud.volatile_status["laserfocus"] = 0
+    for _ in range(num_runs):
+        damage, _ = tackle.calculate_damage(exploud, floatzel)
+        laserfocus_dmg += damage
+
+    # Proxy for not actually having a way to enforce no range
+    assert non_laserfocus_dmg * 1.3 < laserfocus_dmg
+
+
 def test_calculate_modifier():
     """Test that modifier is calculated properly."""
     tackle = BaseMove(**MOVE_DATA["tackle"])
@@ -97,6 +120,7 @@ def test_secondary_effects():
     test_opp_2ndary_stat_change()
     test_player_2ndary_stat_changes()
     test_2ndary_status()
+    test_2ndary_vs()
 
 
 def test_opp_2ndary_stat_change():
@@ -211,6 +235,7 @@ def test_volatile_status():
     test_primary_vs()
     test_substitute_vs()
     test_lockedmove_vs()
+    test_primary_vs_edges()
 
 
 def test_primary_vs():
@@ -228,6 +253,52 @@ def test_primary_vs():
     assert chimchar_uproar.volatile_status
     assert chimchar_uproar.volatile_status["confusion"] == 0
     assert chimchar_uproar.volatile_status["uproar"] == 0
+
+
+def test_2ndary_vs():
+    """Test volatile statusses that occur as secondary effects."""
+    num_runs = 500
+    num_flinch = 0
+
+    torkoal_defend = Pokemon(name="torkoal", moves=["synthesis"])
+    chimchar_attak = Pokemon(name="chimchar", moves=["ironhead"])
+
+    iron_head = SecondaryEffectMove(**MOVE_DATA["ironhead"])
+
+    for _ in range(num_runs):
+        torkoal_defend.volatile_status = {}
+        iron_head.apply_secondary_effect(chimchar_attak, torkoal_defend)
+        if "flinch" in torkoal_defend.volatile_status:
+            num_flinch += 1
+
+    assert num_flinch > 0
+    assert num_flinch < num_runs
+
+
+def test_primary_vs_edges():
+    """Test volatile statuse edge cases."""
+    attract = VolatileStatusMove(**MOVE_DATA["attract"])
+    automotize = VolatileStatusMove(**MOVE_DATA["autotomize"])
+    bane_bunk = VolatileStatusMove(**MOVE_DATA["banefulbunker"])
+
+    defend = Pokemon(name="torkoal", moves=["synthesis"])
+    attack = Pokemon(name="chimchar", moves=["ironhead"])
+
+    attract.apply_volatile_status(attack, defend)
+    assert attack.volatile_status == {}
+    assert "attract" in defend.volatile_status
+
+    attack.volatile_status = {}
+    defend.volatile_status = {}
+    automotize.apply_volatile_status(attack, defend)
+    assert "autotomize" in attack.volatile_status
+    assert defend.volatile_status == {}
+
+    attack.volatile_status = {}
+    defend.volatile_status = {}
+    bane_bunk.apply_volatile_status(attack, defend)
+    assert "banefulbunker" in attack.volatile_status
+    assert defend.volatile_status == {}
 
 
 def test_substitute_vs():
@@ -323,9 +394,55 @@ def test_healing():
     assert ivysaur.current_hp == ivysaur.max_hp
 
 
+def test_autotomize():
+    """Test that automotize works."""
+    test_autotomize_increment()
+    test_autotomize_effect()
+
+
+def test_autotomize_increment():
+    """Test that autotomize increments the counter when used repeatedly."""
+    autotomize = VolatileStatusMove(**MOVE_DATA["autotomize"])
+    aggron = Pokemon(name="aggron", moves=["synthesis"])
+    ivysaur = Pokemon(name="ivysaur", moves=["synthesis"])
+
+    assert "autotomize" not in aggron.volatile_status
+    autotomize.apply_volatile_status(aggron, ivysaur)
+
+    assert "autotomize" in aggron.volatile_status
+    assert aggron.volatile_status["autotomize"] == 1
+
+    autotomize.apply_volatile_status(aggron, ivysaur)
+    assert aggron.volatile_status["autotomize"] == 2
+
+
+def test_autotomize_effect():
+    """Test that aututomize reduces weight."""
+    autotomize = VolatileStatusMove(**MOVE_DATA["autotomize"])
+    ivysaur = Pokemon(name="ivysaur", moves=["synthesis"])
+    aggron = Pokemon(name="aggron", moves=["synthesis"])
+    og_weight = aggron.get_weight()
+
+    # Aggron heavier than Ivysaur
+    assert og_weight > ivysaur.get_weight()
+
+    # First autotomize reduces weight by 100
+    autotomize.apply_volatile_status(aggron, ivysaur)
+    assert aggron.get_weight() == og_weight - 100
+
+    # Repeated use of Autotomize continues to lower weight
+    autotomize.apply_volatile_status(aggron, ivysaur)
+    assert aggron.get_weight() == og_weight - 200
+
+    # Weight cannot go lower than 0.1 KG
+    autotomize.apply_volatile_status(ivysaur, aggron)
+    assert ivysaur.get_weight() == 0.1
+
+
 test_base_init()
 test_brakcet_op()
 test_calculate_damage()
+test_calculate_damage_laserfocus()
 test_calculate_modifier()
 test_check_hit()
 test_ohko_move()
@@ -334,3 +451,4 @@ test_boosting_moves()
 test_volatile_status()
 test_generate_move()
 test_healing()
+test_autotomize()

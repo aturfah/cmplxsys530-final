@@ -5,7 +5,9 @@ from uuid import uuid4
 
 from random import random
 
-from config import (PAR_STATUS, FRZ_STATUS, SLP_STATUS, TOX_STATUS)
+from config import (PAR_STATUS, FRZ_STATUS,
+                    SLP_STATUS, TOX_STATUS,
+                    SINGLE_TURN_VS, TWO_TURN_VS)
 
 from file_manager.log_writer import LogWriter
 from pokemon_helpers.pokemon import default_boosts
@@ -146,8 +148,14 @@ class PokemonEngine():
                 info["attacker"] = player_id_dict[info.get("attacker")]
                 info["defender"] = player_id_dict[info.get("defender")]
 
+        # TODO: Verify exact order these come in
+        # TODO: Check for fainting 
         self.game_state["player1"]["active"].apply_status_damage()
         self.game_state["player2"]["active"].apply_status_damage()
+
+        self.game_state["player1"]["active"].apply_endofturn_volatile_status_effects()
+        self.game_state["player2"]["active"].apply_endofturn_volatile_status_effects()
+
 
         player1.new_info(turn_info)
         player2.new_info(turn_info)
@@ -178,6 +186,10 @@ class PokemonEngine():
 
             if update:
                 self.update_gamestates(player1, player2)
+
+        # Remove volatile statuses if turn is passed
+        remove_end_of_turn_vs(self.game_state["player1"]["active"])
+        remove_end_of_turn_vs(self.game_state["player2"]["active"])
 
         return outcome, turn_info
 
@@ -264,7 +276,7 @@ class PokemonEngine():
         Args:
             attacker (str): The player ("player1" or "player2")
                 who is attacking.
-            move (dict): The data for the move that is being done.
+            move (Move): The data for the move that is being done.
 
         Returns:
             List of the information on the attack that was just done.
@@ -291,16 +303,22 @@ class PokemonEngine():
         atk_poke = self.game_state[attacker]["active"]
         def_poke = self.game_state[defender]["active"]
 
+        # Set up variables for damage
+        damage = 0
+        critical_hit = False
+        move_hits = move.check_hit()
+        could_move = True
+
         # Check for paralysis
         if atk_poke.status == PAR_STATUS and random() < 0.25:
-            return None
+            could_move = False
         # Check for freeze
         if atk_poke.status == FRZ_STATUS:
             # Check for player thaw
             if random() < 0.2 or move["type"] == "fire" or move["id"] == "scald":
                 atk_poke.status = None
             else:
-                return None
+                could_move = False
         # Check for sleep
         if atk_poke.status == SLP_STATUS:
             # Check for player wake up
@@ -310,13 +328,30 @@ class PokemonEngine():
             # Increment sleep counter
             else:
                 atk_poke.status_counter += 1
-                return None
+                could_move = False
+        # Check for flinch
+        if "flinch" in atk_poke.volatile_status:
+            could_move = False
+        # Check for Taunt when status move chosen
+        if "taunt" in atk_poke.volatile_status and move["category"] == "Status":
+            could_move = False
+        # Check for confusion
+        if "confusion" in atk_poke.volatile_status:
+            # Check if confusion wears off
+            if atk_poke.volatile_status["confusion"] > 4 or random() > 0.33:
+                del atk_poke.volatile_status["confusion"]
 
-        # Check if the move even hit...
-        damage = 0
-        critical_hit = False
-        move_hits = move.check_hit()
-        if move_hits:
+            # Check if attacker hits themself in confusion
+            elif random() > 0.5:
+                damage, _ = atk_poke.confusion_damage()
+                atk_poke.current_hp -= damage
+
+                could_move = False
+        # Check for attract
+        if "attract" in atk_poke.volatile_status and random() < 0.5:
+            could_move = False
+
+        if move_hits and could_move:
             # Do Damage
             damage, critical_hit = move.calculate_damage(atk_poke, def_poke)
             def_poke.current_hp -= damage
@@ -335,8 +370,16 @@ class PokemonEngine():
         for vol_status in atk_poke.volatile_status:
             if vol_status == "lockedmove":
                 atk_poke.volatile_status[vol_status]["counter"] += 1
-            elif vol_status != "substitute":
+            elif vol_status == "torment":
+                atk_poke.volatile_status[vol_status] = move
+            elif isinstance(atk_poke.volatile_status[vol_status], dict) and \
+                atk_poke.volatile_status[vol_status].get("counter") is not None:
+                atk_poke.volatile_status[vol_status]["counter"] += 1
+            elif vol_status not in ["substitute", "autotomize"]:
                 atk_poke.volatile_status[vol_status] += 1
+
+        if not could_move:
+            return None
 
         results = {}
         results["type"] = "ATTACK"
@@ -535,6 +578,35 @@ class PokemonEngine():
             new_line["move"] = turn["move"]["id"]
             new_line["damage"] = turn["damage"]
             turn_logwriter.write_line(new_line)
+
+
+def remove_end_of_turn_vs(poke):
+    """
+    Remove Volatile Statusses at the end of a turn (if appropriate).
+
+    Args:
+        poke (Pokemon): Pokemon for whom to remove the VS's
+
+    """
+    if poke is None:
+        return
+
+    active_vs = list(poke.volatile_status.keys())
+    for vol_status in active_vs:
+        delete_flag = False
+        if isinstance(poke.volatile_status[vol_status], dict) and\
+            "counter" in poke.volatile_status[vol_status]:
+            num_turns = poke.volatile_status[vol_status]["counter"]
+            if "duration" in poke.volatile_status[vol_status].get("effect", {}):
+                if num_turns > poke.volatile_status[vol_status]["effect"]["duration"]:
+                    delete_flag = True
+        elif vol_status in SINGLE_TURN_VS:
+            delete_flag = True
+        elif vol_status in TWO_TURN_VS and poke.volatile_status[vol_status] == 2:
+            delete_flag = True
+
+        if delete_flag:
+            del poke.volatile_status[vol_status]
 
 
 def anonymize_gamestate_helper(data):

@@ -126,7 +126,7 @@ class BaseMove():
         # Only apply crits & random range when not testing
         if not testing:
             # Critical Hit
-            if random() < 0.0625:
+            if random() < 0.0625 or "laserfocus" in attacker.volatile_status:
                 critical_hit = True
                 modifier = modifier * 1.5
 
@@ -212,6 +212,10 @@ class BaseMove():
             return move_acc
 
         return 100*random() < move_acc
+
+    def to_json(self):
+        """Return JSON serializable version of self."""
+        return self.__dict__
 
     def get(self, key, default=None):
         """
@@ -310,24 +314,50 @@ class VolatileStatusMove(BaseMove):
 
     def apply_volatile_status(self, attacker, defender):
         """Apply volatile status of this move."""
-        # Handle volatile status targeted at opponent (and substitute)
+        # Handle Substitute
         if self.volatile_status == "Substitute":
             substitute_hp = floor(attacker.max_hp / 4.0)
             if attacker.current_hp > substitute_hp:
-                attacker.volatile_status["substitute"] = substitute_hp
+                attacker.set_volatile_status("substitute", substitute_hp)
                 attacker.current_hp -= substitute_hp
-        elif self.volatile_status and self.volatile_status not in defender.volatile_status:
-            defender.volatile_status[self.volatile_status] = 0
-
         # Handle applying volatile statuses to the attacker
         elif self._self and "volatileStatus" in self._self:
             if self._self["volatileStatus"] not in attacker.volatile_status:
                 if self._self["volatileStatus"] == "lockedmove":
-                    attacker.volatile_status["lockedmove"] = {}
-                    attacker.volatile_status["lockedmove"]["counter"] = 0
-                    attacker.volatile_status["lockedmove"]["move"] = self
+                    attacker.set_volatile_status("lockedmove", {
+                        "counter": 0,
+                        "move": self
+                    })
                 else:
-                    attacker.volatile_status[self._self["volatileStatus"]] = 0
+                    attacker.set_volatile_status(self._self["volatileStatus"])
+        elif self.target == "self" and self.volatile_status:
+            # Handle Autotomize
+            if self.volatile_status == "autotomize":
+                if "autotomize" in attacker.volatile_status:
+                    attacker.set_volatile_status(self.volatile_status,
+                                                 attacker.volatile_status[self.volatile_status] + 1)
+                else:
+                    attacker.set_volatile_status(self.volatile_status, 1)
+            else:
+                attacker.set_volatile_status(self.volatile_status)
+        # Handle applying volatile status to defending pokemon
+        elif self.volatile_status and self.volatile_status not in defender.volatile_status:
+            self._apply_volatile_status_defender(defender)
+
+    def _apply_volatile_status_defender(self, defender):
+        """Apply the volatile statuse effect to the defender."""
+        # Handle Torment (default to None)
+        if self.volatile_status == "torment":
+            defender.set_volatile_status(self.volatile_status, None)
+        # Moves with effect
+        if self.effect:
+            vol_stat = {}
+            vol_stat["effect"] = self.effect
+            vol_stat["counter"] = 0
+            defender.set_volatile_status(self.volatile_status, vol_stat)
+        # All other cases
+        else:
+            defender.set_volatile_status(self.volatile_status)
 
 
 class HealingMove(BaseMove):
@@ -366,6 +396,11 @@ def secondary_effect_logic(target_poke, secondary_effects):
 
         if not type_immunity:
             target_poke.status = secondary_effects["status"]
+
+    # Apply secondary volatile status
+    secondary_vs = secondary_effects.get("volatileStatus", None)
+    if secondary_vs is not None and secondary_vs not in target_poke.volatile_status:
+        target_poke.volatile_status[secondary_vs] = 0
 
 
 def generate_move(move_config):

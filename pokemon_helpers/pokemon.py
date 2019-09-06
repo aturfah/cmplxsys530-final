@@ -76,6 +76,7 @@ class Pokemon:
         self.types = POKEMON_DATA[self.name]["types"]
         self.base_stats = POKEMON_DATA[self.name]["baseStats"]
         self.dex_num = POKEMON_DATA[self.name]["num"]
+        self.weight = POKEMON_DATA[self.name]["weightkg"]
         self.status = None
         self.status_turns = 0
         self.evs = evs
@@ -228,7 +229,15 @@ class Pokemon:
 
     def to_json(self):
         """Return JSON serializable version of self."""
-        return self.__dict__
+        output_dict = dict(self.__dict__)
+
+        serialized_moves = []
+        for move in output_dict["moves"]:
+            serialized_moves.append(move.to_json())
+
+        output_dict["moves"] = serialized_moves
+
+        return output_dict
 
     def set_boost(self, stat, stages):
         """
@@ -258,10 +267,74 @@ class Pokemon:
         can_switch = True
         possible_moves = []
 
+        invalid_moves = set()
+        # Calculate invalid moves
+        if "torment" in self.volatile_status:
+            # Cannot repeat same move under torment
+            invalid_moves.add(self.volatile_status["torment"])
+        if "taunt" in self.volatile_status:
+            # Cannot use status moves under taunt
+            for move in self.moves:
+                if move.category == "Status":
+                    invalid_moves.add(move)
+        if "healblock" in self.volatile_status:
+            # Cannot use healing moves under healblock
+            for move in self.moves:
+                if move.heal is not None:
+                    invalid_moves.add(move)
+
+        # Based on invalid moves, generate possible moves
         for move in self.moves:
-            possible_moves.append(('ATTACK', self.moves.index(move)))
+            if move not in invalid_moves:
+                possible_moves.append(('ATTACK', self.moves.index(move)))
+
+        # No valid moves
+        if not possible_moves:
+            # TODO: Implement Struggle Logic
+            raise NotImplementedError("Should Struggle, not implemented yet")
 
         return can_switch, possible_moves
+
+    def set_volatile_status(self, status_key, status_value=0):
+        """Set this pokemon's volatile status."""
+        if status_key in self.volatile_status and status_key != "autotomize":
+            return
+
+        self.volatile_status[status_key] = status_value
+
+    def confusion_damage(self):
+        """Calculate confusion damage."""
+        confusion_config = {
+            "type": None,
+            "category": "Physical",
+            "basePower": 40
+        }
+        confusion_move = generate_move(confusion_config)
+
+        return confusion_move.calculate_damage(self, self, True)
+
+    def get_weight(self):
+        """Return this pokemon's weight in KG."""
+        autotomize_modifier = self.volatile_status.get("autotomize", 0)
+        mod_weight = self.weight - 100 * autotomize_modifier
+
+        # User's weight cannot go below 0.1 KG
+        return max(mod_weight, 0.1)
+
+    def apply_endofturn_volatile_status_effects(self):
+        """
+        Apply end-of-turn effects from volatile statusses.
+
+        If a volatile status activates its effect at the end of a turn,
+        its effect is applied here.
+        """
+        hp_change = 0
+        if "aquaring" in self.volatile_status:
+            hp_change += floor(self.max_hp * 1/16)
+
+        # Adjust HP, make sure don't overflow
+        self.current_hp += hp_change
+        self.current_hp -= max((self.current_hp - self.max_hp, 0))
 
 
 def default_boosts():

@@ -159,6 +159,34 @@ STATUS_IMMUNITIES = {
     TOX_STATUS: ["Poison", "Steel"]
 }
 
+# Volatile Statuses
+SINGLE_TURN_VS = [
+    "flinch",
+    "followme",
+    "grudge",
+    "banefulbunker",
+    "protect",
+    "electrify",
+    "endure",
+    "kingsshield",
+    "powder",
+    "ragepowder",
+    "roost",
+    "snatch",
+    "spikyshield",
+    "spotlight",
+    "magiccoat",
+    "rage"
+]
+TWO_TURN_VS = [
+    "mustrecharge",
+    "charge",
+    "defensecurl",
+    "miracleeye",
+    "yawn",
+    "laserfocus"
+]
+
 # Logging default set to warning
 def set_logging_level(new_log_level=None):
     """

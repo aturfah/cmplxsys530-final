@@ -214,12 +214,43 @@ def test_get_method():
 
 def test_possible_moves():
     """Make sure possible_moves works properly."""
-    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"], level=50)
+    pkmn = Pokemon(name="spinda", moves=["tackle", "teeterdance"], level=50)
     poke_can_switch, moves = pkmn.possible_moves()
 
     assert poke_can_switch
     assert moves
     assert len(moves) == 2
+
+    # Test torment where pokemon can make more than 1 move
+    pkmn.volatile_status["torment"] = pkmn.moves[0]
+    _, moves = pkmn.possible_moves()
+    assert moves
+    assert len(moves) == 1
+    assert moves[0] == ("ATTACK", 1)
+
+    # No Valid Moves, should raise a NotImplementedError
+    pkmn.moves = pkmn.moves[:1]
+    try:
+        _, _ = pkmn.possible_moves()
+        assert False
+    except NotImplementedError:
+        pass
+
+    # Taunt does not allow pokemon to use status moves
+    pkmn = Pokemon(name="spinda", moves=["tackle", "teeterdance"], level=50)
+    pkmn.volatile_status["taunt"] = 0
+    _, moves = pkmn.possible_moves()
+    assert moves
+    assert len(moves) == 1
+    assert moves[0] == ("ATTACK", 0)
+
+    # Heal Block prevents healing moves
+    pkmn = Pokemon(name="spinda", moves=["softboiled", "tackle"])
+    pkmn.volatile_status["healblock"] = 0
+    _, moves = pkmn.possible_moves()
+    assert moves
+    assert len(moves) == 1
+    assert moves[0] == ("ATTACK", 1)
 
 
 def status_dmg_test():
@@ -231,6 +262,49 @@ def status_dmg_test():
     assert pkmn.max_hp > pkmn.current_hp
 
 
+def test_set_vs():
+    """Test set_volatile setting done properly."""
+    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"], level=50)
+
+    pkmn.set_volatile_status('doot', 8)
+    assert pkmn.volatile_status == {'doot': 8}
+
+    pkmn.set_volatile_status('doot', ['doot', 'pew'])
+    assert pkmn.volatile_status == {'doot': 8}
+
+
+def test_confusion_damage():
+    """Test damage done in confusion."""
+    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"])
+
+    damage, critical_hit = pkmn.confusion_damage()
+
+    assert damage == 35
+    assert not critical_hit
+
+
+def test_endofturn_volatile_status_effects():
+    """Test that end of turn vs effects are properly applied."""
+    pkmn = Pokemon(name="spinda", moves=["tackle", "watergun"])
+    pkmn.current_hp = 1
+
+    # If no VS, HP does not change
+    pkmn.apply_endofturn_volatile_status_effects()
+    assert pkmn.current_hp == 1
+
+    # If aquaring, HP changes
+    pkmn.volatile_status = {
+        "aquaring": 1
+    }
+    pkmn.apply_endofturn_volatile_status_effects()
+    assert pkmn.current_hp == 17
+
+    # HP change does not go over Max HP
+    pkmn.current_hp = 260
+    pkmn.apply_endofturn_volatile_status_effects()
+    assert pkmn.current_hp == pkmn.max_hp
+
+
 test_init()
 test_param_validation()
 test_stats_calculation()
@@ -240,3 +314,6 @@ test_status()
 test_get_method()
 test_possible_moves()
 status_dmg_test()
+test_set_vs()
+test_confusion_damage()
+test_endofturn_volatile_status_effects()
