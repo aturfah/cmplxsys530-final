@@ -1,6 +1,6 @@
 """Base agent class."""
 from uuid import uuid4
-
+import logging
 
 class BaseAgent():
     """
@@ -54,7 +54,11 @@ class BaseAgent():
         """
         if self.num_losses == 0:
             return None
-        return self.num_wins / self.num_losses
+        ratio = self.num_wins / self.num_losses
+        logging.info("BaseAgent:win_loss_ratio:Wins:%s", self.num_wins)
+        logging.info("BaseAgent:win_loss_ratio:Losses:%s", self.num_losses)
+        logging.info("BaseAgent:win_loss_ratio:Ratio:%s", ratio)
+        return ratio
 
     def total_games(self):
         """
@@ -65,6 +69,7 @@ class BaseAgent():
                 (# Wins + # Losses).
 
         """
+        logging.info("BaseAgent:total_games:Wins:%s|Losses:%s", self.num_wins, self.num_losses)
         return self.num_wins + self.num_losses
 
     def print_info(self):
