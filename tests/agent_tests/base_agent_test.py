@@ -40,7 +40,7 @@ def test_make_move():
     except NotImplementedError:
         return
 
-set_logging_level(10)
+set_logging_level()
 
 test_init()
 test_win_loss()
