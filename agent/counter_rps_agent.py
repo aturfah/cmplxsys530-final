@@ -43,10 +43,11 @@ class CounterRPSAgent(RPSAgent):
             Move corresponding to Rock, Paper, or Scissors, defined by strategy above.
 
         """
+        logging.info("CounterRPSAgent:make_move:%s", self.id)
         if self.last_move is None:
             return super().make_move()
 
         chosen_move = (self.last_move + 1) % 3
-        logging.debug("CounterRPSAgent:make_move:Last Move %s", self.last_move)
+        logging.info("CounterRPSAgent:make_move:Last Move %s", self.last_move)
         logging.info("CounterRPSAgent:make_move:Chosen Move %s", chosen_move)
         return chosen_move
