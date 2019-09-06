@@ -1,6 +1,7 @@
 """Special RPS Agent that counters opponent."""
 
 from agent.rps_agent import RPSAgent
+import logging
 
 
 class CounterRPSAgent(RPSAgent):
@@ -23,9 +24,11 @@ class CounterRPSAgent(RPSAgent):
         """Reset state once game is finished."""
         self.last_move = None
 
-    def update_info(self, *args, **kwargs):
+    def update_info(self, *_, **kwargs):
         """Store opponent's last move."""
         last_move = kwargs.get("last_move")
+        logging.info("CounterRPSAgent:update_info:%s", self.id)
+        logging.info("CounterRPSAgent:update_info:Last Move %s", last_move)
         self.last_move = last_move
 
     def make_move(self):
@@ -43,4 +46,7 @@ class CounterRPSAgent(RPSAgent):
         if self.last_move is None:
             return super().make_move()
 
-        return (self.last_move + 1) % 3
+        chosen_move = (self.last_move + 1) % 3
+        logging.debug("CounterRPSAgent:make_move:Last Move %s", self.last_move)
+        logging.info("CounterRPSAgent:make_move:Chosen Move %s", chosen_move)
+        return chosen_move
