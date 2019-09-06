@@ -52,12 +52,13 @@ class BaseAgent():
             Win/Loss ratio (# Wins/# Losses).
 
         """
-        logging.info("BaseAgent:win_loss_ratio:Wins:%s", self.num_wins)
-        logging.info("BaseAgent:win_loss_ratio:Losses:%s", self.num_losses)
+        logging.info("BaseAgent:win_loss_ratio:%s", self.id)
+        logging.info("BaseAgent:win_loss_ratio:Wins %s", self.num_wins)
+        logging.info("BaseAgent:win_loss_ratio:Losses %s", self.num_losses)
         if self.num_losses == 0:
             return None
         ratio = self.num_wins / self.num_losses
-        logging.info("BaseAgent:win_loss_ratio:Ratio:%s", ratio)
+        logging.info("BaseAgent:win_loss_ratio:Ratio %s", ratio)
         return ratio
 
     def total_games(self):
