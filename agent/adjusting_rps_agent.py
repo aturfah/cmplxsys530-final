@@ -32,7 +32,7 @@ class AdjustingRPSAgent(RPSAgent):
         self.strategy = deepcopy(self.original_strategy)
         self.counts = [val * self.weight for val in self.strategy]
 
-    def update_info(self, *args, **kwargs):
+    def update_info(self, *_, **kwargs):
         """
         Update the agent's counts and strategy.
 
