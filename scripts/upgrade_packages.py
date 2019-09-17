@@ -7,7 +7,7 @@ import pkg_resources
 def upgrade_packages(wrk_set):
     """Call to upgrade packages."""
     packages = [dist.project_name for dist in wrk_set]
-    call("pip install --upgrade " + ' '.join(packages), shell=True)
+    call("pip install --user --upgrade " + ' '.join(packages), shell=True)
 
 
 if __name__ == "__main__":
