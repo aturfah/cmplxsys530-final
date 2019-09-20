@@ -59,6 +59,10 @@ class PokemonAgent(BaseAgent):
         """
         self.game_state.update_gamestate(my_gamestate, opp_gamestate)
 
+    def _num_remaining_pokemon(self):
+        """Returns the number of pokemon who have not yet fainted."""
+        return len(self.game_state.gamestate["team"])
+
     def make_move(self):
         """
         Make a move.
@@ -71,13 +75,13 @@ class PokemonAgent(BaseAgent):
         """
         response = ()
         active_can_switch, moves = self.game_state.gamestate["active"].possible_moves()
-        can_switch = len(self.game_state.gamestate["team"]) > 0 and active_can_switch
+        can_switch = self._num_remaining_pokemon() > 0 and active_can_switch
 
         logging.info("PokemonAgent:make_move:%s:can_switch:%s",
                      self.id, can_switch)
 
         if can_switch and random() < 0.5:
-            switch = int(uniform(0, len(self.game_state.gamestate["team"])))
+            switch = int(uniform(0, self._num_remaining_pokemon()))
             response = "SWITCH", switch
         else:
             move_ind = int(uniform(0, len(moves)))
@@ -98,8 +102,15 @@ class PokemonAgent(BaseAgent):
             Position of the next pokemon to switch to.
 
         """
-        choice = uniform(0, len(self.game_state.gamestate["team"]))
+        if not self._num_remaining_pokemon():
+            raise RuntimeError("No members left, cannot switch")
+
+        choice = uniform(0, self._num_remaining_pokemon())
         choice = int(choice)
+
+        logging.info("PokemonAgent:switch_faint:%s:switch_to:%s",
+                     self.id, choice)
+
         return choice
 
     def battle_position(self):
