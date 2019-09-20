@@ -20,13 +20,15 @@ def test_make_move():
 
     move_type, val = pa1.make_move()
 
-    assert move_type in ["SWITCH", "ATTACK"]
-    if move_type == "SWITCH":
-        # Switch to magikarp
-        assert val in range(3)
-    else:
-        # Picks one of 4 moves
-        assert val in range(4)
+    # Test all parts of make_move
+    for _ in range(500):
+        assert move_type in ["SWITCH", "ATTACK"]
+        if move_type == "SWITCH":
+            # Switch to magikarp
+            assert val in range(3)
+        else:
+            # Picks one of 4 moves
+            assert val in range(4)
 
 
 def test_switch_faint():
