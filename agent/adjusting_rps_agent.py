@@ -31,6 +31,12 @@ class AdjustingRPSAgent(RPSAgent):
         """Reset state once game is finished."""
         self.strategy = deepcopy(self.original_strategy)
         self.counts = [val * self.weight for val in self.strategy]
+        logging.info("AdjustingRPSAgent:reset_state:%s:Reset Strategy:%s",
+                     self.id,
+                     "[{}]".format(",".join([str(x) for x in self.strategy])))
+        logging.info("AdjustingRPSAgent:reset_state:%s:Reset Counts:%s",
+                     self.id,
+                     "[{}]".format(",".join([str(x) for x in self.counts])))
 
     def update_info(self, *_, **kwargs):
         """
