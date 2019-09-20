@@ -1,5 +1,7 @@
 """Unit tests for PokemonAgent class."""
 
+from config import set_logging_level
+
 from pokemon_helpers.pokemon import Pokemon
 from agent.basic_pokemon_agent import PokemonAgent
 from battle_engine.pokemon_engine import anonymize_gamestate_helper
@@ -18,10 +20,9 @@ def test_make_move():
     pa1.game_state.gamestate["team"] = [magikarp, magikarp, magikarp]
     pa1.game_state.gamestate["active"] = spinda
 
-    move_type, val = pa1.make_move()
-
     # Test all parts of make_move
     for _ in range(500):
+        move_type, val = pa1.make_move()
         assert move_type in ["SWITCH", "ATTACK"]
         if move_type == "SWITCH":
             # Switch to magikarp
@@ -128,6 +129,8 @@ def test_battle_posn_multiple():
     assert pa1.battle_position() < 1.5
     assert pa1.calc_position() > 1
 
+
+set_logging_level(10)
 
 test_make_move()
 test_switch_faint()
