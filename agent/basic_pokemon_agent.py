@@ -2,6 +2,7 @@
 
 from random import random
 from random import uniform
+import logging
 
 from agent.base_agent import BaseAgent
 from pokemon_helpers.damage_stats import DamageStatCalc
@@ -72,14 +73,18 @@ class PokemonAgent(BaseAgent):
         active_can_switch, moves = self.game_state.gamestate["active"].possible_moves()
         can_switch = len(self.game_state.gamestate["team"]) > 0 and active_can_switch
 
+        logging.info("PokemonAgent:make_move:%s:can_switch:%s",
+                     self.id, can_switch)
+
         if can_switch and random() < 0.5:
-            switch = uniform(0, len(self.game_state.gamestate["team"]))
-            switch = int(switch)
+            switch = int(uniform(0, len(self.game_state.gamestate["team"])))
             response = "SWITCH", switch
         else:
-            move_ind = uniform(0, len(moves))
-            move_ind = int(move_ind)
+            move_ind = int(uniform(0, len(moves)))
             response = moves[move_ind]
+
+        logging.info("PokemonAgent:make_move:%s:chosen_move:%s",
+                     self.id, response)
 
         return response
 
