@@ -135,6 +135,7 @@ class PokemonAgent(BaseAgent):
             This player's remaining % HP.
 
         """
+        # TODO: Make this a private function
         return calc_position_helper(self.game_state.gamestate)
 
     def calc_opp_position(self):
@@ -145,6 +146,7 @@ class PokemonAgent(BaseAgent):
             The opponent's remaining % HP.
 
         """
+        # TODO: Make this a private function
         return calc_opp_position_helper(self.game_state.opp_gamestate)
 
     def new_info(self, raw_turn_info):
