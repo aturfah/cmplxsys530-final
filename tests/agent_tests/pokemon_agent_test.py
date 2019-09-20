@@ -21,6 +21,7 @@ def test_num_remaining_pokemon():
 
     assert pa1._num_remaining_pokemon() == 3
 
+
 def test_make_move():
     """Test that make_move is outputting valid info."""
     spinda = Pokemon(
