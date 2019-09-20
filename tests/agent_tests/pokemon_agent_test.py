@@ -7,6 +7,20 @@ from agent.basic_pokemon_agent import PokemonAgent
 from battle_engine.pokemon_engine import anonymize_gamestate_helper
 
 
+def test_num_remaining_pokemon():
+    """Test _num_remaining_pokemon() method."""
+    spinda = Pokemon(
+        name="spinda",
+        moves=["tackle", "thundershock", "watergun", "shadowball"])
+    pa1 = PokemonAgent([spinda])
+
+    # Set player's gamestate
+    pa1.game_state.gamestate = {}
+    pa1.game_state.gamestate["team"] = [spinda, spinda, spinda]
+    pa1.game_state.gamestate["active"] = spinda
+
+    assert pa1._num_remaining_pokemon() == 3
+
 def test_make_move():
     """Test that make_move is outputting valid info."""
     spinda = Pokemon(
@@ -132,6 +146,7 @@ def test_battle_posn_multiple():
 
 set_logging_level(10)
 
+test_num_remaining_pokemon()
 test_make_move()
 test_switch_faint()
 test_battle_posn_one()
