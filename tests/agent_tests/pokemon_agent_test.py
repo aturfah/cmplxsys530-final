@@ -35,7 +35,7 @@ def test_make_move():
     pa1.game_state.gamestate["active"] = spinda
 
     # Test all parts of make_move
-    for _ in range(500):
+    for _ in range(10):
         move_type, val = pa1.make_move()
         assert move_type in ["SWITCH", "ATTACK"]
         if move_type == "SWITCH":
