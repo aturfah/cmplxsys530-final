@@ -124,13 +124,16 @@ class PokemonAgent(BaseAgent):
         """
         self_component = self.calc_position()
         opp_component = self.calc_opp_position()
+        final_position = self_component / opp_component
 
         logging.info("PokemonAgent:battle_position:%s:self_component:%s",
                      self.id, self_component)
         logging.info("PokemonAgent:battle_position:%s:opp_component:%s",
                      self.id, opp_component)
+        logging.info("PokemonAgent:battle_position:%s:battle_position:%s",
+                     self.id, final_position)
 
-        return self_component / opp_component
+        return final_position
 
     def calc_position(self):
         """
