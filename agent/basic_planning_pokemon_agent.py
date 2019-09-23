@@ -90,7 +90,7 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             for move in common_moves:
                 if move not in opp_moves:
                     opp_moves.append(move)
-                    logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:opp_guess_move:%s",
+                    logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:opp_guess_move:%s", # pylint: disable=line-too-long
                                  self.id, move)
                 if len(opp_moves) == 4:
                     break
