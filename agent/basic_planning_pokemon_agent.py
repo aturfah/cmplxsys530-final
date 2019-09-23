@@ -129,6 +129,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         # pylint: disable=R0914
         # Most variables come from for loops
 
+        # TODO: Add Logging
+        # TODO: Break this up perhaps into smaller functions
         optimal_move = None
         optimal_posn = -1
         for p_opt in player_opts:
