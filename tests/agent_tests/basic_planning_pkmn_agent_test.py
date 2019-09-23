@@ -188,8 +188,6 @@ def init_gamestates(player_poke, opp_poke):
 set_logging_level(10)
 
 test_generate_possibilities()
-raise RuntimeError("DOOT")
-
 test_make_move()
 test_determine_faster()
 test_move_accuracy()
