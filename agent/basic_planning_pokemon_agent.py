@@ -2,6 +2,7 @@
 
 import operator
 from copy import deepcopy
+import logging
 
 from agent.basic_pokemon_agent import PokemonAgent
 from agent.basic_pokemon_agent import calc_opp_position_helper, calc_position_helper
@@ -63,6 +64,11 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 player_opts.append(("SWITCH", posn))
                 posn += 1
 
+        logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:self_can_switch:%s",
+                     self.id, self_can_switch)
+        logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:self_num_teammates:%s",
+                     self.id, len(self.game_state.gamestate["team"]))
+
         # Opponent's possible attacks
         posn = 0
         opp_active_poke = self.game_state.opp_gamestate["data"]["active"]["name"]
@@ -83,6 +89,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
                 if len(opp_moves) == 4:
                     break
 
+        logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:opp_moves:%s",
+                     self.id, "|".join(opp_moves))
+
         for move in opp_moves:
             opp_opts.append(("ATTACK", move))
 
@@ -91,6 +100,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         for _ in self.game_state.opp_gamestate["data"]["team"]:
             opp_opts.append(("SWITCH", posn))
             posn += 1
+
+        logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:opp_num_teammates:%s",
+                     self.id, len(self.game_state.opp_gamestate["data"]["team"]))
 
         return player_opts, opp_opts
 
