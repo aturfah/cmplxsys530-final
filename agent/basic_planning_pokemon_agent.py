@@ -314,8 +314,15 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Same priority is decided by speed
         if p_move["priority"] == o_move["priority"]:
+            logging.info("BasicPlanningPokemonAgent:determine_faster:%s:player_speed:%s",
+                         self.id, p_poke.effective_stat("spe"))
+
             speed_pairs = self.game_state.opp_gamestate["investment"][o_poke_name]["spe"]
             min_opp_spe, max_opp_spe = speed_pairs
+            logging.info("BasicPlanningPokemonAgent:determine_faster:%s:opp_min_speed:%s",
+                         self.id, min_opp_spe)
+            logging.info("BasicPlanningPokemonAgent:determine_faster:%s:opp_max_speed:%s",
+                         self.id, max_opp_spe)
 
             # Factor in status
             opp_modifier = 1
@@ -324,12 +331,22 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
             # Factor in Boosts
             opp_modifier = opp_modifier * calc_boost_factor(opp_gs["data"]["active"], "spe")
+            logging.info("BasicPlanningPokemonAgent:determine_faster:%s:opp_speed_modifier:%s",
+                         self.id, opp_modifier)
 
             # Assume that any speed is possible, which isn't exactly correct
-            return p_poke.effective_stat("spe") > opp_modifier * (min_opp_spe + max_opp_spe) / 2
+            opp_speed = opp_modifier * self._infer_from_speed_range(min_opp_spe, max_opp_spe)
+            logging.info("BasicPlanningPokemonAgent:determine_faster:%s:opp_effective_speed:%s",
+                         self.id, opp_speed)
+            return p_poke.effective_stat("spe") > opp_speed
 
         # Moves of different priority will always go in priority order
         return p_move["priority"] > o_move["priority"]
+
+    @staticmethod
+    def _infer_from_speed_range(min_speed, max_speed):
+        """Player method to specify how to calculate speed range."""
+        return (min_speed + max_speed) / 2
 
     def calc_move_outcomes(self, move_opt, player_flag=True):
         """
