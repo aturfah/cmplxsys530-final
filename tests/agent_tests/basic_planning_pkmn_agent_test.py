@@ -185,7 +185,7 @@ def init_gamestates(player_poke, opp_poke):
     return player_gs, opp_gs
 
 
-set_logging_level(10)
+set_logging_level()
 
 test_generate_possibilities()
 test_make_move()
