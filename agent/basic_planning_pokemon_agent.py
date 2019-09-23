@@ -60,7 +60,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         # My possible switches
         posn = 0
         if self_can_switch:
-            for _ in self.game_state.gamestate["team"]:
+            for teammate in self.game_state.gamestate["team"]:
+                logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:self_teammate:%s",
+                             self.id, teammate["name"])
                 player_opts.append(("SWITCH", posn))
                 posn += 1
 
@@ -76,6 +78,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
         if opp_active_poke in self.game_state.opp_gamestate["moves"]:
             for move in self.game_state.opp_gamestate["moves"][opp_active_poke]:
                 opp_moves.append(move["id"])
+                logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:opp_known_move:%s"
+                             , self.id, move["id"])
 
         if len(opp_moves) < 4:
             # Infer remaining moves from tier's data
@@ -86,6 +90,8 @@ class BasicPlanningPokemonAgent(PokemonAgent):
             for move in common_moves:
                 if move not in opp_moves:
                     opp_moves.append(move)
+                    logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:opp_guess_move:%s",
+                                 self.id, move)
                 if len(opp_moves) == 4:
                     break
 
@@ -97,7 +103,9 @@ class BasicPlanningPokemonAgent(PokemonAgent):
 
         # Opponent's possible switches
         posn = 0
-        for _ in self.game_state.opp_gamestate["data"]["team"]:
+        for opp_teammate in self.game_state.opp_gamestate["data"]["team"]:
+            logging.info("BasicPlanningPokemonAgent:generate_possibilities:%s:opp_teammate:%s",
+                         self.id, opp_teammate["name"])
             opp_opts.append(("SWITCH", posn))
             posn += 1
 
