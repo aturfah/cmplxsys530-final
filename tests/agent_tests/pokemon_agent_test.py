@@ -145,7 +145,7 @@ def test_battle_posn_multiple():
     assert pa1.calc_position() > 1
 
 
-set_logging_level(10)
+set_logging_level()
 
 test_num_remaining_pokemon()
 test_make_move()
