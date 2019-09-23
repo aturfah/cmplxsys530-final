@@ -5,6 +5,7 @@ from pokemon_helpers.pokemon import Pokemon
 from battle_engine.pokemon_engine import anonymize_gamestate_helper
 
 from config import PAR_STATUS
+from config import set_logging_level
 
 
 def init_bppa():
@@ -184,7 +185,11 @@ def init_gamestates(player_poke, opp_poke):
     return player_gs, opp_gs
 
 
+set_logging_level(10)
+
 test_generate_possibilities()
+raise RuntimeError("DOOT")
+
 test_make_move()
 test_determine_faster()
 test_move_accuracy()
