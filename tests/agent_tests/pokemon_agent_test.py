@@ -19,7 +19,7 @@ def test_num_remaining_pokemon():
     pa1.game_state.gamestate["team"] = [spinda, spinda, spinda]
     pa1.game_state.gamestate["active"] = spinda
 
-    assert pa1._num_remaining_pokemon() == 3
+    assert pa1._num_remaining_pokemon() == 3 # pylint: disable=protected-access
 
 
 def test_make_move():
