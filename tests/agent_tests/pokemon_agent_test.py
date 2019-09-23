@@ -1,8 +1,25 @@
 """Unit tests for PokemonAgent class."""
 
+from config import set_logging_level
+
 from pokemon_helpers.pokemon import Pokemon
 from agent.basic_pokemon_agent import PokemonAgent
 from battle_engine.pokemon_engine import anonymize_gamestate_helper
+
+
+def test_num_remaining_pokemon():
+    """Test _num_remaining_pokemon() method."""
+    spinda = Pokemon(
+        name="spinda",
+        moves=["tackle", "thundershock", "watergun", "shadowball"])
+    pa1 = PokemonAgent([spinda])
+
+    # Set player's gamestate
+    pa1.game_state.gamestate = {}
+    pa1.game_state.gamestate["team"] = [spinda, spinda, spinda]
+    pa1.game_state.gamestate["active"] = spinda
+
+    assert pa1._num_remaining_pokemon() == 3 # pylint: disable=protected-access
 
 
 def test_make_move():
@@ -18,15 +35,16 @@ def test_make_move():
     pa1.game_state.gamestate["team"] = [magikarp, magikarp, magikarp]
     pa1.game_state.gamestate["active"] = spinda
 
-    move_type, val = pa1.make_move()
-
-    assert move_type in ["SWITCH", "ATTACK"]
-    if move_type == "SWITCH":
-        # Switch to magikarp
-        assert val in range(3)
-    else:
-        # Picks one of 4 moves
-        assert val in range(4)
+    # Test all parts of make_move
+    for _ in range(10):
+        move_type, val = pa1.make_move()
+        assert move_type in ["SWITCH", "ATTACK"]
+        if move_type == "SWITCH":
+            # Switch to magikarp
+            assert val in range(3)
+        else:
+            # Picks one of 4 moves
+            assert val in range(4)
 
 
 def test_switch_faint():
@@ -127,6 +145,9 @@ def test_battle_posn_multiple():
     assert pa1.calc_position() > 1
 
 
+set_logging_level()
+
+test_num_remaining_pokemon()
 test_make_move()
 test_switch_faint()
 test_battle_posn_one()

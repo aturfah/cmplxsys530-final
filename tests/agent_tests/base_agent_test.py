@@ -1,6 +1,7 @@
 """Test functionality of base agent."""
 from agent.base_agent import BaseAgent
 
+from config import set_logging_level
 
 def test_init():
     """Test the variables are set properly."""
@@ -39,6 +40,7 @@ def test_make_move():
     except NotImplementedError:
         return
 
+set_logging_level()
 
 test_init()
 test_win_loss()
