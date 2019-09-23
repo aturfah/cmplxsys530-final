@@ -108,6 +108,8 @@ class PokemonAgent(BaseAgent):
         choice = uniform(0, self._num_remaining_pokemon())
         choice = int(choice)
 
+        logging.info("PokemonAgent:switch_faint:%s:num_remaining_pkmn:%s",
+                     self.id, self._num_remaining_pokemon())
         logging.info("PokemonAgent:switch_faint:%s:switch_to:%s",
                      self.id, choice)
 
