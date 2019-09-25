@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 import logging
+import typing
 
 from agent.rps_agent import RPSAgent
 
@@ -19,7 +20,9 @@ class AdjustingRPSAgent(RPSAgent):
 
     """
 
-    def __init__(self, id_in=None, strategy_in="uniform", weight=1):
+    def __init__(self, id_in: typing.Optional(typing.Any) = None,
+                 strategy_in: typing.Optional(typing.Union[str, list]) = "uniform",
+                 weight: typing.Optional(typing.Union(int, float)) = 1):
         """Initialize this Agent."""
         super().__init__(id_in=id_in, strategy_in=strategy_in)
         self.type = "PopnAdjust"
@@ -28,7 +31,7 @@ class AdjustingRPSAgent(RPSAgent):
         self.weight = weight
 
     def reset_state(self):
-        """Reset state once game is finished."""
+        """Reset strategy back to original strategy."""
         self.strategy = deepcopy(self.original_strategy)
         self.counts = [val * self.weight for val in self.strategy]
         logging.info("AdjustingRPSAgent:reset_state:%s:Reset Strategy:%s",

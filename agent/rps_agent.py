@@ -22,7 +22,9 @@ class RPSAgent(BaseAgent):
 
     """
 
-    def __init__(self, id_in: typing.Any = None, strategy_in: typing.Union[str, list] = "uniform"):
+    def __init__(self,
+                 id_in: typing.Optional(typing.Any) = None,
+                 strategy_in: typing.Optional(typing.Union[str, list]) = "uniform"):
         """
         Create a Rock/Paper/Scissors player.
 
