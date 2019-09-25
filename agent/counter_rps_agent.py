@@ -1,7 +1,9 @@
 """Special RPS Agent that counters opponent."""
 
-from agent.rps_agent import RPSAgent
 import logging
+import typing
+
+from agent.rps_agent import RPSAgent
 
 
 class CounterRPSAgent(RPSAgent):
@@ -13,9 +15,9 @@ class CounterRPSAgent(RPSAgent):
         Turn2->n: Play what would beat opponent.
     """
 
-    def __init__(self, id_in=None):
+    def __init__(self, id_in: typing.Any = None, strategy_in: typing.Union[str, list] = "uniform"):
         """Init method."""
-        super().__init__(id_in=id_in)
+        super().__init__(id_in=id_in, strategy_in=strategy_in)
         self.reset_state()
         self.type = "counter"
         self.last_move = None
