@@ -11,7 +11,7 @@ class CounterRPSAgent(RPSAgent):
     Class for Counter RPS Agent.
 
     Strategy is as follows:
-        Turn1: Play random
+        Turn1: Play strategy defined by strategy_in
         Turn2->n: Play what would beat opponent.
     """
 
@@ -23,7 +23,8 @@ class CounterRPSAgent(RPSAgent):
         self.last_move = None
 
     def reset_state(self):
-        """Reset state once game is finished."""
+        """Set the last_move to None."""
+        logging.info("CounterRPSAgent:reset_state:%s", self.id)
         self.last_move = None
 
     def update_info(self, *_, **kwargs):
