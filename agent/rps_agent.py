@@ -1,6 +1,7 @@
 """Agent class for Rock/Paper/Scissors."""
 from random import random
 import logging
+import typing
 
 from agent.base_agent import BaseAgent
 
@@ -21,7 +22,7 @@ class RPSAgent(BaseAgent):
 
     """
 
-    def __init__(self, id_in=None, strategy_in="uniform"):
+    def __init__(self, id_in: typing.Any = None, strategy_in: typing.Union[str, list] = "uniform"):
         """
         Create a Rock/Paper/Scissors player.
 
@@ -29,6 +30,7 @@ class RPSAgent(BaseAgent):
         according to probabilities defined in strategy.
 
         Args:
+            id_in: Agent ID. Can be anything.
             strategy (str OR list): Either a string corresponding to a strategy,
                 or a vector of probabilities to play Rock, Paper,
                 or Scissors respectively. Optional parameter.
@@ -54,12 +56,12 @@ class RPSAgent(BaseAgent):
         self.strategy = strategy
         super().__init__(id_in=id_in, type=type_)
 
-    def make_move(self):
+    def make_move(self) -> int:
         """
         Play one of rock, paper, scissors defined by strategy.
 
         Returns:
-            Move corresponding to R, P, or S as defined by the strategy.
+            Integer encoding move corresponding to R, P, or S as defined by the strategy.
 
         """
         logging.info("RPSAgent:make_move:%s", self.id)
