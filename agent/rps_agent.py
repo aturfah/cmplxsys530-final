@@ -70,12 +70,12 @@ class RPSAgent(BaseAgent):
             logging.debug("RPSAgent:make_move:%s:Move Choice %s", self.id, i)
             logging.debug("RPSAgent:make_move:%s:Threshold %s", self.id, threshold)
             if num < threshold:
-                logging.info("RPSAgent %s made move %s", self.id, i)
+                logging.info("RPSAgent:make_move:%s:Chosen Move %s", self.id, i)
                 return i
 
         raise RuntimeError("Something went wrong with strategy selection")
 
-    def update_info(self, *args, **kwargs):
+    def update_info(self, *_, **__):
         """
         Update player with new information.
 

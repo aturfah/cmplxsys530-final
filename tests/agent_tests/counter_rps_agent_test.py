@@ -1,6 +1,7 @@
 """Unit tests for CounterRPSAgent class."""
 
 from agent.counter_rps_agent import CounterRPSAgent
+from config import set_logging_level
 
 
 def test_init():
@@ -50,6 +51,7 @@ def test_update_info():
     assert c_player.last_move == 1
 
 
+set_logging_level()
 test_init()
 test_make_move()
 test_reset_state()

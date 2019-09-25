@@ -1,6 +1,6 @@
 """Base agent class."""
 from uuid import uuid4
-
+import logging
 
 class BaseAgent():
     """
@@ -25,7 +25,7 @@ class BaseAgent():
             type (str): "Type" for this agent, has meaning in
                 identifying agent subclasses
         """
-        if "id_in" not in kwargs:
+        if kwargs.get("id_in") is None:
             self.id = uuid4()  # pylint: disable=C0103
         else:
             self.id = kwargs["id_in"]  # pylint: disable=C0103
@@ -52,9 +52,14 @@ class BaseAgent():
             Win/Loss ratio (# Wins/# Losses).
 
         """
+        logging.info("BaseAgent:win_loss_ratio:%s", self.id)
+        logging.debug("BaseAgent:win_loss_ratio:Wins %s", self.num_wins)
+        logging.debug("BaseAgent:win_loss_ratio:Losses %s", self.num_losses)
         if self.num_losses == 0:
             return None
-        return self.num_wins / self.num_losses
+        ratio = self.num_wins / self.num_losses
+        logging.info("BaseAgent:win_loss_ratio:%s:Ratio %s", self.id, ratio)
+        return ratio
 
     def total_games(self):
         """
@@ -65,6 +70,7 @@ class BaseAgent():
                 (# Wins + # Losses).
 
         """
+        logging.info("BaseAgent:total_games:Wins:%s|Losses:%s", self.num_wins, self.num_losses)
         return self.num_wins + self.num_losses
 
     def print_info(self):

@@ -32,8 +32,8 @@ def test_init():
     assert arps_nstd_weight.counts == [5, 0, 0]
 
 
-def test_update_info_and_reset():
-    """Test that update_info works properly, as does resetting."""
+def test_update_info():
+    """Test that update_info works properly."""
     # Test updating with default parameters
     arps = AdjustingRPSAgent()
     assert arps.strategy == [1/3, 1/3, 1/3]
@@ -43,10 +43,6 @@ def test_update_info_and_reset():
     assert arps.original_strategy == [1/3, 1/3, 1/3]
     assert [round(prob, 4) for prob in arps.strategy] == [0.1667, 0.6667, 0.1667]
 
-    arps.reset_state()
-    assert arps.strategy == [1/3, 1/3, 1/3]
-    assert arps.counts == [1/3, 1/3, 1/3]
-
     # Make sure that weights are accounted for
     arps_weight = AdjustingRPSAgent(weight=9)
 
@@ -54,6 +50,17 @@ def test_update_info_and_reset():
     assert arps_weight.counts == [3, 3, 4]
     assert arps_weight.strategy == [0.3, 0.3, 0.4]
 
+
+def test_reset_state():
+    """Test that reset_state resets state."""
+    arps = AdjustingRPSAgent()
+    arps.update_info(opp_move=0)
+    arps.reset_state()
+    assert arps.strategy == [1/3, 1/3, 1/3]
+    assert arps.counts == [1/3, 1/3, 1/3]
+
+    arps_weight = AdjustingRPSAgent(weight=9)
+    arps_weight.update_info(opp_move=0)
     arps_weight.reset_state()
     assert arps_weight.strategy == [1/3, 1/3, 1/3]
     assert arps_weight.counts == [3, 3, 3]
@@ -62,4 +69,5 @@ def test_update_info_and_reset():
 set_logging_level()
 
 test_init()
-test_update_info_and_reset()
+test_update_info()
+test_reset_state()

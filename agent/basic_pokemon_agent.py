@@ -2,6 +2,7 @@
 
 from random import random
 from random import uniform
+import logging
 
 from agent.base_agent import BaseAgent
 from pokemon_helpers.damage_stats import DamageStatCalc
@@ -58,6 +59,10 @@ class PokemonAgent(BaseAgent):
         """
         self.game_state.update_gamestate(my_gamestate, opp_gamestate)
 
+    def _num_remaining_pokemon(self):
+        """Returns the number of pokemon who have not yet fainted."""
+        return len(self.game_state.gamestate["team"])
+
     def make_move(self):
         """
         Make a move.
@@ -70,16 +75,20 @@ class PokemonAgent(BaseAgent):
         """
         response = ()
         active_can_switch, moves = self.game_state.gamestate["active"].possible_moves()
-        can_switch = len(self.game_state.gamestate["team"]) > 0 and active_can_switch
+        can_switch = self._num_remaining_pokemon() > 0 and active_can_switch
+
+        logging.info("PokemonAgent:make_move:%s:can_switch:%s",
+                     self.id, can_switch)
 
         if can_switch and random() < 0.5:
-            switch = uniform(0, len(self.game_state.gamestate["team"]))
-            switch = int(switch)
+            switch = int(uniform(0, self._num_remaining_pokemon()))
             response = "SWITCH", switch
         else:
-            move_ind = uniform(0, len(moves))
-            move_ind = int(move_ind)
+            move_ind = int(uniform(0, len(moves)))
             response = moves[move_ind]
+
+        logging.info("PokemonAgent:make_move:%s:chosen_move:%s",
+                     self.id, response)
 
         return response
 
@@ -93,8 +102,17 @@ class PokemonAgent(BaseAgent):
             Position of the next pokemon to switch to.
 
         """
-        choice = uniform(0, len(self.game_state.gamestate["team"]))
+        if not self._num_remaining_pokemon():
+            raise RuntimeError("No members left, cannot switch")
+
+        choice = uniform(0, self._num_remaining_pokemon())
         choice = int(choice)
+
+        logging.info("PokemonAgent:switch_faint:%s:num_remaining_pkmn:%s",
+                     self.id, self._num_remaining_pokemon())
+        logging.info("PokemonAgent:switch_faint:%s:switch_to:%s",
+                     self.id, choice)
+
         return choice
 
     def battle_position(self):
@@ -108,8 +126,16 @@ class PokemonAgent(BaseAgent):
         """
         self_component = self.calc_position()
         opp_component = self.calc_opp_position()
+        final_position = self_component / opp_component
 
-        return self_component / opp_component
+        logging.info("PokemonAgent:battle_position:%s:self_component:%s",
+                     self.id, self_component)
+        logging.info("PokemonAgent:battle_position:%s:opp_component:%s",
+                     self.id, opp_component)
+        logging.info("PokemonAgent:battle_position:%s:battle_position:%s",
+                     self.id, final_position)
+
+        return final_position
 
     def calc_position(self):
         """
@@ -119,6 +145,7 @@ class PokemonAgent(BaseAgent):
             This player's remaining % HP.
 
         """
+        # TODO: Make this a private function
         return calc_position_helper(self.game_state.gamestate)
 
     def calc_opp_position(self):
@@ -129,6 +156,7 @@ class PokemonAgent(BaseAgent):
             The opponent's remaining % HP.
 
         """
+        # TODO: Make this a private function
         return calc_opp_position_helper(self.game_state.opp_gamestate)
 
     def new_info(self, raw_turn_info):
