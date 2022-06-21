@@ -15,7 +15,7 @@ lazy-object-proxy==1.4.2
 MarkupSafe==1.1.1
 matplotlib==3.1.1
 mccabe==0.6.1
-numpy==1.17.2
+numpy==1.22.0
 pycodestyle==2.5.0
 pydocstyle==4.0.1
 pylint==2.3.1
